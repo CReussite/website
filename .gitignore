@@ -1,0 +1,8 @@
+# Dossiers internes — non publiés
+recommandation/
+.vscode/
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
