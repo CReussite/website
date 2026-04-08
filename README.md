@@ -9,11 +9,11 @@ Site statique + backend Node.js pour la livraison automatique de PDF après paie
 | Couche | Technologie | Rôle |
 |--------|-------------|------|
 | **Frontend** | HTML / CSS / JS vanilla | Site statique, aucun framework |
-| **Hébergement site** | Netlify | CDN + déploiement GitHub auto |
+| **Hébergement site** | GitHub Pages | CDN + déploiement auto via GitHub Actions |
 | **Paiement** | Stripe Payment Links | Checkout hébergé, zéro backend pour le paiement |
-| **Backend** | Node.js + Express | Serveur webhook |
+| **Backend** | Node.js + Express | Webhook Stripe + sert le site statique |
 | **Email transactionnel** | Brevo (sib-api-v3-sdk) | Envoi PDF en pièce jointe après achat |
-| **Hébergement backend** | Railway | Serveur Node.js persistant |
+| **Hébergement backend** | Railway | Serveur Node.js (site + API en un seul service) |
 | **SEO** | Schema.org JSON-LD | Rich snippets Google |
 | **Contrôle de version** | Git + GitHub | Source of truth |
 
@@ -23,7 +23,7 @@ Site statique + backend Node.js pour la livraison automatique de PDF après paie
 
 ```
 CReussite/
-├── docs/                      ← Site statique (Netlify)
+├── docs/                      ← Site statique (GitHub Pages + servi par Express)
 │   ├── index.html             ← Page principale
 │   ├── success.html           ← Confirmation après paiement
 │   ├── cancel.html            ← Annulation du checkout
@@ -31,13 +31,14 @@ CReussite/
 │   │   └── style.css
 │   └── js/
 │       ├── schema.js          ← JSON-LD (SEO)
-│       ├── nav.js             ← Navigation
-│       ├── footer.js          ← Footer
-│       ├── contact.js         ← Formulaire de contact
+│       ├── nav.js             ← Navigation (injection DOM)
+│       ├── footer.js          ← Footer (injection DOM)
+│       ├── contact.js         ← Formulaire de contact (injection DOM)
+│       ├── main.js            ← Menu mobile, accordéon FAQ
 │       └── payment.js         ← Liens Stripe par produit
 │
 ├── backend/                   ← Serveur Node.js (Railway)
-│   ├── server.js              ← Express + routes
+│   ├── server.js              ← Express : fichiers statiques + webhook
 │   ├── routes/
 │   │   └── webhook.js         ← checkout.session.completed → email
 │   ├── services/
@@ -48,9 +49,13 @@ CReussite/
 │   │   ├── fiches-maths.pdf
 │   │   └── fiches-physique-chimie.pdf
 │   ├── .env                   ← Variables privées (non commité)
-│   ├── .env.example
 │   └── package.json
 │
+├── .github/workflows/
+│   └── deploy.yml             ← Déploiement GitHub Pages auto
+│
+├── railway.json               ← Config déploiement Railway
+├── lance_site.py              ← Serveur local Python (dev rapide)
 ├── .gitignore
 └── README.md
 ```
@@ -72,33 +77,38 @@ CReussite/
 ### ✅ Fait
 - [x] Site statique complet (design, responsive, SEO, JSON-LD)
 - [x] Composants JS modulaires (nav, footer, contact, schema, payment)
+- [x] Menu hamburger mobile
 - [x] 3 produits Stripe en mode test avec Payment Links
 - [x] Redirection vers `success.html` après paiement
 - [x] Pages `success.html` et `cancel.html`
-- [x] Backend Express webhook prêt
+- [x] Backend Express : webhook Stripe + site statique servi
 - [x] Mailer Brevo avec pièces jointes PDF en base64
 - [x] Script de test email (`npm run test-email`)
 - [x] PDFs de test dans `backend/assets/`
 - [x] `.gitignore` configuré (`.env` et PDFs exclus)
+- [x] Déploiement GitHub Pages fonctionnel (workflow Actions)
+- [x] Config Railway (`railway.json`)
 
 ### 🔲 Reste à faire
 
 #### Avant de pouvoir tester
-- [ ] **Clé API Brevo** → `backend/.env` → `BREVO_API_KEY=xkeysib-...`
+- [ ] **Clé API Brevo** → variable d'env Railway → `BREVO_API_KEY=xkeysib-...`
   - https://brevo.com → Paramètres → Clés API → Générer
 - [ ] Tester l'envoi : `cd backend && npm install && npm run test-email ton@email.fr physique`
 
 #### Avant de lancer les ventes
+- [ ] Configurer le service Railway avec les variables d'environnement
 - [ ] Remplacer les PDFs de test par les vrais dans `backend/assets/`
-- [ ] Enregistrer le webhook Stripe → remplir `STRIPE_WEBHOOK_SECRET` dans `.env`
+- [ ] Enregistrer le webhook Stripe → remplir `STRIPE_WEBHOOK_SECRET` dans Railway
 - [ ] Passer en mode Live Stripe (identité + RIB)
 - [ ] Recréer les 3 produits/liens en mode Live, mettre à jour `payment.js`
+- [ ] Retirer `<meta name="robots" content="noindex">` pour le référencement
 
 ---
 
 ## Garder le site privé avant le lancement
 
-Le site est déployé sur Netlify mais non indexé grâce à la balise `<meta name="robots" content="noindex">` sur toutes les pages. Seul celui qui a l'URL peut y accéder.
+Le site est déployé sur GitHub Pages mais non indexé grâce à la balise `<meta name="robots" content="noindex">` sur toutes les pages. Seul celui qui a l'URL peut y accéder.
 
 **Pour le rendre public au lancement :**
 1. Retirer la balise `noindex` de `index.html`, `success.html`, `cancel.html`
@@ -109,31 +119,43 @@ Le site est déployé sur Netlify mais non indexé grâce à la balise `<meta na
 
 ## Hébergement
 
-### Site — Netlify
+### Site — GitHub Pages
 ```
-Déploiement auto : push sur main → Netlify rebuild
+Déploiement auto : push sur main → GitHub Actions → deploy.yml
 Publish directory : docs/
-URL : https://xxx.netlify.app (ou domaine custom)
+URL : https://creussite.github.io/website/
 ```
 
-### Backend — Railway
+### Backend + site — Railway (all-in-one)
 ```
-Root directory : backend/
-Start command  : npm start
-Variables      : copier le contenu de backend/.env
-URL            : https://xxx.railway.app
+Build command  : cd backend && npm install
+Start command  : cd backend && npm start
+Health check   : /api/health
+Variables      : STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, BREVO_API_KEY, FROM_NAME, FROM_EMAIL
+URL            : https://xxx.up.railway.app
+```
+
+Le backend Express sert à la fois le site statique (`docs/`) et l'API webhook (`/webhook`).
+
+### Dev local
+```bash
+# Option 1 : site statique seul (Python)
+python lance_site.py
+
+# Option 2 : backend complet (Node.js)
+cd backend && npm install && npm run dev
 ```
 
 ---
 
 ## Enregistrer le webhook Stripe
 
-1. Déployer le backend sur Railway → récupérer l'URL (`https://xxx.railway.app`)
+1. Déployer le backend sur Railway → récupérer l'URL (`https://xxx.up.railway.app`)
 2. Dashboard Stripe → **Développeurs → Webhooks → Ajouter un endpoint**
-   - URL : `https://xxx.railway.app/webhook`
+   - URL : `https://xxx.up.railway.app/webhook`
    - Événement : `checkout.session.completed`
-3. Copier le **Signing secret** (`whsec_...`) → `backend/.env` → `STRIPE_WEBHOOK_SECRET`
-4. Redéployer Railway (les variables sont rechargées automatiquement)
+3. Copier le **Signing secret** (`whsec_...`) → variable Railway `STRIPE_WEBHOOK_SECRET`
+4. Railway recharge les variables automatiquement au redéploiement
 
 **Test local :**
 ```bash
@@ -175,7 +197,7 @@ npm run test-email -- ton@email.fr maths
 |---------|-----|
 | Stripe (test) | https://dashboard.stripe.com/acct_1TK0ioELyt8QW1SK/test/dashboard |
 | GitHub | https://github.com/CReussite/website |
-| Netlify | https://app.netlify.com |
+| GitHub Pages | https://creussite.github.io/website/ |
 | Railway | https://railway.app |
 | Brevo | https://brevo.com |
 | Email | contact@creussite.fr |
