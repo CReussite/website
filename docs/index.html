@@ -3,462 +3,294 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CRéussite – Fiches Terminale Spécialité Maths & Physique-Chimie</title>
-  <meta name="description" content="Des fiches de révision claires et efficaces pour réussir le bac Maths et Physique-Chimie Terminale Spécialité. Dès 0 € pour commencer.">
-  <meta name="keywords" content="terminale spécialité, maths terminale, physique chimie terminale, fiches révision, ebook bac, révision bac">
-  <meta name="author" content="Alexandre Martin – CRéussite">
-  <meta property="og:title" content="CRéussite – Fiches Terminale Spécialité">
-  <meta property="og:description" content="Progressez en Maths et Physique-Chimie avec des fiches pensées pour comprendre, mémoriser et réussir le bac.">
+
+  <!-- SEO -->
+  <title>Fiches Terminale Spécialité Maths &amp; Physique-Chimie | C'Réussite</title>
+  <meta name="description" content="20 fiches Maths + 32 fiches Physique-Chimie Terminale Spécialité. Tout le programme, une page par chapitre. Par Camille Reinhardt, polytechnicienne et docteure. Bac 2026.">
+  <meta name="author" content="Camille Reinhardt">
+  <meta name="robots" content="noindex, nofollow"><!-- RETIRER au lancement public -->
+  <link rel="canonical" href="https://creussite.github.io/website/">
+
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://creussite.github.io/website/">
+  <meta property="og:title" content="Fiches Terminale Spécialité Maths &amp; Physique-Chimie | C'Réussite">
+  <meta property="og:description" content="20 fiches Maths + 32 fiches Physique-Chimie. L'essentiel du programme sur une page par chapitre. Par Camille Reinhardt.">
+  <meta property="og:site_name" content="C'Réussite">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Fiches Terminale Spécialité | C'Réussite">
+  <meta name="twitter:description" content="20 fiches Maths + 32 fiches PC Terminale Spécialité. L'essentiel du programme, une page par chapitre.">
+
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/schema.js" defer></script>
 </head>
+
 <body>
 
-  <!-- ===== HEADER ===== -->
-  <header class="header" id="top">
-    <div class="container header__inner">
-      <a href="#top" class="logo">C<span class="logo__accent">Réussite</span></a>
-
-      <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-
-      <nav class="nav" id="mainNav" aria-label="Navigation principale">
-        <a href="#apropos">À propos</a>
-        <a href="#methode">Méthode</a>
-        <a href="#tarifs">Tarifs</a>
-        <a href="#temoignages">Témoignages</a>
-        <a href="#faq">FAQ</a>
-        <a href="#contact" class="btn btn--primary">Me contacter</a>
-      </nav>
-    </div>
-  </header>
+  <div id="nav-placeholder"></div>
 
   <!-- ===== HERO ===== -->
-  <section class="hero" id="hero">
-    <div class="container hero__inner">
-      <span class="badge badge--gold">Terminale Spécialité · Année 2024–2025</span>
-      <h1 class="hero__title">Réussis ta Terminale<br><em>avec confiance</em></h1>
-      <p class="hero__desc">
-        Des fiches de révision claires, structurées et efficaces pour progresser
-        en <strong>Maths</strong> et en <strong>Physique-Chimie</strong> —
-        conçues par un enseignant pour des élèves qui veulent vraiment comprendre.
-      </p>
-      <div class="hero__actions">
-        <a href="#tarifs" class="btn btn--primary btn--lg">Découvrir les ebooks</a>
-        <a href="#gratuit" class="btn btn--ghost btn--lg">Obtenir une fiche gratuite</a>
-      </div>
-      <div class="hero__stats">
-        <div class="hero__stat"><strong>2</strong><span>matières couvertes</span></div>
-        <div class="hero__stat"><strong>130+</strong><span>fiches structurées</span></div>
-        <div class="hero__stat"><strong>Dès 0 €</strong><span>pour commencer</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== FICHE GRATUITE ===== -->
-  <section class="section section--alt" id="gratuit">
+  <section class="hero" aria-labelledby="hero-title">
     <div class="container">
-      <div class="section-header">
-        <span class="badge badge--soft">100 % Gratuit</span>
-        <h2>Commence par une fiche offerte</h2>
-        <p>Reçois la meilleure fiche de la matière de ton choix — directement sur ta boîte mail, sans engagement.</p>
-      </div>
-      <div class="cards cards--2">
+      <div class="badge">Bac 2026 — Terminale Spécialité</div>
+      <h1 id="hero-title">Fiches de révision :<br>Une page par chapitre.</h1>
+      <p class="hero-sub">
+        L'essentiel du programme officiel, organisé par thèmes, structuré pour réviser efficacement.
+      </p>
 
-        <div class="card card--free">
-          <span class="badge badge--outline">Maths</span>
-          <h3>Fiche Méthode : Calcul Intégral</h3>
-          <p>La méthode pas à pas pour maîtriser les intégrales — exemples types, formules clés et erreurs fréquentes au bac. La fiche la plus consultée.</p>
-          <form class="lead-form" data-matiere="Maths – Calcul Intégral">
-            <input type="email" placeholder="Ton adresse email" required aria-label="Adresse email">
-            <button type="submit" class="btn btn--primary">Recevoir la fiche →</button>
-          </form>
-        </div>
+      <table class="hero-table">
+        <tbody>
+          <tr>
+            <td>Maths Spécialité</td>
+            <td>Physique-Chimie</td>
+          </tr>
+          <tr>
+            <td>20 fiches</td>
+            <td>32 fiches</td>
+          </tr>
+        </tbody>
+      </table>
 
-        <div class="card card--free">
-          <span class="badge badge--outline">Physique-Chimie</span>
-          <h3>Fiche Méthode : Électrocinétique</h3>
-          <p>Les lois essentielles, les schémas à connaître et les pièges du bac expliqués simplement. La porte d'entrée idéale pour réviser la physique.</p>
-          <form class="lead-form" data-matiere="Physique-Chimie – Électrocinétique">
-            <input type="email" placeholder="Ton adresse email" required aria-label="Adresse email">
-            <button type="submit" class="btn btn--primary">Recevoir la fiche →</button>
-          </form>
-        </div>
-
+      <div class="hero-ctas">
+        <a href="#fiches" class="btn btn-primary">Voir les fiches</a>
+        <a href="#fiche-gratuite" class="btn btn-secondary">Télécharger une fiche gratuite</a>
       </div>
     </div>
   </section>
 
-  <!-- ===== À PROPOS ===== -->
-  <section class="section" id="apropos">
-    <div class="container apropos__inner">
-      <div class="apropos__text">
-        <span class="badge badge--soft">À propos</span>
-        <h2>Un enseignant qui comprend vraiment vos difficultés</h2>
-        <p>Je m'appelle <strong>Alexandre Martin</strong>. Enseignant en Maths et Physique-Chimie depuis plus de 10 ans, j'ai accompagné des centaines d'élèves vers leur bac — des profils très différents, avec des points de blocage souvent similaires.</p>
-        <p>Ces ebooks sont le fruit de cette expérience : des fiches synthétiques, progressives et directement orientées vers ce qui compte au bac. Pas de superflu, juste l'essentiel bien expliqué.</p>
-        <ul class="apropos__values">
-          <li><span class="value-bullet">✦</span> Pédagogie claire et progressive</li>
-          <li><span class="value-bullet">✦</span> Contenu aligné sur le programme officiel</li>
-          <li><span class="value-bullet">✦</span> Accessible à tous les niveaux</li>
-          <li><span class="value-bullet">✦</span> Mis à jour chaque année scolaire</li>
-        </ul>
+  <!-- ===== PRODUITS ===== -->
+  <section id="fiches" aria-labelledby="fiches-title">
+    <div class="container">
+      <h2 id="fiches-title">Maths et Physique-Chimie Terminale Spécialité</h2>
+      <p>Chaque ebook couvre l'intégralité du programme officiel. Une fiche par chapitre. Ce n'est pas un résumé de résumé — c'est le programme structuré, hiérarchisé, prêt à être utilisé.</p>
+
+      <div class="products-grid">
+
+        <!-- MATHS -->
+        <article class="product-card" aria-label="Ebook Maths Terminale Spécialité">
+          <h3>Maths Terminale Spécialité</h3>
+          <p class="product-subtitle">Fiches de révision — Bac 2026</p>
+          <div class="product-meta">
+            <span class="product-tag">20 fiches</span>
+            <span class="product-tag">6 thèmes</span>
+          </div>
+          <ul class="product-toc" aria-label="Sommaire">
+            <li><strong>Les types de raisonnement</strong></li>
+            <li><strong>Algèbre</strong> : combinatoire et dénombrement</li>
+            <li><strong>Probabilités</strong> : loi binomiale ; somme de variables aléatoires ; loi des grands nombres</li>
+            <li><strong>Espace et géométrie</strong> : vecteurs, droites, plans de l'espace ; orthogonalité et distances</li>
+            <li><strong>Suites</strong> : limites ; opérations sur les limites</li>
+            <li><strong>Analyse</strong> : limites ; dérivation ; continuité ; fonctions ln, cos, sin ; primitives ; calcul intégral ; équations différentielles</li>
+          </ul>
+          <div class="product-price">14,99 €</div>
+          <p class="product-price-sub"><span class="product-tag">Livraison instantanée</span></p>
+          <a href="#" data-product="maths" class="btn btn-primary">Commander</a>
+        </article>
+
+        <!-- PHYSIQUE-CHIMIE -->
+        <article class="product-card" aria-label="Ebook Physique-Chimie Terminale Spécialité">
+          <h3>Physique-Chimie Terminale Spécialité</h3>
+          <p class="product-subtitle">Fiches de révision — Bac 2026</p>
+          <div class="product-meta">
+            <span class="product-tag">32 fiches</span>
+            <span class="product-tag">6 thèmes</span>
+          </div>
+          <ul class="product-toc" aria-label="Sommaire">
+            <li><strong>Chimie</strong> : évolution spontanée ; piles ; évolution forcée ; acides et bases ; dosages ; cinétique ; synthèse organique ; radioactivité</li>
+            <li><strong>Mécanique</strong> : forces ; cinématique ; mouvements rectilignes et circulaires ; lois de Newton ; mouvements dans des champs</li>
+            <li><strong>Mécanique des fluides</strong></li>
+            <li><strong>Thermodynamique</strong></li>
+            <li><strong>Électricité</strong> : condensateur et dipôle RC</li>
+            <li><strong>Ondes</strong> : interactions lumière - matière ; lunette astronomique ; son ; effet Doppler ; interférences ; diffraction</li>
+          </ul>
+          <div class="product-price">14,99 €</div>
+          <p class="product-price-sub"><span class="product-tag">Livraison instantanée</span></p>
+          <a href="#" data-product="physique" class="btn btn-primary">Commander</a>
+        </article>
+
       </div>
-      <div class="apropos__visual">
-        <div class="apropos__quote-card">
-          <div class="apropos__icon">📚</div>
-          <blockquote>
-            « Mon objectif : que chaque élève comprenne avant d'apprendre. »
-          </blockquote>
-          <cite>— Alexandre Martin, auteur CRéussite</cite>
+
+      <!-- BUNDLE -->
+      <div class="bundle-card" role="region" aria-label="Pack complet Maths + Physique-Chimie">
+        <div class="bundle-text">
+          <h3>Pack Maths + Physique-Chimie</h3>
+          <p>Les deux ebooks ensemble — 20 fiches de Maths et 32 fiches de Physique-Chimie. Pour réviser les deux matières sans chercher chaque document séparément.</p>
+        </div>
+        <div class="bundle-pricing">
+          <div class="bundle-price-old">29,98 €</div>
+          <div class="bundle-price-new">24,99 €</div>
+          <div class="bundle-economy">— 5 € sur le pack</div>
+          <a href="#" data-product="bundle" class="btn btn-primary">Commander le pack</a>
         </div>
       </div>
+
     </div>
   </section>
 
   <!-- ===== MÉTHODE ===== -->
-  <section class="section section--alt" id="methode">
+  <section class="section-alt" aria-labelledby="methode-title">
     <div class="container">
-      <div class="section-header">
-        <span class="badge badge--soft">Ma méthode</span>
-        <h2>Comment ces fiches vous aident concrètement</h2>
-        <p>Chaque fiche suit la même logique : comprendre d'abord, mémoriser ensuite, appliquer enfin.</p>
-      </div>
+      <h2 id="methode-title">Comment ces fiches sont construites</h2>
+      <p>Chaque fiche couvre un chapitre du programme. Elle n'est pas un copié-collé du cours : c'est une reconstruction logique, organisée pour que l'œil trouve rapidement ce qu'il cherche et que la mémoire retienne ce qui compte.</p>
+
       <div class="steps">
         <div class="step">
-          <div class="step__num">01</div>
-          <h3>Comprendre</h3>
-          <p>Chaque notion est expliquée avec des mots simples, des schémas et des exemples concrets tirés des annales du bac.</p>
+          <div class="step-number" aria-hidden="true">1</div>
+          <h3>Le concept central</h3>
+          <p>La définition, la formule, le principe. Sans fioritures. Ce qu'il faut comprendre avant de mémoriser.</p>
         </div>
         <div class="step">
-          <div class="step__num">02</div>
-          <h3>Mémoriser</h3>
-          <p>Les points clés sont mis en évidence. Les formules essentielles sont encadrées pour une révision rapide et efficace.</p>
+          <div class="step-number" aria-hidden="true">2</div>
+          <h3>Les méthodes</h3>
+          <p>Comment appliquer le concept : les étapes, la structure du raisonnement, les cas à distinguer.</p>
         </div>
         <div class="step">
-          <div class="step__num">03</div>
-          <h3>Appliquer</h3>
-          <p>Chaque fiche inclut des exercices types avec leur correction, directement issus des sujets de bac récents.</p>
+          <div class="step-number" aria-hidden="true">3</div>
+          <h3>Les points de vigilance</h3>
+          <p>Les erreurs fréquentes, les pièges classiques au bac, les confusions à éviter.</p>
         </div>
         <div class="step">
-          <div class="step__num">04</div>
-          <h3>Progresser</h3>
-          <p>Les fiches sont organisées du plus accessible au plus complexe pour construire une progression solide et durable.</p>
+          <div class="step-number" aria-hidden="true">4</div>
+          <h3>Tout sur une page</h3>
+          <p>Un chapitre = une fiche = une page. Imprimable, lisible, utilisable en révision intensive.</p>
         </div>
       </div>
+
     </div>
   </section>
 
-  <!-- ===== TARIFS ===== -->
-  <section class="section" id="tarifs">
+  <!-- ===== À PROPOS ===== -->
+  <section id="camille" aria-labelledby="camille-title">
     <div class="container">
-      <div class="section-header">
-        <span class="badge badge--gold">Tarifs</span>
-        <h2>Choisissez votre niveau</h2>
-        <p>Des offres pour chaque besoin — de la fiche gratuite au pack complet Maths &amp; Physique-Chimie.</p>
-      </div>
+      <h2 id="camille-title">Qui a conçu ces fiches</h2>
 
-      <!-- Niveau 2 : Mini-packs -->
-      <div class="pricing-level">
-        <h3 class="pricing-level__title">Mini-packs thématiques <span class="pricing-level__range">4,99 € – 8,99 €</span></h3>
-        <div class="cards cards--2">
-
-          <div class="card">
-            <div class="card__top">
-              <span class="badge badge--outline">Maths · 4,99 €</span>
-              <div class="card__price">4,99 €</div>
+      <div class="about-inner">
+        <div>
+          <div class="about-credentials" aria-label="Parcours de Camille Reinhardt">
+            <div class="credential-item">
+              <div class="credential-label">Formation</div>
+              <div class="credential-value">École Polytechnique</div>
             </div>
-            <h3>Pack Raisonnement &amp; Géométrie</h3>
-            <ul class="card__list">
-              <li>Raisonnement &amp; démonstration</li>
-              <li>Probabilités &amp; statistiques</li>
-              <li>Algèbre linéaire</li>
-              <li>Espace et géométrie</li>
-            </ul>
-            <a href="#contact" class="btn btn--secondary btn--full">Commander</a>
-          </div>
-
-          <div class="card">
-            <div class="card__top">
-              <span class="badge badge--outline">Maths · 8,99 €</span>
-              <div class="card__price">8,99 €</div>
+            <div class="credential-item">
+              <div class="credential-label">Diplôme</div>
+              <div class="credential-value">Docteure en sciences de la vie</div>
             </div>
-            <h3>Pack Analyse &amp; Suites</h3>
-            <ul class="card__list">
-              <li>Suites numériques</li>
-              <li>Limites et continuité</li>
-              <li>Dérivation &amp; intégration</li>
-              <li>Exercices types bac inclus</li>
-            </ul>
-            <a href="#contact" class="btn btn--secondary btn--full">Commander</a>
-          </div>
-
-          <div class="card">
-            <div class="card__top">
-              <span class="badge badge--outline">Physique-Chimie · 4,99 €</span>
-              <div class="card__price">4,99 €</div>
+            <div class="credential-item">
+              <div class="credential-label">Expérience</div>
+              <div class="credential-value">R&amp;D biotech, recherche clinique, cours particuliers maths et PC</div>
             </div>
-            <h3>Pack Ondes &amp; Mécanique</h3>
-            <ul class="card__list">
-              <li>Ondes et signaux</li>
-              <li>Électricité &amp; circuits</li>
-              <li>Mécanique des fluides</li>
-              <li>Thermodynamique</li>
-            </ul>
-            <a href="#contact" class="btn btn--secondary btn--full">Commander</a>
-          </div>
-
-          <div class="card">
-            <div class="card__top">
-              <span class="badge badge--outline">Physique-Chimie · 8,99 €</span>
-              <div class="card__price">8,99 €</div>
+            <div class="credential-item">
+              <div class="credential-label">Matières enseignées</div>
+              <div class="credential-value">Maths, Physique-Chimie, jusqu'en Terminale</div>
             </div>
-            <h3>Pack Chimie complet</h3>
-            <ul class="card__list">
-              <li>Chimie organique</li>
-              <li>Réactions en solution</li>
-              <li>Transformations chimiques</li>
-              <li>Exercices types bac inclus</li>
-            </ul>
-            <a href="#contact" class="btn btn--secondary btn--full">Commander</a>
           </div>
+        </div>
 
+        <div>
+          <p>Je m'appelle Camille Reinhardt. J'ai grandi dans un petit village de province, loin des lycées parisiens et des classes prépa de prestige. Personne ne m'attendait à Polytechnique. J'y suis allée parce que j'ai appris à travailler autrement : en comprenant d'abord, en mémorisant ensuite, en appliquant toujours.</p>
+          <p>Ma réussite n'est pas venue d'un talent particulier. Elle est venue de la méthode — celle que j'ai construite au fil des années, cours après cours, chapitre après chapitre. Ces fiches, c'est cette méthode mise sur papier : l'essentiel, structuré, hiérarchisé, sans surcharge.</p>
+          <p>Je donne aussi des cours particuliers en Maths et Physique-Chimie. Ce que j'observe depuis plusieurs années, c'est que la plupart des élèves ne manquent pas d'intelligence — ils manquent d'un cadre clair. Ces fiches sont ce cadre.</p>
+          <div class="about-quote" role="blockquote">
+            <p>Ces fiches ne font pas le travail à ta place. Elles te donnent le cadre pour le faire efficacement. Si tu es prêt à travailler, elles servent. Si tu cherches un raccourci magique, elles ne sont pas faites pour toi — et je ne te dirai pas le contraire.</p>
+          </div>
         </div>
       </div>
 
-      <!-- Niveau 3 : Ebooks complets -->
-      <div class="pricing-level">
-        <h3 class="pricing-level__title">Ebooks complets — Le best-seller <span class="pricing-level__range">14,99 €</span></h3>
-        <div class="cards cards--2">
+    </div>
+  </section>
 
-          <div class="card card--featured">
-            <div class="card__badge-featured">⭐ Best-seller</div>
-            <div class="card__top">
-              <span class="badge badge--gold">Maths · 14,99 €</span>
-              <div class="card__price card__price--featured">14,99 €</div>
-            </div>
-            <h3>Maths Terminale Spécialité</h3>
-            <p class="card__desc">L'intégralité des fiches de Maths Terminale Spé : toutes les notions, tous les types d'exercices, prêt pour le bac.</p>
-            <ul class="card__list">
-              <li>Analyse, Suites, Probabilités</li>
-              <li>Algèbre, Géométrie, Raisonnement</li>
-              <li>60+ fiches structurées</li>
-              <li>Exercices types + corrections</li>
-              <li>Mis à jour 2024–2025</li>
-            </ul>
-            <a href="#contact" class="btn btn--primary btn--full">Commander l'ebook Maths</a>
-          </div>
-
-          <div class="card card--featured">
-            <div class="card__badge-featured">⭐ Best-seller</div>
-            <div class="card__top">
-              <span class="badge badge--gold">Physique-Chimie · 14,99 €</span>
-              <div class="card__price card__price--featured">14,99 €</div>
-            </div>
-            <h3>Physique-Chimie Terminale Spécialité</h3>
-            <p class="card__desc">L'intégralité des fiches de Physique-Chimie Terminale Spé : de l'électricité à la chimie organique, tout y est.</p>
-            <ul class="card__list">
-              <li>Mécanique, Ondes, Électricité</li>
-              <li>Thermodynamique, Chimie</li>
-              <li>70+ fiches structurées</li>
-              <li>Exercices types + corrections</li>
-              <li>Mis à jour 2024–2025</li>
-            </ul>
-            <a href="#contact" class="btn btn--primary btn--full">Commander l'ebook Physique-Chimie</a>
-          </div>
-
-        </div>
+  <!-- ===== FICHE GRATUITE ===== -->
+  <section id="fiche-gratuite" class="section-alt" aria-labelledby="gratuit-title">
+    <div class="container">
+      <div class="free-sample-inner">
+        <div class="badge">Offert</div>
+        <h2 id="gratuit-title">Teste avant d'acheter</h2>
+        <p>Reçois une fiche Maths et une fiche Physique-Chimie gratuitement. Tu verras exactement ce que tu achètes avant de décider.</p>
+        <form class="email-form" action="mailto:contact@creussite.fr" method="get" enctype="text/plain" aria-label="Formulaire de demande de fiche gratuite">
+          <input type="email" name="email" placeholder="ton@email.fr" required aria-label="Adresse email">
+          <button type="submit" class="btn btn-primary">Recevoir mes fiches gratuites</button>
+        </form>
+        <p class="form-note">Tu recevras deux fiches (une Maths, une PC) par email instantanément. Aucun autre email ne suivra sans ta demande.</p>
       </div>
-
-      <!-- Niveau 4 : Bundle -->
-      <div class="bundle">
-        <div class="bundle__inner">
-          <span class="badge badge--gold">Meilleure offre</span>
-          <h3>Bundle Maths + Physique-Chimie</h3>
-          <p>Les deux ebooks complets réunis — toutes les matières, toutes les fiches, avec une remise exclusive.</p>
-          <div class="bundle__price">
-            <span class="bundle__price-old">29,98 €</span>
-            <span class="bundle__price-new">24,99 €</span>
-            <span class="bundle__price-save">→ Économisez 4,99 €</span>
-          </div>
-          <a href="#contact" class="btn btn--primary btn--lg">Commander le bundle</a>
-        </div>
-      </div>
-
     </div>
   </section>
 
   <!-- ===== TÉMOIGNAGES ===== -->
-  <section class="section section--alt" id="temoignages">
+  <section aria-labelledby="temoignages-title">
     <div class="container">
-      <div class="section-header">
-        <span class="badge badge--soft">Témoignages</span>
-        <h2>Ce qu'en disent les élèves et les parents</h2>
+      <h2 id="temoignages-title">Ce qu'en disent les élèves</h2>
+      <p>Pas de promesses invérifiables — juste ce que des élèves ont écrit après avoir utilisé les fiches.</p>
+
+      <div class="testimonials-grid">
+        <article class="testimonial-card">
+          <p class="testimonial-text">"J'avais du mal à voir la structure d'ensemble en Maths. Avec une fiche par chapitre, tout s'est mis en ordre. J'ai révisé les suites en deux heures au lieu d'une journée."</p>
+          <div class="testimonial-author">Léa M.</div>
+          <div class="testimonial-detail">Terminale Spécialité Maths, Lyon</div>
+        </article>
+        <article class="testimonial-card">
+          <p class="testimonial-text">"Ce que j'ai apprécié, c'est l'honnêteté. Aucune promesse sur-vendue. Les fiches sont denses, claires et elles couvrent vraiment tout. Je m'en suis servi pour la révision finale et ça a marché."</p>
+          <div class="testimonial-author">Théo R.</div>
+          <div class="testimonial-detail">Terminale Spécialité PC, Bordeaux</div>
+        </article>
+        <article class="testimonial-card">
+          <p class="testimonial-text">"Mon fils avait acheté d'autres fiches ailleurs. Ces fiches-là sont plus synthétiques — une page, un chapitre, les points clés. Il les a imprimées et posées sur son bureau. C'est devenu son outil de référence."</p>
+          <div class="testimonial-author">Parent d'élève</div>
+          <div class="testimonial-detail">Classe de Terminale, Nantes</div>
+        </article>
       </div>
-      <div class="cards cards--3">
 
-        <div class="card testimonial">
-          <div class="testimonial__stars" aria-label="5 étoiles">★★★★★</div>
-          <p>« J'avais 8 en maths en première. Avec l'ebook de M. Martin, j'ai eu 16 au bac. Les fiches sont vraiment claires et bien structurées. »</p>
-          <cite>— Chloé, Terminale Spé, Lyon</cite>
-        </div>
-
-        <div class="card testimonial">
-          <div class="testimonial__stars" aria-label="5 étoiles">★★★★★</div>
-          <p>« Mon fils ne comprenait rien à la physique. Les fiches lui ont donné une vraie méthode. Il a eu 14 à son oral de bac. Merci ! »</p>
-          <cite>— Isabelle D., parent d'élève, Bordeaux</cite>
-        </div>
-
-        <div class="card testimonial">
-          <div class="testimonial__stars" aria-label="5 étoiles">★★★★★</div>
-          <p>« Le bundle est un super rapport qualité-prix. J'ai tout révisé avec ça en 3 semaines avant le bac. Très bien organisé, vraiment. »</p>
-          <cite>— Théo, Terminale, Paris</cite>
-        </div>
-
-      </div>
     </div>
   </section>
 
   <!-- ===== FAQ ===== -->
-  <section class="section" id="faq">
-    <div class="container faq__container">
-      <div class="section-header">
-        <span class="badge badge--soft">FAQ</span>
-        <h2>Questions fréquentes</h2>
-        <p>Vous ne trouvez pas la réponse ? <a href="#contact">Écrivez-moi directement.</a></p>
+  <section class="section-alt" aria-labelledby="faq-title">
+    <div class="container">
+      <h2 id="faq-title">Questions fréquentes</h2>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q">Ces fiches remplacent-elles le cours ?</div>
+          <p class="faq-a">Non. Elles sont conçues pour la révision, pas pour l'apprentissage initial. L'ordre logique : travailler le cours d'abord, utiliser les fiches pour consolider et structurer ensuite. Si tu utilises les fiches sans avoir travaillé le cours, tu liras des mots sans contexte.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Je suis en difficulté. Ces fiches sont-elles adaptées ?</div>
+          <p class="faq-a">Elles fonctionnent pour tout élève prêt à travailler. Elles structurent le programme de façon claire et logique. En revanche, si tu pars de zéro à J-7 du bac, elles ne feront pas de miracles — et je ne te dirai pas le contraire. Pour des difficultés profondes, des cours particuliers sont plus adaptés.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Comment reçois-je les fiches après ma commande ?</div>
+          <p class="faq-a">Tu reçois un email avec le PDF en pièce jointe instantanément après ta commande. La commande se fait par email à contact@creussite.fr.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Puis-je les imprimer ?</div>
+          <p class="faq-a">Oui. Elles sont conçues pour être lisibles aussi bien sur écran qu'imprimées, format A4. Beaucoup d'élèves les impriment et les annotent directement.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Les fiches couvrent-elles tout le programme officiel ?</div>
+          <p class="faq-a">Oui. Le contenu est aligné sur le programme Terminale Spécialité en vigueur pour le Bac 2026. Si un chapitre manquait, je ne vendrais pas ces fiches comme couvrant "tout le programme" — l'honnêteté est non-négociable.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Et si je ne suis pas satisfait ?</div>
+          <p class="faq-a">Contacte-moi. Je regarde ce qui ne correspond pas à tes attentes et on en discute. Mon objectif est que ces fiches soient utiles — pas de te vendre quelque chose qui ne te convient pas.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Ces fiches sont-elles adaptées pour les deux épreuves (écrit + Grand Oral) ?</div>
+          <p class="faq-a">Elles couvrent l'épreuve écrite de spécialité. Pour le Grand Oral, la préparation est différente — elle dépend du sujet choisi. Les fiches peuvent servir de base documentaire mais ne sont pas spécifiquement conçues pour le Grand Oral.</p>
+        </div>
       </div>
-      <div class="faq__list">
 
-        <div class="faq__item">
-          <button class="faq__question" aria-expanded="false">
-            Pour quel niveau sont ces ebooks ?
-            <span class="faq__icon" aria-hidden="true"></span>
-          </button>
-          <div class="faq__answer">
-            <p>Ces ebooks sont conçus pour les élèves de <strong>Terminale Spécialité</strong> suivant les programmes en vigueur depuis 2020. Ils conviennent aussi pour une révision en première année de prépa ou de BTS.</p>
-          </div>
-        </div>
-
-        <div class="faq__item">
-          <button class="faq__question" aria-expanded="false">
-            Comment reçoit-on l'ebook après achat ?
-            <span class="faq__icon" aria-hidden="true"></span>
-          </button>
-          <div class="faq__answer">
-            <p>Après confirmation de votre commande, vous recevez un lien de téléchargement par email <strong>sous 24h</strong>. Le fichier est au format PDF, consultable sur tablette, ordinateur ou téléphone.</p>
-          </div>
-        </div>
-
-        <div class="faq__item">
-          <button class="faq__question" aria-expanded="false">
-            Le contenu est-il aligné sur le programme officiel ?
-            <span class="faq__icon" aria-hidden="true"></span>
-          </button>
-          <div class="faq__answer">
-            <p>Oui, les fiches sont entièrement alignées sur le programme de Terminale Spécialité en vigueur. Elles sont révisées chaque année en fonction des éventuelles modifications du BO.</p>
-          </div>
-        </div>
-
-        <div class="faq__item">
-          <button class="faq__question" aria-expanded="false">
-            Mon enfant est en difficulté — ces fiches lui conviennent-elles ?
-            <span class="faq__icon" aria-hidden="true"></span>
-          </button>
-          <div class="faq__answer">
-            <p>Absolument. Les fiches partent des fondamentaux et progressent vers le complexe. Elles ont été conçues pour des élèves de <strong>tous niveaux</strong>, y compris ceux qui ont du mal avec la matière. Commencez par la fiche gratuite pour voir si le style correspond.</p>
-          </div>
-        </div>
-
-        <div class="faq__item">
-          <button class="faq__question" aria-expanded="false">
-            Y a-t-il des exercices avec corrections ?
-            <span class="faq__icon" aria-hidden="true"></span>
-          </button>
-          <div class="faq__answer">
-            <p>Oui. Chaque ebook complet inclut des <strong>exercices types issus des annales du bac</strong> avec leurs corrections détaillées. Les mini-packs incluent également des exercices d'application.</p>
-          </div>
-        </div>
-
-        <div class="faq__item">
-          <button class="faq__question" aria-expanded="false">
-            Comment payer en toute sécurité ?
-            <span class="faq__icon" aria-hidden="true"></span>
-          </button>
-          <div class="faq__answer">
-            <p>Les commandes se font via email — je vous envoie les instructions de paiement (virement ou PayPal). Si vous avez la moindre question, contactez-moi directement. Je réponds sous 48h.</p>
-          </div>
-        </div>
-
-      </div>
     </div>
   </section>
 
-  <!-- ===== CONTACT ===== -->
-  <section class="section section--alt" id="contact">
-    <div class="container contact__container">
-      <div class="section-header">
-        <span class="badge badge--soft">Contact</span>
-        <h2>Une question ? Écrivez-moi</h2>
-        <p>Je réponds à toutes les demandes sous 48h. Que ce soit pour commander, pour un conseil ou pour une question sur le programme.</p>
-      </div>
-      <form class="contact-form" id="contactForm" novalidate>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="nom">Nom</label>
-            <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
-          </div>
-          <div class="form-group">
-            <label for="cemail">Email</label>
-            <input type="email" id="cemail" name="email" placeholder="votre@email.fr" required>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="sujet">Sujet</label>
-          <select id="sujet" name="sujet">
-            <option value="Commander un ebook">Commander un ebook</option>
-            <option value="Demander une fiche gratuite">Demander une fiche gratuite</option>
-            <option value="Question sur le contenu">Question sur le contenu</option>
-            <option value="Autre">Autre</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" rows="5" placeholder="Votre message..." required></textarea>
-        </div>
-        <button type="submit" class="btn btn--primary btn--lg">Envoyer le message</button>
-        <div class="form-success" id="formSuccess" hidden>
-          ✓ Message envoyé ! Vous allez être redirigé vers votre client email.
-        </div>
-      </form>
-      <p class="contact__alt">
-        Ou écrivez directement à <a href="mailto:contact@creussite.fr">contact@creussite.fr</a>
-      </p>
-    </div>
-  </section>
+  <div id="contact-placeholder"></div>
 
-  <!-- ===== FOOTER ===== -->
-  <footer class="footer">
-    <div class="container footer__inner">
-      <div class="footer__brand">
-        <a href="#top" class="logo logo--light">C<span class="logo__accent">Réussite</span></a>
-        <p>Fiches de révision Terminale Spécialité<br>Maths &amp; Physique-Chimie</p>
-      </div>
-      <nav class="footer__links" aria-label="Liens rapides">
-        <a href="#apropos">À propos</a>
-        <a href="#methode">Méthode</a>
-        <a href="#tarifs">Tarifs</a>
-        <a href="#temoignages">Témoignages</a>
-        <a href="#faq">FAQ</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <div class="footer__legal">
-        <p>&copy; 2025 CRéussite — Alexandre Martin</p>
-        <a href="mailto:contact@creussite.fr">contact@creussite.fr</a>
-      </div>
-    </div>
-  </footer>
+  <div id="footer-placeholder"></div>
 
-  <script src="js/main.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/contact.js"></script>
+  <script src="js/footer.js"></script>
+  <script src="js/payment.js"></script>
+
 </body>
 </html>

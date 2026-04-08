@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Commande annulée | C'Réussite</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .confirm-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--swan-wing);
+      padding: 40px 24px;
+    }
+    .confirm-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 56px 48px;
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+    }
+    .confirm-icon {
+      width: 72px;
+      height: 72px;
+      background: var(--shellstone);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 28px;
+      font-size: 2rem;
+    }
+    .confirm-card h1 { font-size: 1.6rem; margin-bottom: 16px; }
+    .confirm-card p  { margin-bottom: 12px; }
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+    @media (max-width: 600px) {
+      .confirm-card { padding: 36px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="confirm-page">
+    <div class="confirm-card">
+
+      <div class="confirm-icon">←</div>
+
+      <h1>Commande annulée</h1>
+      <p>Aucun paiement n'a été prélevé.</p>
+      <p>Tu peux revenir aux fiches quand tu veux — elles seront toujours là.</p>
+      <p class="form-note">Une question avant de commander ? Écris à <a href="mailto:contact@creussite.fr">contact@creussite.fr</a>.</p>
+
+      <div class="btn-row">
+        <a href="index.html#fiches" class="btn btn-primary">Voir les fiches</a>
+        <a href="index.html#contact" class="btn btn-outline">Poser une question</a>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
