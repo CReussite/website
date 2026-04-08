@@ -1,11 +1,11 @@
 const express  = require('express');
-const stripe   = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { sendPDF } = require('../services/mailer');
 
 const router = express.Router();
 
 // Stripe exige le body brut (non parsé) pour vérifier la signature
 router.post('/', express.raw({ type: 'application/json' }), async (req, res) => {
+  const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
   const sig = req.headers['stripe-signature'];
 
   let event;
