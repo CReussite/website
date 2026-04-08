@@ -6,7 +6,7 @@
   },
   "deploy": {
     "startCommand": "cd backend && npm start",
-    "healthcheckPath": "/",
+    "healthcheckPath": "/api/health",
     "restartPolicyType": "ON_FAILURE"
   }
 }
