@@ -9,11 +9,11 @@ Site statique + backend Node.js pour la livraison automatique de PDF après paie
 | Couche | Technologie | Rôle |
 |--------|-------------|------|
 | **Frontend** | HTML / CSS / JS vanilla | Site statique, aucun framework |
-| **Hébergement site** | GitHub Pages | CDN + déploiement auto via GitHub Actions |
+| **Hébergement site** | GitHub Pages | CDN gratuit + déploiement auto via GitHub Actions |
 | **Paiement** | Stripe Payment Links | Checkout hébergé, zéro backend pour le paiement |
-| **Backend** | Node.js + Express | Webhook Stripe + sert le site statique |
+| **Backend (webhook)** | Node.js + Express | Réception webhook Stripe → envoi PDF par email |
 | **Email transactionnel** | Brevo (sib-api-v3-sdk) | Envoi PDF en pièce jointe après achat |
-| **Hébergement backend** | Railway | Serveur Node.js (site + API en un seul service) |
+| **Hébergement backend** | Railway (free tier) | Serveur Node.js pour le webhook uniquement |
 | **SEO** | Schema.org JSON-LD | Rich snippets Google |
 | **Contrôle de version** | Git + GitHub | Source of truth |
 
@@ -87,62 +87,152 @@ CReussite/
 - [x] PDFs de test dans `backend/assets/`
 - [x] `.gitignore` configuré (`.env` et PDFs exclus)
 - [x] Déploiement GitHub Pages fonctionnel (workflow Actions)
-- [x] Config Railway (`railway.json`)
+- [x] Déploiement Railway fonctionnel (build + healthcheck OK)
+- [x] Variables d'environnement Railway configurées
+- [x] Domaine Railway : `https://website-production-2f4e.up.railway.app`
 
-### 🔲 Reste à faire
+### 🔲 Reste à configurer
 
-#### Avant de pouvoir tester
-- [ ] **Clé API Brevo** → variable d'env Railway → `BREVO_API_KEY=xkeysib-...`
-  - https://brevo.com → Paramètres → Clés API → Générer
-- [ ] Tester l'envoi : `cd backend && npm install && npm run test-email ton@email.fr physique`
+#### 1. Clé API Brevo (envoi d'emails)
+- [ ] https://app.brevo.com/settings/keys/api → Générer une clé
+- [ ] Ajouter dans Railway → Variables → `BREVO_API_KEY=xkeysib-...`
+- [ ] Tester : `cd backend && npm run test-email -- ton@email.fr physique`
 
-#### Avant de lancer les ventes
-- [ ] Configurer le service Railway avec les variables d'environnement
-- [ ] Remplacer les PDFs de test par les vrais dans `backend/assets/`
-- [ ] Enregistrer le webhook Stripe → remplir `STRIPE_WEBHOOK_SECRET` dans Railway
-- [ ] Passer en mode Live Stripe (identité + RIB)
-- [ ] Recréer les 3 produits/liens en mode Live, mettre à jour `payment.js`
-- [ ] Retirer `<meta name="robots" content="noindex">` pour le référencement
+#### 2. Webhook Stripe (livraison automatique)
+- [ ] Dashboard Stripe → Développeurs → Webhooks → **Ajouter un endpoint**
+  - URL : `https://website-production-2f4e.up.railway.app/webhook`
+  - Événement : `checkout.session.completed`
+- [ ] Copier le **Signing secret** (`whsec_...`) → variable Railway `STRIPE_WEBHOOK_SECRET`
+
+#### 3. PDFs définitifs
+- [ ] Remplacer les PDFs de test dans `backend/assets/` par les vrais fichiers
+
+#### 4. Passer Stripe en mode Live
+- [ ] Dashboard Stripe → Activer le mode Live (vérification identité + RIB)
+- [ ] Recréer les 3 produits et Payment Links en mode Live
+- [ ] Mettre à jour `docs/js/payment.js` avec les nouveaux liens Live
+- [ ] Mettre à jour `STRIPE_SECRET_KEY` et `STRIPE_WEBHOOK_SECRET` dans Railway
+
+#### 5. Rendre le site public (SEO)
+- [ ] Retirer `<meta name="robots" content="noindex">` de `index.html`, `success.html`, `cancel.html`
+- [ ] Ajouter un `sitemap.xml` dans `docs/`
+- [ ] Soumettre à Google Search Console
 
 ---
 
-## Garder le site privé avant le lancement
+## GitHub Pages vs Railway : pourquoi héberger le site sur GitHub
 
-Le site est déployé sur GitHub Pages mais non indexé grâce à la balise `<meta name="robots" content="noindex">` sur toutes les pages. Seul celui qui a l'URL peut y accéder.
+| | GitHub Pages | Railway |
+|--|--|--|
+| **Coût** | Gratuit, illimité | Free tier : 5 $/mois de crédit, puis payant |
+| **CDN mondial** | Oui (Fastly) | Non |
+| **Uptime** | 99.9%+ garanti par GitHub | Le service dort si pas de trafic (free tier) |
+| **Domaine custom** | Gratuit + HTTPS auto | Payant (plan Hobby 5 $/mois) |
+| **Temps de chargement** | < 100ms (fichiers statiques) | 200-500ms (serveur Node.js) |
+| **Besoin d'un backend** | Non (site statique) | Oui (webhook Stripe) |
 
-**Pour le rendre public au lancement :**
-1. Retirer la balise `noindex` de `index.html`, `success.html`, `cancel.html`
-2. Ajouter un `sitemap.xml`
-3. Soumettre à Google Search Console
+**Recommandation** : Héberger le site sur **GitHub Pages** (gratuit, rapide, fiable) et utiliser Railway **uniquement** pour le webhook Stripe. Le site n'a pas besoin d'un serveur — c'est du HTML/CSS/JS pur. Stripe Payment Links redirige vers le checkout Stripe directement. Seul le webhook post-achat nécessite un serveur.
+
+---
+
+## Domaine personnalisé (creussite.fr)
+
+### Option recommandée : GitHub Pages + domaine custom (gratuit)
+
+1. **Acheter le domaine** `creussite.fr` (~5-10 €/an)
+   - Fournisseurs recommandés : [OVH](https://www.ovhcloud.com/fr/domains/), [Gandi](https://www.gandi.net/), [Cloudflare Registrar](https://www.cloudflare.com/products/registrar/) (au prix coûtant)
+
+2. **Configurer les DNS** chez ton registrar :
+   ```
+   Type    Nom     Valeur
+   A       @       185.199.108.153
+   A       @       185.199.109.153
+   A       @       185.199.110.153
+   A       @       185.199.111.153
+   CNAME   www     creussite.github.io
+   ```
+
+3. **Configurer GitHub Pages** :
+   - Repo → Settings → Pages → Custom domain → `creussite.fr`
+   - Cocher "Enforce HTTPS"
+   - GitHub génère un certificat SSL gratuit (Let's Encrypt)
+
+4. **Ajouter le fichier CNAME** dans `docs/` :
+   ```
+   creussite.fr
+   ```
+
+5. **Mettre à jour les URLs** dans le code :
+   - `docs/index.html` : canonical → `https://creussite.fr`
+   - `docs/js/schema.js` : URLs schema.org
+   - Stripe : success_url et cancel_url
+
+### Coût total
+
+| Poste | Coût |
+|-------|------|
+| Domaine `creussite.fr` | ~7 €/an |
+| GitHub Pages | Gratuit |
+| HTTPS (Let's Encrypt) | Gratuit |
+| Railway (webhook) | Gratuit (free tier 5 $/mois) |
+| Stripe | 1.4% + 0.25 € par transaction |
+| Brevo | Gratuit jusqu'à 300 emails/jour |
+| **Total fixe** | **~7 €/an** |
+
+---
+
+## Privé / Public : comment contrôler la visibilité du site
+
+### Site privé (état actuel)
+Le site est en ligne mais **invisible pour Google** grâce à :
+```html
+<meta name="robots" content="noindex, nofollow">
+```
+- Google et les moteurs de recherche n'indexent pas les pages
+- Le site est accessible uniquement par URL directe
+- Parfait pour la phase de test et de préparation
+
+### Rendre le site public
+1. Retirer la balise `noindex` des 3 fichiers HTML :
+   - `docs/index.html`
+   - `docs/success.html`
+   - `docs/cancel.html`
+2. Créer `docs/sitemap.xml` pour aider Google à découvrir les pages
+3. Soumettre le sitemap sur [Google Search Console](https://search.google.com/search-console/)
+4. Commit + push → GitHub Pages se met à jour automatiquement
+
+### Remettre le site en privé
+Remettre la balise `<meta name="robots" content="noindex, nofollow">` dans le `<head>` de chaque page. Google supprimera les pages de ses résultats sous quelques jours.
 
 ---
 
 ## Hébergement
 
-### Site — GitHub Pages
+### Site — GitHub Pages (recommandé)
 ```
 Déploiement auto : push sur main → GitHub Actions → deploy.yml
 Publish directory : docs/
 URL : https://creussite.github.io/website/
+Domaine custom : creussite.fr (voir section dédiée)
 ```
 
-### Backend + site — Railway (all-in-one)
+### Backend (webhook) — Railway
 ```
 Build command  : cd backend && npm install
-Start command  : cd backend && npm start
+Start command  : node backend/server.js
 Health check   : /api/health
 Variables      : STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, BREVO_API_KEY, FROM_NAME, FROM_EMAIL
-URL            : https://xxx.up.railway.app
+URL            : https://website-production-2f4e.up.railway.app
 ```
 
-Le backend Express sert à la fois le site statique (`docs/`) et l'API webhook (`/webhook`).
+Le backend sert uniquement le webhook Stripe (`/webhook`) et le health check. Le site est hébergé sur GitHub Pages pour les performances et la fiabilité.
 
 ### Dev local
 ```bash
-# Option 1 : site statique seul (Python)
+# Site statique seul (Python)
 python lance_site.py
 
-# Option 2 : backend complet (Node.js)
+# Backend complet (Node.js)
 cd backend && npm install && npm run dev
 ```
 
@@ -150,9 +240,9 @@ cd backend && npm install && npm run dev
 
 ## Enregistrer le webhook Stripe
 
-1. Déployer le backend sur Railway → récupérer l'URL (`https://xxx.up.railway.app`)
+1. Récupérer l'URL Railway : `https://website-production-2f4e.up.railway.app`
 2. Dashboard Stripe → **Développeurs → Webhooks → Ajouter un endpoint**
-   - URL : `https://xxx.up.railway.app/webhook`
+   - URL : `https://website-production-2f4e.up.railway.app/webhook`
    - Événement : `checkout.session.completed`
 3. Copier le **Signing secret** (`whsec_...`) → variable Railway `STRIPE_WEBHOOK_SECRET`
 4. Railway recharge les variables automatiquement au redéploiement
@@ -198,6 +288,6 @@ npm run test-email -- ton@email.fr maths
 | Stripe (test) | https://dashboard.stripe.com/acct_1TK0ioELyt8QW1SK/test/dashboard |
 | GitHub | https://github.com/CReussite/website |
 | GitHub Pages | https://creussite.github.io/website/ |
-| Railway | https://railway.app |
+| Railway | https://website-production-2f4e.up.railway.app |
 | Brevo | https://brevo.com |
 | Email | contact@creussite.fr |
