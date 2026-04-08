@@ -215,6 +215,9 @@ nav {
   align-items: flex-start;
   gap: 8px;
 }
+.product-toc li strong {
+  white-space: nowrap;
+}
 .product-toc li::before {
   content: "→";
   color: var(--sapphire);
@@ -231,6 +234,9 @@ nav {
   font-size: 0.8rem;
   color: var(--shellstone);
   margin-bottom: 20px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 /* Bundle */
