@@ -455,10 +455,52 @@ footer a:hover { color: var(--quicksand); }
 .footer-author { color: rgba(255,255,255,0.7); }
 .footer-credit { font-size: 0.75rem; opacity: 0.4; }
 
+/* ===== BURGER ===== */
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+}
+.nav-burger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
   section { padding: 52px 0; }
-  .nav-links { display: none; }
+
+  .nav-burger { display: flex; }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--royal-blue);
+    flex-direction: column;
+    gap: 0;
+    padding: 8px 0 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  }
+  .nav-links.nav-open { display: flex; }
+  .nav-links li { width: 100%; }
+  .nav-links a {
+    display: block;
+    padding: 12px 24px;
+    font-size: 1rem;
+  }
+
   .bundle-card { flex-direction: column; }
   .bundle-pricing { text-align: left; }
 }
