@@ -1,7 +1,19 @@
-# Dossiers internes — non publiés
-recommandation/
+# Environnement (clés secrètes — ne jamais commiter)
+backend/.env
+.env
+
+# Dépendances Node
+node_modules/
+backend/node_modules/
+
+# PDFs (livrés manuellement sur le serveur, pas dans le repo)
+backend/assets/*.pdf
+
+# Dossiers internes
 .vscode/
 .claude/
+modif/
+recommandation/
 
 # OS
 .DS_Store
