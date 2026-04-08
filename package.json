@@ -5,7 +5,6 @@
     "node": ">=18"
   },
   "scripts": {
-    "postinstall": "cd backend && npm install",
-    "start": "cd backend && npm start"
+    "start": "node backend/server.js"
   }
 }

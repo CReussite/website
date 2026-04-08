@@ -207,22 +207,16 @@ nav {
   flex: 1;
 }
 .product-toc li {
-  padding: 7px 0;
+  padding: 7px 0 7px 24px;
   border-bottom: 1px solid var(--swan-wing);
   font-size: 0.875rem;
   color: var(--text-mid);
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-}
-.product-toc li strong {
-  white-space: nowrap;
+  text-indent: -24px;
 }
 .product-toc li::before {
-  content: "→";
+  content: "→\00a0\00a0";
   color: var(--sapphire);
   font-weight: 700;
-  flex-shrink: 0;
 }
 .product-price {
   font-size: 1.75rem;
