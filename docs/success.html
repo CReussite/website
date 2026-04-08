@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paiement confirmé | C'Réussite</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .confirm-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--swan-wing);
+      padding: 40px 24px;
+    }
+    .confirm-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 56px 48px;
+      max-width: 560px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+    }
+    .confirm-icon {
+      width: 72px;
+      height: 72px;
+      background: var(--royal-blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 28px;
+      font-size: 2rem;
+    }
+    .confirm-card h1 {
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+    }
+    .confirm-card p {
+      margin-bottom: 12px;
+    }
+    .confirm-steps {
+      background: var(--swan-wing);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 28px 0;
+      text-align: left;
+    }
+    .confirm-steps p {
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      display: flex;
+      gap: 10px;
+    }
+    .confirm-steps p:last-child { margin-bottom: 0; }
+    .step-num {
+      background: var(--royal-blue);
+      color: var(--quicksand);
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    @media (max-width: 600px) {
+      .confirm-card { padding: 36px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="confirm-page">
+    <div class="confirm-card">
+
+      <div class="confirm-icon">✓</div>
+
+      <h1>Paiement confirmé !</h1>
+      <p>Merci pour ta commande. Tes fiches sont en route.</p>
+
+      <div class="confirm-steps">
+        <p>
+          <span class="step-num">1</span>
+          <span>Tu vas recevoir un email de confirmation Stripe dans quelques secondes.</span>
+        </p>
+        <p>
+          <span class="step-num">2</span>
+          <span>Un deuxième email avec le PDF en pièce jointe sera envoyé automatiquement par <strong>contact@creussite.fr</strong>.</span>
+        </p>
+        <p>
+          <span class="step-num">3</span>
+          <span>Pas de mail reçu après 10 minutes ? Vérifie tes spams ou écris à <a href="mailto:contact@creussite.fr">contact@creussite.fr</a>.</span>
+        </p>
+      </div>
+
+      <a href="index.html" class="btn btn-primary">Retour à l'accueil</a>
+
+    </div>
+  </div>
+
+</body>
+</html>
