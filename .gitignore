@@ -17,6 +17,9 @@ backend/node_modules/
 modif/
 recommandation/
 
+# MCP config (contient potentiellement des tokens — ne pas commiter)
+.mcp.json
+
 # OS
 .DS_Store
 Thumbs.db

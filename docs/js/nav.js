@@ -6,14 +6,15 @@
   document.getElementById('nav-placeholder').outerHTML = `
     <nav aria-label="Navigation principale">
       <div class="nav-inner">
-        <a href="${base || '#'}${isHome ? '' : '#'}" class="nav-logo">C'<span>Réussite</span></a>
+        <a href="${base || '#'}${isHome ? '' : '#'}" class="nav-logo"><img src="${isHome ? '' : ''}img/logo.jpeg" alt="C'R\u00e9ussite" class="nav-logo-img"></a>
         <button class="nav-burger" aria-label="Ouvrir le menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
         <ul class="nav-links">
           <li><a href="${base}#fiches">Les fiches</a></li>
-          <li><a href="${base}#methode">À propos</a></li>
-          <li><a href="${base}#fiche-gratuite">Fiche gratuite</a></li>
+          <li><a href="${base}#methode">&Agrave; propos</a></li>
+          <li><a href="${base}#avis">Avis</a></li>
+          <li><a href="${base}#faq">FAQ</a></li>
           <li><a href="${base}#contact">Contact</a></li>
         </ul>
       </div>

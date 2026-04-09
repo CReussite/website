@@ -60,12 +60,14 @@ nav {
   height: 60px;
 }
 .nav-logo {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--quicksand);
-  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
 }
-.nav-logo span { color: var(--white); }
+.nav-logo-img {
+  height: 40px;
+  width: auto;
+  border-radius: 4px;
+}
 .nav-links {
   display: flex;
   gap: 28px;
@@ -465,7 +467,7 @@ footer a:hover { color: var(--quicksand); }
   display: inline-block;
   padding: 12px 16px;
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: 400;
   color: var(--white);
   background: var(--royal-blue);
   border: none;
@@ -503,6 +505,8 @@ footer a:hover { color: var(--quicksand); }
   color: var(--text-mid);
 }
 .extract-popup .form-group { margin-bottom: 16px; }
+.extract-popup .btn-primary { background: var(--royal-blue); color: var(--white); }
+.extract-popup .btn-primary:hover { opacity: 0.9; }
 .extract-popup .form-note { font-size: 0.8rem; color: var(--shellstone); margin-top: 12px; margin-bottom: 0; }
 
 /* ===== BURGER ===== */
