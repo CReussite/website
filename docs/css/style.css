@@ -57,14 +57,14 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 60px;
+  height: 72px;
 }
 .nav-logo {
   display: flex;
   align-items: center;
 }
 .nav-logo-img {
-  height: 56px;
+  height: 60px;
   width: auto;
   border-radius: 4px;
 }
@@ -131,6 +131,41 @@ nav {
   transition: opacity 0.2s;
 }
 .hero-table a:hover { opacity: 0.7; }
+
+/* ===== HERO CARDS ===== */
+.hero-cards {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.hero-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 12px;
+  background: var(--royal-blue);
+  border: 2px solid var(--quicksand);
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+  cursor: pointer;
+}
+.hero-card:hover {
+  background: rgba(196,154,60,0.15);
+  transform: translateY(-2px);
+}
+.hero-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--quicksand);
+  margin-bottom: 4px;
+}
+.hero-card-count {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+}
 
 /* ===== BUTTONS ===== */
 .btn {
@@ -516,6 +551,13 @@ footer a:hover { color: var(--quicksand); }
 .extract-popup .form-group { margin-bottom: 16px; }
 .extract-popup .btn-primary { background: var(--royal-blue); color: var(--white); font-weight: 400; }
 .extract-popup .btn-primary:hover { opacity: 0.9; }
+.extract-popup.extract-popup--pack { background: var(--royal-blue); }
+.extract-popup--pack h3 { color: var(--white); }
+.extract-popup--pack p { color: rgba(255,255,255,0.7); }
+.extract-popup--pack .form-label { color: rgba(255,255,255,0.8); }
+.extract-popup--pack .extract-close { color: rgba(255,255,255,0.6); }
+.extract-popup--pack .btn-primary { background: var(--white); color: var(--royal-blue); }
+.extract-popup--pack .form-note { color: rgba(255,255,255,0.45); }
 .extract-popup .form-note { font-size: 0.8rem; color: var(--shellstone); margin-top: 12px; margin-bottom: 0; }
 
 /* ===== BURGER ===== */
@@ -547,7 +589,7 @@ footer a:hover { color: var(--quicksand); }
   .nav-links {
     display: none;
     position: absolute;
-    top: 60px;
+    top: 72px;
     left: 0;
     right: 0;
     background: var(--royal-blue);
@@ -565,4 +607,5 @@ footer a:hover { color: var(--quicksand); }
   }
 
   .bundle-card { padding: 28px 20px; }
+  .hero-cards { flex-direction: column; }
 }
