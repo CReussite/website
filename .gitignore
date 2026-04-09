@@ -1,13 +1,15 @@
 # Environnement (clés secrètes — ne jamais commiter)
 backend/.env
+backend/**/.env
 .env
 
 # Dépendances Node
 node_modules/
 backend/node_modules/
 
-# PDFs (livrés manuellement sur le serveur, pas dans le repo)
-backend/assets/*.pdf
+# PDFs réels (remplacent les placeholders — à ne pas commiter si volumineux)
+# Désactivé : les placeholders de test sont commitables
+# backend/assets/*.pdf
 
 # Dossiers internes
 .vscode/
