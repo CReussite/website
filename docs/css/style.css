@@ -456,6 +456,49 @@ footer a:hover { color: var(--quicksand); }
 .footer-author { color: rgba(255,255,255,0.7); }
 .footer-credit { font-size: 0.75rem; opacity: 0.4; }
 
+/* ===== EXTRACT BUTTON ===== */
+.btn-extract {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 8px 20px;
+  font-size: 0.85rem;
+  color: var(--sapphire);
+  background: transparent;
+  border: 1.5px solid var(--sapphire);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-extract:hover { background: var(--sapphire); color: var(--white); }
+
+/* ===== EXTRACT POPUP ===== */
+.extract-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+}
+.extract-overlay[hidden] { display: none; }
+.extract-popup {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  max-width: 420px;
+  width: 90%;
+  position: relative;
+  box-shadow: var(--shadow-md);
+}
+.extract-popup h3 { margin-bottom: 8px; font-size: 1.15rem; }
+.extract-popup p { font-size: 0.9rem; color: var(--text-mid); margin-bottom: 16px; }
+.extract-close {
+  position: absolute; top: 12px; right: 16px;
+  background: none; border: none;
+  font-size: 1.5rem; cursor: pointer;
+  color: var(--text-mid);
+}
+.extract-popup .form-group { margin-bottom: 16px; }
+.extract-popup .form-note { font-size: 0.8rem; color: var(--shellstone); margin-top: 12px; margin-bottom: 0; }
+
 /* ===== BURGER ===== */
 .nav-burger {
   display: none;
