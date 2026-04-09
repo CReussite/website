@@ -1,11 +1,17 @@
 const express  = require('express');
-const { sendPDF } = require('../services/mailer');
+const path     = require('path');
+const stripe   = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const { insertOrderIdempotent } = require('../services/db');
+const { generateInvoice }       = require('../services/invoice');
+const { sendOrderEmail }        = require('../services/mailer');
 
 const router = express.Router();
 
-// Stripe exige le body brut (non parsé) pour vérifier la signature
+// Source de vérité produits
+const PRODUCTS = require(path.join(__dirname, '../../docs/content/products.json'));
+const PRODUCT_MAP = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
+
 router.post('/', express.raw({ type: 'application/json' }), async (req, res) => {
-  const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
   const sig = req.headers['stripe-signature'];
 
   let event;
@@ -18,21 +24,57 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
+    const customerEmail = session.customer_details?.email || session.customer_email;
+    const productId     = session.metadata?.product_id;
+    const amount        = session.amount_total; // en centimes
 
-    // Récupérer les line items pour connaître le produit acheté
+    if (!customerEmail || !productId) {
+      console.error('[webhook] Données manquantes — email:', customerEmail, 'product_id:', productId);
+      return res.json({ received: true });
+    }
+
+    const product = PRODUCT_MAP[productId];
+    if (!product) {
+      console.error('[webhook] Produit inconnu :', productId);
+      return res.json({ received: true });
+    }
+
     try {
-      const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { expand: ['data.price.product'] });
-      const customerEmail = session.customer_details?.email || session.customer_email;
+      // 1. Sauvegarder en DB (idempotent)
+      const { invoiceNumber, isNew } = await insertOrderIdempotent({
+        email: customerEmail,
+        productId,
+        amount,
+        stripeSessionId: session.id,
+      });
 
-      for (const item of lineItems.data) {
-        const productId = item.price?.product?.id;
-        if (productId && customerEmail) {
-          await sendPDF(customerEmail, productId);
-        }
+      if (!isNew) {
+        console.log(`[webhook] Session déjà traitée : ${session.id}`);
+        return res.json({ received: true });
       }
+
+      // 2. Générer la facture PDF
+      const invoicePdf = await generateInvoice({
+        invoiceNumber,
+        email: customerEmail,
+        productName: product.name,
+        amount,
+        date: new Date(),
+      });
+
+      // 3. Envoyer email (PDF produit(s) + facture)
+      await sendOrderEmail({
+        toEmail:       customerEmail,
+        product,
+        invoicePdf,
+        invoiceNumber,
+      });
+
+      console.log(`[webhook] Commande ${invoiceNumber} traitée — ${customerEmail} — ${product.name}`);
     } catch (err) {
-      console.error('[webhook] Erreur envoi PDF :', err.message);
-      // On répond 200 à Stripe pour éviter les retries, mais on log l'erreur
+      console.error('[webhook] Erreur traitement :', err.message);
+      // Répondre 500 pour que Stripe réessaie
+      return res.status(500).send('Internal error');
     }
   }
 
