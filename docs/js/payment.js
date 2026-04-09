@@ -4,7 +4,7 @@
    Backend : BACKEND_URL défini ci-dessous
    ===================================================== */
 
-const BACKEND_URL = 'https://creussite-backend.up.railway.app';
+const BACKEND_URL = 'https://website-production-2f4e.up.railway.app';
 
 /**
  * Charge le catalogue depuis la source de vérité statique,
