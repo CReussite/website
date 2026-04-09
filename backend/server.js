@@ -34,19 +34,6 @@ app.use('/api/checkout', require('./routes/checkout'));
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok', service: "C'Réussite backend" }));
 
-// Debug: test Supabase connection (temporaire — à retirer en production)
-app.get('/api/debug/db', async (req, res) => {
-  try {
-    const { createClient } = require('@supabase/supabase-js');
-    const client = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
-    const { data, error } = await client.from('orders').select('count').limit(1);
-    if (error) return res.json({ ok: false, error: error.message, url: process.env.SUPABASE_URL });
-    res.json({ ok: true, url: process.env.SUPABASE_URL, data });
-  } catch (e) {
-    res.json({ ok: false, error: e.message });
-  }
-});
-
 // Catalogue produits (même source que le frontend)
 app.get('/api/products', (req, res) => {
   res.json(require(path.join(__dirname, '../docs/content/products.json')));
