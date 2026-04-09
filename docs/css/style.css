@@ -18,7 +18,7 @@
 
 /* ===== RESET ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; scroll-padding-top: 88px; }
+html { scroll-behavior: smooth; font-size: 16px; scroll-padding-top: 100px; }
 body {
   font-family: var(--font-sans);
   color: var(--text-dark);
@@ -57,7 +57,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 80px;
+  min-height: 92px;
   gap: 24px;
 }
 .nav-logo {
@@ -66,7 +66,7 @@ nav {
   flex-shrink: 0;
 }
 .nav-logo-img {
-  height: 66px;
+  height: 100px;
   width: auto;
 }
 .nav-links {
@@ -290,6 +290,7 @@ nav {
   text-align: center;
 }
 .bundle-card h3 { color: var(--white); font-size: 1.3rem; margin-bottom: 8px; }
+.bundle-pack-title { font-size: 2rem; font-weight: 700; color: var(--quicksand); }
 .bundle-card .product-subtitle-inline { color: var(--shellstone); }
 .bundle-desc { color: rgba(255,255,255,0.72); font-size: 0.9rem; margin-bottom: 20px; }
 .bundle-pricing { margin-bottom: 20px; }
@@ -417,14 +418,13 @@ nav {
 .testimonials-track {
   display: flex;
   gap: 20px;
-  animation: scroll-testimonials 25s linear infinite;
-  width: max-content;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 8px;
 }
-.testimonials-track:hover { animation-play-state: paused; }
-@keyframes scroll-testimonials {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
+.testimonials-track::-webkit-scrollbar { display: none; }
 .testimonial-card {
   background: var(--white);
   border-radius: 12px;
@@ -434,6 +434,7 @@ nav {
   min-width: 300px;
   max-width: 340px;
   flex-shrink: 0;
+  scroll-snap-align: start;
 }
 .testimonial-stars {
   color: #F5A623;
@@ -639,7 +640,7 @@ footer a:hover { color: var(--quicksand); }
   .nav-links {
     display: none;
     position: absolute;
-    top: 80px;
+    top: 92px;
     left: 0;
     right: 0;
     background: var(--royal-blue);
@@ -656,7 +657,7 @@ footer a:hover { color: var(--quicksand); }
     font-size: 1rem;
   }
 
-  .nav-logo-img { height: 40px; }
+  .nav-logo-img { height: 66px; }
   .bundle-card { padding: 28px 20px; }
   .hero-cards { flex-direction: column; }
 }
