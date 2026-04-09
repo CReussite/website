@@ -1,25 +1,45 @@
 require('dotenv').config();
 const express = require('express');
+const cors    = require('cors');
 const path    = require('path');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
-// ── API Routes (avant les fichiers statiques) ───────
+// ── CORS (autoriser le frontend GitHub Pages) ────────
+const allowedOrigins = [
+  'https://c-reussite.fr',
+  'https://www.c-reussite.fr',
+  'https://creussite.github.io',
+  // Dev local
+  'http://localhost:3000',
+  'http://localhost:5500',
+  'http://127.0.0.1:5500',
+];
+app.use(cors({
+  origin: (origin, cb) => {
+    // Autoriser les requêtes sans origin (Stripe webhook, curl, etc.)
+    if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+    cb(new Error('Not allowed by CORS'));
+  },
+}));
+
+// ── Routes ────────────────────────────────────────────
+// /!\ Le webhook Stripe doit recevoir le body RAW → monté en premier
 app.use('/webhook', require('./routes/webhook'));
+
+// Checkout session (body JSON)
+app.use('/api/checkout', require('./routes/checkout'));
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok', service: "C'Réussite backend" }));
 
-// ── Site statique (docs/) ────────────────────────────
-app.use(express.static(path.join(__dirname, '..', 'docs')));
-
-// Fallback → index.html pour toute route non trouvée
-app.use((req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'docs', 'index.html'));
+// Catalogue produits (même source que le frontend)
+app.get('/api/products', (req, res) => {
+  res.json(require(path.join(__dirname, '../docs/content/products.json')));
 });
 
-// ── Démarrage ────────────────────────────────────────
+// ── Démarrage ─────────────────────────────────────────
 app.listen(PORT, () => {
   console.log(`[server] C'Réussite démarré sur le port ${PORT}`);
 });

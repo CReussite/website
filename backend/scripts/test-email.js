@@ -1,6 +1,6 @@
 /**
- * Script de test — envoie un email avec les PDFs à une adresse de test.
- * Usage : node scripts/test-email.js [email] [produit]
+ * Script de test — envoie un email avec PDF produit + facture fictive.
+ * Usage : node scripts/test-email.js [email] [product_id]
  *
  * Exemples :
  *   node scripts/test-email.js test@example.com maths
@@ -9,26 +9,34 @@
  */
 require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
 
-const { sendPDF } = require('../services/mailer');
+const path                = require('path');
+const { sendOrderEmail }  = require('../services/mailer');
+const { generateInvoice } = require('../services/invoice');
 
-const PRODUCT_IDS = {
-  maths:    'prod_UIc5mslp2TR9ym',
-  physique: 'prod_UIc5Mc666PbQnC',
-  bundle:   'prod_UIc5HOO8ErMqzh',
-};
+const PRODUCTS    = require(path.join(__dirname, '../../docs/content/products.json'));
+const PRODUCT_MAP = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
 
-const email   = process.argv[2] || 'test@example.com';
-const produit = process.argv[3] || 'physique';
-const productId = PRODUCT_IDS[produit];
+const email     = process.argv[2] || 'test@example.com';
+const productId = process.argv[3] || 'maths';
+const product   = PRODUCT_MAP[productId];
 
-if (!productId) {
-  console.error(`Produit inconnu : ${produit}. Choix : maths | physique | bundle`);
+if (!product) {
+  console.error(`Produit inconnu : ${productId}. Choix : ${Object.keys(PRODUCT_MAP).join(' | ')}`);
   process.exit(1);
 }
 
-console.log(`Envoi à ${email} — produit : ${produit} (${productId})`);
+const invoiceNumber = `TEST-${Date.now()}`;
 
-sendPDF(email, productId)
+console.log(`Envoi à ${email} — produit : ${productId}`);
+
+generateInvoice({
+  invoiceNumber,
+  email,
+  productName: product.name,
+  amount:      product.price,
+  date:        new Date(),
+})
+  .then(invoicePdf => sendOrderEmail({ toEmail: email, product, invoicePdf, invoiceNumber }))
   .then(() => console.log('✅ Email envoyé avec succès'))
   .catch(err => {
     console.error('❌ Erreur :', err.message);
