@@ -135,43 +135,64 @@ CReussite/
 
 ---
 
-## Domaine personnalisé (creussite.fr)
+## Domaine personnalisé (c-reussite.fr)
 
-### Option recommandée : GitHub Pages + domaine custom (gratuit)
+### Configuration DNS (OVH)
 
-1. **Acheter le domaine** `creussite.fr` (~5-10 €/an)
-   - Fournisseurs recommandés : [OVH](https://www.ovhcloud.com/fr/domains/), [Gandi](https://www.gandi.net/), [Cloudflare Registrar](https://www.cloudflare.com/products/registrar/) (au prix coûtant)
+Ajouter ces enregistrements dans la zone DNS OVH de `c-reussite.fr` :
 
-2. **Configurer les DNS** chez ton registrar :
-   ```
-   Type    Nom     Valeur
-   A       @       185.199.108.153
-   A       @       185.199.109.153
-   A       @       185.199.110.153
-   A       @       185.199.111.153
-   CNAME   www     creussite.github.io
-   ```
+```
+Type    Nom     Valeur                    TTL
+A       @       185.199.108.153           3600
+A       @       185.199.109.153           3600
+A       @       185.199.110.153           3600
+A       @       185.199.111.153           3600
+CNAME   www     CReussite.github.io.      3600
+```
 
-3. **Configurer GitHub Pages** :
-   - Repo → Settings → Pages → Custom domain → `creussite.fr`
-   - Cocher "Enforce HTTPS"
-   - GitHub génère un certificat SSL gratuit (Let's Encrypt)
+> **Note** : Supprimer tout enregistrement A ou AAAA existant sur `@` avant d'ajouter ceux ci-dessus.
 
-4. **Ajouter le fichier CNAME** dans `docs/` :
-   ```
-   creussite.fr
-   ```
+### Configuration GitHub Pages
 
-5. **Mettre à jour les URLs** dans le code :
-   - `docs/index.html` : canonical → `https://creussite.fr`
-   - `docs/js/schema.js` : URLs schema.org
-   - Stripe : success_url et cancel_url
+1. Repo → Settings → Pages → Custom domain → `c-reussite.fr`
+2. Cocher **Enforce HTTPS**
+3. Le fichier `docs/CNAME` contient `c-reussite.fr` (déjà en place)
+4. GitHub génère un certificat SSL gratuit (Let's Encrypt, ~30 min)
+
+### Vérification
+
+```bash
+# Vérifier les enregistrements A
+dig c-reussite.fr +short
+# Doit retourner : 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153
+
+# Vérifier le CNAME www
+dig www.c-reussite.fr +short
+# Doit retourner : CReussite.github.io.
+
+# Vérifier HTTPS
+curl -sI https://c-reussite.fr | head -5
+# Doit retourner : HTTP/2 200
+
+# Vérifier redirection www
+curl -sI https://www.c-reussite.fr | head -5
+# Doit retourner : HTTP/2 200 ou 301 → https://c-reussite.fr
+```
+
+### Dépannage
+
+| Problème | Solution |
+|----------|----------|
+| "Domain not verified" | Attendre 24-48h pour la propagation DNS |
+| Pas de HTTPS | Décocher puis recocher "Enforce HTTPS" dans Settings → Pages |
+| 404 sur le domaine | Vérifier que `docs/CNAME` contient `c-reussite.fr` |
+| www ne marche pas | Vérifier l'enregistrement CNAME `www → CReussite.github.io.` |
 
 ### Coût total
 
 | Poste | Coût |
 |-------|------|
-| Domaine `creussite.fr` | ~7 €/an |
+| Domaine `c-reussite.fr` | ~7 €/an |
 | GitHub Pages | Gratuit |
 | HTTPS (Let's Encrypt) | Gratuit |
 | Railway (webhook) | Gratuit (free tier 5 $/mois) |
