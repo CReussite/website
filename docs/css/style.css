@@ -454,11 +454,32 @@ nav {
   text-align: center;
   margin-top: 28px;
 }
-.testimonials-cta a {
+.btn-link {
+  background: none;
+  border: none;
   color: var(--sapphire);
   font-size: 0.9rem;
   text-decoration: underline;
+  cursor: pointer;
+  font-family: inherit;
 }
+.btn-link:hover { opacity: 0.7; }
+
+/* ===== REVIEW POPUP ===== */
+.review-stars {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.review-stars span {
+  font-size: 2rem;
+  color: var(--shellstone);
+  cursor: pointer;
+  transition: color 0.15s, transform 0.15s;
+}
+.review-stars span.active { color: #F5A623; }
+.review-stars span.hover { color: #F5A623; transform: scale(1.15); }
 
 /* ===== FAQ ===== */
 .faq-list { margin-top: 36px; }
