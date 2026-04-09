@@ -40,8 +40,8 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
     }
 
     try {
-      // 1. Sauvegarder en DB (idempotent)
-      const { invoiceNumber, isNew } = await insertOrderIdempotent({
+      // 1. Sauvegarder en DB (idempotent via stripe_session_id UNIQUE)
+      const { invoiceNumber, isNew, order } = await insertOrderIdempotent({
         email: customerEmail,
         productId,
         amount,
@@ -49,17 +49,24 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
       });
 
       if (!isNew) {
-        console.log(`[webhook] Session déjà traitée : ${session.id}`);
-        return res.json({ received: true });
+        // Session déjà traitée : l'email a peut-être échoué avant,
+        // on retente l'envoi si email_sent n'est pas marqué
+        if (!order.email_sent) {
+          console.log(`[webhook] Retry email pour session déjà en DB : ${session.id}`);
+          // Pas de retour anticipé — on continue pour renvoyer l'email
+        } else {
+          console.log(`[webhook] Session déjà complètement traitée : ${session.id}`);
+          return res.json({ received: true });
+        }
       }
 
-      // 2. Générer la facture PDF
+      // 2. Générer la facture PDF (en mémoire, pas stockée)
       const invoicePdf = await generateInvoice({
         invoiceNumber,
         email: customerEmail,
         productName: product.name,
         amount,
-        date: new Date(),
+        date: new Date(order?.created_at || Date.now()),
       });
 
       // 3. Envoyer email (PDF produit(s) + facture)
@@ -73,7 +80,7 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
       console.log(`[webhook] Commande ${invoiceNumber} traitée — ${customerEmail} — ${product.name}`);
     } catch (err) {
       console.error('[webhook] Erreur traitement :', err.message);
-      // Répondre 500 pour que Stripe réessaie
+      // Retourner 500 → Stripe retentera (utile si email temporairement indisponible)
       return res.status(500).send('Internal error');
     }
   }
