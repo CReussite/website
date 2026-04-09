@@ -85,6 +85,7 @@
           <div class="product-price">14,99 €</div>
           <p class="product-price-sub"><span class="product-tag">Livraison instantanée</span><span class="product-tag">PDF</span></p>
           <a href="#" data-product="maths" class="btn btn-primary">Commander</a>
+          <button class="btn btn-extract" data-extract="maths">Recevoir un extrait</button>
         </article>
 
         <!-- PHYSIQUE-CHIMIE -->
@@ -105,6 +106,7 @@
           <div class="product-price">14,99 €</div>
           <p class="product-price-sub"><span class="product-tag">Livraison instantanée</span><span class="product-tag">PDF</span></p>
           <a href="#" data-product="physique" class="btn btn-primary">Commander</a>
+          <button class="btn btn-extract" data-extract="physique">Recevoir un extrait</button>
         </article>
 
       </div>
@@ -120,6 +122,7 @@
           <div class="bundle-price-new">24,99 €</div>
           <div class="bundle-economy">— 5 € sur le pack</div>
           <a href="#" data-product="bundle" class="btn btn-primary">Commander le pack</a>
+          <button class="btn btn-extract" data-extract="bundle">Recevoir un extrait</button>
         </div>
       </div>
 
@@ -198,21 +201,8 @@
     </div>
   </section>
 
-  <!-- ===== FICHE GRATUITE ===== -->
-  <section id="fiche-gratuite" class="section-alt" aria-labelledby="gratuit-title">
-    <div class="container">
-      <div class="free-sample-inner">
-        <div class="badge">Offert</div>
-        <h2 id="gratuit-title">Teste avant d'acheter</h2>
-        <p>Reçois une fiche Maths et une fiche Physique-Chimie gratuitement. Tu verras exactement ce que tu achètes avant de décider.</p>
-        <form class="email-form" action="mailto:contact@creussite.fr" method="get" enctype="text/plain" aria-label="Formulaire de demande de fiche gratuite">
-          <input type="email" name="email" placeholder="ton@email.fr" required aria-label="Adresse email">
-          <button type="submit" class="btn btn-primary">Recevoir mes fiches gratuites</button>
-        </form>
-        <p class="form-note">Tu recevras deux fiches (une Maths, une PC) par email instantanément. Aucun autre email ne suivra sans ta demande.</p>
-      </div>
-    </div>
-  </section>
+  <!-- ===== FICHE GRATUITE (ancre conservée pour nav) ===== -->
+  <div id="fiche-gratuite"></div>
 
   <!-- ===== TÉMOIGNAGES ===== -->
   <section aria-labelledby="temoignages-title">
@@ -282,12 +272,31 @@
 
   <div id="contact-placeholder"></div>
 
+  <!-- ===== POPUP EXTRAIT ===== -->
+  <div id="extract-overlay" class="extract-overlay" hidden>
+    <div class="extract-popup">
+      <button class="extract-close" aria-label="Fermer">&times;</button>
+      <h3 id="extract-popup-title">Recevoir un extrait gratuit</h3>
+      <p id="extract-popup-desc"></p>
+      <form id="extract-form" class="contact-form" action="mailto:contact@creussite.fr" method="get" enctype="text/plain">
+        <input type="hidden" id="extract-product" name="subject">
+        <div class="form-group">
+          <label class="form-label" for="extract-email">Email</label>
+          <input class="form-control" type="email" id="extract-email" name="email" placeholder="ton@email.fr" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Recevoir mon extrait</button>
+      </form>
+      <p class="form-note">Un seul email avec l'extrait. Rien d'autre.</p>
+    </div>
+  </div>
+
   <div id="footer-placeholder"></div>
 
   <script src="js/nav.js"></script>
   <script src="js/contact.js"></script>
   <script src="js/footer.js"></script>
   <script src="js/payment.js"></script>
+  <script src="js/extract.js"></script>
 
 </body>
 </html>
