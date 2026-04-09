@@ -185,7 +185,8 @@ nav {
   flex-direction: column;
 }
 .product-card.featured { border-top-color: var(--quicksand); }
-.product-card h3 { font-size: 1.2rem; margin-bottom: 6px; }
+.product-card h3 { font-size: 1.2rem; margin-bottom: 12px; }
+.product-subtitle-inline { font-size: 0.85rem; font-weight: 400; color: var(--shellstone); font-style: italic; }
 .product-subtitle { font-size: 0.85rem; color: var(--shellstone); margin-bottom: 20px; font-style: italic; }
 .product-meta {
   display: flex;

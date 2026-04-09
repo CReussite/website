@@ -7,7 +7,7 @@ document.getElementById('nav-placeholder').outerHTML = `
       </button>
       <ul class="nav-links">
         <li><a href="#fiches">Les fiches</a></li>
-        <li><a href="#camille">À propos</a></li>
+        <li><a href="#methode">À propos</a></li>
         <li><a href="#fiche-gratuite">Fiche gratuite</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
