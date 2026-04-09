@@ -39,20 +39,20 @@
         L'essentiel du programme officiel, organisé par thèmes, structuré pour réviser efficacement.
       </p>
 
-      <table class="hero-table">
-        <tbody>
-          <tr>
-            <td><a href="#fiches">Maths</a></td>
-            <td><a href="#fiches">Physique-Chimie</a></td>
-            <td><a href="#fiches">Le Pack</a></td>
-          </tr>
-          <tr>
-            <td><a href="#fiches">20 fiches</a></td>
-            <td><a href="#fiches">32 fiches</a></td>
-            <td><a href="#fiches">52 fiches</a></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="hero-cards">
+        <a href="#maths-card" class="hero-card">
+          <div class="hero-card-title">Maths</div>
+          <div class="hero-card-count">20 fiches</div>
+        </a>
+        <a href="#physique-card" class="hero-card">
+          <div class="hero-card-title">Physique-Chimie</div>
+          <div class="hero-card-count">32 fiches</div>
+        </a>
+        <a href="#bundle-card" class="hero-card">
+          <div class="hero-card-title">Le Pack</div>
+          <div class="hero-card-count">52 fiches</div>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -65,7 +65,7 @@
       <div class="products-grid">
 
         <!-- MATHS -->
-        <article class="product-card" aria-label="Ebook Maths Terminale Spécialité">
+        <article id="maths-card" class="product-card" aria-label="Ebook Maths Terminale Spécialité">
           <h3>Maths<br><span class="product-subtitle-inline">(Terminale Spécialité)</span></h3>
           <div class="product-meta">
             <span class="product-tag">20 fiches</span>
@@ -88,7 +88,7 @@
         </article>
 
         <!-- PHYSIQUE-CHIMIE -->
-        <article class="product-card" aria-label="Ebook Physique-Chimie Terminale Spécialité">
+        <article id="physique-card" class="product-card" aria-label="Ebook Physique-Chimie Terminale Spécialité">
           <h3>Physique-Chimie<br><span class="product-subtitle-inline">(Terminale Spécialité)</span></h3>
           <div class="product-meta">
             <span class="product-tag">32 fiches</span>
@@ -113,7 +113,7 @@
       </div>
 
       <!-- BUNDLE -->
-      <div class="bundle-card" role="region" aria-label="Pack complet Maths + Physique-Chimie">
+      <div id="bundle-card" class="bundle-card" role="region" aria-label="Pack complet Maths + Physique-Chimie">
         <h3>Pack<br>Maths + Physique-Chimie<br><span class="product-subtitle-inline">(Terminale Spécialité)</span></h3>
         <p class="bundle-desc">Les deux ebooks ensemble : 20 fiches Maths + 32 fiches Physique-Chimie.</p>
         <div class="bundle-pricing">

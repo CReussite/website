@@ -23,6 +23,8 @@
   var product = document.getElementById('extract-product');
   var closeBtn = overlay.querySelector('.extract-close');
 
+  var popup = overlay.querySelector('.extract-popup');
+
   document.querySelectorAll('[data-extract]').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var key = btn.getAttribute('data-extract');
@@ -30,6 +32,7 @@
       title.textContent = info.title;
       desc.textContent = info.desc;
       product.value = info.subject;
+      popup.classList.toggle('extract-popup--pack', key === 'bundle');
       overlay.hidden = false;
       document.body.style.overflow = 'hidden';
     });
