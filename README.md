@@ -1,314 +1,277 @@
-# C'Réussite — Site de vente de fiches de révision
+# C'Réussite — Vente de fiches de révision
 
-Site statique + backend Node.js pour la livraison automatique de PDF après paiement Stripe.
-
----
-
-## Stack technique
-
-| Couche | Technologie | Rôle |
-|--------|-------------|------|
-| **Frontend** | HTML / CSS / JS vanilla | Site statique, aucun framework |
-| **Hébergement site** | GitHub Pages | CDN gratuit + déploiement auto via GitHub Actions |
-| **Paiement** | Stripe Payment Links | Checkout hébergé, zéro backend pour le paiement |
-| **Backend (webhook)** | Node.js + Express | Réception webhook Stripe → envoi PDF par email |
-| **Email transactionnel** | Brevo (sib-api-v3-sdk) | Envoi PDF en pièce jointe après achat |
-| **Hébergement backend** | Railway (free tier) | Serveur Node.js pour le webhook uniquement |
-| **SEO** | Schema.org JSON-LD | Rich snippets Google |
-| **Contrôle de version** | Git + GitHub | Source of truth |
+Flux complet : l'utilisateur paie → Stripe Checkout → webhook → Supabase → facture PDF → email Brevo.
 
 ---
 
 ## Architecture
 
 ```
+Acheteur
+  │  clique "Commander"
+  ▼
+Frontend (GitHub Pages — c-reussite.fr)
+  │  POST /api/checkout  { product_id }
+  ▼
+Backend Express (Railway — website-production-2f4e.up.railway.app)
+  │  crée une Stripe Checkout Session
+  ▼
+Stripe Checkout
+  │  checkout.session.completed
+  ▼
+Backend /webhook
+  ├─ vérifie signature Stripe
+  ├─ insert orders dans Supabase (idempotent via stripe_session_id UNIQUE)
+  ├─ génère facture PDF (PDFKit)
+  └─ envoie email via Brevo
+       ├─ PDF(s) produit en pièce jointe
+       └─ facture PDF en pièce jointe
+```
+
+---
+
+## Stack
+
+| Couche | Technologie |
+|--------|-------------|
+| Frontend | HTML/CSS/JS vanilla |
+| Hébergement frontend | GitHub Pages (CDN Fastly, gratuit) |
+| Backend | Node.js + Express (Railway) |
+| Paiement | Stripe Checkout Sessions |
+| Base de données | Supabase (PostgreSQL) |
+| Emails | Brevo (sib-api-v3-sdk) |
+| Factures | PDFKit |
+
+---
+
+## Fichiers clés
+
+```
 CReussite/
-├── docs/                      ← Site statique (GitHub Pages + servi par Express)
-│   ├── index.html             ← Page principale
-│   ├── success.html           ← Confirmation après paiement
-│   ├── cancel.html            ← Annulation du checkout
-│   ├── css/
-│   │   └── style.css
-│   └── js/
-│       ├── schema.js          ← JSON-LD (SEO)
-│       ├── nav.js             ← Navigation (injection DOM)
-│       ├── footer.js          ← Footer (injection DOM)
-│       ├── contact.js         ← Formulaire de contact (injection DOM)
-│       ├── main.js            ← Menu mobile, accordéon FAQ
-│       └── payment.js         ← Liens Stripe par produit
+├── docs/                          ← GitHub Pages (site statique)
+│   ├── CNAME                      ← c-reussite.fr
+│   ├── content/products.json      ← SOURCE DE VÉRITÉ produits
+│   ├── index.html
+│   ├── success.html
+│   ├── cancel.html
+│   └── js/payment.js              ← POST vers /api/checkout
 │
-├── backend/                   ← Serveur Node.js (Railway)
-│   ├── server.js              ← Express : fichiers statiques + webhook
+├── backend/
+│   ├── server.js                  ← Express + CORS
 │   ├── routes/
-│   │   └── webhook.js         ← checkout.session.completed → email
+│   │   ├── checkout.js            ← POST /api/checkout → Stripe Session
+│   │   └── webhook.js             ← POST /webhook → DB + invoice + email
 │   ├── services/
-│   │   └── mailer.js          ← Brevo API — envoie PDF en PJ
-│   ├── scripts/
-│   │   └── test-email.js      ← Test d'envoi manuel
-│   ├── assets/                ← PDFs à livrer (non commités)
-│   │   ├── fiches-maths.pdf
-│   │   └── fiches-physique-chimie.pdf
-│   ├── .env                   ← Variables privées (non commité)
-│   └── package.json
+│   │   ├── db.js                  ← Supabase (insert idempotent)
+│   │   ├── invoice.js             ← Génération PDF facture
+│   │   └── mailer.js              ← Brevo (PDF produit + facture)
+│   ├── assets/                    ← PDFs à livrer (non commités)
+│   ├── tests/                     ← Tests node:test
+│   └── .env.example
 │
-├── .github/workflows/
-│   └── deploy.yml             ← Déploiement GitHub Pages auto
-│
-├── railway.json               ← Config déploiement Railway
-├── lance_site.py              ← Serveur local Python (dev rapide)
-├── .gitignore
-└── README.md
+├── .github/workflows/deploy.yml   ← GitHub Pages auto-deploy
+└── railway.json                   ← Config Railway
 ```
 
 ---
 
-## Produits Stripe (mode test)
+## Produits (source unique)
 
-| Produit | Prix | ID Stripe | Payment Link |
-|---------|------|-----------|--------------|
-| Fiches Maths Terminale | 14,99 € | `prod_UIc5mslp2TR9ym` | `plink_1TK0sDELyt8QW1SKUjaASkdz` |
-| Fiches Physique-Chimie | 14,99 € | `prod_UIc5Mc666PbQnC` | `plink_1TK0sEELyt8QW1SKBTZnuLCC` |
-| Pack Bundle | 24,99 € | `prod_UIc5HOO8ErMqzh` | `plink_1TK0sFELyt8QW1SKoUOkOfj5` |
+Tout produit est défini **une seule fois** dans `docs/content/products.json`.
+Le backend et le frontend lisent tous les deux ce fichier.
 
----
-
-## État du projet
-
-### ✅ Fait
-- [x] Site statique complet (design, responsive, SEO, JSON-LD)
-- [x] Composants JS modulaires (nav, footer, contact, schema, payment)
-- [x] Menu hamburger mobile
-- [x] 3 produits Stripe en mode test avec Payment Links
-- [x] Redirection vers `success.html` après paiement
-- [x] Pages `success.html` et `cancel.html`
-- [x] Backend Express : webhook Stripe + site statique servi
-- [x] Mailer Brevo avec pièces jointes PDF en base64
-- [x] Script de test email (`npm run test-email`)
-- [x] PDFs de test dans `backend/assets/`
-- [x] `.gitignore` configuré (`.env` et PDFs exclus)
-- [x] Déploiement GitHub Pages fonctionnel (workflow Actions)
-- [x] Déploiement Railway fonctionnel (build + healthcheck OK)
-- [x] Variables d'environnement Railway configurées
-- [x] Domaine Railway : `https://website-production-2f4e.up.railway.app`
-
-### 🔲 Reste à configurer
-
-#### 1. Clé API Brevo (envoi d'emails)
-- [ ] https://app.brevo.com/settings/keys/api → Générer une clé
-- [ ] Ajouter dans Railway → Variables → `BREVO_API_KEY=xkeysib-...`
-- [ ] Tester : `cd backend && npm run test-email -- ton@email.fr physique`
-
-#### 2. Webhook Stripe (livraison automatique)
-- [ ] Dashboard Stripe → Développeurs → Webhooks → **Ajouter un endpoint**
-  - URL : `https://website-production-2f4e.up.railway.app/webhook`
-  - Événement : `checkout.session.completed`
-- [ ] Copier le **Signing secret** (`whsec_...`) → variable Railway `STRIPE_WEBHOOK_SECRET`
-
-#### 3. PDFs définitifs
-- [ ] Remplacer les PDFs de test dans `backend/assets/` par les vrais fichiers
-
-#### 4. Passer Stripe en mode Live
-- [ ] Dashboard Stripe → Activer le mode Live (vérification identité + RIB)
-- [ ] Recréer les 3 produits et Payment Links en mode Live
-- [ ] Mettre à jour `docs/js/payment.js` avec les nouveaux liens Live
-- [ ] Mettre à jour `STRIPE_SECRET_KEY` et `STRIPE_WEBHOOK_SECRET` dans Railway
-
-#### 5. Rendre le site public (SEO)
-- [ ] Retirer `<meta name="robots" content="noindex">` de `index.html`, `success.html`, `cancel.html`
-- [ ] Ajouter un `sitemap.xml` dans `docs/`
-- [ ] Soumettre à Google Search Console
-
----
-
-## GitHub Pages vs Railway : pourquoi héberger le site sur GitHub
-
-| | GitHub Pages | Railway |
-|--|--|--|
-| **Coût** | Gratuit, illimité | Free tier : 5 $/mois de crédit, puis payant |
-| **CDN mondial** | Oui (Fastly) | Non |
-| **Uptime** | 99.9%+ garanti par GitHub | Le service dort si pas de trafic (free tier) |
-| **Domaine custom** | Gratuit + HTTPS auto | Payant (plan Hobby 5 $/mois) |
-| **Temps de chargement** | < 100ms (fichiers statiques) | 200-500ms (serveur Node.js) |
-| **Besoin d'un backend** | Non (site statique) | Oui (webhook Stripe) |
-
-**Recommandation** : Héberger le site sur **GitHub Pages** (gratuit, rapide, fiable) et utiliser Railway **uniquement** pour le webhook Stripe. Le site n'a pas besoin d'un serveur — c'est du HTML/CSS/JS pur. Stripe Payment Links redirige vers le checkout Stripe directement. Seul le webhook post-achat nécessite un serveur.
-
----
-
-## Domaine personnalisé (c-reussite.fr)
-
-### Configuration DNS (OVH)
-
-Ajouter ces enregistrements dans la zone DNS OVH de `c-reussite.fr` :
-
-```
-Type    Nom     Valeur                    TTL
-A       @       185.199.108.153           3600
-A       @       185.199.109.153           3600
-A       @       185.199.110.153           3600
-A       @       185.199.111.153           3600
-CNAME   www     CReussite.github.io.      3600
+```json
+[
+  { "id": "maths",    "name": "Fiches Maths Terminale Spécialité",     "price": 1499, "pdf_files": ["fiches-maths.pdf"] },
+  { "id": "physique", "name": "Fiches Physique-Chimie Terminale Spécialité", "price": 1499, "pdf_files": ["fiches-physique-chimie.pdf"] },
+  { "id": "bundle",   "name": "Pack Maths + Physique-Chimie",          "price": 2499, "pdf_files": ["fiches-maths.pdf", "fiches-physique-chimie.pdf"] }
+]
 ```
 
-> **Note** : Supprimer tout enregistrement A ou AAAA existant sur `@` avant d'ajouter ceux ci-dessus.
+**Ajouter un produit** : modifier `products.json` + déposer le PDF dans `backend/assets/` + ajouter l'article dans `docs/index.html`. C'est tout.
 
-### Configuration GitHub Pages
+---
 
-1. Repo → Settings → Pages → Custom domain → `c-reussite.fr`
-2. Cocher **Enforce HTTPS**
-3. Le fichier `docs/CNAME` contient `c-reussite.fr` (déjà en place)
-4. GitHub génère un certificat SSL gratuit (Let's Encrypt, ~30 min)
+## Variables d'environnement (Railway)
 
-### Vérification
+Copier `backend/.env.example`, remplir chaque valeur, puis les ajouter dans Railway → Variables.
+
+| Variable | Source |
+|----------|--------|
+| `STRIPE_SECRET_KEY` | Stripe → Développeurs → Clés API |
+| `STRIPE_WEBHOOK_SECRET` | Stripe → Développeurs → Webhooks → Signing secret |
+| `SUPABASE_URL` | Supabase → Settings → API |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Settings → API |
+| `BREVO_API_KEY` | brevo.com → Paramètres → Clés API |
+| `FROM_EMAIL` | `contact@c-reussite.fr` |
+| `FROM_NAME` | `Clara Renaud — C'Réussite` |
+| `FRONTEND_URL` | `https://c-reussite.fr` |
 
 ```bash
-# Vérifier les enregistrements A
-dig c-reussite.fr +short
-# Doit retourner : 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153
-
-# Vérifier le CNAME www
-dig www.c-reussite.fr +short
-# Doit retourner : CReussite.github.io.
-
-# Vérifier HTTPS
-curl -sI https://c-reussite.fr | head -5
-# Doit retourner : HTTP/2 200
-
-# Vérifier redirection www
-curl -sI https://www.c-reussite.fr | head -5
-# Doit retourner : HTTP/2 200 ou 301 → https://c-reussite.fr
-```
-
-### Dépannage
-
-| Problème | Solution |
-|----------|----------|
-| "Domain not verified" | Attendre 24-48h pour la propagation DNS |
-| Pas de HTTPS | Décocher puis recocher "Enforce HTTPS" dans Settings → Pages |
-| 404 sur le domaine | Vérifier que `docs/CNAME` contient `c-reussite.fr` |
-| www ne marche pas | Vérifier l'enregistrement CNAME `www → CReussite.github.io.` |
-
-### Coût total
-
-| Poste | Coût |
-|-------|------|
-| Domaine `c-reussite.fr` | ~7 €/an |
-| GitHub Pages | Gratuit |
-| HTTPS (Let's Encrypt) | Gratuit |
-| Railway (webhook) | Gratuit (free tier 5 $/mois) |
-| Stripe | 1.4% + 0.25 € par transaction |
-| Brevo | Gratuit jusqu'à 300 emails/jour |
-| **Total fixe** | **~7 €/an** |
-
----
-
-## Privé / Public : comment contrôler la visibilité du site
-
-### Site privé (état actuel)
-Le site est en ligne mais **invisible pour Google** grâce à :
-```html
-<meta name="robots" content="noindex, nofollow">
-```
-- Google et les moteurs de recherche n'indexent pas les pages
-- Le site est accessible uniquement par URL directe
-- Parfait pour la phase de test et de préparation
-
-### Rendre le site public
-1. Retirer la balise `noindex` des 3 fichiers HTML :
-   - `docs/index.html`
-   - `docs/success.html`
-   - `docs/cancel.html`
-2. Créer `docs/sitemap.xml` pour aider Google à découvrir les pages
-3. Soumettre le sitemap sur [Google Search Console](https://search.google.com/search-console/)
-4. Commit + push → GitHub Pages se met à jour automatiquement
-
-### Remettre le site en privé
-Remettre la balise `<meta name="robots" content="noindex, nofollow">` dans le `<head>` de chaque page. Google supprimera les pages de ses résultats sous quelques jours.
-
----
-
-## Hébergement
-
-### Site — GitHub Pages (recommandé)
-```
-Déploiement auto : push sur main → GitHub Actions → deploy.yml
-Publish directory : docs/
-URL : https://creussite.github.io/website/
-Domaine custom : creussite.fr (voir section dédiée)
-```
-
-### Backend (webhook) — Railway
-```
-Build command  : cd backend && npm install
-Start command  : node backend/server.js
-Health check   : /api/health
-Variables      : STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, BREVO_API_KEY, FROM_NAME, FROM_EMAIL
-URL            : https://website-production-2f4e.up.railway.app
-```
-
-Le backend sert uniquement le webhook Stripe (`/webhook`) et le health check. Le site est hébergé sur GitHub Pages pour les performances et la fiabilité.
-
-### Dev local
-```bash
-# Site statique seul (Python)
-python lance_site.py
-
-# Backend complet (Node.js)
-cd backend && npm install && npm run dev
+# Depuis le repo (Railway CLI)
+railway variables set STRIPE_SECRET_KEY=sk_live_...
+railway variables set STRIPE_WEBHOOK_SECRET=whsec_...
+railway variables set SUPABASE_URL=https://xxxx.supabase.co
+railway variables set SUPABASE_SERVICE_ROLE_KEY=eyJ...
+railway variables set BREVO_API_KEY=xkeysib-...
+railway variables set FROM_EMAIL=contact@c-reussite.fr
+railway variables set "FROM_NAME=Clara Renaud — C'Réussite"
+railway variables set FRONTEND_URL=https://c-reussite.fr
 ```
 
 ---
 
-## Enregistrer le webhook Stripe
+## Supabase — table orders
 
-1. Récupérer l'URL Railway : `https://website-production-2f4e.up.railway.app`
-2. Dashboard Stripe → **Développeurs → Webhooks → Ajouter un endpoint**
+Créer dans Supabase → SQL Editor :
+
+```sql
+CREATE TABLE orders (
+  id                uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  email             text NOT NULL,
+  product_id        text NOT NULL,
+  amount            integer NOT NULL,
+  stripe_session_id text UNIQUE NOT NULL,
+  invoice_number    text NOT NULL,
+  created_at        timestamptz DEFAULT now()
+);
+```
+
+La contrainte `UNIQUE` sur `stripe_session_id` garantit l'idempotence : un retry Stripe ne crée pas de doublon.
+
+---
+
+## Stripe — webhook
+
+1. Dashboard Stripe → Développeurs → Webhooks → **Ajouter un endpoint**
    - URL : `https://website-production-2f4e.up.railway.app/webhook`
    - Événement : `checkout.session.completed`
-3. Copier le **Signing secret** (`whsec_...`) → variable Railway `STRIPE_WEBHOOK_SECRET`
-4. Railway recharge les variables automatiquement au redéploiement
+2. Copier le **Signing secret** → variable Railway `STRIPE_WEBHOOK_SECRET`
+3. Tester depuis Stripe CLI :
 
-**Test local :**
 ```bash
-stripe listen --forward-to localhost:3000/webhook
-# Terminal 2 :
-cd backend && npm install && npm run dev
+stripe listen --forward-to https://website-production-2f4e.up.railway.app/webhook
+stripe trigger checkout.session.completed
 ```
 
 ---
 
-## Tester l'envoi d'email (Brevo)
+## DNS OVH — domaine c-reussite.fr
+
+Configurer dans la zone DNS OVH :
+
+```
+Type    Sous-domaine    Valeur                    TTL
+A       @               185.199.108.153           3600
+A       @               185.199.109.153           3600
+A       @               185.199.110.153           3600
+A       @               185.199.111.153           3600
+CNAME   www             creussite.github.io.      3600
+```
+
+Supprimer tout enregistrement A/AAAA existant sur `@` avant d'ajouter ceux-ci.
+
+Puis dans GitHub → Settings → Pages :
+- Custom domain : `c-reussite.fr`
+- Enforce HTTPS : coché
+
+GitHub génère le certificat Let's Encrypt automatiquement (~30 min après propagation DNS).
+
+**Vérification :**
+```bash
+dig c-reussite.fr +short
+# → 185.199.108.153 185.199.109.153 185.199.110.153 185.199.111.153
+curl -sI https://c-reussite.fr | head -3
+# → HTTP/2 200
+```
+
+---
+
+## Déploiement
+
+### Frontend (automatique)
+Push sur `main` → GitHub Actions (`deploy.yml`) → GitHub Pages mis à jour.
+
+### Backend (automatique)
+Push sur `main` → Railway redéploie si le repo est connecté.
+Build : `cd backend && npm install`
+Start : `node backend/server.js`
+
+```bash
+# Vérifier que le backend est en ligne
+curl https://website-production-2f4e.up.railway.app/api/health
+# → {"status":"ok","service":"C'Réussite backend"}
+```
+
+---
+
+## Tests
 
 ```bash
 cd backend
-npm install
-# Envoyer une fiche Physique-Chimie à ton adresse
-npm run test-email -- ton@email.fr physique
-# Envoyer le bundle
-npm run test-email -- ton@email.fr bundle
-# Envoyer Maths
+
+# Tous les tests (pas de credential requis sauf les tests live Stripe)
+npm test
+
+# Test email complet (nécessite BREVO_API_KEY dans .env)
 npm run test-email -- ton@email.fr maths
+npm run test-email -- ton@email.fr physique
+npm run test-email -- ton@email.fr bundle
+
+# Tests live Stripe (avec STRIPE_SECRET_KEY)
+STRIPE_SECRET_KEY=sk_live_... npm test
+```
+
+Les tests couvrent :
+- Génération facture PDF (aucune credential)
+- Validation products.json (aucune credential)
+- Pipeline webhook complet avec mocks (aucune credential)
+- Idempotence DB (aucune credential)
+- Checkout live contre Railway (STRIPE_SECRET_KEY requis pour le test de session)
+
+---
+
+## Dev local
+
+```bash
+# Frontend uniquement
+python lance_site.py
+
+# Backend
+cd backend
+cp .env.example .env   # remplir les valeurs
+npm install
+npm run dev
+# → http://localhost:3000/api/health
+
+# Tester webhook en local
+stripe listen --forward-to localhost:3000/webhook
+stripe trigger checkout.session.completed
 ```
 
 ---
 
-## Ajouter un produit
+## Coût mensuel
 
-1. Stripe → Produit → Prix → Payment Link
-2. `docs/js/payment.js` → nouvelle entrée dans `PRODUCTS`
-3. `backend/services/mailer.js` → `PRODUCT_PDF_MAP` et `PRODUCT_NAME_MAP`
-4. `backend/assets/` → déposer le PDF
-5. `docs/index.html` → nouvel `<article data-product="clé">`
+| Poste | Coût |
+|-------|------|
+| Domaine c-reussite.fr | ~0,60 €/mois (7 €/an) |
+| GitHub Pages | Gratuit |
+| Railway | Gratuit (5 $/mois de crédit free tier) |
+| Supabase | Gratuit (free tier) |
+| Brevo | Gratuit (300 emails/jour) |
+| Stripe | 1,4% + 0,25 € par transaction |
+| **Total fixe** | **~0,60 €/mois** |
 
 ---
 
-## Comptes et accès
+## Comptes
 
 | Service | URL |
 |---------|-----|
-| Stripe (test) | https://dashboard.stripe.com/acct_1TK0ioELyt8QW1SK/test/dashboard |
 | GitHub | https://github.com/CReussite/website |
-| GitHub Pages | https://creussite.github.io/website/ |
-| Railway | https://website-production-2f4e.up.railway.app |
+| Railway | https://railway.app → projet `amiable-reflection` |
+| Backend | https://website-production-2f4e.up.railway.app |
+| Stripe | https://dashboard.stripe.com |
+| Supabase | https://supabase.com |
 | Brevo | https://brevo.com |
-| Email | contact@creussite.fr |
