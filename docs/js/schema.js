@@ -17,7 +17,7 @@
       {
         "@type": "Person",
         "@id": "https://creussite.github.io/website/#camille-reinhardt",
-        "name": "Clara Renaud",
+        "name": "Camille Reinhardt",
         "jobTitle": "Enseignante, Polytechnicienne, Docteure en sciences de la vie",
         "alumniOf": [
           { "@type": "CollegeOrUniversity", "name": "École Polytechnique" },
