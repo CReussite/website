@@ -249,6 +249,7 @@ nav {
 .bundle-text h3 { color: var(--white); font-size: 1.2rem; }
 .bundle-text p { color: rgba(255,255,255,0.72); font-size: 0.9rem; }
 .bundle-pricing { text-align: right; flex-shrink: 0; }
+.bundle-pricing .product-buttons { justify-content: flex-end; }
 .bundle-price-new { font-size: 2rem; font-weight: 700; color: var(--quicksand); }
 .bundle-price-old { font-size: 0.9rem; color: rgba(255,255,255,0.45); text-decoration: line-through; }
 .bundle-economy { font-size: 0.78rem; color: var(--quicksand); margin-bottom: 16px; }
@@ -456,20 +457,27 @@ footer a:hover { color: var(--quicksand); }
 .footer-author { color: rgba(255,255,255,0.7); }
 .footer-credit { font-size: 0.75rem; opacity: 0.4; }
 
-/* ===== EXTRACT BUTTON ===== */
+/* ===== PRODUCT BUTTONS ===== */
+.product-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+.product-buttons .btn { flex: 1; text-align: center; }
 .btn-extract {
   display: inline-block;
-  margin-top: 8px;
-  padding: 8px 20px;
+  padding: 10px 20px;
   font-size: 0.85rem;
-  color: var(--sapphire);
-  background: transparent;
-  border: 1.5px solid var(--sapphire);
+  color: var(--white);
+  background: var(--royal-blue);
+  border: none;
   border-radius: var(--radius);
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition: opacity 0.2s;
 }
-.btn-extract:hover { background: var(--sapphire); color: var(--white); }
+.btn-extract:hover { opacity: 0.85; }
+.bundle-card .btn-extract { color: var(--royal-blue); background: var(--white); }
+.bundle-card .btn-extract:hover { opacity: 0.85; }
 
 /* ===== EXTRACT POPUP ===== */
 .extract-overlay {

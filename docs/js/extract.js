@@ -1,17 +1,17 @@
 (function () {
   var labels = {
     maths: {
-      title: 'Recevoir un extrait — Maths',
+      title: 'Recevoir un extrait Maths',
       desc: 'Reçois une fiche Maths Terminale Spécialité gratuitement par email.',
       subject: 'Extrait Maths'
     },
     physique: {
-      title: 'Recevoir un extrait — Physique-Chimie',
+      title: 'Recevoir un extrait Physique-Chimie',
       desc: 'Reçois une fiche Physique-Chimie Terminale Spécialité gratuitement par email.',
       subject: 'Extrait Physique-Chimie'
     },
     bundle: {
-      title: 'Recevoir un extrait — Pack complet',
+      title: 'Recevoir un extrait Pack complet',
       desc: 'Reçois une fiche Maths et une fiche Physique-Chimie gratuitement par email.',
       subject: 'Extrait Pack Maths + PC'
     }
