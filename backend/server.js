@@ -49,7 +49,7 @@ app.use('/api/admin', require('./routes/admin'));
 // Beta feedback
 app.use('/api/beta-feedback', require('./routes/beta'));
 
-app.get('/api/healthz', (req, res) => {
+app.get('/api/healthz', async (req, res) => {
   const missingEnv = REQUIRED_ENV_VARS.filter((key) => !process.env[key]);
   const isOk = missingEnv.length === 0;
   const uptime = process.uptime();
@@ -57,22 +57,44 @@ app.get('/api/healthz', (req, res) => {
     : uptime < 3600 ? `${Math.floor(uptime / 60)}min`
     : `${Math.floor(uptime / 3600)}h ${Math.floor((uptime % 3600) / 60)}min`;
 
+  // Check commandes non livrées (email_sent = false depuis > 10 min)
+  let stuckOrders = 0;
+  let dbOk = true;
+  try {
+    const { getClient } = require('./services/db');
+    const tenMinAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+    const { data, error } = await getClient()
+      .from('orders')
+      .select('id', { count: 'exact', head: true })
+      .eq('email_sent', false)
+      .lt('created_at', tenMinAgo);
+    if (error) throw error;
+    stuckOrders = data?.length ?? 0;
+  } catch {
+    dbOk = false;
+  }
+
+  const hasAlert = stuckOrders > 0;
+  const allOk = isOk && dbOk && !hasAlert;
+
   // JSON pour les appels API (curl, fetch, etc.)
   if (!req.accepts('html') || req.headers['user-agent']?.includes('curl')) {
-    return res.status(isOk ? 200 : 503).json({
-      status: isOk ? 'ok' : 'degraded',
+    return res.status(allOk ? 200 : 503).json({
+      status: allOk ? 'ok' : 'degraded',
       service: "C'Reussite backend",
-      checks: { env: isOk ? 'ok' : 'missing' },
+      checks: { env: isOk ? 'ok' : 'missing', db: dbOk ? 'ok' : 'unreachable', stuck_orders: stuckOrders },
       missing_env: missingEnv,
     });
   }
 
   // HTML pour le navigateur
-  const statusLabel = isOk ? '✅ Actif' : '⚠️ Dégradé';
-  const statusColor = isOk ? '#27ae60' : '#e67e22';
+  const statusLabel = allOk ? '✅ Actif' : hasAlert ? '🚨 Alerte' : '⚠️ Dégradé';
+  const statusColor = allOk ? '#27ae60' : hasAlert ? '#c0392b' : '#e67e22';
   const envLabel = isOk ? '✅ OK' : `❌ ${missingEnv.length} manquante(s)`;
+  const dbLabel = dbOk ? '✅ Connectée' : '❌ Injoignable';
+  const ordersLabel = stuckOrders === 0 ? '✅ Aucune' : `🚨 ${stuckOrders} commande(s) bloquée(s)`;
 
-  res.status(isOk ? 200 : 503).send(`<!DOCTYPE html>
+  res.status(allOk ? 200 : 503).send(`<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="utf-8">
@@ -98,6 +120,8 @@ app.get('/api/healthz', (req, res) => {
     <div class="status">${statusLabel}</div>
     <div class="checks">
       <div class="row"><span>Variables d'env</span><span>${envLabel}</span></div>
+      <div class="row"><span>Base de données</span><span>${dbLabel}</span></div>
+      <div class="row"><span>Commandes non livrées</span><span>${ordersLabel}</span></div>
       <div class="row"><span>Uptime</span><span>${uptimeStr}</span></div>
     </div>
     <div class="footer">Render free tier · Frankfurt · ${new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}</div>
