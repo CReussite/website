@@ -1,6 +1,6 @@
 /* ===== Beta feedback form ===== */
 (function () {
-  var API_BASE = 'https://website-production-2f4e.up.railway.app';
+  var API_BASE = 'https://creussite-backend.onrender.com';
   var form     = document.getElementById('beta-form');
   var submitBtn = document.getElementById('beta-submit');
   var successEl = document.getElementById('beta-success');
