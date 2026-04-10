@@ -12,6 +12,13 @@ function requireAdminKey(req, res, next) {
   next();
 }
 
+// ── GET /api/admin/config ─────────────────────────────────────────────────────
+// Retourne la configuration de l'environnement (mode Stripe).
+router.get('/config', requireAdminKey, (req, res) => {
+  const key = process.env.STRIPE_SECRET_KEY || '';
+  res.json({ stripe_mode: key.startsWith('sk_live_') ? 'live' : 'test' });
+});
+
 // ── GET /api/admin/orders ─────────────────────────────────────────────────────
 // Retourne la liste des commandes en JSON.
 // Paramètres optionnels : ?year=2026
