@@ -4,6 +4,7 @@ const stripe   = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { insertOrderIdempotent, markEmailSent } = require('../services/db');
 const { generateInvoice }       = require('../services/invoice');
 const { sendOrderEmail }        = require('../services/mailer');
+const { sendOpsAlert }          = require('../services/alerts');
 
 const router = express.Router();
 
