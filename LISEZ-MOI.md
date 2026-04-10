@@ -201,14 +201,33 @@ Chaque PDF produit est modifié avant envoi. Le fichier envoyé au client est vi
 - Champs "Mots-clés" et "Sujet" : email et nom de l'acheteur
 
 **Niveau 2 — Stéganographie dans le contenu des pages** (résiste à la suppression des métadonnées)
-- L'email de l'acheteur est inscrit **5 fois par page** en texte blanc, taille 4pt, opacité 0,4%
+- Le nom et l'email de l'acheteur sont inscrits **5 fois par page** en texte blanc, taille 4pt, opacité 0,4%
 - Complètement invisible à l'oeil nu et à l'impression
 - Physiquement présent dans le flux de contenu PDF — aucun outil de "nettoyage de métadonnées" n'y touche
-- Détectable en faisant `Ctrl+A` (sélectionner tout) dans Adobe Acrobat : l'email apparaît dans la sélection
+- Détectable en faisant `Ctrl+A` (sélectionner tout) dans Adobe Acrobat : le nom et l'email apparaissent dans la sélection
 
-**Pour identifier l'origine d'un fichier partagé illégalement** : ouvrir le PDF dans Adobe Acrobat, faire `Ctrl+A`, copier le texte dans un éditeur — l'email de l'acheteur est lisible 5 fois par page. Croiser avec la table `orders` dans Supabase.
+**Pour identifier l'origine d'un fichier partagé illégalement** : ouvrir le PDF dans Adobe Acrobat, faire `Ctrl+A`, copier le texte dans un éditeur — le nom et l'email de l'acheteur sont lisibles 5 fois par page. Croiser avec la table `orders` dans Supabase pour retrouver la commande exacte.
 
 Les fichiers sources dans `backend/assets/` ne sont jamais modifiés.
+
+### Et si l'acheteur a utilisé un faux nom ou une fausse adresse email ?
+
+Le nom saisi sur la page de paiement est un champ libre : n'importe qui peut y écrire ce qu'il veut. L'email aussi peut être un alias jetable. Mais **le vrai identifiant d'un acheteur, c'est sa carte bancaire** — et celle-ci est conservée par Stripe.
+
+Pour chaque commande, Stripe enregistre et conserve :
+
+| Donnée | Fiable ? | Falsifiable ? |
+|---|---|---|
+| Email saisi | Non | Oui — alias Gmail, Yopmail… |
+| Nom saisi | Non | Oui — champ libre |
+| 4 derniers chiffres de la carte | Oui | Non |
+| Nom du titulaire de la carte | Oui | Très difficile |
+| Adresse de facturation | Oui (collectée automatiquement) | Partiellement |
+| Empreinte unique de la carte (`fingerprint`) | Oui — identifie une carte même si le nom change | Non |
+
+**En pratique** : si un fichier est partagé illégalement, on identifie l'email via la stéganographie, on le retrouve dans le tableau de bord Stripe, et on accède aux coordonnées bancaires complètes. C'est suffisant pour une mise en demeure ou un signalement.
+
+Le seul vrai angle mort est la carte prépayée anonyme — mais c'est un cas très rare, et quelqu'un qui achète des fiches de terminale à 15€ avec une carte prépayée pour les redistribuer est une situation exceptionnelle.
 
 ### Ajouter un nouveau produit à livrer
 
