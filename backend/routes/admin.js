@@ -1,5 +1,5 @@
 const express = require('express');
-const { getOrders }        = require('../services/db');
+const { getOrders, getAdminStats } = require('../services/db');
 const { generateInvoice }  = require('../services/invoice');
 
 const router = express.Router();
@@ -22,6 +22,20 @@ router.get('/orders', requireAdminKey, async (req, res) => {
     res.json(orders);
   } catch (err) {
     console.error('[admin] getOrders erreur :', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/admin/stats
+// Retourne les stats calculées depuis la base.
+// Paramètre optionnel : ?year=2026
+router.get('/stats', requireAdminKey, async (req, res) => {
+  try {
+    const year  = req.query.year ? parseInt(req.query.year) : undefined;
+    const stats = await getAdminStats({ year });
+    res.json(stats);
+  } catch (err) {
+    console.error('[admin] stats erreur :', err.message);
     res.status(500).json({ error: err.message });
   }
 });
