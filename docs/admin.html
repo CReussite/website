@@ -200,6 +200,7 @@
         <div class="stat-card"><div class="stat-label">Chiffre d'affaires</div><div class="stat-value" id="stat-revenue">-</div></div>
         <div class="stat-card"><div class="stat-label">Mails clients</div><div class="stat-value" id="stat-emails">-</div></div>
         <div class="stat-card"><div class="stat-label">Emails envoyes</div><div class="stat-value" id="stat-sent">-</div></div>
+        <div class="stat-card"><div class="stat-label">Extraits envoyes</div><div class="stat-value" id="stat-extracts">-</div></div>
         <div class="stat-card"><div class="stat-label">En attente</div><div class="stat-value" id="stat-pending">-</div></div>
       </div>
 
@@ -209,39 +210,48 @@
           <a class="service-link" href="https://c-reussite.fr" target="_blank" rel="noopener noreferrer">
             <strong>Site public</strong>
             <span>https://c-reussite.fr</span>
+            <em>Voir le site tel qu'un eleve le voit.</em>
           </a>
           <a class="service-link" href="https://creussite-backend.onrender.com/api/healthz" target="_blank" rel="noopener noreferrer">
             <strong>Health backend</strong>
             <span>https://creussite-backend.onrender.com/api/healthz</span>
+            <em>Verifier rapidement si le serveur fonctionne bien.</em>
           </a>
           <a class="service-link" href="https://dashboard.render.com/web/srv-d7chdpa8qa3s73bjljs0" target="_blank" rel="noopener noreferrer">
             <strong>Render dashboard</strong>
             <span>https://dashboard.render.com/web/srv-d7chdpa8qa3s73bjljs0</span>
+            <em>Consulter les logs et l'etat du backend.</em>
           </a>
           <a class="service-link" href="https://dashboard.stripe.com" target="_blank" rel="noopener noreferrer">
             <strong>Stripe</strong>
             <span>https://dashboard.stripe.com</span>
+            <em>Suivre les paiements et les transactions carte bancaire.</em>
           </a>
           <a class="service-link" href="https://supabase.com/dashboard/project/llomqecxvbefakyysskn" target="_blank" rel="noopener noreferrer">
             <strong>Supabase</strong>
             <span>https://supabase.com/dashboard/project/llomqecxvbefakyysskn</span>
+            <em>Voir la base de donnees et les tables du site.</em>
           </a>
           <a class="service-link" href="https://app.brevo.com" target="_blank" rel="noopener noreferrer">
             <strong>Brevo</strong>
             <span>https://app.brevo.com</span>
+            <em>Verifier les emails envoyes et le quota du jour.</em>
           </a>
           <a class="service-link" href="https://github.com/CReussite/website" target="_blank" rel="noopener noreferrer">
             <strong>GitHub repo</strong>
             <span>https://github.com/CReussite/website</span>
+            <em>Retrouver le code source du site.</em>
           </a>
           <a class="service-link" href="https://github.com/CReussite/website/actions" target="_blank" rel="noopener noreferrer">
             <strong>GitHub Actions</strong>
             <span>https://github.com/CReussite/website/actions</span>
+            <em>Voir si les deploiements automatiques ont reussi.</em>
           </a>
         </div>
       </div>
 
       <div class="table-card">
+        <h2 class="section-title" style="padding:20px 24px 0;">Commandes</h2>
         <div class="table-scroll">
           <table>
             <thead>
@@ -261,6 +271,25 @@
           </table>
         </div>
       </div>
+
+      <div class="table-card subsection">
+        <h2 class="section-title" style="padding:20px 24px 0;">Extraits gratuits envoyes</h2>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Date / heure</th>
+                <th>Email</th>
+                <th>Extrait</th>
+                <th>Source</th>
+              </tr>
+            </thead>
+            <tbody id="extracts-tbody">
+              <tr><td colspan="4" class="table-empty">Chargement...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -272,6 +301,7 @@
       let adminKey = '';
       let allOrders = [];
       let allStats = null;
+      let allExtracts = [];
 
       const loginScreen = document.getElementById('login-screen');
       const dashboard = document.getElementById('dashboard');
@@ -280,10 +310,12 @@
       const keyInput = document.getElementById('admin-key-input');
       const yearFilter = document.getElementById('year-filter');
       const tbody = document.getElementById('orders-tbody');
+      const extractsTbody = document.getElementById('extracts-tbody');
       const statCount = document.getElementById('stat-count');
       const statRevenue = document.getElementById('stat-revenue');
       const statEmails = document.getElementById('stat-emails');
       const statSent = document.getElementById('stat-sent');
+      const statExtracts = document.getElementById('stat-extracts');
       const statPending = document.getElementById('stat-pending');
 
       function resolveBackendUrl() {
@@ -342,6 +374,13 @@
           : allOrders;
       }
 
+      function getFilteredExtracts() {
+        const year = yearFilter.value;
+        return year
+          ? allExtracts.filter(function (extract) { return String(new Date(extract.sent_at).getFullYear()) === year; })
+          : allExtracts;
+      }
+
       function populateYearFilter() {
         yearFilter.innerHTML = '<option value="">Toutes les annees</option>';
         const years = Array.from(new Set(allOrders.map(function (order) {
@@ -384,17 +423,35 @@
         });
       }
 
+      function renderExtracts(extracts) {
+        if (!extracts.length) {
+          extractsTbody.innerHTML = '<tr><td colspan="4" class="table-empty">Aucun extrait envoye.</td></tr>';
+          return;
+        }
+
+        extractsTbody.innerHTML = extracts.map(function (extract) {
+          return '<tr>' +
+            '<td>' + fmtDateTime(extract.sent_at) + '</td>' +
+            '<td>' + extract.email + '</td>' +
+            '<td>' + fmtProduct(extract.product_id) + '</td>' +
+            '<td>' + (extract.source || 'website') + '</td>' +
+            '</tr>';
+        }).join('');
+      }
+
       function renderStats(stats) {
         statCount.textContent = stats.total_orders;
         statRevenue.textContent = fmtPrice(stats.total_revenue);
         statEmails.textContent = stats.unique_emails;
         statSent.textContent = stats.sent_orders;
+        statExtracts.textContent = stats.extract_requests || 0;
         statPending.textContent = stats.pending_orders;
       }
 
       async function renderDashboard() {
         const year = yearFilter.value;
         const orders = getFilteredOrders();
+        const extracts = getFilteredExtracts();
         let stats = year ? null : allStats;
 
         if (year) {
@@ -406,6 +463,7 @@
 
         renderStats(stats || computeStatsFromOrders(orders));
         renderOrders(orders);
+        renderExtracts(extracts);
       }
 
       function showDashboard() {
@@ -419,16 +477,18 @@
         try {
           const responses = await Promise.all([
             fetch(BACKEND + '/api/admin/orders?key=' + encodeURIComponent(key)),
-            fetch(BACKEND + '/api/admin/stats?key=' + encodeURIComponent(key))
+            fetch(BACKEND + '/api/admin/stats?key=' + encodeURIComponent(key)),
+            fetch(BACKEND + '/api/admin/extracts?key=' + encodeURIComponent(key))
           ]);
 
-          if (!responses[0].ok || !responses[1].ok) throw new Error('invalid');
+          if (!responses[0].ok || !responses[1].ok || !responses[2].ok) throw new Error('invalid');
 
-          const payloads = await Promise.all([responses[0].json(), responses[1].json()]);
+          const payloads = await Promise.all([responses[0].json(), responses[1].json(), responses[2].json()]);
 
           adminKey = key;
           allOrders = payloads[0];
           allStats = payloads[1];
+          allExtracts = payloads[2];
           loginError.style.display = 'none';
           localStorage.setItem(KEY_STORAGE, key);
           showDashboard();
