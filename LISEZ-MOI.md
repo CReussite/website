@@ -45,8 +45,8 @@ Pages existantes :
 - `docs/cgu.html` — Conditions Générales d'Utilisation
 - `docs/mentions-legales.html` — Mentions légales (SIRET et adresse à compléter)
 - `docs/confidentialite.html` — Politique de confidentialité
-- `docs/beta.html` — Formulaire beta-testeur (noindex, non référencé)
-- `docs/admin.html` — Tableau de bord admin (protégé par `ADMIN_KEY`)
+- `docs/beta.html` — Formulaire beta-testeur (noindex, non référencé) — 2 formulaires (PC seul / Pack Maths+PC), multi-étapes, envoi par email à `creussite2026@gmail.com`
+- `docs/admin.html` — Tableau de bord admin (protégé par `ADMIN_KEY`) — affiche un bandeau jaune si Stripe est en mode test
 
 Structure de la page d'accueil (dans l'ordre) :
 1. Hero — accroche BAC 2026, Terminale Spécialité
@@ -64,7 +64,7 @@ Routes disponibles :
 - `POST /api/checkout` — crée une session de paiement Stripe
 - `POST /webhook` — reçoit la confirmation de paiement Stripe
 - `POST /api/extract` — envoie un extrait gratuit par email
-- `POST /api/beta-feedback` — enregistre un avis beta-testeur dans Supabase
+- `POST /api/beta-feedback` — reçoit les retours beta-testeurs et envoie un email structuré à `creussite2026@gmail.com`
 - `GET /api/products` — liste des produits (même source que le frontend)
 - `GET /api/admin/orders` — liste des commandes (protégé par `ADMIN_KEY`)
 - `GET /api/admin/export` — télécharge un CSV de toutes les commandes (protégé par `ADMIN_KEY`)
@@ -480,7 +480,7 @@ Pour le volume actuel d'une micro-entreprise débutante, le coût mensuel fixe e
 | Priorité | Recommandation | Bénéfice | Difficulté | Urgence |
 |---|---|---|---|---|
 | 1 | **Configurer `ALERT_EMAIL` dans Render** | Être prévenue immédiatement si une commande échoue | Faible — juste ajouter la variable dans Render | Haute — le code est prêt, il manque juste la variable |
-| 2 | **Déposer les extraits PDF** (`extrait-maths.pdf`, `extrait-physique-chimie.pdf`) dans `backend/assets/` | Le bouton "Recevoir un extrait" fonctionne vraiment | Zéro développement — juste déposer les fichiers | Haute |
+| 2 | ~~**Déposer les extraits PDF**~~ **FAIT** — `extrait-maths.pdf` et `extrait-physique-chimie.pdf` présents dans `backend/assets/` | Le bouton "Recevoir un extrait" fonctionne | — | — |
 | 3 | **Compléter les mentions légales** (SIRET et adresse dans `mentions-legales.html`) | Conformité légale | Zéro développement | Haute |
 | 4 | **Configurer `BCC_EMAIL` dans Render** | Recevoir une copie de chaque email de commande | Faible — juste ajouter la variable dans Render | Moyenne |
 | 5 | ~~**Archiver les factures**~~ **FAIT** — Supabase Storage bucket "invoices" | Retrouver et télécharger une facture depuis l'admin | — | Créer le bucket "invoices" dans Supabase (manuel) |
@@ -490,4 +490,4 @@ Pour le volume actuel d'une micro-entreprise débutante, le coût mensuel fixe e
 
 ---
 
-*Document maintenu à jour avec chaque modification du code. Dernière synchronisation : 10 avril 2026 — archivage factures, export CSV, tableau de bord admin.*
+*Document maintenu à jour avec chaque modification du code. Dernière synchronisation : 10 avril 2026 — formulaire beta-testeurs, header/footer admin, indicateur mode Stripe, extraits PDF opérationnels.*
