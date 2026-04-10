@@ -93,6 +93,9 @@ async function sendOrderEmail({ toEmail, customerName, product, invoicePdf, invo
   sendSmtpEmail.attachment = attachments;
   sendSmtpEmail.htmlContent = `
     <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1A1A2E;">
+      <div style="text-align:center;padding:24px 0 16px;">
+        <img src="https://c-reussite.fr/img/logo.jpeg" alt="C'Réussite" style="height:72px;width:auto;">
+      </div>
       <h2 style="color:#112250;">Merci pour ta commande !</h2>
       <p>Bonjour ${name},</p>
       <p>Tu trouveras tes fiches en pièce jointe à cet email.</p>
