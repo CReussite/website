@@ -63,6 +63,9 @@ Routes disponibles :
 - `POST /webhook` — reçoit la confirmation de paiement Stripe
 - `POST /api/extract` — envoie un extrait gratuit par email
 - `GET /api/products` — liste des produits (même source que le frontend)
+- `GET /api/admin/orders` — liste des commandes (protégé par `ADMIN_KEY`)
+- `GET /api/admin/export` — télécharge un CSV de toutes les commandes (protégé par `ADMIN_KEY`)
+- `GET /api/admin/invoice/:num` — re-génère et télécharge une facture PDF (protégé par `ADMIN_KEY`)
 - `GET /api/health` — health check simple
 - `GET /api/healthz` — health check détaillé (vérifie variables d'environnement et alertes)
 
@@ -118,7 +121,8 @@ Routes disponibles :
 | 13. Traçage stéganographique | Nom + email de l'acheteur inscrits invisiblement sur chaque page des PDFs produits | Backend (pdf-lib) | PDF modifié en mémoire | Les fichiers sources dans `backend/assets/` ne sont pas modifiés |
 | 14. Envoi email | Email envoyé avec PDFs produits + facture en pièces jointes | Backend → Brevo | Email envoyé | Si Brevo indisponible, backend répond 500 → Stripe retentera |
 | 15. Marquage email_sent | Le champ `email_sent` passe à `true` en base | Backend → Supabase | `email_sent = true` | Empêche les doubles livraisons sur retry Stripe |
-| 16. Alerte ops si erreur | Si une erreur survient, un email d'alerte est envoyé à `ALERT_EMAIL` | Backend → Brevo | Aucune | Nécessite que `ALERT_EMAIL` soit configuré dans Railway |
+| 16. Archivage facture | Le PDF de facture est uploadé dans Supabase Storage (bucket "invoices") | Backend → Supabase Storage | PDF dans `invoices/2026/2026-001.pdf` + chemin en base | Non bloquant : ignoré si le bucket n'existe pas |
+| 17. Alerte ops si erreur | Si une erreur survient, un email d'alerte est envoyé à `ALERT_EMAIL` | Backend → Brevo | Aucune | Nécessite que `ALERT_EMAIL` soit configuré dans Railway |
 
 ### Ce qui se passe si le paiement échoue
 Stripe ne déclenche pas de webhook. Aucune commande n'est créée. Le client est renvoyé vers `cancel.html`.
@@ -217,7 +221,7 @@ Même avec un faux nom et un faux email, les coordonnées bancaires dans Stripe 
 | Mention TVA | "TVA non applicable – article 293 B du CGI" | Backend | Non stocké | PDF facture |
 | Mention acquittement | "Facture acquittée" | Backend | Non stocké | PDF facture |
 
-La facture est générée **en mémoire** à chaque commande, puis jointe à l'email. Elle n'est pas sauvegardée côté serveur. Seul le numéro de facture est stocké en base.
+La facture est générée **en mémoire** à chaque commande, puis jointe à l'email. Elle est ensuite archivée dans Supabase Storage (bucket "invoices", organisation `AAAA/AAAA-NNN.pdf`). Le chemin d'accès est sauvegardé dans la colonne `invoice_path` en base. Depuis le tableau de bord admin, il est possible de re-télécharger n'importe quelle facture à tout moment via le bouton "PDF" (la facture est re-générée depuis les données en base).
 
 ---
 
@@ -236,6 +240,7 @@ Une seule table : `orders`.
 | `stripe_session_id` | Identifiant unique Stripe | Texte UNIQUE | Oui | Empêche les doublons en base |
 | `invoice_number` | Numéro de facture (ex: `2026-001`) | Texte | Oui | Numérotation comptable |
 | `email_sent` | L'email a-t-il été envoyé ? | Booléen (défaut: false) | Oui | Empêche les doubles livraisons sur retry Stripe |
+| `invoice_path` | Chemin du PDF archivé dans Supabase Storage | Texte (nullable) | Non | Ex: `2026/2026-001.pdf` — null si l'archivage a échoué |
 | `created_at` | Date et heure de la commande | Date avec fuseau | Oui (automatique) | Exports et comptabilité |
 
 Index existants : sur `email`, `stripe_session_id`, `invoice_number`, et un index partiel sur `email_sent = false` (pour retrouver rapidement les commandes non livrées).
@@ -244,21 +249,37 @@ Les données ne sont **jamais effacées automatiquement**. Les sauvegardes autom
 
 ---
 
-## 9. Exporter les commandes en Excel
+## 9. Tableau de bord admin et export des commandes
 
-| Méthode | Complexité | Recommandée ? |
-|---|---|---|
-| Export manuel depuis l'interface Supabase | Faible — quelques clics | Oui pour commencer |
-| Export via requête SQL dans Supabase | Faible — copier-coller | Oui dès que les volumes augmentent |
-| Route `/api/export` sécurisée (à développer) | Moyenne | Recommandé à terme |
+### Tableau de bord admin
 
-### Méthode 1 — Interface Supabase (sans code)
+La page `docs/admin.html` (accessible à l'adresse `c-reussite.fr/admin.html`) est un tableau de bord protégé par mot de passe (`ADMIN_KEY`).
+
+**Fonctionnalités :**
+- **Connexion** : saisie de la clé d'accès (`ADMIN_KEY`, configurée dans Railway)
+- **Stats** : nombre de commandes, chiffre d'affaires total, emails envoyés, commandes en attente
+- **Tableau** : toutes les commandes (N° facture, date, email, produit, montant, statut email)
+- **Filtre par année** : pour ne voir qu'une année donnée
+- **Export CSV** : télécharge un fichier `.csv` compatible Excel (BOM UTF-8, ouvre correctement)
+- **Téléchargement facture** : bouton "PDF" par ligne, re-génère la facture depuis la base
+- **Déconnexion** : supprime la clé du localStorage
+
+La clé est mémorisée dans le navigateur entre les sessions (localStorage). Pour se déconnecter depuis n'importe quel appareil, utiliser le bouton "Déconnexion".
+
+### Export CSV depuis le tableau de bord
+
+1. Aller sur `c-reussite.fr/admin.html`
+2. Saisir la clé d'accès
+3. Optionnel : sélectionner une année dans le filtre
+4. Cliquer "Exporter CSV"
+5. Le fichier `commandes.csv` (ou `commandes-2026.csv`) se télécharge — ouvrir dans Excel
+
+### Export manuel via Supabase (sans code)
 1. Aller sur [supabase.com/dashboard](https://supabase.com/dashboard)
 2. Ouvrir le projet C'Réussite
 3. Table Editor → table `orders` → bouton Export → CSV
-4. Ouvrir dans Excel ou Google Sheets
 
-### Méthode 2 — Requête SQL
+### Requête SQL directe
 
 Dans Supabase, **SQL Editor** :
 
@@ -321,6 +342,7 @@ Tout push sur la branche `main` de GitHub déclenche automatiquement :
 | `FROM_NAME` | Nom affiché dans l'expéditeur (ex: "C'Réussite") |
 | `ALERT_EMAIL` | Adresse qui reçoit les alertes en cas d'erreur backend |
 | `BCC_EMAIL` | Adresse en copie cachée de chaque email de commande et d'extrait |
+| `ADMIN_KEY` | Clé d'accès au tableau de bord admin (`/admin.html`) — choisir une valeur longue et aléatoire |
 
 ### Health checks
 
@@ -344,9 +366,7 @@ Lancer les tests : `cd backend && npm test`
 
 ### Ce qui manque pour fiabiliser davantage
 
-- Les factures ne sont pas archivées (seulement dans l'email du client)
-- Pas de tableau de bord admin pour suivre les ventes en temps réel
-- Export automatique des commandes non encore développé
+- Créer le bucket "invoices" dans Supabase Storage (étape manuelle — sans cela, l'archivage est ignoré silencieusement)
 
 ---
 
@@ -412,7 +432,7 @@ Oui. Modifier `docs/content/products.json`, déposer les PDFs dans `backend/asse
 ---
 
 **Peut-on exporter toutes les commandes ?**
-Oui. Depuis l'interface Supabase, export CSV en quelques clics. Voir section 9 pour les requêtes SQL prêtes à l'emploi.
+Oui. Depuis le tableau de bord admin (`/admin.html`), cliquer "Exporter CSV" — un fichier téléchargeable s'ouvre directement dans Excel. Voir section 9 pour d'autres méthodes.
 
 ---
 
@@ -460,11 +480,11 @@ Pour le volume actuel d'une micro-entreprise débutante, le coût mensuel fixe e
 | 2 | **Déposer les extraits PDF** (`extrait-maths.pdf`, `extrait-physique-chimie.pdf`) dans `backend/assets/` | Le bouton "Recevoir un extrait" fonctionne vraiment | Zéro développement — juste déposer les fichiers | Haute |
 | 3 | **Compléter les mentions légales** (SIRET et adresse dans `mentions-legales.html`) | Conformité légale | Zéro développement | Haute |
 | 4 | **Configurer `BCC_EMAIL` dans Railway** | Recevoir une copie de chaque email de commande | Faible — juste ajouter la variable dans Railway | Moyenne |
-| 5 | **Archiver les factures** dans Supabase ou un stockage cloud | Retrouver et renvoyer une facture sans la recréer | Moyenne | Moyenne |
-| 6 | **Export automatique des commandes** (route `/api/export` sécurisée) | Télécharger les commandes en un clic | Moyenne | Moyenne |
-| 7 | **Tableau de bord admin** | Voir commandes et CA en temps réel | Élevée (ou utiliser Supabase Dashboard en attendant) | Faible |
+| 5 | ~~**Archiver les factures**~~ **FAIT** — Supabase Storage bucket "invoices" | Retrouver et télécharger une facture depuis l'admin | — | Créer le bucket "invoices" dans Supabase (manuel) |
+| 6 | ~~**Export automatique des commandes**~~ **FAIT** — route `/api/admin/export` + bouton dans l'admin | Télécharger les commandes en un clic depuis `/admin.html` | — | — |
+| 7 | ~~**Tableau de bord admin**~~ **FAIT** — `docs/admin.html` | Voir commandes, CA, statut emails, télécharger factures | — | Configurer `ADMIN_KEY` dans Railway |
 | 8 | **Ajouter les tests en CI** | Détecter un bug avant qu'il arrive en production | Faible | Faible |
 
 ---
 
-*Document maintenu à jour avec chaque modification du code. Dernière synchronisation : 10 avril 2026.*
+*Document maintenu à jour avec chaque modification du code. Dernière synchronisation : 10 avril 2026 — archivage factures, export CSV, tableau de bord admin.*

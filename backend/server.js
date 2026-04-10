@@ -43,6 +43,9 @@ app.use('/api/checkout', require('./routes/checkout'));
 // Envoi d'extrait gratuit
 app.use('/api/extract', require('./routes/extract'));
 
+// Admin (commandes, export CSV, téléchargement factures)
+app.use('/api/admin', require('./routes/admin'));
+
 app.get('/api/healthz', (req, res) => {
   const missingEnv = REQUIRED_ENV_VARS.filter((key) => !process.env[key]);
   const hasAlerts = Boolean(process.env.ALERT_EMAIL);

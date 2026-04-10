@@ -1,7 +1,7 @@
 const express  = require('express');
 const path     = require('path');
 const stripe   = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const { insertOrderIdempotent, markEmailSent } = require('../services/db');
+const { insertOrderIdempotent, markEmailSent, uploadInvoicePdf, saveInvoicePath } = require('../services/db');
 const { generateInvoice }       = require('../services/invoice');
 const { sendOrderEmail }        = require('../services/mailer');
 const { sendOpsAlert }          = require('../services/alerts');
@@ -84,6 +84,10 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
 
       // 4. Marquer l'email comme envoyé (empêche les re-livraisons lors des retries Stripe)
       await markEmailSent(session.id);
+
+      // 5. Archiver la facture dans Supabase Storage (non bloquant)
+      const invoicePath = await uploadInvoicePdf(invoiceNumber, invoicePdf);
+      if (invoicePath) await saveInvoicePath(session.id, invoicePath);
 
       console.log(`[webhook] Commande ${invoiceNumber} traitée — ${customerEmail} — ${product.name}`);
     } catch (err) {
