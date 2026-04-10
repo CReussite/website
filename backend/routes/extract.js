@@ -13,7 +13,7 @@ const defaultClient = SibApiV3Sdk.ApiClient.instance;
 defaultClient.authentications['api-key'].apiKey = process.env.BREVO_API_KEY;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
-const CONTACT_EMAIL = 'contact@creussite.fr';
+const CONTACT_EMAIL = 'contact@c-reussite.fr';
 
 /** Stéganographie : inscrit l'email du destinataire en texte invisible dans chaque page */
 async function stampExtractPdf(pdfBuffer, recipientEmail) {
