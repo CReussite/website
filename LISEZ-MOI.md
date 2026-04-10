@@ -381,7 +381,7 @@ Toute modification du code poussée sur la branche `main` de GitHub déclenche a
 | Partie | Où elle est déployée | Déclencheur | Variables d'environnement | Ce qu'il faut surveiller |
 |---|---|---|---|---|
 | Frontend (site visible) | GitHub Pages | Push sur `main` via GitHub Actions | Aucune | Vérifier que la page d'accueil s'affiche correctement |
-| Backend (moteur) | Railway | Push sur `main` (Railway surveille le repo) | `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `BREVO_API_KEY`, `FROM_EMAIL`, `FROM_NAME` | Vérifier le health check après redéploiement |
+| Backend (moteur) | Railway | Push sur `main` (Railway surveille le repo) | `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `BREVO_API_KEY`, `FROM_EMAIL`, `FROM_NAME`, `ALERT_EMAIL` (optionnel) | Vérifier le health check après redéploiement |
 | Migrations base de données | Supabase | Push sur `main` (intégration GitHub Supabase) | Aucune | Vérifier que les migrations ne contiennent pas d'erreurs SQL |
 
 ### Variables d'environnement
@@ -397,10 +397,11 @@ Ce sont les "clés secrètes" du site. Elles ne sont jamais écrites dans le cod
 | `BREVO_API_KEY` | Clé pour envoyer des emails via Brevo |
 | `FROM_EMAIL` | Adresse email de l'expéditeur des emails automatiques |
 | `FROM_NAME` | Nom affiché dans l'expéditeur de l'email (ex: "C'Réussite") |
+| `ALERT_EMAIL` | Adresse qui reçoit un email technique si le traitement d'une commande échoue |
 
 ### Tests automatisés existants
 
-Le backend dispose de **4 fichiers de tests** :
+Le backend dispose de **5 fichiers de tests** :
 
 | Fichier de test | Ce qu'il teste | Nécessite des credentials ? |
 |---|---|---|
@@ -408,8 +409,9 @@ Le backend dispose de **4 fichiers de tests** :
 | `tests/webhook.test.js` | Logique de traitement d'une commande + idempotence | Partiellement (signature Stripe skippée sans clé) |
 | `tests/checkout.test.js` | Création de session Stripe | Oui (skippé sans clé Stripe) |
 | `tests/products.test.js` | Validité du catalogue `products.json` | Non |
+| `tests/alerts.test.js` | Construction des alertes techniques backend | Non |
 
-Les tests se lancent avec `npm test` dans le dossier `backend/`. 14 tests passent, 2 sont skippés (nécessitent une clé Stripe réelle).
+Les tests se lancent avec `npm test` dans le dossier `backend/`. Un workflow GitHub Actions lance aussi automatiquement les tests backend à chaque push et à chaque pull request.
 
 ### Ce qui manque pour fiabiliser davantage le projet
 
@@ -417,8 +419,6 @@ Le point `email_sent` n'est plus un manque : une migration existe désormais pou
 
 Les principaux manques restants sont aujourd'hui :
 
-- Aucune alerte automatique n'est en place si un email échoue, si le webhook Stripe échoue plusieurs fois, ou si le backend Railway devient indisponible
-- Les tests backend existent, mais ils ne sont pas encore lancés automatiquement en CI avant les déploiements
 - Les factures sont générées en mémoire puis envoyées, mais elles ne sont pas archivées dans un stockage durable pour pouvoir les renvoyer facilement
 - Il n'existe pas encore de sauvegarde métier indépendante (export régulier des commandes/factures) en plus des mécanismes natifs de Supabase
 - Il n'y a pas de tableau de bord simple pour suivre les ventes, les commandes récentes et les éventuels échecs d'envoi en un coup d'oeil

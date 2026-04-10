@@ -7,6 +7,8 @@ const defaultClient = SibApiV3Sdk.ApiClient.instance;
 defaultClient.authentications['api-key'].apiKey = process.env.BREVO_API_KEY;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
+const CONTACT_EMAIL = 'contact@creussite.fr';
+
 /**
  * Ajoute les métadonnées de traçabilité + un filigrane invisible dans chaque page du PDF.
  * Le nom de l'acheteur est inscrit dans les métadonnées Author et Keywords.
@@ -84,7 +86,7 @@ async function sendOrderEmail({ toEmail, customerName, product, invoicePdf, invo
 
   const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
   sendSmtpEmail.sender     = { name: process.env.FROM_NAME || "C'Réussite", email: process.env.FROM_EMAIL };
-  sendSmtpEmail.replyTo    = { email: process.env.FROM_EMAIL, name: process.env.FROM_NAME || "C'Réussite" };
+  sendSmtpEmail.replyTo    = { email: CONTACT_EMAIL, name: process.env.FROM_NAME || "C'Réussite" };
   sendSmtpEmail.to         = [{ email: toEmail, name }];
   sendSmtpEmail.subject    = `Tes fiches sont là — ${product.name}`;
   sendSmtpEmail.attachment = attachments;
@@ -133,7 +135,7 @@ async function sendOrderEmail({ toEmail, customerName, product, invoicePdf, invo
 
       <p style="font-size:0.85rem;color:#6b7280;">
         Une question ? Réponds à cet email ou écris à
-        <a href="mailto:${process.env.FROM_EMAIL}" style="color:#112250;">${process.env.FROM_EMAIL}</a>.
+        <a href="mailto:${CONTACT_EMAIL}" style="color:#112250;">${CONTACT_EMAIL}</a>.
       </p>
       <p style="font-size:0.85rem;color:#6b7280;">L'équipe C'Réussite</p>
     </div>
