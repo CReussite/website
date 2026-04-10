@@ -46,6 +46,9 @@ app.use('/api/extract', require('./routes/extract'));
 // Admin (commandes, export CSV, téléchargement factures)
 app.use('/api/admin', require('./routes/admin'));
 
+// Beta feedback
+app.use('/api/beta-feedback', require('./routes/beta'));
+
 app.get('/api/healthz', (req, res) => {
   const missingEnv = REQUIRED_ENV_VARS.filter((key) => !process.env[key]);
   const hasAlerts = Boolean(process.env.ALERT_EMAIL);
