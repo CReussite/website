@@ -65,6 +65,7 @@ async function sendOrderEmail({ toEmail, customerName, product, invoicePdf, invo
 
   const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
   sendSmtpEmail.sender     = { name: process.env.FROM_NAME || "C'Réussite", email: process.env.FROM_EMAIL };
+  sendSmtpEmail.replyTo    = { email: process.env.FROM_EMAIL, name: process.env.FROM_NAME || "C'Réussite" };
   sendSmtpEmail.to         = [{ email: toEmail, name }];
   sendSmtpEmail.subject    = `Tes fiches sont là — ${product.name}`;
   sendSmtpEmail.attachment = attachments;

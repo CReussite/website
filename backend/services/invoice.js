@@ -27,8 +27,7 @@ function generateInvoice({ invoiceNumber, email, productName, amount, date }) {
     doc
       .fontSize(10)
       .font('Helvetica')
-      .text(process.env.FROM_EMAIL || 'creussite2026@gmail.com', 50, 75)
-      .text('c-reussite.fr', 50, 90);
+      .text('c-reussite.fr', 50, 75);
 
     doc
       .fontSize(20)
