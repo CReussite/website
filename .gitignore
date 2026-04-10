@@ -3,6 +3,9 @@ backend/.env
 backend/**/.env
 .env
 
+# Railway CLI (config locale générée par `railway link`)
+.railway/
+
 # Dépendances Node
 node_modules/
 backend/node_modules/
