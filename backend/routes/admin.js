@@ -1,5 +1,5 @@
 const express = require('express');
-const { getOrders, getAdminStats } = require('../services/db');
+const { getOrders, getAdminStats, getExtractRequests } = require('../services/db');
 const { generateInvoice }  = require('../services/invoice');
 
 const router = express.Router();
@@ -36,6 +36,17 @@ router.get('/stats', requireAdminKey, async (req, res) => {
     res.json(stats);
   } catch (err) {
     console.error('[admin] stats erreur :', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get('/extracts', requireAdminKey, async (req, res) => {
+  try {
+    const year = req.query.year ? parseInt(req.query.year) : undefined;
+    const extracts = await getExtractRequests({ year });
+    res.json(extracts);
+  } catch (err) {
+    console.error('[admin] extracts erreur :', err.message);
     res.status(500).json({ error: err.message });
   }
 });

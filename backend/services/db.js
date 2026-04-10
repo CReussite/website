@@ -106,6 +106,21 @@ async function getAdminStats({ year } = {}) {
   const { data, error } = await query;
   if (error) throw new Error(`DB getAdminStats failed: ${error.message}`);
 
+  let extractQuery = supabase
+    .from('extract_requests')
+    .select('email, sent_at');
+
+  if (year) {
+    const start = `${year}-01-01T00:00:00.000Z`;
+    const end = `${year + 1}-01-01T00:00:00.000Z`;
+    extractQuery = extractQuery.gte('sent_at', start).lt('sent_at', end);
+  }
+
+  const { data: extracts, error: extractsError } = await extractQuery;
+  if (extractsError && extractsError.code !== 'PGRST205') {
+    throw new Error(`DB getAdminStats extracts failed: ${extractsError.message}`);
+  }
+
   const uniqueEmails = new Set();
   let totalRevenue = 0;
   let sentOrders = 0;
@@ -116,13 +131,55 @@ async function getAdminStats({ year } = {}) {
     if (order.email_sent) sentOrders += 1;
   }
 
+  const uniqueExtractEmails = new Set();
+  for (const extract of extracts || []) {
+    if (extract.email) uniqueExtractEmails.add(String(extract.email).trim().toLowerCase());
+  }
+
   return {
     total_orders: data.length,
     total_revenue: totalRevenue,
     unique_emails: uniqueEmails.size,
     sent_orders: sentOrders,
     pending_orders: data.length - sentOrders,
+    extract_requests: (extracts || []).length,
+    extract_emails: uniqueExtractEmails.size,
   };
+}
+
+async function insertExtractRequest({ email, productId, source = 'website' }) {
+  const supabase = getClient();
+  const { error } = await supabase
+    .from('extract_requests')
+    .insert({
+      email,
+      product_id: productId,
+      source,
+    });
+
+  if (error) throw new Error(`DB insertExtractRequest failed: ${error.message}`);
+}
+
+async function getExtractRequests({ year, limit = 200 } = {}) {
+  const supabase = getClient();
+  let query = supabase
+    .from('extract_requests')
+    .select('*')
+    .order('sent_at', { ascending: false })
+    .limit(limit);
+
+  if (year) {
+    const start = `${year}-01-01T00:00:00.000Z`;
+    const end = `${year + 1}-01-01T00:00:00.000Z`;
+    query = query.gte('sent_at', start).lt('sent_at', end);
+  }
+
+  const { data, error } = await query;
+  if (error) {
+    if (error.code === 'PGRST205') return [];
+    throw new Error(`DB getExtractRequests failed: ${error.message}`);
+  }
+  return data;
 }
 
 /**
@@ -160,9 +217,11 @@ async function saveInvoicePath(stripeSessionId, invoicePath) {
 module.exports = {
   getClient,
   insertOrderIdempotent,
+  insertExtractRequest,
   markEmailSent,
   getOrders,
   getAdminStats,
+  getExtractRequests,
   uploadInvoicePdf,
   saveInvoicePath,
 };
