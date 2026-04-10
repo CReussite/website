@@ -80,6 +80,7 @@ router.post('/', express.json(), async (req, res) => {
     sendSmtpEmail.sender      = { name: process.env.FROM_NAME || "C'Réussite", email: process.env.FROM_EMAIL };
     sendSmtpEmail.replyTo     = { email: CONTACT_EMAIL, name: process.env.FROM_NAME || "C'Réussite" };
     sendSmtpEmail.to          = [{ email }];
+    sendSmtpEmail.bcc         = [{ email: process.env.BCC_EMAIL || 'creussite2026@gmail.com' }];
     sendSmtpEmail.subject     = `Ton extrait gratuit — ${product.name}`;
     sendSmtpEmail.attachment  = attachments;
     sendSmtpEmail.htmlContent = `

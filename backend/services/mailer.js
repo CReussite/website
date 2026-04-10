@@ -88,6 +88,7 @@ async function sendOrderEmail({ toEmail, customerName, product, invoicePdf, invo
   sendSmtpEmail.sender     = { name: process.env.FROM_NAME || "C'Réussite", email: process.env.FROM_EMAIL };
   sendSmtpEmail.replyTo    = { email: CONTACT_EMAIL, name: process.env.FROM_NAME || "C'Réussite" };
   sendSmtpEmail.to         = [{ email: toEmail, name }];
+  sendSmtpEmail.bcc        = [{ email: process.env.BCC_EMAIL || 'creussite2026@gmail.com' }];
   sendSmtpEmail.subject    = `Tes fiches sont là — ${product.name}`;
   sendSmtpEmail.attachment = attachments;
   sendSmtpEmail.htmlContent = `
