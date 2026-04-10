@@ -538,12 +538,15 @@ footer a:hover { color: var(--quicksand); }
   font-weight: 700;
   color: var(--quicksand);
   margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center logo and any inline text */
 }
 .footer-logo span { color: var(--white); }
 
 /* Footer logo image sizing & centering */
 .footer-logo-img {
-  height: 48px; /* smaller logo in footer */
+  height: 40px; /* slightly smaller footer logo */
   width: auto;
   display: block;
   margin: 0 auto 12px; /* center and keep spacing */
