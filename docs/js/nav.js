@@ -19,7 +19,6 @@
             <svg viewBox="0 0 24 24" aria-hidden="true" class="nav-admin-icon">
               <path d="M7 10V8a5 5 0 0 1 10 0v2h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1zm2 0h6V8a3 3 0 0 0-6 0v2z" fill="currentColor"></path>
             </svg>
-            <span>Admin</span>
           </a>
           <button class="nav-burger" aria-label="Ouvrir le menu" aria-expanded="false">
             <span></span><span></span><span></span>

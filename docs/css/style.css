@@ -848,7 +848,14 @@ footer a:hover { color: var(--quicksand); }
     padding: 12px 24px;
     font-size: 1rem;
   }
-  .nav-admin-link { padding: 8px; }
+  .nav-admin-link {
+    padding: 8px;
+    border-color: rgba(255,255,255,0.4);
+  }
+  .nav-admin-icon {
+    width: 20px;
+    height: 20px;
+  }
 
   .nav-logo-img { height: 52px; }
   .bundle-card { padding: 28px 20px; }
