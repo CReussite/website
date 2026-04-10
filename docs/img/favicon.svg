@@ -1,11 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect width="64" height="64" rx="8" fill="#1a2744"/>
-  <!-- Triangle principal (montagne grande) -->
-  <polygon points="32,10 50,42 14,42" fill="#c9a96e"/>
-  <!-- Triangle petit (devant) -->
-  <polygon points="22,26 30,42 14,42" fill="#8a7a5a"/>
-  <!-- Cercle (soleil/lune) -->
-  <circle cx="40" cy="20" r="5" fill="#c9a96e" opacity="0.8"/>
-  <!-- Texte C'R -->
-  <text x="32" y="58" text-anchor="middle" font-family="Georgia,serif" font-size="14" font-weight="bold" fill="#c9a96e">C'R</text>
+  <!-- Grand triangle (montagne) -->
+  <polygon points="32,8 58,52 6,52" fill="none" stroke="#c9a96e" stroke-width="2.5"/>
+  <!-- Petit triangle plein (devant) -->
+  <polygon points="24,32 34,52 14,52" fill="#8a7a5a"/>
+  <!-- Cercle doré (soleil) -->
+  <circle cx="42" cy="26" r="6" fill="#c9a96e"/>
 </svg>
