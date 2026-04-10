@@ -91,6 +91,41 @@ async function getOrders({ year, limit = 1000 } = {}) {
 }
 
 /**
+ * Retourne les statistiques admin calculées depuis la table orders.
+ * @param {object} opts
+ * @param {number} [opts.year] - filtre sur l'année (ex: 2026)
+ */
+async function getAdminStats({ year } = {}) {
+  const supabase = getClient();
+  let query = supabase
+    .from('orders')
+    .select('email, amount, email_sent, invoice_number');
+
+  if (year) query = query.like('invoice_number', `${year}-%`);
+
+  const { data, error } = await query;
+  if (error) throw new Error(`DB getAdminStats failed: ${error.message}`);
+
+  const uniqueEmails = new Set();
+  let totalRevenue = 0;
+  let sentOrders = 0;
+
+  for (const order of data) {
+    totalRevenue += Number(order.amount || 0);
+    if (order.email) uniqueEmails.add(String(order.email).trim().toLowerCase());
+    if (order.email_sent) sentOrders += 1;
+  }
+
+  return {
+    total_orders: data.length,
+    total_revenue: totalRevenue,
+    unique_emails: uniqueEmails.size,
+    sent_orders: sentOrders,
+    pending_orders: data.length - sentOrders,
+  };
+}
+
+/**
  * Upload le PDF de facture dans Supabase Storage (bucket "invoices").
  * Non bloquant : retourne null si le bucket n'existe pas encore.
  */
@@ -122,4 +157,12 @@ async function saveInvoicePath(stripeSessionId, invoicePath) {
   if (error) console.warn(`[storage] saveInvoicePath échoué : ${error.message}`);
 }
 
-module.exports = { getClient, insertOrderIdempotent, markEmailSent, getOrders, uploadInvoicePdf, saveInvoicePath };
+module.exports = {
+  getClient,
+  insertOrderIdempotent,
+  markEmailSent,
+  getOrders,
+  getAdminStats,
+  uploadInvoicePdf,
+  saveInvoicePath,
+};
