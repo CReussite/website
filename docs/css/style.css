@@ -852,9 +852,17 @@ footer a:hover { color: var(--quicksand); }
 
   .nav-logo-img { height: 80px; }
   .bundle-card { padding: 28px 20px; }
-  .hero-cards { flex-direction: column; align-items: center; }
-  .hero-card { width: 100%; max-width: 320px; padding-right: 74px; }
-  .hero-card-media .hero-card-img { width: 32px; }
+  .hero-cards { flex-direction: column; align-items: stretch; }
+  .hero-card {
+    width: 100%;
+    max-width: none;
+    min-height: 108px;
+    padding: 16px 82px 16px 14px;
+  }
+  .hero-card-pack { padding-right: 96px; }
+  .hero-card-media { right: 10px; }
+  .hero-card-media .hero-card-img { width: 34px; }
+  .hero-card-media-pack { gap: 4px; }
   .product-mini-cover img { width: 100%; }
   .bundle-mini-covers img { width: calc((100% - 40px) / 2); }
   .bundle-plus {
