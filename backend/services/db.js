@@ -57,4 +57,16 @@ async function insertOrderIdempotent({ email, productId, amount, stripeSessionId
   return { order, invoiceNumber, isNew: true };
 }
 
-module.exports = { insertOrderIdempotent };
+/**
+ * Marque l'email comme envoyé pour une commande donnée.
+ */
+async function markEmailSent(stripeSessionId) {
+  const supabase = getClient();
+  const { error } = await supabase
+    .from('orders')
+    .update({ email_sent: true })
+    .eq('stripe_session_id', stripeSessionId);
+  if (error) throw new Error(`DB markEmailSent failed: ${error.message}`);
+}
+
+module.exports = { insertOrderIdempotent, markEmailSent };
