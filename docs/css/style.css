@@ -541,6 +541,14 @@ footer a:hover { color: var(--quicksand); }
 }
 .footer-logo span { color: var(--white); }
 
+/* Footer logo image sizing & centering */
+.footer-logo-img {
+  height: 48px; /* smaller logo in footer */
+  width: auto;
+  display: block;
+  margin: 0 auto 12px; /* center and keep spacing */
+}
+
 /* ===== UTILITIES ===== */
 .text-center { text-align: center; }
 .mt-8 { margin-top: 8px; }
