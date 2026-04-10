@@ -1,40 +1,109 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin — C'Réussite</title>
+  <title>Admin - C'Reussite</title>
   <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="img/favicon.ico">
   <link rel="stylesheet" href="css/style.css">
   <style>
     body { background: var(--swan-wing, #f8f5ee); min-height: 100vh; }
-
     .admin-wrap { max-width: 1100px; margin: 0 auto; padding: 32px 20px 64px; }
-
-    /* ── Login ── */
     .login-card {
-      max-width: 360px; margin: 80px auto; background: #fff;
-      border-radius: 16px; padding: 40px 32px; box-shadow: 0 4px 24px rgba(0,0,0,.08);
+      max-width: 360px;
+      margin: 80px auto;
+      background: #fff;
+      border-radius: 16px;
+      padding: 40px 32px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, .08);
       text-align: center;
     }
     .login-card h1 { font-size: 1.4rem; margin-bottom: 8px; }
     .login-card p { font-size: .9rem; color: #6b7280; margin-bottom: 24px; }
-
-    /* ── Header ── */
-    .admin-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
     .admin-header h1 { font-size: 1.5rem; margin: 0; }
     .admin-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-    .admin-actions select, .admin-actions input { padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: .9rem; background: #fff; }
-
-    /* ── Stats ── */
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 28px; }
-    .stat-card { background: #fff; border-radius: 12px; padding: 20px 24px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
-    .stat-label { font-size: .78rem; color: #6b7280; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 6px; }
+    .admin-actions select, .admin-actions input {
+      padding: 8px 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: .9rem;
+      background: #fff;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+    }
+    .stat-label {
+      font-size: .78rem;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: 6px;
+    }
     .stat-value { font-size: 1.6rem; font-weight: 800; color: var(--sapphire, #112250); }
-    .stat-sub { font-size: .78rem; color: #6b7280; margin-top: 2px; }
-
-    /* ── Table ── */
-    .table-card { background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,.06); overflow: hidden; }
+    .services-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+    .services-card h2 {
+      margin: 0 0 14px;
+      font-size: 1.05rem;
+      color: var(--sapphire, #112250);
+    }
+    .service-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .service-link {
+      display: block;
+      padding: 12px 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      color: #112250;
+      text-decoration: none;
+      background: #fcfcfd;
+    }
+    .service-link:hover {
+      border-color: #112250;
+      background: #f6f8fc;
+    }
+    .service-link strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: .92rem;
+    }
+    .service-link span {
+      display: block;
+      font-size: .8rem;
+      color: #6b7280;
+      word-break: break-all;
+    }
+    .table-card { background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0, 0, 0, .06); overflow: hidden; }
     .table-scroll { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: .88rem; }
     thead tr { background: var(--sapphire, #112250); color: #fff; }
@@ -42,214 +111,342 @@
     td { padding: 11px 16px; border-bottom: 1px solid #f3f4f6; vertical-align: middle; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: #fafafa; }
-    .badge-ok  { background: #d1fae5; color: #065f46; border-radius: 99px; padding: 2px 10px; font-size: .78rem; font-weight: 600; white-space: nowrap; }
-    .badge-ko  { background: #fee2e2; color: #991b1b; border-radius: 99px; padding: 2px 10px; font-size: .78rem; font-weight: 600; white-space: nowrap; }
-    .btn-dl    { font-size: .78rem; padding: 4px 10px; border: 1px solid var(--sapphire, #112250); border-radius: 6px; color: var(--sapphire, #112250); background: transparent; cursor: pointer; white-space: nowrap; }
+    .badge-ok {
+      background: #d1fae5;
+      color: #065f46;
+      border-radius: 99px;
+      padding: 2px 10px;
+      font-size: .78rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge-ko {
+      background: #fee2e2;
+      color: #991b1b;
+      border-radius: 99px;
+      padding: 2px 10px;
+      font-size: .78rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .btn-dl {
+      font-size: .78rem;
+      padding: 4px 10px;
+      border: 1px solid var(--sapphire, #112250);
+      border-radius: 6px;
+      color: var(--sapphire, #112250);
+      background: transparent;
+      cursor: pointer;
+      white-space: nowrap;
+    }
     .btn-dl:hover { background: var(--sapphire, #112250); color: #fff; }
-
-    /* ── Empty / Loading ── */
     .table-empty { text-align: center; padding: 48px 24px; color: #6b7280; }
-
-    /* ── Logout ── */
-    .btn-logout { font-size: .82rem; padding: 6px 14px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; cursor: pointer; color: #6b7280; }
+    .btn-logout {
+      font-size: .82rem;
+      padding: 6px 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      background: #fff;
+      cursor: pointer;
+      color: #6b7280;
+    }
     .btn-logout:hover { border-color: #b91c1c; color: #b91c1c; }
   </style>
 </head>
 <body>
-
-<!-- ===== LOGIN ===== -->
-<div id="login-screen">
-  <div class="login-card">
-    <h1>C'Réussite</h1>
-    <p>Tableau de bord admin</p>
-    <form id="login-form" class="contact-form">
-      <div class="form-group">
-        <label class="form-label" for="admin-key-input">Clé d'accès</label>
-        <input class="form-control" type="password" id="admin-key-input" placeholder="••••••••" required autocomplete="current-password">
-      </div>
-      <button type="submit" class="btn btn-primary btn-block">Accéder</button>
-    </form>
-    <p id="login-error" style="color:#b91c1c;font-size:.85rem;margin-top:12px;display:none;">Clé invalide.</p>
+  <div id="login-screen">
+    <div class="login-card">
+      <h1>C'Reussite</h1>
+      <p>Tableau de bord admin</p>
+      <form id="login-form" class="contact-form">
+        <div class="form-group">
+          <label class="form-label" for="admin-key-input">Cle d'acces</label>
+          <input class="form-control" type="password" id="admin-key-input" placeholder="********" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Acceder</button>
+      </form>
+      <p id="login-error" style="color:#b91c1c;font-size:.85rem;margin-top:12px;display:none;">Cle invalide.</p>
+    </div>
   </div>
-</div>
 
-<!-- ===== DASHBOARD ===== -->
-<div id="dashboard" style="display:none;">
-  <div class="admin-wrap">
+  <div id="dashboard" style="display:none;">
+    <div class="admin-wrap">
+      <div class="admin-header">
+        <h1>Tableau de bord</h1>
+        <div class="admin-actions">
+          <select id="year-filter">
+            <option value="">Toutes les annees</option>
+          </select>
+          <button id="btn-export" class="btn btn-primary" style="font-size:.88rem;padding:8px 16px;">Exporter CSV</button>
+          <button class="btn-logout" id="btn-logout">Deconnexion</button>
+        </div>
+      </div>
 
-    <div class="admin-header">
-      <h1>Tableau de bord</h1>
-      <div class="admin-actions">
-        <select id="year-filter">
-          <option value="">Toutes les années</option>
-        </select>
-        <button id="btn-export" class="btn btn-primary" style="font-size:.88rem;padding:8px 16px;">Exporter CSV</button>
-        <button class="btn-logout" id="btn-logout">Déconnexion</button>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-label">Commandes</div><div class="stat-value" id="stat-count">-</div></div>
+        <div class="stat-card"><div class="stat-label">Chiffre d'affaires</div><div class="stat-value" id="stat-revenue">-</div></div>
+        <div class="stat-card"><div class="stat-label">Mails clients</div><div class="stat-value" id="stat-emails">-</div></div>
+        <div class="stat-card"><div class="stat-label">Emails envoyes</div><div class="stat-value" id="stat-sent">-</div></div>
+        <div class="stat-card"><div class="stat-label">En attente</div><div class="stat-value" id="stat-pending">-</div></div>
+      </div>
+
+      <div class="services-card">
+        <h2>Supervision</h2>
+        <div class="service-links">
+          <a class="service-link" href="https://c-reussite.fr" target="_blank" rel="noopener noreferrer">
+            <strong>Site public</strong>
+            <span>https://c-reussite.fr</span>
+          </a>
+          <a class="service-link" href="https://creussite-backend.onrender.com/api/healthz" target="_blank" rel="noopener noreferrer">
+            <strong>Health backend</strong>
+            <span>https://creussite-backend.onrender.com/api/healthz</span>
+          </a>
+          <a class="service-link" href="https://dashboard.render.com/web/srv-d7chdpa8qa3s73bjljs0" target="_blank" rel="noopener noreferrer">
+            <strong>Render dashboard</strong>
+            <span>https://dashboard.render.com/web/srv-d7chdpa8qa3s73bjljs0</span>
+          </a>
+          <a class="service-link" href="https://dashboard.stripe.com" target="_blank" rel="noopener noreferrer">
+            <strong>Stripe</strong>
+            <span>https://dashboard.stripe.com</span>
+          </a>
+          <a class="service-link" href="https://supabase.com/dashboard/project/llomqecxvbefakyysskn" target="_blank" rel="noopener noreferrer">
+            <strong>Supabase</strong>
+            <span>https://supabase.com/dashboard/project/llomqecxvbefakyysskn</span>
+          </a>
+          <a class="service-link" href="https://app.brevo.com" target="_blank" rel="noopener noreferrer">
+            <strong>Brevo</strong>
+            <span>https://app.brevo.com</span>
+          </a>
+          <a class="service-link" href="https://github.com/CReussite/website" target="_blank" rel="noopener noreferrer">
+            <strong>GitHub repo</strong>
+            <span>https://github.com/CReussite/website</span>
+          </a>
+          <a class="service-link" href="https://github.com/CReussite/website/actions" target="_blank" rel="noopener noreferrer">
+            <strong>GitHub Actions</strong>
+            <span>https://github.com/CReussite/website/actions</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>No Facture</th>
+                <th>Date / heure</th>
+                <th>Email client</th>
+                <th>Produit</th>
+                <th>Montant</th>
+                <th>Email</th>
+                <th>Facture</th>
+              </tr>
+            </thead>
+            <tbody id="orders-tbody">
+              <tr><td colspan="7" class="table-empty">Chargement...</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-
-    <div class="stats-grid" id="stats-grid">
-      <div class="stat-card"><div class="stat-label">Commandes</div><div class="stat-value" id="stat-count">—</div></div>
-      <div class="stat-card"><div class="stat-label">Chiffre d'affaires</div><div class="stat-value" id="stat-revenue">—</div></div>
-      <div class="stat-card"><div class="stat-label">Emails envoyés</div><div class="stat-value" id="stat-sent">—</div></div>
-      <div class="stat-card"><div class="stat-label">En attente</div><div class="stat-value" id="stat-pending">—</div></div>
-    </div>
-
-    <div class="table-card">
-      <div class="table-scroll">
-        <table>
-          <thead>
-            <tr>
-              <th>N° Facture</th>
-              <th>Date</th>
-              <th>Email client</th>
-              <th>Produit</th>
-              <th>Montant</th>
-              <th>Email</th>
-              <th>Facture</th>
-            </tr>
-          </thead>
-          <tbody id="orders-tbody">
-            <tr><td colspan="7" class="table-empty">Chargement…</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
   </div>
-</div>
 
-<script>
-(function () {
-  const BACKEND = 'https://creussite-backend.onrender.com';
-  const KEY_STORAGE = 'creussite_admin_key';
+  <script>
+    (function () {
+      const BACKEND = resolveBackendUrl();
+      const KEY_STORAGE = 'creussite_admin_key';
 
-  let adminKey  = '';
-  let allOrders = [];
+      let adminKey = '';
+      let allOrders = [];
+      let allStats = null;
 
-  // ── Éléments ──────────────────────────────────────────
-  const loginScreen  = document.getElementById('login-screen');
-  const dashboard    = document.getElementById('dashboard');
-  const loginForm    = document.getElementById('login-form');
-  const loginError   = document.getElementById('login-error');
-  const keyInput     = document.getElementById('admin-key-input');
-  const yearFilter   = document.getElementById('year-filter');
-  const tbody        = document.getElementById('orders-tbody');
-  const statCount    = document.getElementById('stat-count');
-  const statRevenue  = document.getElementById('stat-revenue');
-  const statSent     = document.getElementById('stat-sent');
-  const statPending  = document.getElementById('stat-pending');
+      const loginScreen = document.getElementById('login-screen');
+      const dashboard = document.getElementById('dashboard');
+      const loginForm = document.getElementById('login-form');
+      const loginError = document.getElementById('login-error');
+      const keyInput = document.getElementById('admin-key-input');
+      const yearFilter = document.getElementById('year-filter');
+      const tbody = document.getElementById('orders-tbody');
+      const statCount = document.getElementById('stat-count');
+      const statRevenue = document.getElementById('stat-revenue');
+      const statEmails = document.getElementById('stat-emails');
+      const statSent = document.getElementById('stat-sent');
+      const statPending = document.getElementById('stat-pending');
 
-  // ── Formatage ─────────────────────────────────────────
-  function fmtDate(iso) {
-    return new Date(iso).toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit', year:'numeric' });
-  }
-  function fmtPrice(centimes) {
-    return (centimes / 100).toFixed(2).replace('.', ',') + ' €';
-  }
-  function fmtProduct(id) {
-    const map = { maths: 'Maths', physique: 'Physique-Chimie', bundle: 'Pack Maths + PC' };
-    return map[id] || id;
-  }
+      function resolveBackendUrl() {
+        const hostname = window.location.hostname;
+        if (hostname === 'localhost' || hostname === '127.0.0.1') return 'http://localhost:3000';
+        return 'https://creussite-backend.onrender.com';
+      }
 
-  // ── Login ─────────────────────────────────────────────
-  const savedKey = localStorage.getItem(KEY_STORAGE);
-  if (savedKey) tryLogin(savedKey);
+      function fmtDateTime(iso) {
+        return new Date(iso).toLocaleString('fr-FR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      }
 
-  loginForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    tryLogin(keyInput.value.trim());
-  });
+      function fmtPrice(centimes) {
+        return (Number(centimes || 0) / 100).toFixed(2).replace('.', ',') + ' EUR';
+      }
 
-  async function tryLogin(key) {
-    try {
-      const res = await fetch(`${BACKEND}/api/admin/orders?key=${encodeURIComponent(key)}`);
-      if (!res.ok) throw new Error('invalid');
-      adminKey = key;
-      localStorage.setItem(KEY_STORAGE, key);
-      allOrders = await res.json();
-      showDashboard();
-    } catch {
-      loginError.style.display = 'block';
-    }
-  }
+      function fmtProduct(id) {
+        const map = {
+          maths: 'Maths',
+          physique: 'Physique-Chimie',
+          bundle: 'Pack Maths + PC'
+        };
+        return map[id] || id;
+      }
 
-  // ── Déconnexion ───────────────────────────────────────
-  document.getElementById('btn-logout').addEventListener('click', function () {
-    localStorage.removeItem(KEY_STORAGE);
-    location.reload();
-  });
+      function computeStatsFromOrders(orders) {
+        const uniqueEmails = new Set();
+        let revenue = 0;
+        let sent = 0;
 
-  // ── Affichage dashboard ───────────────────────────────
-  function showDashboard() {
-    loginScreen.style.display = 'none';
-    dashboard.style.display   = 'block';
-    populateYearFilter();
-    renderOrders(allOrders);
-  }
+        orders.forEach(function (order) {
+          revenue += Number(order.amount || 0);
+          if (order.email) uniqueEmails.add(String(order.email).trim().toLowerCase());
+          if (order.email_sent) sent += 1;
+        });
 
-  function populateYearFilter() {
-    const years = [...new Set(allOrders.map(o => o.invoice_number.split('-')[0]))].sort().reverse();
-    years.forEach(function (y) {
-      const opt = document.createElement('option');
-      opt.value = y;
-      opt.textContent = y;
-      yearFilter.appendChild(opt);
-    });
-  }
+        return {
+          total_orders: orders.length,
+          total_revenue: revenue,
+          unique_emails: uniqueEmails.size,
+          sent_orders: sent,
+          pending_orders: orders.length - sent
+        };
+      }
 
-  yearFilter.addEventListener('change', function () {
-    const y = yearFilter.value;
-    renderOrders(y ? allOrders.filter(o => o.invoice_number.startsWith(y + '-')) : allOrders);
-  });
+      function getFilteredOrders() {
+        const year = yearFilter.value;
+        return year
+          ? allOrders.filter(function (order) { return order.invoice_number.startsWith(year + '-'); })
+          : allOrders;
+      }
 
-  // ── Render ────────────────────────────────────────────
-  function renderOrders(orders) {
-    // Stats
-    const total   = orders.length;
-    const revenue = orders.reduce(function (s, o) { return s + o.amount; }, 0);
-    const sent    = orders.filter(function (o) { return o.email_sent; }).length;
-    statCount.textContent   = total;
-    statRevenue.textContent = fmtPrice(revenue);
-    statSent.textContent    = sent;
-    statPending.textContent = total - sent;
+      function populateYearFilter() {
+        yearFilter.innerHTML = '<option value="">Toutes les annees</option>';
+        const years = Array.from(new Set(allOrders.map(function (order) {
+          return order.invoice_number.split('-')[0];
+        }))).sort().reverse();
 
-    if (!orders.length) {
-      tbody.innerHTML = '<tr><td colspan="7" class="table-empty">Aucune commande.</td></tr>';
-      return;
-    }
+        years.forEach(function (year) {
+          const option = document.createElement('option');
+          option.value = year;
+          option.textContent = year;
+          yearFilter.appendChild(option);
+        });
+      }
 
-    tbody.innerHTML = orders.map(function (o) {
-      return '<tr>' +
-        '<td><strong>' + o.invoice_number + '</strong></td>' +
-        '<td>' + fmtDate(o.created_at) + '</td>' +
-        '<td>' + o.email + '</td>' +
-        '<td>' + fmtProduct(o.product_id) + '</td>' +
-        '<td><strong>' + fmtPrice(o.amount) + '</strong></td>' +
-        '<td>' + (o.email_sent
-          ? '<span class="badge-ok">Envoyé</span>'
-          : '<span class="badge-ko">En attente</span>') + '</td>' +
-        '<td><button class="btn-dl" data-inv="' + o.invoice_number + '">PDF</button></td>' +
-        '</tr>';
-    }).join('');
+      function renderOrders(orders) {
+        if (!orders.length) {
+          tbody.innerHTML = '<tr><td colspan="7" class="table-empty">Aucune commande.</td></tr>';
+          return;
+        }
 
-    // Téléchargement facture
-    tbody.querySelectorAll('.btn-dl').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        const inv = btn.getAttribute('data-inv');
-        window.open(`${BACKEND}/api/admin/invoice/${encodeURIComponent(inv)}?key=${encodeURIComponent(adminKey)}`, '_blank');
+        tbody.innerHTML = orders.map(function (order) {
+          return '<tr>' +
+            '<td><strong>' + order.invoice_number + '</strong></td>' +
+            '<td>' + fmtDateTime(order.created_at) + '</td>' +
+            '<td>' + order.email + '</td>' +
+            '<td>' + fmtProduct(order.product_id) + '</td>' +
+            '<td><strong>' + fmtPrice(order.amount) + '</strong></td>' +
+            '<td>' + (order.email_sent
+              ? '<span class="badge-ok">Envoye</span>'
+              : '<span class="badge-ko">En attente</span>') + '</td>' +
+            '<td><button class="btn-dl" data-inv="' + order.invoice_number + '">PDF</button></td>' +
+            '</tr>';
+        }).join('');
+
+        tbody.querySelectorAll('.btn-dl').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            const invoiceNumber = btn.getAttribute('data-inv');
+            window.open(BACKEND + '/api/admin/invoice/' + encodeURIComponent(invoiceNumber) + '?key=' + encodeURIComponent(adminKey), '_blank');
+          });
+        });
+      }
+
+      function renderStats(stats) {
+        statCount.textContent = stats.total_orders;
+        statRevenue.textContent = fmtPrice(stats.total_revenue);
+        statEmails.textContent = stats.unique_emails;
+        statSent.textContent = stats.sent_orders;
+        statPending.textContent = stats.pending_orders;
+      }
+
+      async function renderDashboard() {
+        const year = yearFilter.value;
+        const orders = getFilteredOrders();
+        let stats = year ? null : allStats;
+
+        if (year) {
+          try {
+            const res = await fetch(BACKEND + '/api/admin/stats?key=' + encodeURIComponent(adminKey) + '&year=' + encodeURIComponent(year));
+            if (res.ok) stats = await res.json();
+          } catch (_) {}
+        }
+
+        renderStats(stats || computeStatsFromOrders(orders));
+        renderOrders(orders);
+      }
+
+      function showDashboard() {
+        loginScreen.style.display = 'none';
+        dashboard.style.display = 'block';
+        populateYearFilter();
+        renderDashboard();
+      }
+
+      async function tryLogin(key) {
+        try {
+          const responses = await Promise.all([
+            fetch(BACKEND + '/api/admin/orders?key=' + encodeURIComponent(key)),
+            fetch(BACKEND + '/api/admin/stats?key=' + encodeURIComponent(key))
+          ]);
+
+          if (!responses[0].ok || !responses[1].ok) throw new Error('invalid');
+
+          const payloads = await Promise.all([responses[0].json(), responses[1].json()]);
+
+          adminKey = key;
+          allOrders = payloads[0];
+          allStats = payloads[1];
+          loginError.style.display = 'none';
+          localStorage.setItem(KEY_STORAGE, key);
+          showDashboard();
+        } catch (_) {
+          loginError.style.display = 'block';
+        }
+      }
+
+      const savedKey = localStorage.getItem(KEY_STORAGE);
+      if (savedKey) tryLogin(savedKey);
+
+      loginForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        tryLogin(keyInput.value.trim());
       });
-    });
-  }
 
-  // ── Export CSV ────────────────────────────────────────
-  document.getElementById('btn-export').addEventListener('click', function () {
-    const year = yearFilter.value;
-    const url  = `${BACKEND}/api/admin/export?key=${encodeURIComponent(adminKey)}${year ? '&year=' + year : ''}`;
-    window.open(url, '_blank');
-  });
-})();
-</script>
+      yearFilter.addEventListener('change', function () {
+        renderDashboard();
+      });
 
+      document.getElementById('btn-export').addEventListener('click', function () {
+        const year = yearFilter.value;
+        const url = BACKEND + '/api/admin/export?key=' + encodeURIComponent(adminKey) + (year ? '&year=' + encodeURIComponent(year) : '');
+        window.open(url, '_blank');
+      });
+
+      document.getElementById('btn-logout').addEventListener('click', function () {
+        localStorage.removeItem(KEY_STORAGE);
+        location.reload();
+      });
+    })();
+  </script>
 </body>
 </html>
