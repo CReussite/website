@@ -76,3 +76,4 @@ app.get('/api/products', (req, res) => {
 app.listen(PORT, () => {
   console.log(`[server] C'Réussite démarré sur le port ${PORT}`);
 });
+
