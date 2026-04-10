@@ -1,5 +1,5 @@
 (function () {
-  var BACKEND_URL = 'https://website-production-2f4e.up.railway.app';
+  var BACKEND_URL = 'https://creussite-backend.onrender.com';
 
   var labels = {
     maths: {

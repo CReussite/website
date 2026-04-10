@@ -148,13 +148,13 @@ La contrainte `UNIQUE` sur `stripe_session_id` garantit l'idempotence : un retry
 ## Stripe — webhook
 
 1. Dashboard Stripe → Développeurs → Webhooks → **Ajouter un endpoint**
-   - URL : `https://website-production-2f4e.up.railway.app/webhook`
+   - URL : `https://creussite-backend.onrender.com/webhook`
    - Événement : `checkout.session.completed`
 2. Copier le **Signing secret** → variable Railway `STRIPE_WEBHOOK_SECRET`
 3. Tester depuis Stripe CLI :
 
 ```bash
-stripe listen --forward-to https://website-production-2f4e.up.railway.app/webhook
+stripe listen --forward-to https://creussite-backend.onrender.com/webhook
 stripe trigger checkout.session.completed
 ```
 
@@ -203,7 +203,7 @@ Start : `node backend/server.js`
 
 ```bash
 # Vérifier que le backend est en ligne
-curl https://website-production-2f4e.up.railway.app/api/health
+curl https://creussite-backend.onrender.com/api/health
 # → {"status":"ok","service":"C'Réussite backend"}
 ```
 
@@ -275,7 +275,7 @@ stripe trigger checkout.session.completed
 |---------|-----|
 | GitHub | https://github.com/CReussite/website |
 | Railway | https://railway.app → projet `amiable-reflection` |
-| Backend | https://website-production-2f4e.up.railway.app |
+| Backend | https://creussite-backend.onrender.com |
 | Stripe | https://dashboard.stripe.com |
 | Supabase | https://supabase.com |
 | Brevo | https://brevo.com |

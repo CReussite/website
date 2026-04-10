@@ -4,7 +4,7 @@
           → POST /api/checkout → redirect Stripe
    ===================================================== */
 
-const BACKEND_URL = 'https://website-production-2f4e.up.railway.app';
+const BACKEND_URL = 'https://creussite-backend.onrender.com';
 
 async function initPayment() {
   let products;

@@ -17,7 +17,7 @@ set -euo pipefail
 RAILWAY_PROJECT="amiable-reflection"
 RAILWAY_SERVICE="website"
 RAILWAY_ENV="production"
-BACKEND_URL="https://website-production-2f4e.up.railway.app"
+BACKEND_URL="https://creussite-backend.onrender.com"
 SUPABASE_URL="https://llomqecxvbefakyysskn.supabase.co"
 FRONTEND_URL="https://c-reussite.fr"
 GITHUB_REPO="CReussite/website"
