@@ -60,16 +60,23 @@ CReussite/
 │   ├── server.js                  ← Express + CORS
 │   ├── routes/
 │   │   ├── checkout.js            ← POST /api/checkout → Stripe Session
-│   │   └── webhook.js             ← POST /webhook → DB + invoice + email
+│   │   ├── webhook.js             ← POST /webhook → DB + invoice + email
+│   │   ├── extract.js             ← POST /api/extract → extrait gratuit par email
+│   │   ├── admin.js               ← GET /api/admin/* (orders, stats, export, invoice, config)
+│   │   └── beta.js                ← POST /api/beta-feedback → email à creussite2026@gmail.com
 │   ├── services/
 │   │   ├── db.js                  ← Supabase (insert idempotent)
-│   │   ├── invoice.js             ← Génération PDF facture
-│   │   └── mailer.js              ← Brevo (PDF produit + facture)
-│   ├── assets/                    ← PDFs à livrer (non commités)
+│   │   ├── invoice.js             ← Génération PDF facture (PDFKit)
+│   │   ├── mailer.js              ← Brevo (PDF produit + facture)
+│   │   └── alerts.js              ← Email d'alerte ops sur erreur webhook
+│   ├── assets/                    ← PDFs produits + extraits
 │   ├── tests/                     ← Tests node:test
 │   └── .env.example
 │
-├── .github/workflows/deploy.yml   ← GitHub Pages auto-deploy
+├── .github/workflows/
+│   ├── deploy.yml                 ← GitHub Pages auto-deploy
+│   ├── deploy-render.yml          ← Render auto-deploy (si backend/** modifié)
+│   └── backend-tests.yml          ← Tests automatiques sur chaque push
 └── render.yaml                   ← Config Render (rootDir: backend, plan: free)
 ```
 
@@ -82,9 +89,9 @@ Le backend et le frontend lisent tous les deux ce fichier.
 
 ```json
 [
-  { "id": "maths",    "name": "Fiches Maths Terminale Spécialité",     "price": 1499, "pdf_files": ["fiches-maths.pdf"] },
-  { "id": "physique", "name": "Fiches Physique-Chimie Terminale Spécialité", "price": 1499, "pdf_files": ["fiches-physique-chimie.pdf"] },
-  { "id": "bundle",   "name": "Pack Maths + Physique-Chimie",          "price": 2499, "pdf_files": ["fiches-maths.pdf", "fiches-physique-chimie.pdf"] }
+  { "id": "maths",    "name": "Fiches Maths Terminale Spécialité",          "price": 1499, "pdf_files": ["fiches-maths.pdf"],                                       "extract_files": ["extrait-maths.pdf"] },
+  { "id": "physique", "name": "Fiches Physique-Chimie Terminale Spécialité", "price": 1499, "pdf_files": ["fiches-physique-chimie.pdf"],                               "extract_files": ["extrait-physique-chimie.pdf"] },
+  { "id": "bundle",   "name": "Pack Maths + Physique-Chimie",               "price": 2499, "pdf_files": ["fiches-maths.pdf", "fiches-physique-chimie.pdf"],             "extract_files": ["extrait-maths.pdf", "extrait-physique-chimie.pdf"] }
 ]
 ```
 
@@ -96,18 +103,18 @@ Le backend et le frontend lisent tous les deux ce fichier.
 
 Copier `backend/.env.example`, remplir chaque valeur, puis les ajouter dans Render → Environment.
 
-| Variable | Source |
-|----------|--------|
+| Variable | Source / valeur |
+|----------|----------------|
 | `STRIPE_SECRET_KEY` | Stripe → Développeurs → Clés API |
 | `STRIPE_WEBHOOK_SECRET` | Stripe → Développeurs → Webhooks → Signing secret |
 | `SUPABASE_URL` | Supabase → Settings → API |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Settings → API |
 | `BREVO_API_KEY` | brevo.com → Paramètres → Clés API |
 | `FROM_EMAIL` | `contact@c-reussite.fr` |
-| `FROM_NAME` | `Camille Reinhardt, C'Réussite` |
-| `ALERT_EMAIL` | Adresse qui reÃ§oit les alertes backend |
-| `ALERT_FROM_NAME` | Nom affichÃ© pour les alertes techniques |
-| `FRONTEND_URL` | `https://c-reussite.fr` |
+| `FROM_NAME` | `C'Réussite` |
+| `BCC_EMAIL` | Adresse en copie cachée de chaque email de commande (ex: `creussite2026@gmail.com`) |
+| `ALERT_EMAIL` | Adresse qui reçoit les alertes en cas d'erreur backend |
+| `ADMIN_KEY` | Clé secrète pour accéder à `/admin.html` — choisir une valeur longue aléatoire |
 
 ```bash
 # Via l'API Render
@@ -125,17 +132,21 @@ Créer dans Supabase → SQL Editor :
 
 ```sql
 CREATE TABLE orders (
-  id                uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  email             text NOT NULL,
-  product_id        text NOT NULL,
-  amount            integer NOT NULL,
-  stripe_session_id text UNIQUE NOT NULL,
-  invoice_number    text NOT NULL,
+  id                uuid        PRIMARY KEY DEFAULT gen_random_uuid(),
+  email             text        NOT NULL,
+  product_id        text        NOT NULL,
+  amount            integer     NOT NULL,
+  stripe_session_id text        UNIQUE NOT NULL,
+  invoice_number    text        NOT NULL,
+  email_sent        boolean     DEFAULT false,
+  invoice_path      text,
   created_at        timestamptz DEFAULT now()
 );
 ```
 
-La contrainte `UNIQUE` sur `stripe_session_id` garantit l'idempotence : un retry Stripe ne crée pas de doublon.
+`UNIQUE` sur `stripe_session_id` = idempotence sur retry Stripe.
+`email_sent` = empêche les doubles livraisons.
+`invoice_path` = chemin Supabase Storage (`2026/2026-001.pdf`), nullable si archivage désactivé.
 
 ---
 
