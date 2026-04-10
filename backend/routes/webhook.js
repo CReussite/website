@@ -77,6 +77,8 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
         product,
         invoicePdf,
         invoiceNumber,
+        amount,
+        orderDate: new Date(order?.created_at || Date.now()),
       });
 
       // 4. Marquer l'email comme envoyé (empêche les re-livraisons lors des retries Stripe)
