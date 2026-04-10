@@ -358,10 +358,10 @@ nav {
 .bundle-mini-covers {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
   margin: 8px 0 16px;
   width: 100%;
-  max-width: 300px;
+  max-width: 420px;
   justify-content: flex-start;
 }
 .bundle-mini-covers img {
@@ -867,7 +867,7 @@ footer a:hover { color: var(--quicksand); }
   .hero-card-media-pack { gap: 4px; }
   .product-mini-cover { max-width: 180px; }
   .product-mini-cover img { width: 100%; }
-  .bundle-mini-covers { max-width: 180px; }
+  .bundle-mini-covers { max-width: 320px; }
   .bundle-mini-covers img { width: calc((100% - 24px) / 2); }
   .bundle-plus {
     font-size: 0.9rem;
