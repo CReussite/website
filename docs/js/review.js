@@ -55,7 +55,7 @@
     var message = encodeURIComponent(document.getElementById('review-message').value);
     var subject = encodeURIComponent(ratingInput.value);
     var body    = encodeURIComponent('Prénom : ') + name + '%0A' + encodeURIComponent('Avis : ') + message;
-    window.location.href = 'mailto:contact@c-reussite.fr?subject=' + subject + '&body=' + body;
+    window.open('https://mail.google.com/mail/?view=cm&fs=1&to=contact@c-reussite.fr&su=' + subject + '&body=' + body, '_blank');
     close();
   });
 })();

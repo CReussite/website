@@ -3,6 +3,7 @@ const fs      = require('fs');
 const path    = require('path');
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 const { PDFDocument, rgb } = require('pdf-lib');
+const { insertExtractRequest } = require('../services/db');
 
 const router = express.Router();
 
@@ -100,6 +101,7 @@ router.post('/', express.json(), async (req, res) => {
     `;
 
     await apiInstance.sendTransacEmail(sendSmtpEmail);
+    await insertExtractRequest({ email, productId: product_id });
     console.log(`[extract] Extrait envoyé à ${email} — ${product.name}`);
     res.json({ success: true });
   } catch (err) {
