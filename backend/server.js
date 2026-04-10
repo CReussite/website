@@ -52,16 +52,61 @@ app.use('/api/beta-feedback', require('./routes/beta'));
 app.get('/api/healthz', (req, res) => {
   const missingEnv = REQUIRED_ENV_VARS.filter((key) => !process.env[key]);
   const hasAlerts = Boolean(process.env.ALERT_EMAIL);
+  const isOk = missingEnv.length === 0;
+  const uptime = process.uptime();
+  const uptimeStr = uptime < 60 ? `${Math.floor(uptime)}s`
+    : uptime < 3600 ? `${Math.floor(uptime / 60)}min`
+    : `${Math.floor(uptime / 3600)}h ${Math.floor((uptime % 3600) / 60)}min`;
 
-  res.status(missingEnv.length ? 503 : 200).json({
-    status: missingEnv.length ? 'degraded' : 'ok',
-    service: "C'Reussite backend",
-    checks: {
-      env: missingEnv.length ? 'missing' : 'ok',
-      alerting: hasAlerts ? 'configured' : 'not_configured',
-    },
-    missing_env: missingEnv,
-  });
+  // JSON pour les appels API (curl, fetch, etc.)
+  if (!req.accepts('html') || req.headers['user-agent']?.includes('curl')) {
+    return res.status(isOk ? 200 : 503).json({
+      status: isOk ? 'ok' : 'degraded',
+      service: "C'Reussite backend",
+      checks: { env: isOk ? 'ok' : 'missing', alerting: hasAlerts ? 'configured' : 'not_configured' },
+      missing_env: missingEnv,
+    });
+  }
+
+  // HTML pour le navigateur
+  const statusLabel = isOk ? '✅ Actif' : '⚠️ Dégradé';
+  const statusColor = isOk ? '#27ae60' : '#e67e22';
+  const envLabel = isOk ? '✅ OK' : `❌ ${missingEnv.length} manquante(s)`;
+  const alertLabel = hasAlerts ? '✅ Configuré' : '➖ Non configuré';
+
+  res.status(isOk ? 200 : 503).send(`<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>C'Réussite — État du backend</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .card { background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); padding: 40px 48px; max-width: 440px; width: 90%; text-align: center; }
+    .logo { font-size: 1.4rem; font-weight: 700; color: #1a2744; margin-bottom: 4px; }
+    .sub { font-size: 0.82rem; color: #888; margin-bottom: 28px; }
+    .status { font-size: 2rem; font-weight: 700; color: ${statusColor}; margin-bottom: 24px; }
+    .checks { text-align: left; border-top: 1px solid #eee; padding-top: 20px; }
+    .row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 0.92rem; color: #444; border-bottom: 1px solid #f5f5f5; }
+    .row span:first-child { font-weight: 600; }
+    .footer { margin-top: 24px; font-size: 0.75rem; color: #aaa; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">C'Réussite</div>
+    <div class="sub">Backend — creussite-backend.onrender.com</div>
+    <div class="status">${statusLabel}</div>
+    <div class="checks">
+      <div class="row"><span>Variables d'env</span><span>${envLabel}</span></div>
+      <div class="row"><span>Alerting</span><span>${alertLabel}</span></div>
+      <div class="row"><span>Uptime</span><span>${uptimeStr}</span></div>
+    </div>
+    <div class="footer">Render free tier · Frankfurt · ${new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}</div>
+  </div>
+</body>
+</html>`);
 });
 
 // Health check
