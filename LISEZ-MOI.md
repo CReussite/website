@@ -45,6 +45,8 @@ Pages existantes :
 - `docs/cgu.html` — Conditions Générales d'Utilisation
 - `docs/mentions-legales.html` — Mentions légales (SIRET et adresse à compléter)
 - `docs/confidentialite.html` — Politique de confidentialité
+- `docs/beta.html` — Formulaire beta-testeur (noindex, non référencé)
+- `docs/admin.html` — Tableau de bord admin (protégé par `ADMIN_KEY`)
 
 Structure de la page d'accueil (dans l'ordre) :
 1. Hero — accroche BAC 2026, Terminale Spécialité
@@ -56,12 +58,13 @@ Structure de la page d'accueil (dans l'ordre) :
 
 ### Le backend — le moteur invisible
 
-Hébergé sur **Railway**. Il gère : création de sessions de paiement Stripe, réception du webhook, enregistrement des commandes, génération de factures, envoi des emails, alertes en cas d'erreur, et envoi des extraits gratuits.
+Hébergé sur **Render**. Il gère : création de sessions de paiement Stripe, réception du webhook, enregistrement des commandes, génération de factures, envoi des emails, alertes en cas d'erreur, et envoi des extraits gratuits.
 
 Routes disponibles :
 - `POST /api/checkout` — crée une session de paiement Stripe
 - `POST /webhook` — reçoit la confirmation de paiement Stripe
 - `POST /api/extract` — envoie un extrait gratuit par email
+- `POST /api/beta-feedback` — enregistre un avis beta-testeur dans Supabase
 - `GET /api/products` — liste des produits (même source que le frontend)
 - `GET /api/admin/orders` — liste des commandes (protégé par `ADMIN_KEY`)
 - `GET /api/admin/export` — télécharge un CSV de toutes les commandes (protégé par `ADMIN_KEY`)
@@ -79,7 +82,7 @@ Routes disponibles :
 | **PDFKit** | Génère la facture PDF à la volée |
 | **pdf-lib** | Ajoute le traçage stéganographique sur les PDFs produits et extraits |
 | **GitHub Pages** | Héberge le site visible |
-| **Railway** | Héberge le backend |
+| **Render** | Héberge le backend |
 
 ---
 
@@ -96,7 +99,7 @@ Routes disponibles :
 | PDFKit | Génération facture PDF | `backend/services/invoice.js` | Oui | Non | Open source |
 | pdf-lib | Traçage stéganographique des PDFs | `backend/services/mailer.js`, `extract.js` | Oui | Non | Open source |
 | GitHub Pages | Hébergement site visible | `docs/` + `.github/workflows/` | Oui | Non | Très fiable |
-| Railway | Hébergement backend | `backend/` | Oui (plan Hobby) | ~5$/mois si fort trafic | |
+| Render | Hébergement backend | `backend/` | Oui (plan free) | Gratuit (permanent) | |
 | GitHub Actions | Déploiement automatique | `.github/workflows/deploy.yml` | Oui | Non | |
 | Domaine c-reussite.fr | Adresse du site | `docs/CNAME` | Non (~10-15€/an) | Toujours payant | |
 
@@ -122,7 +125,7 @@ Routes disponibles :
 | 14. Envoi email | Email envoyé avec PDFs produits + facture en pièces jointes | Backend → Brevo | Email envoyé | Si Brevo indisponible, backend répond 500 → Stripe retentera |
 | 15. Marquage email_sent | Le champ `email_sent` passe à `true` en base | Backend → Supabase | `email_sent = true` | Empêche les doubles livraisons sur retry Stripe |
 | 16. Archivage facture | Le PDF de facture est uploadé dans Supabase Storage (bucket "invoices") | Backend → Supabase Storage | PDF dans `invoices/2026/2026-001.pdf` + chemin en base | Non bloquant : ignoré si le bucket n'existe pas |
-| 17. Alerte ops si erreur | Si une erreur survient, un email d'alerte est envoyé à `ALERT_EMAIL` | Backend → Brevo | Aucune | Nécessite que `ALERT_EMAIL` soit configuré dans Railway |
+| 17. Alerte ops si erreur | Si une erreur survient, un email d'alerte est envoyé à `ALERT_EMAIL` | Backend → Brevo | Aucune | Nécessite que `ALERT_EMAIL` soit configuré dans Render |
 
 ### Ce qui se passe si le paiement échoue
 Stripe ne déclenche pas de webhook. Aucune commande n'est créée. Le client est renvoyé vers `cancel.html`.
@@ -256,7 +259,7 @@ Les données ne sont **jamais effacées automatiquement**. Les sauvegardes autom
 La page `docs/admin.html` (accessible à l'adresse `c-reussite.fr/admin.html`) est un tableau de bord protégé par mot de passe (`ADMIN_KEY`).
 
 **Fonctionnalités :**
-- **Connexion** : saisie de la clé d'accès (`ADMIN_KEY`, configurée dans Railway)
+- **Connexion** : saisie de la clé d'accès (`ADMIN_KEY`, configurée dans Render)
 - **Stats** : nombre de commandes, chiffre d'affaires total, emails envoyés, commandes en attente
 - **Tableau** : toutes les commandes (N° facture, date, email, produit, montant, statut email)
 - **Filtre par année** : pour ne voir qu'une année donnée
@@ -311,7 +314,7 @@ ORDER BY created_at DESC;
 | **Stripe** | Paiement par carte | Non — 2,9% + 0,30€/transaction | Aucune limite volume | Toujours à l'usage | Refaire toute l'intégration paiement |
 | **Brevo** | Emails transactionnels + alertes ops | Oui — 300 emails/jour | 9 000/mois | Oui si dépassement | Modifier `mailer.js`, `extract.js`, `alerts.js` |
 | **Supabase** | Base de données | Oui — plan Free | 500 Mo, sauvegardes 7 jours | Oui — ~25$/mois (plan Pro) | Migrer les données, modifier `db.js` |
-| **Railway** | Hébergement backend | Oui — plan Hobby | ~500h CPU/mois | Oui ~5$/mois | Redéployer ailleurs (Render, Fly.io) |
+| **Render** | Hébergement backend | Oui — plan free | Aucune limite | Non | Permanent et gratuit |
 | **GitHub Pages** | Hébergement site visible | Oui | Bande passante raisonnable | Très peu probable | Modifier DNS et déploiement |
 | **GitHub Actions** | Déploiement automatique | Oui | 2 000 min/mois | Peu probable | Gérable facilement |
 | **Domaine c-reussite.fr** | Adresse web | Non (~10-15€/an) | — | Toujours payant | Mettre à jour les URLs partout |
@@ -326,10 +329,10 @@ ORDER BY created_at DESC;
 
 Tout push sur la branche `main` de GitHub déclenche automatiquement :
 - **Frontend** : déploiement GitHub Pages via GitHub Actions
-- **Backend** : redéploiement Railway
+- **Backend** : redéploiement Render via GitHub Actions (`.github/workflows/deploy-render.yml`) — uniquement si `backend/**` ou `docs/content/products.json` est modifié
 - **Migrations DB** : application automatique par Supabase (intégration GitHub)
 
-### Variables d'environnement (stockées dans Railway)
+### Variables d'environnement (stockées dans Render)
 
 | Variable | À quoi elle sert |
 |---|---|
@@ -351,7 +354,7 @@ Tout push sur la branche `main` de GitHub déclenche automatiquement :
 
 ### Alertes automatiques
 
-Le service `backend/services/alerts.js` envoie un email d'alerte à `ALERT_EMAIL` via Brevo dès qu'une erreur survient dans le traitement d'une commande. L'email contient : le message d'erreur, l'ID de session Stripe, l'email client, le produit, le montant et l'ID d'événement Stripe. Sans `ALERT_EMAIL` configuré dans Railway, l'alerte est ignorée silencieusement (erreur visible uniquement dans les logs Railway).
+Le service `backend/services/alerts.js` envoie un email d'alerte à `ALERT_EMAIL` via Brevo dès qu'une erreur survient dans le traitement d'une commande. L'email contient : le message d'erreur, l'ID de session Stripe, l'email client, le produit, le montant et l'ID d'événement Stripe. Sans `ALERT_EMAIL` configuré dans Render, l'alerte est ignorée silencieusement (erreur visible uniquement dans les logs du dashboard Render).
 
 ### Tests automatisés
 
@@ -442,7 +445,7 @@ Double protection : le champ `stripe_session_id` est UNIQUE en base (empêche le
 ---
 
 **Est-ce que je suis prévenue si quelque chose casse ?**
-Oui, si la variable `ALERT_EMAIL` est configurée dans Railway. En cas d'erreur dans le traitement d'une commande, un email d'alerte est envoyé automatiquement avec tous les détails (session Stripe, email client, produit, message d'erreur). Sans `ALERT_EMAIL`, l'erreur est seulement visible dans les logs Railway.
+Oui, si la variable `ALERT_EMAIL` est configurée dans Render. En cas d'erreur dans le traitement d'une commande, un email d'alerte est envoyé automatiquement avec tous les détails (session Stripe, email client, produit, message d'erreur). Sans `ALERT_EMAIL`, l'erreur est seulement visible dans les logs du dashboard Render.
 
 ---
 
@@ -455,7 +458,7 @@ Si Supabase est indisponible : même mécanisme. La commande sera traitée dès 
 **Quels outils sont payants à terme ?**
 - Stripe : toujours à l'usage (commission par vente) — inévitable
 - Domaine : ~10-15€/an — inévitable
-- Railway : peut devenir payant (~5$/mois) si le trafic augmente
+- Render : gratuit (free tier permanent, pas de limite temporelle)
 - Brevo : peut devenir payant si envois > 9 000/mois
 - Supabase : peut devenir payant si données > 500 Mo
 
@@ -465,8 +468,8 @@ Pour le volume actuel d'une micro-entreprise débutante, le coût mensuel fixe e
 
 **Qui doit intervenir si quelque chose casse ?**
 - Site ne s'affiche plus : vérifier GitHub Pages
-- Paiement ne fonctionne plus : vérifier Railway + variables d'environnement
-- Emails ne partent plus : vérifier Brevo (quota ?) et logs Railway
+- Paiement ne fonctionne plus : vérifier Render + variables d'environnement
+- Emails ne partent plus : vérifier Brevo (quota ?) et logs du dashboard Render
 - Base inaccessible : vérifier tableau de bord Supabase
 - Intervention sur le code : un développeur web Node.js
 
@@ -476,13 +479,13 @@ Pour le volume actuel d'une micro-entreprise débutante, le coût mensuel fixe e
 
 | Priorité | Recommandation | Bénéfice | Difficulté | Urgence |
 |---|---|---|---|---|
-| 1 | **Configurer `ALERT_EMAIL` dans Railway** | Être prévenue immédiatement si une commande échoue | Faible — juste ajouter la variable dans Railway | Haute — le code est prêt, il manque juste la variable |
+| 1 | **Configurer `ALERT_EMAIL` dans Render** | Être prévenue immédiatement si une commande échoue | Faible — juste ajouter la variable dans Render | Haute — le code est prêt, il manque juste la variable |
 | 2 | **Déposer les extraits PDF** (`extrait-maths.pdf`, `extrait-physique-chimie.pdf`) dans `backend/assets/` | Le bouton "Recevoir un extrait" fonctionne vraiment | Zéro développement — juste déposer les fichiers | Haute |
 | 3 | **Compléter les mentions légales** (SIRET et adresse dans `mentions-legales.html`) | Conformité légale | Zéro développement | Haute |
-| 4 | **Configurer `BCC_EMAIL` dans Railway** | Recevoir une copie de chaque email de commande | Faible — juste ajouter la variable dans Railway | Moyenne |
+| 4 | **Configurer `BCC_EMAIL` dans Render** | Recevoir une copie de chaque email de commande | Faible — juste ajouter la variable dans Render | Moyenne |
 | 5 | ~~**Archiver les factures**~~ **FAIT** — Supabase Storage bucket "invoices" | Retrouver et télécharger une facture depuis l'admin | — | Créer le bucket "invoices" dans Supabase (manuel) |
 | 6 | ~~**Export automatique des commandes**~~ **FAIT** — route `/api/admin/export` + bouton dans l'admin | Télécharger les commandes en un clic depuis `/admin.html` | — | — |
-| 7 | ~~**Tableau de bord admin**~~ **FAIT** — `docs/admin.html` | Voir commandes, CA, statut emails, télécharger factures | — | Configurer `ADMIN_KEY` dans Railway |
+| 7 | ~~**Tableau de bord admin**~~ **FAIT** — `docs/admin.html` | Voir commandes, CA, statut emails, télécharger factures | — | Configurer `ADMIN_KEY` dans Render |
 | 8 | **Ajouter les tests en CI** | Détecter un bug avant qu'il arrive en production | Faible | Faible |
 
 ---

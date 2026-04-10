@@ -616,6 +616,8 @@ footer a:hover { color: var(--quicksand); }
   color: var(--text-mid);
 }
 .extract-popup .form-group { margin-bottom: 16px; }
+.extract-popup .form-rgpd { font-size: 0.78rem; color: var(--text-mid); margin-top: 8px; line-height: 1.4; }
+.extract-popup .form-rgpd a { color: var(--sapphire); text-decoration: underline; }
 .extract-popup .btn-primary { background: var(--royal-blue); color: var(--white); font-weight: 400; }
 .extract-popup .btn-primary:hover { opacity: 0.9; }
 .extract-popup.extract-popup--pack { background: var(--royal-blue); }
@@ -625,6 +627,10 @@ footer a:hover { color: var(--quicksand); }
 .extract-popup--pack .extract-close { color: rgba(255,255,255,0.6); }
 .extract-popup--pack .btn-primary { background: var(--white); color: var(--royal-blue); }
 .extract-popup--pack .form-note { color: rgba(255,255,255,0.45); }
+.extract-popup--pack .form-rgpd { color: rgba(255,255,255,0.55); }
+.extract-popup--pack .form-rgpd a { color: rgba(255,255,255,0.8); text-decoration: underline; }
+.extract-popup--pack .form-control { border-color: rgba(255,255,255,0.3); }
+.extract-popup--pack .form-control:focus { border-color: var(--quicksand); }
 .extract-popup .form-note { font-size: 0.8rem; color: var(--shellstone); margin-top: 12px; margin-bottom: 0; }
 
 /* ===== BETA FEEDBACK ===== */
