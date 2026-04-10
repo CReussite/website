@@ -682,6 +682,7 @@ footer a:hover { color: var(--quicksand); }
 .btn-extract:hover { opacity: 0.85; }
 .bundle-card .btn-extract { color: var(--royal-blue); background: var(--white); }
 .bundle-card .btn-extract:hover { opacity: 0.85; }
+.btn:disabled, .btn-extract:disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
 
 /* ===== EXTRACT POPUP ===== */
 .extract-overlay {
