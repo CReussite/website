@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — C'Réussite</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { background: var(--swan-wing, #f8f5ee); min-height: 100vh; }
+
+    .admin-wrap { max-width: 1100px; margin: 0 auto; padding: 32px 20px 64px; }
+
+    /* ── Login ── */
+    .login-card {
+      max-width: 360px; margin: 80px auto; background: #fff;
+      border-radius: 16px; padding: 40px 32px; box-shadow: 0 4px 24px rgba(0,0,0,.08);
+      text-align: center;
+    }
+    .login-card h1 { font-size: 1.4rem; margin-bottom: 8px; }
+    .login-card p { font-size: .9rem; color: #6b7280; margin-bottom: 24px; }
+
+    /* ── Header ── */
+    .admin-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
+    .admin-header h1 { font-size: 1.5rem; margin: 0; }
+    .admin-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .admin-actions select, .admin-actions input { padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: .9rem; background: #fff; }
+
+    /* ── Stats ── */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .stat-card { background: #fff; border-radius: 12px; padding: 20px 24px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+    .stat-label { font-size: .78rem; color: #6b7280; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 6px; }
+    .stat-value { font-size: 1.6rem; font-weight: 800; color: var(--sapphire, #112250); }
+    .stat-sub { font-size: .78rem; color: #6b7280; margin-top: 2px; }
+
+    /* ── Table ── */
+    .table-card { background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,.06); overflow: hidden; }
+    .table-scroll { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    thead tr { background: var(--sapphire, #112250); color: #fff; }
+    th { padding: 12px 16px; text-align: left; font-weight: 600; white-space: nowrap; }
+    td { padding: 11px 16px; border-bottom: 1px solid #f3f4f6; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafafa; }
+    .badge-ok  { background: #d1fae5; color: #065f46; border-radius: 99px; padding: 2px 10px; font-size: .78rem; font-weight: 600; white-space: nowrap; }
+    .badge-ko  { background: #fee2e2; color: #991b1b; border-radius: 99px; padding: 2px 10px; font-size: .78rem; font-weight: 600; white-space: nowrap; }
+    .btn-dl    { font-size: .78rem; padding: 4px 10px; border: 1px solid var(--sapphire, #112250); border-radius: 6px; color: var(--sapphire, #112250); background: transparent; cursor: pointer; white-space: nowrap; }
+    .btn-dl:hover { background: var(--sapphire, #112250); color: #fff; }
+
+    /* ── Empty / Loading ── */
+    .table-empty { text-align: center; padding: 48px 24px; color: #6b7280; }
+
+    /* ── Logout ── */
+    .btn-logout { font-size: .82rem; padding: 6px 14px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; cursor: pointer; color: #6b7280; }
+    .btn-logout:hover { border-color: #b91c1c; color: #b91c1c; }
+  </style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div id="login-screen">
+  <div class="login-card">
+    <h1>C'Réussite</h1>
+    <p>Tableau de bord admin</p>
+    <form id="login-form" class="contact-form">
+      <div class="form-group">
+        <label class="form-label" for="admin-key-input">Clé d'accès</label>
+        <input class="form-control" type="password" id="admin-key-input" placeholder="••••••••" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Accéder</button>
+    </form>
+    <p id="login-error" style="color:#b91c1c;font-size:.85rem;margin-top:12px;display:none;">Clé invalide.</p>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div id="dashboard" style="display:none;">
+  <div class="admin-wrap">
+
+    <div class="admin-header">
+      <h1>Tableau de bord</h1>
+      <div class="admin-actions">
+        <select id="year-filter">
+          <option value="">Toutes les années</option>
+        </select>
+        <button id="btn-export" class="btn btn-primary" style="font-size:.88rem;padding:8px 16px;">Exporter CSV</button>
+        <button class="btn-logout" id="btn-logout">Déconnexion</button>
+      </div>
+    </div>
+
+    <div class="stats-grid" id="stats-grid">
+      <div class="stat-card"><div class="stat-label">Commandes</div><div class="stat-value" id="stat-count">—</div></div>
+      <div class="stat-card"><div class="stat-label">Chiffre d'affaires</div><div class="stat-value" id="stat-revenue">—</div></div>
+      <div class="stat-card"><div class="stat-label">Emails envoyés</div><div class="stat-value" id="stat-sent">—</div></div>
+      <div class="stat-card"><div class="stat-label">En attente</div><div class="stat-value" id="stat-pending">—</div></div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>N° Facture</th>
+              <th>Date</th>
+              <th>Email client</th>
+              <th>Produit</th>
+              <th>Montant</th>
+              <th>Email</th>
+              <th>Facture</th>
+            </tr>
+          </thead>
+          <tbody id="orders-tbody">
+            <tr><td colspan="7" class="table-empty">Chargement…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  const BACKEND = 'https://website-production-2f4e.up.railway.app';
+  const KEY_STORAGE = 'creussite_admin_key';
+
+  let adminKey  = '';
+  let allOrders = [];
+
+  // ── Éléments ──────────────────────────────────────────
+  const loginScreen  = document.getElementById('login-screen');
+  const dashboard    = document.getElementById('dashboard');
+  const loginForm    = document.getElementById('login-form');
+  const loginError   = document.getElementById('login-error');
+  const keyInput     = document.getElementById('admin-key-input');
+  const yearFilter   = document.getElementById('year-filter');
+  const tbody        = document.getElementById('orders-tbody');
+  const statCount    = document.getElementById('stat-count');
+  const statRevenue  = document.getElementById('stat-revenue');
+  const statSent     = document.getElementById('stat-sent');
+  const statPending  = document.getElementById('stat-pending');
+
+  // ── Formatage ─────────────────────────────────────────
+  function fmtDate(iso) {
+    return new Date(iso).toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit', year:'numeric' });
+  }
+  function fmtPrice(centimes) {
+    return (centimes / 100).toFixed(2).replace('.', ',') + ' €';
+  }
+  function fmtProduct(id) {
+    const map = { maths: 'Maths', physique: 'Physique-Chimie', bundle: 'Pack Maths + PC' };
+    return map[id] || id;
+  }
+
+  // ── Login ─────────────────────────────────────────────
+  const savedKey = localStorage.getItem(KEY_STORAGE);
+  if (savedKey) tryLogin(savedKey);
+
+  loginForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    tryLogin(keyInput.value.trim());
+  });
+
+  async function tryLogin(key) {
+    try {
+      const res = await fetch(`${BACKEND}/api/admin/orders?key=${encodeURIComponent(key)}`);
+      if (!res.ok) throw new Error('invalid');
+      adminKey = key;
+      localStorage.setItem(KEY_STORAGE, key);
+      allOrders = await res.json();
+      showDashboard();
+    } catch {
+      loginError.style.display = 'block';
+    }
+  }
+
+  // ── Déconnexion ───────────────────────────────────────
+  document.getElementById('btn-logout').addEventListener('click', function () {
+    localStorage.removeItem(KEY_STORAGE);
+    location.reload();
+  });
+
+  // ── Affichage dashboard ───────────────────────────────
+  function showDashboard() {
+    loginScreen.style.display = 'none';
+    dashboard.style.display   = 'block';
+    populateYearFilter();
+    renderOrders(allOrders);
+  }
+
+  function populateYearFilter() {
+    const years = [...new Set(allOrders.map(o => o.invoice_number.split('-')[0]))].sort().reverse();
+    years.forEach(function (y) {
+      const opt = document.createElement('option');
+      opt.value = y;
+      opt.textContent = y;
+      yearFilter.appendChild(opt);
+    });
+  }
+
+  yearFilter.addEventListener('change', function () {
+    const y = yearFilter.value;
+    renderOrders(y ? allOrders.filter(o => o.invoice_number.startsWith(y + '-')) : allOrders);
+  });
+
+  // ── Render ────────────────────────────────────────────
+  function renderOrders(orders) {
+    // Stats
+    const total   = orders.length;
+    const revenue = orders.reduce(function (s, o) { return s + o.amount; }, 0);
+    const sent    = orders.filter(function (o) { return o.email_sent; }).length;
+    statCount.textContent   = total;
+    statRevenue.textContent = fmtPrice(revenue);
+    statSent.textContent    = sent;
+    statPending.textContent = total - sent;
+
+    if (!orders.length) {
+      tbody.innerHTML = '<tr><td colspan="7" class="table-empty">Aucune commande.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = orders.map(function (o) {
+      return '<tr>' +
+        '<td><strong>' + o.invoice_number + '</strong></td>' +
+        '<td>' + fmtDate(o.created_at) + '</td>' +
+        '<td>' + o.email + '</td>' +
+        '<td>' + fmtProduct(o.product_id) + '</td>' +
+        '<td><strong>' + fmtPrice(o.amount) + '</strong></td>' +
+        '<td>' + (o.email_sent
+          ? '<span class="badge-ok">Envoyé</span>'
+          : '<span class="badge-ko">En attente</span>') + '</td>' +
+        '<td><button class="btn-dl" data-inv="' + o.invoice_number + '">PDF</button></td>' +
+        '</tr>';
+    }).join('');
+
+    // Téléchargement facture
+    tbody.querySelectorAll('.btn-dl').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const inv = btn.getAttribute('data-inv');
+        window.open(`${BACKEND}/api/admin/invoice/${encodeURIComponent(inv)}?key=${encodeURIComponent(adminKey)}`, '_blank');
+      });
+    });
+  }
+
+  // ── Export CSV ────────────────────────────────────────
+  document.getElementById('btn-export').addEventListener('click', function () {
+    const year = yearFilter.value;
+    const url  = `${BACKEND}/api/admin/export?key=${encodeURIComponent(adminKey)}${year ? '&year=' + year : ''}`;
+    window.open(url, '_blank');
+  });
+})();
+</script>
+
+</body>
+</html>
