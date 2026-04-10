@@ -193,6 +193,27 @@ nav {
   font-size: 0.85rem;
   color: rgba(255,255,255,0.6);
 }
+.hero-card-img {
+  width: 100%;
+  max-width: 140px;
+  height: auto;
+  border-radius: 6px;
+  margin-top: 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+.hero-card-covers {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 14px;
+}
+.hero-card-covers img {
+  width: 80px;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
 
 /* ===== BUTTONS ===== */
 .btn {
@@ -834,7 +855,10 @@ footer a:hover { color: var(--quicksand); }
 
   .nav-logo-img { height: 80px; }
   .bundle-card { padding: 28px 20px; }
-  .hero-cards { flex-direction: column; }
+  .hero-cards { flex-direction: column; align-items: center; }
+  .hero-card { width: 100%; max-width: 320px; }
+  .hero-card-img { max-width: 120px; }
+  .hero-card-covers img { width: 70px; }
 
   /* Product cards: image au-dessus du texte en mobile */
   .product-body {
