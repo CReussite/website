@@ -615,6 +615,14 @@ footer a:hover { color: var(--quicksand); }
   font-size: 1.5rem; cursor: pointer;
   color: var(--text-mid);
 }
+.extract-popup .contact-form {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+  max-width: none;
+}
 .extract-popup .form-group { margin-bottom: 16px; }
 .extract-popup .form-rgpd { font-size: 0.78rem; color: var(--text-mid); margin-top: 8px; line-height: 1.4; }
 .extract-popup .form-rgpd a { color: var(--sapphire); text-decoration: underline; }
