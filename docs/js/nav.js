@@ -12,8 +12,8 @@
         </button>
         <ul class="nav-links">
           <li><a href="${base}#fiches">Les fiches</a></li>
-          <li><a href="${base}#methode">&Agrave; propos</a></li>
           <li><a href="${base}#avis">Avis</a></li>
+          <li><a href="${base}#camille">&Agrave; propos</a></li>
           <li><a href="${base}#faq">FAQ</a></li>
           <li><a href="${base}#contact">Contact</a></li>
         </ul>
