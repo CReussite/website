@@ -69,4 +69,57 @@ async function markEmailSent(stripeSessionId) {
   if (error) throw new Error(`DB markEmailSent failed: ${error.message}`);
 }
 
-module.exports = { insertOrderIdempotent, markEmailSent };
+/**
+ * Retourne les commandes, triées par date décroissante.
+ * @param {object} opts
+ * @param {number}  [opts.year]   - filtre sur l'année (ex: 2026)
+ * @param {number}  [opts.limit]  - nombre max de résultats (défaut: 1000)
+ */
+async function getOrders({ year, limit = 1000 } = {}) {
+  const supabase = getClient();
+  let query = supabase
+    .from('orders')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(limit);
+
+  if (year) query = query.like('invoice_number', `${year}-%`);
+
+  const { data, error } = await query;
+  if (error) throw new Error(`DB getOrders failed: ${error.message}`);
+  return data;
+}
+
+/**
+ * Upload le PDF de facture dans Supabase Storage (bucket "invoices").
+ * Non bloquant : retourne null si le bucket n'existe pas encore.
+ */
+async function uploadInvoicePdf(invoiceNumber, pdfBuffer) {
+  const supabase = getClient();
+  const year     = invoiceNumber.split('-')[0];
+  const filePath = `${year}/${invoiceNumber}.pdf`;
+
+  const { error } = await supabase.storage
+    .from('invoices')
+    .upload(filePath, pdfBuffer, { contentType: 'application/pdf', upsert: true });
+
+  if (error) {
+    console.warn(`[storage] Upload facture ignoré (${error.message})`);
+    return null;
+  }
+  return filePath;
+}
+
+/**
+ * Sauvegarde le chemin du PDF facture dans la commande.
+ */
+async function saveInvoicePath(stripeSessionId, invoicePath) {
+  const supabase = getClient();
+  const { error } = await supabase
+    .from('orders')
+    .update({ invoice_path: invoicePath })
+    .eq('stripe_session_id', stripeSessionId);
+  if (error) console.warn(`[storage] saveInvoicePath échoué : ${error.message}`);
+}
+
+module.exports = { insertOrderIdempotent, markEmailSent, getOrders, uploadInvoicePdf, saveInvoicePath };
