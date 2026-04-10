@@ -105,6 +105,8 @@ Copier `backend/.env.example`, remplir chaque valeur, puis les ajouter dans Rail
 | `BREVO_API_KEY` | brevo.com → Paramètres → Clés API |
 | `FROM_EMAIL` | `contact@c-reussite.fr` |
 | `FROM_NAME` | `Camille Reinhardt, C'Réussite` |
+| `ALERT_EMAIL` | Adresse qui reÃ§oit les alertes backend |
+| `ALERT_FROM_NAME` | Nom affichÃ© pour les alertes techniques |
 | `FRONTEND_URL` | `https://c-reussite.fr` |
 
 ```bash
@@ -116,6 +118,8 @@ railway variables set SUPABASE_SERVICE_ROLE_KEY=eyJ...
 railway variables set BREVO_API_KEY=xkeysib-...
 railway variables set FROM_EMAIL=contact@c-reussite.fr
 railway variables set "FROM_NAME=Camille Reinhardt, C'Réussite"
+railway variables set ALERT_EMAIL=contact@c-reussite.fr
+railway variables set "ALERT_FROM_NAME=C'RÃ©ussite Monitoring"
 railway variables set FRONTEND_URL=https://c-reussite.fr
 ```
 
