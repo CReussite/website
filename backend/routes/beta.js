@@ -99,7 +99,6 @@ function buildEmailHtml(type, d) {
   // ── Identification
   rows += sectionRow('Bêta-testeur');
   rows += row('Prénom',    esc(d.prenom));
-  rows += row('Email',     esc(d.email));
   rows += row('Formulaire', formName);
   rows += row('Date',      new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' }));
 
@@ -184,34 +183,29 @@ function buildEmailHtml(type, d) {
 // ── POST /api/beta-feedback ─────────────────────────────
 router.post('/', async (req, res) => {
   try {
-    const { type, email, ...rest } = req.body || {};
+    const { type, ...rest } = req.body || {};
 
-    if (!email || typeof email !== 'string' || !email.includes('@')) {
-      return res.status(400).json({ error: 'Email invalide.' });
-    }
     if (!['pc', 'bundle'].includes(type)) {
       return res.status(400).json({ error: 'Type de formulaire invalide.' });
     }
 
     const d = {
       type,
-      email:  email.trim().toLowerCase().slice(0, 320),
       prenom: (rest.prenom || '').trim().slice(0, 100),
       ...rest,
     };
 
     const htmlContent = buildEmailHtml(type, d);
-    const subject     = `[Beta] ${type === 'bundle' ? 'Pack Maths + PC' : 'Physique-Chimie'} — ${d.prenom || d.email}`;
+    const subject     = `[Beta] ${type === 'bundle' ? 'Pack Maths + PC' : 'Physique-Chimie'} — ${d.prenom || 'Anonyme'}`;
 
     const sendSmtpEmail          = new SibApiV3Sdk.SendSmtpEmail();
     sendSmtpEmail.sender         = { name: "C'Réussite", email: process.env.FROM_EMAIL };
-    sendSmtpEmail.replyTo        = { email: d.email, name: d.prenom || d.email };
     sendSmtpEmail.to             = [{ email: BETA_EMAIL }];
     sendSmtpEmail.subject        = subject;
     sendSmtpEmail.htmlContent    = htmlContent;
 
     await apiInstance.sendTransacEmail(sendSmtpEmail);
-    console.log(`[beta] Retour reçu — ${type} — ${d.email}`);
+    console.log(`[beta] Retour reçu — ${type} — ${d.prenom || 'Anonyme'}`);
 
     res.json({ ok: true });
   } catch (err) {
