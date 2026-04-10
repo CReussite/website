@@ -6,7 +6,7 @@ document.getElementById('contact-placeholder').outerHTML = `
         <p>Commande, contenu des fiches, cours particuliers — écris-moi directement.</p>
       </div>
 
-      <form class="contact-form" action="mailto:contact@creussite.fr" method="get" enctype="text/plain" aria-label="Formulaire de contact">
+      <form class="contact-form" id="contact-form" aria-label="Formulaire de contact">
         <div class="form-group">
           <label class="form-label" for="contact-name">Nom</label>
           <input class="form-control" type="text" id="contact-name" name="name" placeholder="Ton nom" required>
@@ -32,3 +32,15 @@ document.getElementById('contact-placeholder').outerHTML = `
     </div>
   </section>
 `;
+
+// Gestionnaire submit : ouvre le client email sans passer par un form action
+document.getElementById('contact-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var name    = document.getElementById('contact-name').value;
+  var email   = document.getElementById('contact-email').value;
+  var subject = document.getElementById('contact-subject').value || 'Message depuis c-reussite.fr';
+  var body    = 'Nom : ' + name + '\nEmail : ' + email + '\n\n' + document.getElementById('contact-message').value;
+  window.location.href = 'mailto:contact@creussite.fr'
+    + '?subject=' + encodeURIComponent(subject)
+    + '&body='    + encodeURIComponent(body);
+});

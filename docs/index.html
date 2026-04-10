@@ -24,6 +24,31 @@
 
   <link rel="stylesheet" href="css/style.css">
   <script src="js/schema.js" defer></script>
+
+  <style>
+    /* ── Accordion FAQ ── */
+    .faq-item { cursor: pointer; }
+    .faq-a { display: none; padding-top: 4px; }
+    .faq-item.open .faq-a { display: block; }
+    .faq-q::after { content: ' +'; float: right; font-weight: 400; opacity: .6; }
+    .faq-item.open .faq-q::after { content: ' −'; }
+
+    /* ── Modal pré-paiement ── */
+    .payment-modal { max-width: 500px; }
+    .payment-modal-summary { background: var(--swan-wing, #f8f5ee); border-radius: 12px; padding: 16px 20px; margin: 16px 0 20px; }
+    .payment-modal-product { font-weight: 700; font-size: 1rem; margin-bottom: 4px; }
+    .payment-modal-price { font-size: 1.5rem; font-weight: 800; color: var(--sapphire, #112250); }
+    .payment-modal-price-note { font-size: 0.78rem; color: #6b7280; margin-top: 2px; }
+    .payment-modal-checks { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
+    .payment-check-label { display: flex; gap: 12px; align-items: flex-start; font-size: 0.88rem; line-height: 1.5; cursor: pointer; }
+    .payment-check-label input[type="checkbox"] { margin-top: 3px; flex-shrink: 0; width: 16px; height: 16px; cursor: pointer; }
+    .payment-check-label a { color: var(--sapphire, #112250); text-decoration: underline; }
+    .payment-modal-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+    /* ── Consentement RGPD formulaires ── */
+    .form-rgpd { font-size: 0.78rem; color: #6b7280; margin-top: 6px; line-height: 1.5; }
+    .form-rgpd a { color: #6b7280; text-decoration: underline; }
+  </style>
 </head>
 
 <body>
@@ -34,9 +59,9 @@
   <section class="hero" aria-labelledby="hero-title">
     <div class="container">
       <div class="badge">Bac 2026 — Terminale Spécialité</div>
-      <h1 id="hero-title">Fiches de révision :<br>Une page par chapitre</h1>
+      <h1 id="hero-title">Fiches de révision maths<br>et physique-chimie.</h1>
       <p class="hero-sub">
-        L'essentiel du programme officiel, organisé par thèmes, structuré pour réviser efficacement.
+        Tout le programme sur ton bureau — une fiche par chapitre, l'essentiel, rien de plus.
       </p>
 
       <div class="hero-cards">
@@ -130,81 +155,6 @@
     </div>
   </section>
 
-  <!-- ===== MÉTHODE ===== -->
-  <section id="methode" class="section-alt" aria-labelledby="methode-title">
-    <div class="container">
-      <h2 id="methode-title">Comment ces fiches sont construites</h2>
-      <p>Chaque fiche couvre un chapitre du programme. Elle n'est pas un copié-collé du cours : c'est une reconstruction logique, organisée pour que l'œil trouve rapidement ce qu'il cherche et que la mémoire retienne ce qui compte.</p>
-
-      <div class="steps">
-        <div class="step">
-          <div class="step-number" aria-hidden="true">1</div>
-          <h3>Le concept central</h3>
-          <p>La définition, la formule, le principe. Sans fioritures. Ce qu'il faut comprendre avant de mémoriser.</p>
-        </div>
-        <div class="step">
-          <div class="step-number" aria-hidden="true">2</div>
-          <h3>Les méthodes</h3>
-          <p>Comment appliquer le concept : les étapes, la structure du raisonnement, les cas à distinguer.</p>
-        </div>
-        <div class="step">
-          <div class="step-number" aria-hidden="true">3</div>
-          <h3>Les points de vigilance</h3>
-          <p>Les erreurs fréquentes, les pièges classiques au bac, les confusions à éviter.</p>
-        </div>
-        <div class="step">
-          <div class="step-number" aria-hidden="true">4</div>
-          <h3>Tout sur une page</h3>
-          <p>Un chapitre = une fiche = une page. Imprimable, lisible, utilisable en révision intensive.</p>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ===== À PROPOS ===== -->
-  <section id="camille" aria-labelledby="camille-title">
-    <div class="container">
-      <h2 id="camille-title">Qui a conçu ces fiches</h2>
-
-      <div class="about-inner">
-        <div>
-          <div class="about-credentials" aria-label="Parcours de Camille Reinhardt">
-            <div class="credential-item">
-              <div class="credential-label">Formation</div>
-              <div class="credential-value">École Polytechnique</div>
-            </div>
-            <div class="credential-item">
-              <div class="credential-label">Diplôme</div>
-              <div class="credential-value">Docteure en sciences de la vie</div>
-            </div>
-            <div class="credential-item">
-              <div class="credential-label">Expérience</div>
-              <div class="credential-value">R&amp;D biotech, recherche clinique, cours particuliers maths et PC</div>
-            </div>
-            <div class="credential-item">
-              <div class="credential-label">Matières enseignées</div>
-              <div class="credential-value">Maths, Physique-Chimie, jusqu'en Terminale</div>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <p>Je m'appelle Camille Reinhardt. J'ai grandi dans un petit village de province, loin des lycées parisiens et des classes prépa de prestige. Personne ne m'attendait à Polytechnique. J'y suis allée parce que j'ai appris à travailler autrement : en comprenant d'abord, en mémorisant ensuite, en appliquant toujours.</p>
-          <p>Ma réussite n'est pas venue d'un talent particulier. Elle est venue de la méthode — celle que j'ai construite au fil des années, cours après cours, chapitre après chapitre. Ces fiches, c'est cette méthode mise sur papier : l'essentiel, structuré, hiérarchisé, sans surcharge.</p>
-          <p>Je donne aussi des cours particuliers en Maths et Physique-Chimie. Ce que j'observe depuis plusieurs années, c'est que la plupart des élèves ne manquent pas d'intelligence — ils manquent d'un cadre clair. Ces fiches sont ce cadre.</p>
-          <div class="about-quote" role="blockquote">
-            <p>Ces fiches ne font pas le travail à ta place. Elles te donnent le cadre pour le faire efficacement. Si tu es prêt à travailler, elles servent. Si tu cherches un raccourci magique, elles ne sont pas faites pour toi — et je ne te dirai pas le contraire.</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ===== FICHE GRATUITE (ancre conservée pour nav) ===== -->
-  <div id="fiche-gratuite"></div>
-
   <!-- ===== TÉMOIGNAGES ===== -->
   <section id="avis" aria-labelledby="temoignages-title">
     <div class="container">
@@ -240,44 +190,90 @@
     </div>
   </section>
 
-  <!-- ===== FAQ ===== -->
-  <section id="faq" class="section-alt" aria-labelledby="faq-title">
+  <!-- ===== À PROPOS ===== -->
+  <section id="camille" class="section-alt" aria-labelledby="camille-title">
     <div class="container">
-      <h2 id="faq-title">Questions fréquentes</h2>
+      <h2 id="camille-title">Qui a conçu ces fiches ?</h2>
 
-      <div class="faq-list">
-        <div class="faq-item">
-          <div class="faq-q">Ces fiches remplacent-elles le cours ?</div>
-          <p class="faq-a">Non. Elles sont conçues pour la révision, pas pour l'apprentissage initial. L'ordre logique : travailler le cours d'abord, utiliser les fiches pour consolider et structurer ensuite. Si tu utilises les fiches sans avoir travaillé le cours, tu liras des mots sans contexte.</p>
+      <div class="about-inner">
+        <div>
+          <div class="about-credentials" aria-label="Parcours de Camille Reinhardt">
+            <div class="credential-item">
+              <div class="credential-label">Formation</div>
+              <div class="credential-value">École Polytechnique</div>
+            </div>
+            <div class="credential-item">
+              <div class="credential-label">Diplôme</div>
+              <div class="credential-value">Docteure en sciences de la vie</div>
+            </div>
+            <div class="credential-item">
+              <div class="credential-label">Expérience</div>
+              <div class="credential-value">R&amp;D biotech, recherche clinique, cours particuliers maths et PC</div>
+            </div>
+            <div class="credential-item">
+              <div class="credential-label">Matières enseignées</div>
+              <div class="credential-value">Maths, Physique-Chimie, jusqu'en Terminale</div>
+            </div>
+          </div>
         </div>
-        <div class="faq-item">
-          <div class="faq-q">Je suis en difficulté. Ces fiches sont-elles adaptées ?</div>
-          <p class="faq-a">Elles fonctionnent pour tout élève prêt à travailler. Elles structurent le programme de façon claire et logique. En revanche, si tu pars de zéro à J-7 du bac, elles ne feront pas de miracles — et je ne te dirai pas le contraire. Pour des difficultés profondes, des cours particuliers sont plus adaptés.</p>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">Comment reçois-je les fiches après ma commande ?</div>
-          <p class="faq-a">Tu reçois un email avec le PDF en pièce jointe instantanément après ta commande. La commande se fait par email à contact@creussite.fr.</p>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">Puis-je les imprimer ?</div>
-          <p class="faq-a">Oui. Elles sont conçues pour être lisibles aussi bien sur écran qu'imprimées, format A4. Beaucoup d'élèves les impriment et les annotent directement.</p>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">Les fiches couvrent-elles tout le programme officiel ?</div>
-          <p class="faq-a">Oui. Le contenu est aligné sur le programme Terminale Spécialité en vigueur pour le Bac 2026. Si un chapitre manquait, je ne vendrais pas ces fiches comme couvrant "tout le programme" — l'honnêteté est non-négociable.</p>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">Et si je ne suis pas satisfait ?</div>
-          <p class="faq-a">Contacte-moi. Je regarde ce qui ne correspond pas à tes attentes et on en discute. Mon objectif est que ces fiches soient utiles — pas de te vendre quelque chose qui ne te convient pas.</p>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">Ces fiches sont-elles adaptées pour les deux épreuves (écrit + Grand Oral) ?</div>
-          <p class="faq-a">Elles couvrent l'épreuve écrite de spécialité. Pour le Grand Oral, la préparation est différente — elle dépend du sujet choisi. Les fiches peuvent servir de base documentaire mais ne sont pas spécifiquement conçues pour le Grand Oral.</p>
+
+        <div>
+          <p>Je m'appelle Camille Reinhardt. J'ai grandi dans un petit village de province, loin des lycées parisiens et des classes prépa de prestige. Personne ne m'attendait à Polytechnique. J'y suis allée parce que j'ai appris à travailler autrement : en comprenant d'abord, en mémorisant ensuite, en appliquant toujours.</p>
+          <p>En accompagnant des élèves en sciences depuis plusieurs années, j'ai observé que la plupart ne manquent pas d'intelligence — ils manquent d'un cadre clair. Ces fiches sont ce cadre : l'essentiel, structuré, hiérarchisé, sans surcharge.</p>
+          <div class="about-quote" role="blockquote">
+            <p>Ces fiches ne font pas le travail à ta place. Elles te donnent le cadre pour le faire efficacement. Si tu es prêt à travailler, elles servent. Si tu cherches un raccourci magique, elles ne sont pas faites pour toi — et je ne te dirai pas le contraire.</p>
+          </div>
         </div>
       </div>
 
     </div>
   </section>
+
+  <!-- ===== FAQ ===== -->
+  <section id="faq" aria-labelledby="faq-title">
+    <div class="container">
+      <h2 id="faq-title">Questions fréquentes</h2>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q">Comment je reçois les fiches ?</div>
+          <p class="faq-a">Par email, en PDF, immédiatement après ta commande. Tu reçois les fichiers en pièce jointe, ainsi que ta facture.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Je peux les imprimer ?</div>
+          <p class="faq-a">Oui. Format A4, lisibles sur écran comme sur papier. Beaucoup d'élèves les impriment et les annotent directement.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Tout le programme est couvert ?</div>
+          <p class="faq-a">Oui, l'intégralité du programme Terminale Spécialité Bac 2026, en maths comme en physique-chimie. Si un chapitre manquait, je ne vendrais pas ces fiches comme couvrant "tout le programme" — l'honnêteté est non-négociable.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Ça remplace le cours ?</div>
+          <p class="faq-a">Non. Les fiches sont faites pour réviser, pas pour découvrir un chapitre. L'ordre logique : travailler le cours d'abord, utiliser les fiches pour consolider et structurer ensuite.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Je suis en difficulté, c'est adapté ?</div>
+          <p class="faq-a">Si tu es prêt à travailler, oui. Elles structurent le programme de façon claire et logique. En revanche, pour des difficultés profondes ou un départ de zéro à J-7 du bac, des cours particuliers seront plus efficaces.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Je n'ai pas de difficultés, quel intérêt ?</div>
+          <p class="faq-a">Gagner du temps. Tout est condensé, structuré, prêt à réviser. Pas besoin de trier des dizaines de pages de cours pour retrouver l'essentiel.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Pourquoi pas des ressources gratuites ?</div>
+          <p class="faq-a">Elles existent, mais tu perds du temps à chercher, trier et vérifier. Ici tout est déjà structuré, cohérent, aligné sur le programme officiel.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Et si ça ne me convient pas ?</div>
+          <p class="faq-a">Écris-nous à <a href="mailto:contact@creussite.fr">contact@creussite.fr</a>. On examine chaque demande individuellement et on trouve une solution.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ancre conservée pour navigation interne -->
+  <div id="fiche-gratuite"></div>
 
   <div id="contact-placeholder"></div>
 
@@ -292,6 +288,7 @@
         <div class="form-group">
           <label class="form-label" for="extract-email">Email</label>
           <input class="form-control" type="email" id="extract-email" name="email" placeholder="ton@email.fr" required>
+          <p class="form-rgpd">Ton email est utilisé uniquement pour t'envoyer cet extrait. Aucune utilisation commerciale. <a href="confidentialite.html">Politique de confidentialité</a>.</p>
         </div>
         <button type="submit" class="btn btn-primary btn-block">Recevoir mon extrait</button>
       </form>
@@ -323,6 +320,35 @@
     </div>
   </div>
 
+  <!-- ===== MODAL PRÉ-PAIEMENT ===== -->
+  <div id="payment-modal-overlay" class="extract-overlay" hidden aria-modal="true" role="dialog" aria-labelledby="payment-modal-title">
+    <div class="extract-popup payment-modal">
+      <button class="extract-close" id="payment-modal-close" aria-label="Fermer">&times;</button>
+      <h3 id="payment-modal-title">Récapitulatif de commande</h3>
+
+      <div class="payment-modal-summary">
+        <div class="payment-modal-product" id="payment-modal-product"></div>
+        <div class="payment-modal-price" id="payment-modal-price"></div>
+        <div class="payment-modal-price-note">Prix TTC — TVA non applicable (micro-entreprise)</div>
+      </div>
+
+      <div class="payment-modal-checks">
+        <label class="payment-check-label">
+          <input type="checkbox" id="check-retractation">
+          <span>Je reconnais renoncer expressément à mon droit de rétractation pour ce contenu numérique, dont la livraison est immédiate après paiement, conformément à l'article L221-28 du Code de la consommation.</span>
+        </label>
+        <label class="payment-check-label">
+          <input type="checkbox" id="check-cgv">
+          <span>J'ai lu et j'accepte les <a href="cgv.html" target="_blank">Conditions Générales de Vente</a>.</span>
+        </label>
+      </div>
+
+      <button id="payment-modal-btn" class="btn btn-primary btn-block payment-modal-btn" disabled>
+        Procéder au paiement
+      </button>
+    </div>
+  </div>
+
   <div id="footer-placeholder"></div>
 
   <script src="js/nav.js"></script>
@@ -331,6 +357,15 @@
   <script src="js/payment.js"></script>
   <script src="js/extract.js"></script>
   <script src="js/review.js"></script>
+
+  <!-- Accordion FAQ -->
+  <script>
+    document.querySelectorAll('.faq-item').forEach(function (item) {
+      item.addEventListener('click', function () {
+        item.classList.toggle('open');
+      });
+    });
+  </script>
 
 </body>
 </html>

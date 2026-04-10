@@ -61,10 +61,14 @@ async function stampPdf(pdfBuffer, customerEmail, customerName) {
  * @param {Buffer}   opts.invoicePdf    - facture générée en mémoire
  * @param {string}   opts.invoiceNumber - numéro de facture (ex: 2026-001)
  */
-async function sendOrderEmail({ toEmail, customerName, product, invoicePdf, invoiceNumber }) {
-  const name = customerName || toEmail;
+async function sendOrderEmail({ toEmail, customerName, product, invoicePdf, invoiceNumber, amount, orderDate }) {
+  const name      = customerName || toEmail;
+  const amountStr = amount ? (amount / 100).toFixed(2).replace('.', ',') + ' €' : '';
+  const dateStr   = orderDate
+    ? new Date(orderDate).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })
+    : new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
 
-  // Pièces jointes : PDF(s) produit avec watermark
+  // Pièces jointes : PDF(s) produit avec watermark stéganographique
   const attachments = await Promise.all(product.pdf_files.map(async filename => {
     const filePath = path.join(__dirname, '..', 'assets', filename);
     const rawBuffer = fs.readFileSync(filePath);
@@ -87,15 +91,49 @@ async function sendOrderEmail({ toEmail, customerName, product, invoicePdf, invo
   sendSmtpEmail.htmlContent = `
     <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1A1A2E;">
       <h2 style="color:#112250;">Merci pour ta commande !</h2>
+      <p>Bonjour ${name},</p>
       <p>Tu trouveras tes fiches en pièce jointe à cet email.</p>
-      <p><strong>${product.name}</strong></p>
-      <p style="font-size:0.9rem;color:#6b7280;">
-        Ta facture (n° ${invoiceNumber}) est également jointe à cet email.
-      </p>
+
+      <table style="width:100%;border-collapse:collapse;margin:20px 0;font-size:0.9rem;">
+        <tr style="background:#f8f5ee;">
+          <td style="padding:10px 14px;font-weight:700;">Produit</td>
+          <td style="padding:10px 14px;">${product.name}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 14px;font-weight:700;">Prix TTC</td>
+          <td style="padding:10px 14px;">${amountStr}</td>
+        </tr>
+        <tr style="background:#f8f5ee;">
+          <td style="padding:10px 14px;font-weight:700;">Date</td>
+          <td style="padding:10px 14px;">${dateStr}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 14px;font-weight:700;">Facture</td>
+          <td style="padding:10px 14px;">N° ${invoiceNumber} — en pièce jointe</td>
+        </tr>
+      </table>
+
       <hr style="border:none;border-top:1px solid #E0C58F;margin:24px 0;">
+
+      <p style="font-size:0.82rem;color:#6b7280;background:#f8f5ee;padding:14px;border-radius:8px;">
+        <strong>Droit de rétractation :</strong> conformément à l'article L221-28 du Code de la consommation,
+        le droit de rétractation ne s'applique pas aux contenus numériques fournis sur support immatériel
+        dont l'exécution a commencé avec l'accord du consommateur.
+        En validant votre commande, vous avez reconnu renoncer à ce droit.
+        En cas d'insatisfaction, contactez-nous — nous examinerons chaque demande individuellement.
+      </p>
+
+      <p style="font-size:0.82rem;color:#6b7280;margin-top:16px;">
+        <a href="https://c-reussite.fr/cgv.html" style="color:#6b7280;">Conditions Générales de Vente</a>
+        &nbsp;·&nbsp;
+        <a href="https://c-reussite.fr/confidentialite.html" style="color:#6b7280;">Confidentialité</a>
+      </p>
+
+      <hr style="border:none;border-top:1px solid #E0C58F;margin:24px 0;">
+
       <p style="font-size:0.85rem;color:#6b7280;">
         Une question ? Réponds à cet email ou écris à
-        <a href="mailto:${process.env.FROM_EMAIL}">${process.env.FROM_EMAIL}</a>.
+        <a href="mailto:${process.env.FROM_EMAIL}" style="color:#112250;">${process.env.FROM_EMAIL}</a>.
       </p>
       <p style="font-size:0.85rem;color:#6b7280;">L'équipe C'Réussite</p>
     </div>
