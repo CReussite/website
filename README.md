@@ -191,9 +191,9 @@ curl -sI https://c-reussite.fr | head -3
 Push sur `main` → GitHub Actions (`deploy.yml`) → GitHub Pages mis à jour.
 
 ### Backend (automatique)
-Push sur `main` → Railway redéploie si le repo est connecté.
-Build : `cd backend && npm install`
-Start : `node backend/server.js`
+Push sur `main` → GitHub Actions déclenche un redéploiement Render automatiquement.
+Build : `cd backend && npm ci --omit=dev`
+Start : `node server.js`
 
 ```bash
 # Vérifier que le backend est en ligne
@@ -225,7 +225,7 @@ Les tests couvrent :
 - Validation products.json (aucune credential)
 - Pipeline webhook complet avec mocks (aucune credential)
 - Idempotence DB (aucune credential)
-- Checkout live contre Railway (STRIPE_SECRET_KEY requis pour le test de session)
+- Checkout live contre Render (STRIPE_SECRET_KEY requis pour le test de session)
 
 ---
 
@@ -255,7 +255,7 @@ stripe trigger checkout.session.completed
 |-------|------|
 | Domaine c-reussite.fr | ~0,60 €/mois (7 €/an) |
 | GitHub Pages | Gratuit |
-| Railway | Gratuit (5 $/mois de crédit free tier) |
+| Render | Gratuit (free tier permanent) |
 | Supabase | Gratuit (free tier) |
 | Brevo | Gratuit (300 emails/jour) |
 | Stripe | 1,4% + 0,25 € par transaction |
@@ -268,7 +268,7 @@ stripe trigger checkout.session.completed
 | Service | URL |
 |---------|-----|
 | GitHub | https://github.com/CReussite/website |
-| Railway | https://railway.app → projet `amiable-reflection` |
+| Render | https://dashboard.render.com/web/srv-d7chdpa8qa3s73bjljs0 |
 | Backend | https://creussite-backend.onrender.com |
 | Stripe | https://dashboard.stripe.com |
 | Supabase | https://supabase.com |

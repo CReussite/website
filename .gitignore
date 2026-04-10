@@ -3,9 +3,6 @@ backend/.env
 backend/**/.env
 .env
 
-# Railway CLI (config locale générée par `railway link`)
-.railway/
-
 # Render (config locale)
 .render/
 

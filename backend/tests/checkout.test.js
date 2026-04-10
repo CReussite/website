@@ -58,7 +58,7 @@ describe('Logique produit', () => {
   });
 });
 
-// ── Test live contre le backend Railway ──────────────
+// ── Test live contre le backend Render ──────────────
 
 const BACKEND = process.env.BACKEND_URL || 'https://creussite-backend.onrender.com';
 
