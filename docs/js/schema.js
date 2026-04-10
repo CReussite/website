@@ -9,7 +9,7 @@
         "url": "https://creussite.github.io/website/",
         "contactPoint": {
           "@type": "ContactPoint",
-          "email": "contact@creussite.fr",
+          "email": "contact@c-reussite.fr",
           "contactType": "customer service",
           "availableLanguage": "French"
         }
