@@ -353,7 +353,7 @@ Il serait possible d'ajouter une route sécurisée dans le backend (par exemple 
 |---|---|---|---|---|---|
 | **Stripe** | Paiement par carte bancaire | Non — commission de 2,9% + 0,30€ par transaction | Aucune limite de volume | Toujours payant (à l'usage) | Nécessite de refaire toute l'intégration de paiement |
 | **Brevo** | Envoi d'emails transactionnels | Oui — 300 emails/jour gratuits | 300 emails/jour, 9 000/mois | Oui si dépassement | Nécessite de modifier `backend/services/mailer.js` |
-| **Supabase** | Base de données (PostgreSQL) | Oui — plan Free | 500 Mo de stockage, 50 000 lignes, sauvegardes 7 jours | Oui — plan Pro à ~25$/mois | Nécessite de migrer les données et modifier `backend/services/db.js` |
+| **Supabase** | Base de données (PostgreSQL) | Oui — plan Free | 500 Mo de stockage, 50 000 lignes. Sauvegardes automatiques conservées 7 jours (= si tu effaces tout par erreur, tu peux restaurer jusqu'à 7 jours en arrière — les données elles-mêmes ne sont jamais effacées automatiquement) | Oui — plan Pro à ~25$/mois | Nécessite de migrer les données et modifier `backend/services/db.js` |
 | **Railway** | Hébergement du backend | Oui — plan Hobby (~5$ de crédit/mois) | ~500h de CPU/mois | Oui si fort trafic | Nécessite de déployer le backend ailleurs (ex: Render, Fly.io) |
 | **GitHub Pages** | Hébergement du site visible | Oui — gratuit | Bande passante raisonnable, dépôt public | Très peu probable | Nécessite de modifier le DNS et le déploiement |
 | **GitHub Actions** | Déploiement automatique du site | Oui | 2 000 minutes/mois | Peu probable pour ce volume | Gérable facilement |
