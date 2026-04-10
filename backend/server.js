@@ -31,6 +31,9 @@ app.use('/webhook', require('./routes/webhook'));
 // Checkout session (body JSON)
 app.use('/api/checkout', require('./routes/checkout'));
 
+// Envoi d'extrait gratuit
+app.use('/api/extract', require('./routes/extract'));
+
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok', service: "C'Réussite backend" }));
 

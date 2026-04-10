@@ -3,18 +3,21 @@
     "id": "maths",
     "name": "Fiches Maths Terminale Spécialité",
     "price": 1499,
-    "pdf_files": ["fiches-maths.pdf"]
+    "pdf_files": ["fiches-maths.pdf"],
+    "extract_files": ["extrait-maths.pdf"]
   },
   {
     "id": "physique",
     "name": "Fiches Physique-Chimie Terminale Spécialité",
     "price": 1499,
-    "pdf_files": ["fiches-physique-chimie.pdf"]
+    "pdf_files": ["fiches-physique-chimie.pdf"],
+    "extract_files": ["extrait-physique-chimie.pdf"]
   },
   {
     "id": "bundle",
     "name": "Pack Maths + Physique-Chimie",
     "price": 2499,
-    "pdf_files": ["fiches-maths.pdf", "fiches-physique-chimie.pdf"]
+    "pdf_files": ["fiches-maths.pdf", "fiches-physique-chimie.pdf"],
+    "extract_files": ["extrait-maths.pdf", "extrait-physique-chimie.pdf"]
   }
 ]
