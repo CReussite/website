@@ -243,8 +243,8 @@ nav {
 
 /* ===== PRODUCT CARDS ===== */
 .products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 24px;
   margin-top: 40px;
 }
@@ -254,8 +254,24 @@ nav {
   padding: 32px;
   box-shadow: var(--shadow-md);
   border-top: 4px solid var(--sapphire);
+}
+.product-body {
   display: flex;
-  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+}
+.product-info {
+  flex: 1;
+  min-width: 0;
+}
+.product-cover {
+  flex-shrink: 0;
+}
+.product-cover img {
+  width: 200px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 }
 .product-card.featured { border-top-color: var(--quicksand); }
 .product-card h3 { font-size: 1.75rem; font-weight: 700; color: var(--royal-blue); margin-bottom: 12px; }
@@ -278,7 +294,6 @@ nav {
 .product-toc {
   list-style: none;
   margin-bottom: 24px;
-  flex: 1;
 }
 .product-toc li {
   padding: 7px 0 7px 24px;
@@ -314,6 +329,32 @@ nav {
   padding: 40px;
   margin-top: 24px;
   text-align: left;
+}
+.bundle-body {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+.bundle-info {
+  flex: 1;
+  min-width: 0;
+}
+.bundle-covers {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.bundle-covers img {
+  width: 140px;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+.bundle-plus {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--quicksand);
 }
 .bundle-card h3 { color: var(--white); font-size: 1.3rem; margin-bottom: 8px; }
 .bundle-pack-title { font-size: 2rem; font-weight: 700; color: var(--quicksand); }
@@ -363,6 +404,13 @@ nav {
   align-items: start;
 }
 @media (max-width: 640px) { .about-inner { grid-template-columns: 1fr; } }
+
+/* Tablette */
+@media (max-width: 900px) and (min-width: 601px) {
+  .product-cover img { width: 160px; }
+  .bundle-covers img { width: 110px; }
+  .bundle-body { gap: 24px; }
+}
 .about-credentials {
   background: var(--white);
   border-radius: 12px;
@@ -787,4 +835,25 @@ footer a:hover { color: var(--quicksand); }
   .nav-logo-img { height: 80px; }
   .bundle-card { padding: 28px 20px; }
   .hero-cards { flex-direction: column; }
+
+  /* Product cards: image au-dessus du texte en mobile */
+  .product-body {
+    flex-direction: column-reverse;
+    gap: 20px;
+  }
+  .product-cover img {
+    width: 160px;
+  }
+
+  /* Bundle: covers au-dessus du texte en mobile */
+  .bundle-body {
+    flex-direction: column-reverse;
+    gap: 24px;
+  }
+  .bundle-covers img {
+    width: 110px;
+  }
+  .bundle-plus {
+    font-size: 1.5rem;
+  }
 }
