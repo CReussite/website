@@ -284,6 +284,7 @@ nav {
 .product-mini-cover {
   margin: 8px 0 14px;
   width: 100%;
+  max-width: 420px;
 }
 .product-mini-cover img {
   width: 100%;
@@ -360,6 +361,7 @@ nav {
   gap: 10px;
   margin: 8px 0 16px;
   width: 100%;
+  max-width: 420px;
   justify-content: flex-start;
 }
 .bundle-mini-covers img {
@@ -863,7 +865,9 @@ footer a:hover { color: var(--quicksand); }
   .hero-card-media { right: 10px; }
   .hero-card-media .hero-card-img { width: 34px; }
   .hero-card-media-pack { gap: 4px; }
+  .product-mini-cover { max-width: none; }
   .product-mini-cover img { width: 100%; }
+  .bundle-mini-covers { max-width: none; }
   .bundle-mini-covers img { width: calc((100% - 40px) / 2); }
   .bundle-plus {
     font-size: 1.05rem;
