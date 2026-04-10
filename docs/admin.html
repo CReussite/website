@@ -164,9 +164,27 @@
       color: #6b7280;
     }
     .btn-logout:hover { border-color: #b91c1c; color: #b91c1c; }
+    .test-banner {
+      display: none;
+      background: #fffbeb;
+      border-bottom: 2px solid #f59e0b;
+      color: #92400e;
+      font-size: .88rem;
+      font-weight: 600;
+      text-align: center;
+      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .test-banner svg { vertical-align: middle; margin-right: 6px; }
   </style>
 </head>
 <body>
+  <div id="test-banner" class="test-banner">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Mode TEST — les paiements Stripe sont fictifs. Aucune transaction reelle n'est enregistree.
+  </div>
   <div id="login-screen">
     <div class="login-card">
       <h1>C'Reussite</h1>
@@ -305,6 +323,7 @@
 
       const loginScreen = document.getElementById('login-screen');
       const dashboard = document.getElementById('dashboard');
+      const testBanner = document.getElementById('test-banner');
       const loginForm = document.getElementById('login-form');
       const loginError = document.getElementById('login-error');
       const keyInput = document.getElementById('admin-key-input');
@@ -491,6 +510,15 @@
           allExtracts = payloads[2];
           loginError.style.display = 'none';
           localStorage.setItem(KEY_STORAGE, key);
+
+          try {
+            const configRes = await fetch(BACKEND + '/api/admin/config?key=' + encodeURIComponent(key));
+            if (configRes.ok) {
+              const config = await configRes.json();
+              if (config.stripe_mode === 'test') testBanner.style.display = 'block';
+            }
+          } catch (_) {}
+
           showDashboard();
         } catch (_) {
           loginError.style.display = 'block';
