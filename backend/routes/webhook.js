@@ -25,6 +25,7 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
     const customerEmail = session.customer_details?.email || session.customer_email;
+    const customerName  = session.customer_details?.name || customerEmail;
     const productId     = session.metadata?.product_id;
     const amount        = session.amount_total; // en centimes
 
@@ -72,6 +73,7 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
       // 3. Envoyer email (PDF produit(s) + facture)
       await sendOrderEmail({
         toEmail:       customerEmail,
+        customerName,
         product,
         invoicePdf,
         invoiceNumber,

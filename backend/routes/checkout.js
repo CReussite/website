@@ -32,7 +32,7 @@ router.post('/', express.json(), async (req, res) => {
         },
       ],
       metadata: { product_id },
-      customer_email: undefined, // Stripe collecte l'email
+      billing_address_collection: 'auto', // collecte le nom du client
       success_url: `${FRONTEND_URL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url:  `${FRONTEND_URL}/cancel.html`,
     });
