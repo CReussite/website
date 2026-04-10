@@ -13,7 +13,6 @@
   <style>
     body { background: var(--swan-wing); min-height: 100vh; }
 
-    /* ── Wrapper ── */
     .beta-wrap { max-width: 720px; margin: 0 auto; padding: 48px 20px 80px; }
 
     /* ── Hero ── */
@@ -28,36 +27,24 @@
       gap: 20px;
     }
     .choice-card {
-      background: #fff;
-      border: 2px solid #e5e7eb;
-      border-radius: 20px;
-      padding: 40px 28px 32px;
-      cursor: pointer;
-      text-align: center;
-      width: 100%;
+      background: #fff; border: 2px solid #e5e7eb; border-radius: 20px;
+      padding: 40px 28px 32px; cursor: pointer; text-align: center; width: 100%;
       transition: border-color .2s, box-shadow .2s, transform .15s;
     }
     .choice-card:hover {
-      border-color: var(--royal-blue);
-      box-shadow: var(--shadow-md);
-      transform: translateY(-3px);
+      border-color: var(--royal-blue); box-shadow: var(--shadow-md); transform: translateY(-3px);
     }
     .choice-icon  { font-size: 2.6rem; margin-bottom: 14px; }
     .choice-title { font-size: 1.1rem; font-weight: 700; color: var(--royal-blue); margin-bottom: 8px; }
     .choice-desc  { font-size: .88rem; color: var(--text-mid); line-height: 1.55; }
     .choice-badge {
-      display: inline-block;
-      background: var(--swan-wing);
-      color: var(--royal-blue);
-      font-size: .72rem; font-weight: 700;
-      padding: 3px 12px; border-radius: 99px; margin-top: 16px;
+      display: inline-block; background: var(--swan-wing); color: var(--royal-blue);
+      font-size: .72rem; font-weight: 700; padding: 3px 12px; border-radius: 99px; margin-top: 16px;
     }
 
-    /* ── Progress bar ── */
+    /* ── Progress ── */
     .progress-wrap { margin-bottom: 32px; }
-    .progress-header {
-      display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
-    }
+    .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
     .progress-bloc  { font-size: .8rem; font-weight: 700; color: var(--royal-blue); text-transform: uppercase; letter-spacing: .05em; }
     .progress-steps { font-size: .8rem; color: var(--text-mid); }
     .progress-track { height: 6px; background: #e5e7eb; border-radius: 99px; overflow: hidden; }
@@ -80,132 +67,98 @@
 
     /* ── Question cards ── */
     .question-card {
-      background: #fff;
-      border: 1.5px solid transparent;
-      border-radius: 16px;
-      padding: 22px 22px 18px;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow-sm);
+      background: #fff; border: 1.5px solid transparent; border-radius: 16px;
+      padding: 22px 22px 18px; margin-bottom: 14px; box-shadow: var(--shadow-sm);
     }
     .question-card.has-error { border-color: #fca5a5; }
-
-    .q-label {
-      display: block;
-      font-weight: 600; font-size: .93rem; color: var(--royal-blue);
-      margin-bottom: 5px;
-    }
+    .q-label   { display: block; font-weight: 600; font-size: .93rem; color: var(--royal-blue); margin-bottom: 5px; }
     .q-required { color: #dc2626; margin-left: 2px; }
-    .q-hint  { font-size: .8rem; color: var(--text-mid); font-style: italic; margin-bottom: 12px; }
-    .q-error { font-size: .78rem; color: #dc2626; margin-top: 7px; display: none; }
+    .q-hint    { font-size: .8rem; color: var(--text-mid); font-style: italic; margin-bottom: 12px; }
+    .q-error   { font-size: .78rem; color: #dc2626; margin-top: 7px; display: none; }
     .q-error.visible { display: block; }
 
     /* ── Inputs ── */
     .b-input, .b-textarea {
-      width: 100%; padding: 10px 14px;
-      border: 1.5px solid #e5e7eb; border-radius: 10px;
+      width: 100%; padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px;
       font-size: .9rem; font-family: var(--font-sans); color: var(--text-dark);
-      background: #fff; transition: border-color .2s;
-      margin-top: 10px;
+      background: #fff; transition: border-color .2s; margin-top: 10px;
     }
     .b-input:focus, .b-textarea:focus { outline: none; border-color: var(--royal-blue); }
     .b-textarea { min-height: 88px; resize: vertical; }
 
-    /* ── Radio options ── */
+    /* ── Radio ── */
     .radio-group { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
     .radio-opt {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 14px;
-      border: 1.5px solid #e5e7eb; border-radius: 10px;
-      cursor: pointer;
-      transition: border-color .15s, background .15s;
-      user-select: none;
+      display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+      border: 1.5px solid #e5e7eb; border-radius: 10px; cursor: pointer;
+      transition: border-color .15s, background .15s; user-select: none;
     }
     .radio-opt:hover { border-color: #b0bec5; background: #f8fafc; }
     .radio-dot {
-      width: 18px; height: 18px; flex-shrink: 0;
-      border: 2px solid #c0cce0; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      transition: all .15s;
+      width: 18px; height: 18px; flex-shrink: 0; border: 2px solid #c0cce0; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; transition: all .15s;
     }
     .radio-opt.selected { border-color: var(--royal-blue); background: #f0f4ff; }
     .radio-opt.selected .radio-dot { border-color: var(--royal-blue); background: var(--royal-blue); }
     .radio-opt.selected .radio-dot::after {
-      content: ''; display: block;
-      width: 6px; height: 6px; border-radius: 50%; background: #fff;
+      content: ''; display: block; width: 6px; height: 6px; border-radius: 50%; background: #fff;
     }
     .radio-lbl { font-size: .9rem; color: var(--text-dark); }
-
     .cond-field { margin-top: 12px; display: none; }
     .cond-field.visible { display: block; }
     .cond-label { display: block; font-size: .82rem; font-weight: 600; color: var(--text-mid); margin-bottom: 6px; }
 
     /* ── Checkboxes ── */
     .checkbox-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
       gap: 8px; margin-top: 10px;
     }
     .checkbox-opt {
-      display: flex; align-items: center; gap: 10px;
-      padding: 9px 13px;
-      border: 1.5px solid #e5e7eb; border-radius: 10px;
-      cursor: pointer; user-select: none;
-      transition: border-color .15s, background .15s;
+      display: flex; align-items: center; gap: 10px; padding: 9px 13px;
+      border: 1.5px solid #e5e7eb; border-radius: 10px; cursor: pointer;
+      user-select: none; transition: border-color .15s, background .15s;
     }
     .checkbox-opt:hover { border-color: #b0bec5; }
     .checkbox-box {
-      width: 18px; height: 18px; flex-shrink: 0;
-      border: 2px solid #c0cce0; border-radius: 4px;
-      display: flex; align-items: center; justify-content: center;
-      transition: all .15s;
+      width: 18px; height: 18px; flex-shrink: 0; border: 2px solid #c0cce0; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center; transition: all .15s;
     }
     .checkbox-opt.selected { border-color: var(--royal-blue); background: #f0f4ff; }
-    .checkbox-opt.selected .checkbox-box {
-      background: var(--royal-blue); border-color: var(--royal-blue);
-    }
-    .checkbox-opt.selected .checkbox-box::after {
-      content: '✓'; color: #fff; font-size: 11px; font-weight: 700;
-    }
+    .checkbox-opt.selected .checkbox-box { background: var(--royal-blue); border-color: var(--royal-blue); }
+    .checkbox-opt.selected .checkbox-box::after { content: '✓'; color: #fff; font-size: 11px; font-weight: 700; }
     .checkbox-lbl { font-size: .86rem; color: var(--text-dark); }
 
     /* ── Stars ── */
     .star-row { display: flex; gap: 6px; margin-top: 10px; }
     .star-btn {
-      font-size: 2rem; color: #d1d5db;
-      background: none; border: none; padding: 0; cursor: pointer;
-      transition: color .15s, transform .1s; line-height: 1;
+      font-size: 2rem; color: #d1d5db; background: none; border: none;
+      padding: 0; cursor: pointer; transition: color .15s, transform .1s; line-height: 1;
     }
     .star-btn.lit  { color: #f59e0b; }
     .star-btn:hover { transform: scale(1.15); }
 
     /* ── Navigation ── */
     .form-nav {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-top: 28px; gap: 12px;
+      display: flex; justify-content: space-between; align-items: center; margin-top: 28px; gap: 12px;
     }
     .btn-prev {
-      display: flex; align-items: center; gap: 6px;
-      padding: 10px 20px;
-      border: 1.5px solid #d1d5db; border-radius: 10px;
-      background: #fff; color: var(--text-mid); font-size: .9rem;
-      cursor: pointer; transition: border-color .15s, color .15s;
+      display: flex; align-items: center; gap: 6px; padding: 10px 20px;
+      border: 1.5px solid #d1d5db; border-radius: 10px; background: #fff;
+      color: var(--text-mid); font-size: .9rem; cursor: pointer; transition: border-color .15s, color .15s;
     }
     .btn-prev:hover { border-color: var(--royal-blue); color: var(--royal-blue); }
     .btn-prev.invisible { visibility: hidden; pointer-events: none; }
-
     .btn-next, .btn-submit {
-      display: flex; align-items: center; gap: 6px;
-      padding: 11px 26px;
-      border: none; border-radius: 10px;
-      font-size: .92rem; font-weight: 700; cursor: pointer;
-      transition: opacity .15s, transform .1s;
+      display: flex; align-items: center; gap: 6px; padding: 11px 26px;
+      border: none; border-radius: 10px; font-size: .92rem; font-weight: 700;
+      cursor: pointer; transition: opacity .15s, transform .1s;
     }
     .btn-next   { background: var(--royal-blue); color: #fff; }
     .btn-submit { background: #16a34a; color: #fff; }
     .btn-next:hover, .btn-submit:hover { opacity: .88; transform: translateY(-1px); }
     .btn-submit:disabled { opacity: .55; cursor: not-allowed; transform: none; }
 
-    /* ── Success screen ── */
+    /* ── Success ── */
     .success-wrap { display: flex; justify-content: center; padding-top: 20px; }
     .success-card {
       background: #fff; border-radius: 20px; padding: 56px 40px;
@@ -219,7 +172,6 @@
     .success-card h2 { margin-bottom: 10px; }
     .success-card p  { margin-bottom: 28px; }
 
-    /* ── Fade-in ── */
     .fade-in { animation: bFadeIn .28s ease; }
     @keyframes bFadeIn {
       from { opacity: 0; transform: translateY(10px); }
@@ -235,31 +187,31 @@
 <body>
   <div id="nav-placeholder"></div>
 
-  <!-- ── Ecran de choix ─────────────────────────────── -->
+  <!-- Écran de choix -->
   <div id="choice-screen">
     <div class="beta-wrap">
       <div class="beta-hero">
-        <h1>Questionnaire beta-testeur</h1>
-        <p>Merci pour ta participation ! Prends quelques minutes pour partager ton experience — tes retours sont precieux.</p>
+        <h1>Questionnaire bêta-testeur</h1>
+        <p>Merci pour ta participation ! Prends quelques minutes pour partager ton expérience — tes retours sont précieux.</p>
       </div>
       <div class="choice-grid">
-        <button class="choice-card" id="card-pc" onclick="startForm('pc')">
-          <div class="choice-icon">&#9879;&#65039;</div>
+        <button class="choice-card" onclick="startForm('pc')">
+          <div class="choice-icon">⚗️</div>
           <div class="choice-title">Physique-Chimie</div>
-          <div class="choice-desc">Tu as teste l'e-book Physique-Chimie uniquement</div>
+          <div class="choice-desc">Tu as testé l'e-book Physique-Chimie uniquement</div>
           <div class="choice-badge">~10 min</div>
         </button>
-        <button class="choice-card" id="card-bundle" onclick="startForm('bundle')">
-          <div class="choice-icon">&#128208;</div>
+        <button class="choice-card" onclick="startForm('bundle')">
+          <div class="choice-icon">📐</div>
           <div class="choice-title">Maths + Physique-Chimie</div>
-          <div class="choice-desc">Tu as teste les deux e-books (Pack)</div>
+          <div class="choice-desc">Tu as testé les deux e-books (Pack)</div>
           <div class="choice-badge">~15 min</div>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- ── Formulaire ─────────────────────────────────── -->
+  <!-- Formulaire -->
   <div id="form-screen" style="display:none;">
     <div class="beta-wrap">
       <div class="progress-wrap">
@@ -273,21 +225,21 @@
       </div>
       <div id="form-content"></div>
       <div class="form-nav">
-        <button class="btn-prev invisible" id="btn-prev" onclick="prevBloc()">&#8592; Precedent</button>
-        <button class="btn-next" id="btn-next" onclick="nextBloc()">Suivant &#8594;</button>
+        <button class="btn-prev invisible" id="btn-prev" onclick="prevBloc()">← Précédent</button>
+        <button class="btn-next" id="btn-next" onclick="nextBloc()">Suivant →</button>
         <button class="btn-submit" id="btn-submit" onclick="submitForm()" style="display:none;">Envoyer mes retours</button>
       </div>
     </div>
   </div>
 
-  <!-- ── Ecran succes ───────────────────────────────── -->
+  <!-- Écran succès -->
   <div id="success-screen" style="display:none;">
     <div class="beta-wrap">
       <div class="success-wrap">
         <div class="success-card fade-in">
-          <div class="success-icon">&#10003;</div>
+          <div class="success-icon">✓</div>
           <h2>Merci pour tes retours !</h2>
-          <p>Ton questionnaire a bien ete envoye. Tes reponses vont nous aider a ameliorer les fiches.</p>
+          <p>Ton questionnaire a bien été envoyé. Tes réponses vont nous aider à améliorer les fiches.</p>
           <a href="index.html" class="btn btn-primary">Retour au site</a>
         </div>
       </div>
@@ -307,16 +259,16 @@
     var currentBloc = 0;
     var formData    = {};
 
-    /* ---- Option lists ---- */
+    /* ---- Listes d'options ---- */
     var OPT_RECOMMANDATION = [
-      { v: 'oui_certain',      l: 'Oui, sans hesiter' },
+      { v: 'oui_certain',      l: 'Oui, sans hésiter' },
       { v: 'oui_probablement', l: 'Probablement oui' },
       { v: 'je_sais_pas',      l: 'Je ne sais pas' },
       { v: 'probablement_pas', l: 'Probablement pas' },
       { v: 'non',              l: 'Non' }
     ];
     var OPT_PRIX_PARENTS = [
-      { v: 'oui_certain',      l: 'Oui, sans hesiter' },
+      { v: 'oui_certain',      l: 'Oui, sans hésiter' },
       { v: 'oui_probablement', l: 'Oui, probablement' },
       { v: 'je_sais_pas',      l: 'Je ne sais pas' },
       { v: 'probablement_pas', l: 'Probablement pas' },
@@ -324,20 +276,20 @@
     ];
     var OPT_UTILE_AVANT = [
       { v: 'oui',       l: 'Oui, vraiment' },
-      { v: 'peut_etre', l: 'Peut-etre' },
+      { v: 'peut_etre', l: 'Peut-être' },
       { v: 'non',       l: 'Non, pas vraiment' }
     ];
     var OPT_MATIERES = [
-      { v: 'hg',      l: 'Histoire-Geographie' },
+      { v: 'hg',      l: 'Histoire-Géographie' },
       { v: 'ses',     l: 'SES' },
       { v: 'philo',   l: 'Philosophie' },
       { v: 'svt',     l: 'SVT' },
       { v: 'anglais', l: 'Anglais' },
       { v: 'autre',   l: 'Autre' },
-      { v: 'non',     l: 'Pas interesse(e)' }
+      { v: 'non',     l: 'Pas intéressé(e)' }
     ];
 
-    /* ---- Field factory helpers ---- */
+    /* ---- Helpers champs ---- */
     function fText(id, lbl, placeholder, required) {
       return { type: 'text', id: id, label: lbl, placeholder: placeholder || '', required: !!required };
     }
@@ -364,34 +316,37 @@
       return { type: 'checkboxes', id: id, label: lbl, opts: opts };
     }
 
-    /* ---- Bloc factories ---- */
+    /* ---- Blocs ---- */
     function blocIdent() {
       return {
         tag: 'Pour commencer', title: 'Identification', optional: false,
         subtitle: 'Ces infos nous permettent d\'identifier ton retour.',
         fields: [
-          fText('prenom', 'Ton prenom', 'Marie', true),
+          fText('prenom', 'Ton prénom', 'Marie', true),
           fEmail('email', 'Ton adresse email')
         ]
       };
     }
 
     function blocExp(subject, prefix, num) {
-      var titles = { maths: 'Experience — Mathematiques', pc: 'Experience — Physique-Chimie' };
+      var titles = {
+        maths: 'Expérience — Mathématiques',
+        pc:    'Expérience — Physique-Chimie'
+      };
       return {
         tag: 'Bloc ' + num, title: titles[subject], optional: false,
         fields: [
           fTextarea(prefix + '_q1_fiche_utile',
-            'Quelle fiche t\'a semble la plus utile ou la mieux faite ?',
+            'Quelle fiche t\'a semblé la plus utile ou la mieux faite ?',
             'Si tu devais n\'en garder qu\'une, laquelle ce serait ?'),
           fRadioDetail(prefix + '_q2_erreurs',
-            'Est-ce qu\'il y a des choses qui t\'ont semble fausses ?',
-            [{ v: 'non', l: 'Non, je n\'ai rien remarque de faux' }, { v: 'oui', l: 'Oui' }],
-            true, prefix + '_q2_erreurs_detail', 'Precise ce qui t\'a semble faux :', 'oui'),
+            'Est-ce qu\'il y a des choses qui t\'ont semblé fausses ?',
+            [{ v: 'non', l: 'Non, je n\'ai rien remarqué de faux' }, { v: 'oui', l: 'Oui' }],
+            true, prefix + '_q2_erreurs_detail', 'Précise ce qui t\'a semblé faux :', 'oui'),
           fRadioDetail(prefix + '_q3_incompris',
-            'Y a-t-il une notion que tu n\'as pas reussi a comprendre avec les fiches ?',
-            [{ v: 'non', l: 'Non, tout etait clair' }, { v: 'oui', l: 'Oui' }],
-            true, prefix + '_q3_incompris_detail', 'Precise la notion et pourquoi selon toi :', 'oui'),
+            'Y a-t-il une notion que tu n\'as pas réussi à comprendre avec les fiches ?',
+            [{ v: 'non', l: 'Non, tout était clair' }, { v: 'oui', l: 'Oui' }],
+            true, prefix + '_q3_incompris_detail', 'Précise la notion et pourquoi selon toi :', 'oui'),
           fRadioDetail(prefix + '_q4_manquant',
             'Y a-t-il quelque chose d\'important qui manque dans les fiches ?',
             [{ v: 'non', l: 'Non, le programme me semble bien couvert' }, { v: 'oui', l: 'Oui' }],
@@ -403,26 +358,26 @@
     function blocAvis(isPack, num) {
       var fields = [];
       if (isPack) {
-        fields.push(fStars('note_maths', 'Combien d\'etoiles pour l\'e-book Maths ?'));
+        fields.push(fStars('note_maths', 'Combien d\'étoiles pour l\'e-book Maths ?'));
         fields.push(fStars('note_pc',    'Et pour l\'e-book Physique-Chimie ?'));
       } else {
-        fields.push(fStars('note_pc', 'Combien d\'etoiles pour cet e-book ?'));
+        fields.push(fStars('note_pc', 'Combien d\'étoiles pour cet e-book ?'));
       }
       fields.push(
         fRadio('recommandation',
-          'Est-ce que tu en parlerais a un(e) camarade qui prepare le bac ?',
+          'Est-ce que tu en parlerais à un(e) camarade qui prépare le bac ?',
           OPT_RECOMMANDATION, true),
         fTextarea('recommandation_pourquoi', 'Pourquoi ?', null),
         fTextarea('frein_achat',
-          'Qu\'est-ce qui t\'aurait empeche d\'acheter ces fiches si tu avais du les payer ?', null),
+          'Qu\'est-ce qui t\'aurait empêché d\'acheter ces fiches si tu avais dû les payer ?', null),
         fTextarea('avis_publiable',
           isPack
-            ? 'En quelques phrases, ecris un avis global (sur les deux e-books) qu\'on pourrait publier sur le site.'
-            : 'En quelques phrases, ecris un avis qu\'on pourrait publier sur le site.', null),
+            ? 'En quelques phrases, écris un avis global (sur les deux e-books) qu\'on pourrait publier sur le site.'
+            : 'En quelques phrases, écris un avis qu\'on pourrait publier sur le site.', null),
         fRadioDetail('accord_publication',
           'Es-tu d\'accord qu\'on publie ton avis sur le site ?',
           [{ v: 'oui', l: 'Oui' }, { v: 'non', l: 'Non' }],
-          false, 'prenom_publication', 'Quel prenom veux-tu qu\'on utilise ?', 'oui')
+          false, 'prenom_publication', 'Quel prénom veux-tu qu\'on utilise ?', 'oui')
       );
       return { tag: 'Bloc ' + num, title: 'Ton avis global', optional: false, fields: fields };
     }
@@ -430,17 +385,17 @@
     function blocParents(num, prixLbl) {
       return {
         tag: 'Bloc ' + num, title: 'L\'avis de tes parents', optional: true,
-        subtitle: 'Montre-leur les fiches si tu peux et partage leur reaction.',
+        subtitle: 'Montre-leur les fiches si tu peux et partage leur réaction.',
         fields: [
           fTextarea('parents_avis', 'Qu\'est-ce que tes parents pensent des fiches ?', null),
           fRadio('parents_prix',
             'Tes parents trouvent-ils le prix (' + prixLbl + ') raisonnable ?',
             OPT_PRIX_PARENTS, false),
           fText('parents_prix_propose',
-            'Si le prix ne leur convient pas, a combien seraient-ils prets a acheter ?'),
+            'Si le prix ne leur convient pas, à combien seraient-ils prêts à acheter ?'),
           fTextarea('parents_avis_publiable',
-            'Si tes parents souhaitent laisser un avis a publier sur le site, qu\'ecriraient-ils ?', null),
-          fText('parents_prenom_publication', 'Prenom du parent (pour la publication)'),
+            'Si tes parents souhaitent laisser un avis à publier sur le site, qu\'écriraient-ils ?', null),
+          fText('parents_prenom_publication', 'Prénom du parent (pour la publication)'),
           fRadio('parents_accord_publication',
             'Tes parents sont-ils d\'accord de publier leur avis ?',
             [{ v: 'oui', l: 'Oui' }, { v: 'non', l: 'Non' }], false)
@@ -453,24 +408,24 @@
         tag: 'Bloc ' + num, title: 'Pour la suite', optional: false,
         fields: [
           fCheckboxes('matieres_souhaitees',
-            'Aimerais-tu des e-books similaires dans d\'autres matieres de Terminale ?',
+            'Aimerais-tu des e-books similaires dans d\'autres matières de Terminale ?',
             OPT_MATIERES),
           fRadioDetail('utile_avant',
-            'Ce type de fiches t\'aurait-il ete utile les annees precedentes (Premiere, Seconde...) ?',
+            'Ce type de fiches t\'aurait-il été utile les années précédentes (Première, Seconde…) ?',
             OPT_UTILE_AVANT, false,
-            'utile_avant_detail', 'Dans quelles matieres et a quel niveau ?', 'oui'),
-          fTextarea('commentaires', 'Des commentaires generaux ou des suggestions ?', null)
+            'utile_avant_detail', 'Dans quelles matières et à quel niveau ?', 'oui'),
+          fTextarea('commentaires', 'Des commentaires généraux ou des suggestions ?', null)
         ]
       };
     }
 
-    /* ---- Form definitions ---- */
+    /* ---- Définition des formulaires ---- */
     var FORMS = {
       pc: [
         blocIdent(),
         blocExp('pc', 'pc', 1),
         blocAvis(false, 2),
-        blocParents(3, '14,99 EUR'),
+        blocParents(3, '14,99 €'),
         blocSuite(4)
       ],
       bundle: [
@@ -478,12 +433,12 @@
         blocExp('maths', 'maths', 1),
         blocExp('pc', 'pc', 2),
         blocAvis(true, 3),
-        blocParents(4, '24,99 EUR'),
+        blocParents(4, '24,99 €'),
         blocSuite(5)
       ]
     };
 
-    /* ---- Escape helpers ---- */
+    /* ---- Helpers d'échappement ---- */
     function eH(s) {
       return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     }
@@ -491,9 +446,9 @@
       return String(s || '').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
     }
 
-    /* ---- Field renderer ---- */
+    /* ---- Rendu d'un champ ---- */
     function renderField(f) {
-      var val = formData[f.id] !== undefined ? formData[f.id] : '';
+      var val  = formData[f.id] !== undefined ? formData[f.id] : '';
       var inner = '';
 
       if (f.type === 'text') {
@@ -516,8 +471,7 @@
                 + ' onclick="window._pr(this)">'
                 + '<span class="radio-dot"></span>'
                 + '<span class="radio-lbl">' + eH(o.l) + '</span></div>';
-            }).join('')
-          + '</div>';
+            }).join('') + '</div>';
 
       } else if (f.type === 'radio-detail') {
         var dVal     = formData[f.detailId] !== undefined ? formData[f.detailId] : '';
@@ -533,8 +487,7 @@
                 + ' onclick="window._prd(this)">'
                 + '<span class="radio-dot"></span>'
                 + '<span class="radio-lbl">' + eH(o.l) + '</span></div>';
-            }).join('')
-          + '</div>'
+            }).join('') + '</div>'
           + '<div class="cond-field' + (showCond ? ' visible' : '') + '" id="cond-' + f.detailId + '">'
           + '<span class="cond-label">' + eH(f.detailLabel) + '</span>'
           + '<textarea class="b-textarea" oninput="window._sf(\'' + f.detailId + '\',this.value)">'
@@ -547,9 +500,8 @@
               return '<button type="button" class="star-btn' + (n <= sv ? ' lit' : '') + '"'
                 + ' onmouseover="window._hs(\'' + f.id + '\',' + n + ')"'
                 + ' onmouseout="window._hs(\'' + f.id + '\',0)"'
-                + ' onclick="window._ps(\'' + f.id + '\',' + n + ')">&#9733;</button>';
-            }).join('')
-          + '</div>';
+                + ' onclick="window._ps(\'' + f.id + '\',' + n + ')">★</button>';
+            }).join('') + '</div>';
 
       } else if (f.type === 'checkboxes') {
         var cks = Array.isArray(val) ? val : [];
@@ -560,8 +512,7 @@
                 + ' onclick="window._tc(this)">'
                 + '<span class="checkbox-box"></span>'
                 + '<span class="checkbox-lbl">' + eH(o.l) + '</span></div>';
-            }).join('')
-          + '</div>';
+            }).join('') + '</div>';
       }
 
       var req = f.required ? '<span class="q-required">*</span>' : '';
@@ -574,27 +525,23 @@
     }
 
     function renderBloc(bloc) {
-      var badge = bloc.optional
-        ? '<span class="optional-badge">Optionnel</span>' : '';
-      var sub = bloc.subtitle
-        ? '<p>' + eH(bloc.subtitle) + '</p>' : '';
+      var badge = bloc.optional ? '<span class="optional-badge">Optionnel</span>' : '';
+      var sub   = bloc.subtitle ? '<p>' + eH(bloc.subtitle) + '</p>' : '';
       return '<div class="bloc-header">'
         + '<div class="bloc-tag">' + eH(bloc.tag) + badge + '</div>'
-        + '<h2>' + eH(bloc.title) + '</h2>' + sub
-        + '</div>'
+        + '<h2>' + eH(bloc.title) + '</h2>' + sub + '</div>'
         + bloc.fields.map(renderField).join('');
     }
 
     function updateProgress() {
-      var blocs = FORMS[formType];
-      var total = blocs.length;
-      var step  = currentBloc + 1;
-      document.getElementById('prog-bloc').textContent  = blocs[currentBloc].tag;
-      document.getElementById('prog-steps').textContent = 'Etape ' + step + ' / ' + total;
-      document.getElementById('prog-fill').style.width  = Math.round(step / total * 100) + '%';
+      var blocs  = FORMS[formType];
+      var total  = blocs.length;
+      var step   = currentBloc + 1;
       var isLast = currentBloc === total - 1;
-      var btnPrev = document.getElementById('btn-prev');
-      btnPrev.classList.toggle('invisible', currentBloc === 0);
+      document.getElementById('prog-bloc').textContent  = blocs[currentBloc].tag;
+      document.getElementById('prog-steps').textContent = 'Étape ' + step + ' / ' + total;
+      document.getElementById('prog-fill').style.width  = Math.round(step / total * 100) + '%';
+      document.getElementById('btn-prev').classList.toggle('invisible', currentBloc === 0);
       document.getElementById('btn-next').style.display   = isLast ? 'none' : 'flex';
       document.getElementById('btn-submit').style.display = isLast ? 'flex' : 'none';
     }
@@ -610,7 +557,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    /* ---- Interaction handlers (on window to survive innerHTML replacement) ---- */
+    /* ---- Gestionnaires d'interaction ---- */
     window._sf = function(id, val) { formData[id] = val; };
 
     window._pr = function(el) {
@@ -715,18 +662,17 @@
       if (currentBloc > 0) showBloc(currentBloc - 1);
     };
 
-    /* ---- Submit ---- */
+    /* ---- Envoi ---- */
     window.submitForm = async function() {
       if (!validate(FORMS[formType][currentBloc])) return;
       var btn = document.getElementById('btn-submit');
-      btn.disabled = true;
-      btn.textContent = 'Envoi en cours...';
+      btn.disabled    = true;
+      btn.textContent = 'Envoi en cours…';
       try {
-        var payload = Object.assign({ type: formType }, formData);
         var res = await fetch(BACKEND + '/api/beta-feedback', {
-          method: 'POST',
+          method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body:    JSON.stringify(Object.assign({ type: formType }, formData))
         });
         var data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Erreur serveur');
@@ -734,9 +680,9 @@
         document.getElementById('success-screen').style.display = 'block';
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (err) {
-        btn.disabled = false;
+        btn.disabled    = false;
         btn.textContent = 'Envoyer mes retours';
-        alert('Une erreur est survenue : ' + err.message + '\nReessaie dans quelques instants.');
+        alert('Erreur lors de l\'envoi : ' + err.message + '\nRéessaie dans quelques instants.');
       }
     };
   })();
