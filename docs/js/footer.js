@@ -1,9 +1,8 @@
 document.getElementById('footer-placeholder').outerHTML = `
   <footer>
     <div class="container">
-      <div class="footer-logo">C'<span>Réussite</span></div>
+      <div class="footer-logo"><img src="img/logo.jpeg" alt="C'Reussite" class="footer-logo-img"></div>
       <p>Fiches de révision Terminale Spécialité — Maths &amp; Physique-Chimie</p>
-      <p>Par <strong class="footer-author">Camille Reinhardt</strong>, polytechnicienne et docteure en sciences de la vie</p>
       <p class="mt-8">
         <a href="mailto:contact@creussite.fr">contact@creussite.fr</a>
       </p>
