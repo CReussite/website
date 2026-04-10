@@ -51,7 +51,6 @@ app.use('/api/beta-feedback', require('./routes/beta'));
 
 app.get('/api/healthz', (req, res) => {
   const missingEnv = REQUIRED_ENV_VARS.filter((key) => !process.env[key]);
-  const hasAlerts = Boolean(process.env.ALERT_EMAIL);
   const isOk = missingEnv.length === 0;
   const uptime = process.uptime();
   const uptimeStr = uptime < 60 ? `${Math.floor(uptime)}s`
@@ -63,7 +62,7 @@ app.get('/api/healthz', (req, res) => {
     return res.status(isOk ? 200 : 503).json({
       status: isOk ? 'ok' : 'degraded',
       service: "C'Reussite backend",
-      checks: { env: isOk ? 'ok' : 'missing', alerting: hasAlerts ? 'configured' : 'not_configured' },
+      checks: { env: isOk ? 'ok' : 'missing' },
       missing_env: missingEnv,
     });
   }
@@ -72,7 +71,6 @@ app.get('/api/healthz', (req, res) => {
   const statusLabel = isOk ? '✅ Actif' : '⚠️ Dégradé';
   const statusColor = isOk ? '#27ae60' : '#e67e22';
   const envLabel = isOk ? '✅ OK' : `❌ ${missingEnv.length} manquante(s)`;
-  const alertLabel = hasAlerts ? '✅ Configuré' : '➖ Non configuré';
 
   res.status(isOk ? 200 : 503).send(`<!DOCTYPE html>
 <html lang="fr">
@@ -100,7 +98,6 @@ app.get('/api/healthz', (req, res) => {
     <div class="status">${statusLabel}</div>
     <div class="checks">
       <div class="row"><span>Variables d'env</span><span>${envLabel}</span></div>
-      <div class="row"><span>Alerting</span><span>${alertLabel}</span></div>
       <div class="row"><span>Uptime</span><span>${uptimeStr}</span></div>
     </div>
     <div class="footer">Render free tier · Frankfurt · ${new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}</div>
