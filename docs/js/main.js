@@ -56,8 +56,8 @@ document.querySelectorAll('.lead-form').forEach(form => {
     e.preventDefault();
     const email   = form.querySelector('input[type="email"]').value;
     const matiere = form.dataset.matiere || 'Fiche gratuite';
-    const mailto  = `mailto:contact@c-reussite.fr?subject=${encodeURIComponent('Demande fiche gratuite – ' + matiere)}&body=${encodeURIComponent('Bonjour,\n\nJe souhaite recevoir la fiche gratuite : ' + matiere + '\n\nMon email : ' + email + '\n\nMerci !')}`;
-    window.location.href = mailto;
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=contact@c-reussite.fr&su=${encodeURIComponent('Demande fiche gratuite \u2013 ' + matiere)}&body=${encodeURIComponent('Bonjour,\n\nJe souhaite recevoir la fiche gratuite : ' + matiere + '\n\nMon email : ' + email + '\n\nMerci !')}`;
+    window.open(gmailUrl, '_blank');
   });
 });
 
@@ -74,9 +74,9 @@ if (contactForm) {
     const message = document.getElementById('message').value;
 
     const body = `Nom : ${nom}\nEmail : ${email}\n\n${message}`;
-    const mailto = `mailto:contact@c-reussite.fr?subject=${encodeURIComponent(sujet)}&body=${encodeURIComponent(body)}`;
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=contact@c-reussite.fr&su=${encodeURIComponent(sujet)}&body=${encodeURIComponent(body)}`;
 
-    window.location.href = mailto;
+    window.open(gmailUrl, '_blank');
     formSuccess.hidden = false;
     contactForm.reset();
 

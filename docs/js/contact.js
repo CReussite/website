@@ -27,7 +27,7 @@ document.getElementById('contact-placeholder').outerHTML = `
       </form>
 
       <p class="text-center mt-16 contact-alt">
-        Ou directement par email : <a href="mailto:contact@c-reussite.fr">contact@c-reussite.fr</a>
+        Ou directement par email : <a href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@c-reussite.fr" target="_blank" rel="noopener">contact@c-reussite.fr</a>
       </p>
     </div>
   </section>
@@ -40,7 +40,8 @@ document.getElementById('contact-form').addEventListener('submit', function (e) 
   var email   = document.getElementById('contact-email').value;
   var subject = document.getElementById('contact-subject').value || 'Message depuis c-reussite.fr';
   var body    = 'Nom : ' + name + '\nEmail : ' + email + '\n\n' + document.getElementById('contact-message').value;
-  window.location.href = 'mailto:contact@c-reussite.fr'
-    + '?subject=' + encodeURIComponent(subject)
-    + '&body='    + encodeURIComponent(body);
+  window.open('https://mail.google.com/mail/?view=cm&fs=1'
+    + '&to=contact@c-reussite.fr'
+    + '&su=' + encodeURIComponent(subject)
+    + '&body=' + encodeURIComponent(body), '_blank');
 });
