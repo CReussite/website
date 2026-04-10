@@ -104,7 +104,7 @@ Copier `backend/.env.example`, remplir chaque valeur, puis les ajouter dans Rail
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Settings → API |
 | `BREVO_API_KEY` | brevo.com → Paramètres → Clés API |
 | `FROM_EMAIL` | `contact@c-reussite.fr` |
-| `FROM_NAME` | `Clara Renaud — C'Réussite` |
+| `FROM_NAME` | `Camille Reinhardt, C'Réussite` |
 | `FRONTEND_URL` | `https://c-reussite.fr` |
 
 ```bash
@@ -115,7 +115,7 @@ railway variables set SUPABASE_URL=https://xxxx.supabase.co
 railway variables set SUPABASE_SERVICE_ROLE_KEY=eyJ...
 railway variables set BREVO_API_KEY=xkeysib-...
 railway variables set FROM_EMAIL=contact@c-reussite.fr
-railway variables set "FROM_NAME=Clara Renaud — C'Réussite"
+railway variables set "FROM_NAME=Camille Reinhardt, C'Réussite"
 railway variables set FRONTEND_URL=https://c-reussite.fr
 ```
 
