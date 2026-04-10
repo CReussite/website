@@ -50,4 +50,13 @@
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && !overlay.hidden) close();
   });
+
+  document.getElementById('extract-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email   = document.getElementById('extract-email').value;
+    var subject = encodeURIComponent(product.value);
+    var body    = encodeURIComponent('Mon email : ' + email);
+    window.location.href = 'mailto:contact@creussite.fr?subject=' + subject + '&body=' + body;
+    close();
+  });
 })();
