@@ -88,6 +88,22 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
       console.log(`[webhook] Commande ${invoiceNumber} traitée — ${customerEmail} — ${product.name}`);
     } catch (err) {
       console.error('[webhook] Erreur traitement :', err.message);
+      try {
+        await sendOpsAlert({
+          subject: 'Echec traitement commande Stripe',
+          message: "Le traitement d'une commande a echoue dans le webhook Stripe.",
+          details: {
+            error: err.message,
+            stripe_session_id: session.id,
+            customer_email: customerEmail,
+            product_id: productId,
+            amount,
+            event_id: event.id,
+          },
+        });
+      } catch (alertErr) {
+        console.error('[webhook] Echec envoi alerte :', alertErr.message);
+      }
       // Retourner 500 → Stripe retentera (utile si email temporairement indisponible)
       return res.status(500).send('Internal error');
     }
