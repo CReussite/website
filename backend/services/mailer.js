@@ -7,7 +7,7 @@ const defaultClient = SibApiV3Sdk.ApiClient.instance;
 defaultClient.authentications['api-key'].apiKey = process.env.BREVO_API_KEY;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
-const CONTACT_EMAIL = 'contact@creussite.fr';
+const CONTACT_EMAIL = 'contact@c-reussite.fr';
 
 /**
  * Ajoute les métadonnées de traçabilité + un filigrane invisible dans chaque page du PDF.
