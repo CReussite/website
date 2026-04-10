@@ -67,42 +67,6 @@ app.get('/api/healthz', (req, res) => {
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok', service: "C'Réussite backend" }));
 
-// Diagnostic temporaire (à supprimer après debug)
-app.get('/api/debug', async (req, res) => {
-  const results = {};
-  // Test Supabase
-  try {
-    const { getClient } = require('./services/db');
-    const sb = getClient();
-    const { data, error } = await sb.from('beta_feedback').select('*').limit(1);
-    results.supabase = error ? { ok: false, error: error.message } : { ok: true, rows: data.length };
-  } catch (e) { results.supabase = { ok: false, error: e.message }; }
-  // Test Brevo
-  try {
-    const SibApiV3Sdk = require('sib-api-v3-sdk');
-    const dc = SibApiV3Sdk.ApiClient.instance;
-    dc.authentications['api-key'].apiKey = process.env.BREVO_API_KEY;
-    const api = new SibApiV3Sdk.AccountApi();
-    const account = await api.getAccount();
-    results.brevo = { ok: true, email: account.email };
-  } catch (e) { results.brevo = { ok: false, error: e.message, status: e.status }; }
-  // Test products.json path
-  try {
-    const p = require('path');
-    const f = require('fs');
-    const pPath = p.join(__dirname, '../docs/content/products.json');
-    results.products_json = { ok: f.existsSync(pPath), path: pPath };
-  } catch (e) { results.products_json = { ok: false, error: e.message }; }
-  // Test assets
-  try {
-    const p = require('path');
-    const f = require('fs');
-    const assetPath = p.join(__dirname, 'assets');
-    results.assets = { ok: f.existsSync(assetPath), files: f.readdirSync(assetPath) };
-  } catch (e) { results.assets = { ok: false, error: e.message }; }
-  res.json(results);
-});
-
 // Catalogue produits (même source que le frontend)
 app.get('/api/products', (req, res) => {
   res.json(require(path.join(__dirname, '../docs/content/products.json')));

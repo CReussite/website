@@ -13,7 +13,7 @@ Acheteur
 Frontend (GitHub Pages — c-reussite.fr)
   │  POST /api/checkout  { product_id }
   ▼
-Backend Express (Railway — website-production-2f4e.up.railway.app)
+Backend Express (Render — creussite-backend.onrender.com)
   │  crée une Stripe Checkout Session
   ▼
 Stripe Checkout
@@ -36,7 +36,7 @@ Backend /webhook
 |--------|-------------|
 | Frontend | HTML/CSS/JS vanilla |
 | Hébergement frontend | GitHub Pages (CDN Fastly, gratuit) |
-| Backend | Node.js + Express (Railway) |
+| Backend | Node.js + Express (Render free tier) |
 | Paiement | Stripe Checkout Sessions |
 | Base de données | Supabase (PostgreSQL) |
 | Emails | Brevo (sib-api-v3-sdk) |
@@ -70,7 +70,7 @@ CReussite/
 │   └── .env.example
 │
 ├── .github/workflows/deploy.yml   ← GitHub Pages auto-deploy
-└── railway.json                   ← Config Railway
+└── render.yaml                   ← Config Render (rootDir: backend, plan: free)
 ```
 
 ---
@@ -92,9 +92,9 @@ Le backend et le frontend lisent tous les deux ce fichier.
 
 ---
 
-## Variables d'environnement (Railway)
+## Variables d'environnement (Render)
 
-Copier `backend/.env.example`, remplir chaque valeur, puis les ajouter dans Railway → Variables.
+Copier `backend/.env.example`, remplir chaque valeur, puis les ajouter dans Render → Environment.
 
 | Variable | Source |
 |----------|--------|
@@ -110,17 +110,11 @@ Copier `backend/.env.example`, remplir chaque valeur, puis les ajouter dans Rail
 | `FRONTEND_URL` | `https://c-reussite.fr` |
 
 ```bash
-# Depuis le repo (Railway CLI)
-railway variables set STRIPE_SECRET_KEY=sk_live_...
-railway variables set STRIPE_WEBHOOK_SECRET=whsec_...
-railway variables set SUPABASE_URL=https://xxxx.supabase.co
-railway variables set SUPABASE_SERVICE_ROLE_KEY=eyJ...
-railway variables set BREVO_API_KEY=xkeysib-...
-railway variables set FROM_EMAIL=contact@c-reussite.fr
-railway variables set "FROM_NAME=Camille Reinhardt, C'Réussite"
-railway variables set ALERT_EMAIL=contact@c-reussite.fr
-railway variables set "ALERT_FROM_NAME=C'RÃ©ussite Monitoring"
-railway variables set FRONTEND_URL=https://c-reussite.fr
+# Via l'API Render
+curl -X PUT https://api.render.com/v1/services/srv-d7chdpa8qa3s73bjljs0/env-vars \
+  -H "Authorization: Bearer <RENDER_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '[{"key":"STRIPE_SECRET_KEY","value":"sk_live_..."}]'
 ```
 
 ---
@@ -150,7 +144,7 @@ La contrainte `UNIQUE` sur `stripe_session_id` garantit l'idempotence : un retry
 1. Dashboard Stripe → Développeurs → Webhooks → **Ajouter un endpoint**
    - URL : `https://creussite-backend.onrender.com/webhook`
    - Événement : `checkout.session.completed`
-2. Copier le **Signing secret** → variable Railway `STRIPE_WEBHOOK_SECRET`
+2. Copier le **Signing secret** → variable Render `STRIPE_WEBHOOK_SECRET`
 3. Tester depuis Stripe CLI :
 
 ```bash
