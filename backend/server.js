@@ -88,11 +88,22 @@ app.get('/api/healthz', async (req, res) => {
   }
 
   // HTML pour le navigateur
-  const statusLabel = allOk ? '✅ Actif' : hasAlert ? '🚨 Alerte' : '⚠️ Dégradé';
+  const checks = [
+    { label: 'Variables d\'env', ok: isOk, detail: isOk ? 'OK' : `${missingEnv.length} manquante(s)` },
+    { label: 'Base de données', ok: dbOk, detail: dbOk ? 'Connectée' : 'Injoignable' },
+    { label: 'Livraison emails', ok: stuckOrders === 0, detail: stuckOrders === 0 ? 'Aucune en attente' : `${stuckOrders} bloquée(s)` },
+    { label: 'Uptime', ok: true, detail: uptimeStr, neutral: true },
+  ];
+
+  const statusText = allOk ? 'Actif' : hasAlert ? 'Alerte' : 'Dégradé';
   const statusColor = allOk ? '#27ae60' : hasAlert ? '#c0392b' : '#e67e22';
-  const envLabel = isOk ? '✅ OK' : `❌ ${missingEnv.length} manquante(s)`;
-  const dbLabel = dbOk ? '✅ Connectée' : '❌ Injoignable';
-  const ordersLabel = stuckOrders === 0 ? '✅ Aucune' : `🚨 ${stuckOrders} commande(s) bloquée(s)`;
+  const statusDot = `<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${statusColor};margin-right:10px;vertical-align:middle;box-shadow:0 0 8px ${statusColor}60"></span>`;
+
+  const checksHtml = checks.map(c => {
+    const color = c.neutral ? '#888' : c.ok ? '#27ae60' : '#c0392b';
+    const dot = c.neutral ? '' : `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:8px"></span>`;
+    return `<div class="row"><span class="label">${c.label}</span><span class="value">${dot}${c.detail}</span></div>`;
+  }).join('\n      ');
 
   res.status(allOk ? 200 : 503).send(`<!DOCTYPE html>
 <html lang="fr">
@@ -102,27 +113,34 @@ app.get('/api/healthz', async (req, res) => {
   <title>C'Réussite — État du backend</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-    .card { background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); padding: 40px 48px; max-width: 440px; width: 90%; text-align: center; }
-    .logo { font-size: 1.4rem; font-weight: 700; color: #1a2744; margin-bottom: 4px; }
-    .sub { font-size: 0.82rem; color: #888; margin-bottom: 28px; }
-    .status { font-size: 2rem; font-weight: 700; color: ${statusColor}; margin-bottom: 24px; }
-    .checks { text-align: left; border-top: 1px solid #eee; padding-top: 20px; }
-    .row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 0.92rem; color: #444; border-bottom: 1px solid #f5f5f5; }
-    .row span:first-child { font-weight: 600; }
-    .footer { margin-top: 24px; font-size: 0.75rem; color: #aaa; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f6f8; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .card { background: #fff; border-radius: 20px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); max-width: 420px; width: 100%; overflow: hidden; }
+    .header { background: #1a2744; padding: 32px 32px 28px; text-align: center; }
+    .header .title { font-size: 1.3rem; font-weight: 700; color: #fff; letter-spacing: 0.02em; }
+    .header .sub { font-size: 0.78rem; color: rgba(255,255,255,0.5); margin-top: 4px; }
+    .status-bar { display: flex; align-items: center; justify-content: center; padding: 20px 32px; border-bottom: 1px solid #f0f0f0; }
+    .status-bar .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: ${statusColor}; margin-right: 10px; box-shadow: 0 0 8px ${statusColor}50; }
+    .status-bar .text { font-size: 1.1rem; font-weight: 700; color: ${statusColor}; }
+    .checks { padding: 8px 32px 16px; }
+    .row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #f5f5f5; }
+    .row:last-child { border-bottom: none; }
+    .row .label { font-size: 0.88rem; color: #555; font-weight: 500; }
+    .row .value { font-size: 0.88rem; color: #333; font-weight: 600; display: flex; align-items: center; }
+    .footer { text-align: center; padding: 12px 32px 20px; font-size: 0.72rem; color: #bbb; }
   </style>
 </head>
 <body>
   <div class="card">
-    <div class="logo">C'Réussite</div>
-    <div class="sub">Backend — creussite-backend.onrender.com</div>
-    <div class="status">${statusLabel}</div>
+    <div class="header">
+      <div class="title">C'Réussite</div>
+      <div class="sub">Backend · creussite-backend.onrender.com</div>
+    </div>
+    <div class="status-bar">
+      <span class="dot"></span>
+      <span class="text">${statusText}</span>
+    </div>
     <div class="checks">
-      <div class="row"><span>Variables d'env</span><span>${envLabel}</span></div>
-      <div class="row"><span>Base de données</span><span>${dbLabel}</span></div>
-      <div class="row"><span>Commandes non livrées</span><span>${ordersLabel}</span></div>
-      <div class="row"><span>Uptime</span><span>${uptimeStr}</span></div>
+      ${checksHtml}
     </div>
     <div class="footer">Render free tier · Frankfurt · ${new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}</div>
   </div>
