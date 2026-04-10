@@ -259,6 +259,12 @@
     var currentBloc = 0;
     var formData    = {};
 
+    /* ---- Warmup Render au chargement ---- */
+    function warmup() {
+      fetch(BACKEND + '/api/healthz', { method: 'GET' }).catch(function(){});
+    }
+    warmup();
+
     /* ---- Listes d'options ---- */
     var OPT_RECOMMANDATION = [
       { v: 'oui_certain',      l: 'Oui, sans hésiter' },
@@ -643,6 +649,7 @@
 
     /* ---- Navigation ---- */
     window.startForm = function(type) {
+      warmup(); /* re-ping au choix du formulaire */
       formType = type; formData = {}; currentBloc = 0;
       document.getElementById('choice-screen').style.display = 'none';
       document.getElementById('form-screen').style.display   = 'block';
@@ -662,18 +669,37 @@
       if (currentBloc > 0) showBloc(currentBloc - 1);
     };
 
-    /* ---- Envoi ---- */
+    /* ---- Envoi avec retry automatique ---- */
     window.submitForm = async function() {
       if (!validate(FORMS[formType][currentBloc])) return;
       var btn = document.getElementById('btn-submit');
       btn.disabled    = true;
       btn.textContent = 'Envoi en cours…';
-      try {
-        var res = await fetch(BACKEND + '/api/beta-feedback', {
+
+      var payload = JSON.stringify(Object.assign({ type: formType }, formData));
+
+      function tryFetch() {
+        var controller = new AbortController();
+        var timer = setTimeout(function(){ controller.abort(); }, 70000);
+        return fetch(BACKEND + '/api/beta-feedback', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(Object.assign({ type: formType }, formData))
-        });
+          body:    payload,
+          signal:  controller.signal
+        }).then(function(r){ clearTimeout(timer); return r; },
+                function(e){ clearTimeout(timer); throw e; });
+      }
+
+      try {
+        var res;
+        try {
+          res = await tryFetch();
+        } catch (e) {
+          /* Première tentative échouée (cold start Render) — on relance */
+          btn.textContent = 'Connexion au serveur…';
+          await new Promise(function(r){ setTimeout(r, 4000); });
+          res = await tryFetch();
+        }
         var data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Erreur serveur');
         document.getElementById('form-screen').style.display    = 'none';
@@ -682,7 +708,14 @@
       } catch (err) {
         btn.disabled    = false;
         btn.textContent = 'Envoyer mes retours';
-        alert('Erreur lors de l\'envoi : ' + err.message + '\nRéessaie dans quelques instants.');
+        var msg = document.getElementById('submit-error');
+        if (!msg) {
+          msg = document.createElement('p');
+          msg.id = 'submit-error';
+          msg.style.cssText = 'color:#dc2626;font-size:.85rem;margin-top:10px;text-align:center;';
+          btn.parentNode.appendChild(msg);
+        }
+        msg.textContent = 'L\'envoi a échoué. Vérifie ta connexion et réessaie.';
       }
     };
   })();
