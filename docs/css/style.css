@@ -501,6 +501,11 @@ nav {
 .contact-form {
   max-width: 560px;
   margin: 40px auto 0;
+  background: var(--white);
+  border: 1.5px solid var(--shellstone);
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: var(--shadow-md);
 }
 .form-group { margin-bottom: 18px; }
 .form-label {
@@ -558,7 +563,7 @@ footer a:hover { color: var(--quicksand); }
 .mt-16 { margin-top: 16px; }
 .btn-block { width: 100%; }
 .contact-alt { font-size: 0.85rem; color: var(--shellstone); }
-.contact-alt a { color: var(--sapphire); }
+.contact-alt a { color: var(--sapphire); text-decoration: underline; cursor: pointer; }
 .footer-author { color: rgba(255,255,255,0.7); }
 .footer-credit { font-size: 0.75rem; opacity: 0.4; }
 
