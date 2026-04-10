@@ -60,7 +60,7 @@ describe('Logique produit', () => {
 
 // ── Test live contre le backend Railway ──────────────
 
-const BACKEND = process.env.BACKEND_URL || 'https://website-production-2f4e.up.railway.app';
+const BACKEND = process.env.BACKEND_URL || 'https://creussite-backend.onrender.com';
 
 describe(`Checkout live (${BACKEND})`, () => {
   test('produit inconnu → 400', { skip: process.env.SKIP_LIVE ? 'SKIP_LIVE défini' : false }, async () => {
