@@ -66,7 +66,7 @@ Brevo (anciennement Sendinblue) est le service qui envoie les emails transaction
 
 Ce sont deux outils installés dans le backend qui permettent de créer des fichiers PDF directement dans le code :
 - **PDFKit** génère la facture à la volée (en mémoire, sans la sauvegarder sur disque)
-- **pdf-lib** ajoute un filigrane discret avec l'email de l'acheteur sur les PDFs produits, pour les protéger contre la copie
+- **pdf-lib** intègre un tracé stéganographique invisible dans les PDFs produits pour les protéger contre le partage illégal
 
 ### GitHub Pages et Railway — les hébergeurs
 
@@ -86,7 +86,7 @@ Ce sont deux outils installés dans le backend qui permettent de créer des fich
 | Supabase | Base de données | `backend/services/db.js` | Oui (plan gratuit) | Oui au-delà de 500 Mo / 50 000 requêtes/mois | Très généreux pour un petit volume |
 | Brevo | Envoi d'emails | `backend/services/mailer.js` | Oui (300 emails/jour gratuits) | Oui si dépassement du quota | Suffisant pour un démarrage |
 | PDFKit | Génération de la facture PDF | `backend/services/invoice.js` | Oui | Non | Open source |
-| pdf-lib | Filigrane sur les PDFs produits | `backend/services/mailer.js` | Oui | Non | Open source |
+| pdf-lib | Traçage stéganographique des PDFs produits | `backend/services/mailer.js` | Oui | Non | Open source |
 | GitHub Pages | Hébergement du site visible | `docs/` + `.github/workflows/` | Oui | Non (usage raisonnable) | Très fiable |
 | Railway | Hébergement du backend | `backend/` | Oui (plan Hobby) | Oui si fort trafic | ~5$/mois au-delà du plan gratuit |
 | GitHub Actions | CI/CD (déploiement automatique) | `.github/workflows/deploy.yml` | Oui | Non (usage raisonnable) | Déploie le site à chaque mise à jour |
@@ -112,7 +112,7 @@ Voici ce qui se passe exactement, de l'instant où un client clique sur "Command
 | 9. Vérification des doublons | Le backend vérifie si cette session Stripe est déjà en base de données | Backend → Supabase | Lecture seule | Protège contre les doubles livraisons si Stripe renvoie la notification |
 | 10. Enregistrement de la commande | Si nouvelle commande : insertion en base avec email, produit, montant, numéro de facture | Backend → Supabase | Ligne créée dans la table `orders` | Le numéro de facture est généré automatiquement au format `2026-001` |
 | 11. Génération de la facture | Le backend crée un PDF de facture en mémoire (il n'est pas sauvegardé sur disque) | Backend (PDFKit) | PDF en mémoire temporaire | La facture n'est pas archivée — voir recommandations |
-| 12. Filigrane sur les PDFs produits | Chaque PDF produit reçoit un filigrane semi-transparent avec l'email de l'acheteur | Backend (pdf-lib) | PDF modifié en mémoire | Les fichiers sources dans `backend/assets/` ne sont pas modifiés |
+| 12. Traçage stéganographique des PDFs | L'email de l'acheteur est inscrit en texte invisible (opacité quasi nulle) à 5 endroits par page, dans le flux de contenu du PDF | Backend (pdf-lib) | PDF modifié en mémoire | Les fichiers sources dans `backend/assets/` ne sont pas modifiés |
 | 13. Envoi de l'email | L'email est envoyé avec les PDFs produits et la facture en pièces jointes | Backend → Brevo | Email envoyé à l'acheteur | Si Brevo est indisponible, le backend répond `500` à Stripe qui retentera |
 | 14. Fin | Le client reçoit son email avec ses fichiers | Email | Aucune | — |
 
@@ -181,7 +181,7 @@ La livraison est entièrement **automatique**. Dès que le paiement est confirm�
 
 | Type de livraison | Automatique ou manuel | Service utilisé | Déclencheur | Ce que reçoit le client |
 |---|---|---|---|---|
-| Fiches PDF produit(s) | Automatique | Brevo (email) | Paiement Stripe validé | PDF(s) en pièce(s) jointe(s), avec filigrane |
+| Fiches PDF produit(s) | Automatique | Brevo (email) | Paiement Stripe validé | PDF(s) en pièce(s) jointe(s), avec traçage stéganographique |
 | Facture PDF | Automatique | Brevo (email) | Même déclencheur | Facture en pièce jointe |
 
 ### Ce que contient l'email
@@ -189,16 +189,26 @@ La livraison est entièrement **automatique**. Dès que le paiement est confirm�
 - Objet : `Tes fiches sont là — [nom du produit]`
 - Corps : message de remerciement avec le nom du produit et le numéro de facture
 - Pièces jointes :
-  - Le ou les PDF(s) du produit acheté (avec le filigrane de l'acheteur)
+  - Le ou les PDF(s) du produit acheté (avec traçage stéganographique invisible)
   - La facture au format PDF (numérotée `facture-2026-001.pdf`)
 
-### Le filigrane de protection
+### La protection anti-partage (stéganographie)
 
-Chaque PDF produit est modifié avant envoi pour y inclure :
-- Un **filigrane semi-transparent** avec l'adresse email de l'acheteur, en diagonale sur chaque page
-- Les **métadonnées du document** (auteur, mots-clés) inscrivent le nom et l'email de l'acheteur
+Chaque PDF produit est modifié avant envoi. Le fichier envoyé au client est visuellement identique à l'original, mais l'email de l'acheteur y est inscrit de façon invisible à deux niveaux :
 
-Cela permet de retrouver l'origine d'un fichier si celui-ci est partagé illégalement. Les fichiers sources dans `backend/assets/` ne sont jamais modifiés.
+**Niveau 1 — Métadonnées du fichier** (supprimables avec un outil en ligne)
+- Champ "Auteur" : `Acheté par : Prénom Nom <email@exemple.com>`
+- Champs "Mots-clés" et "Sujet" : email et nom de l'acheteur
+
+**Niveau 2 — Stéganographie dans le contenu des pages** (résiste à la suppression des métadonnées)
+- L'email de l'acheteur est inscrit **5 fois par page** en texte blanc, taille 4pt, opacité 0,4%
+- Complètement invisible à l'oeil nu et à l'impression
+- Physiquement présent dans le flux de contenu PDF — aucun outil de "nettoyage de métadonnées" n'y touche
+- Détectable en faisant `Ctrl+A` (sélectionner tout) dans Adobe Acrobat : l'email apparaît dans la sélection
+
+**Pour identifier l'origine d'un fichier partagé illégalement** : ouvrir le PDF dans Adobe Acrobat, faire `Ctrl+A`, copier le texte dans un éditeur — l'email de l'acheteur est lisible 5 fois par page. Croiser avec la table `orders` dans Supabase.
+
+Les fichiers sources dans `backend/assets/` ne sont jamais modifiés.
 
 ### Ajouter un nouveau produit à livrer
 
@@ -412,7 +422,7 @@ flowchart TD
     N -- Non --> P[Commande enregistrée dans Supabase\nNuméro de facture généré]
     P --> Q[Facture PDF générée en mémoire par PDFKit]
     Q --> R[PDFs produits chargés depuis backend/assets/]
-    R --> S[Filigrane email de l'acheteur ajouté sur chaque PDF produit]
+    R --> S[Traçage stéganographique invisible ajouté sur chaque page de chaque PDF]
     S --> T[Email envoyé via Brevo\nPDFs + Facture en pièces jointes]
     T --> U[Client reçoit ses fiches et sa facture par email]
 ```
