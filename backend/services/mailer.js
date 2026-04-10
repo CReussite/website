@@ -28,6 +28,8 @@ async function stampPdf(pdfBuffer, customerEmail, customerName) {
   for (const page of pages) {
     const { width, height } = page.getSize();
 
+    const stamp = `${customerName} <${customerEmail}>`;
+
     const positions = [
       { x: 50,              y: height - 30 },
       { x: width / 2 - 60, y: height / 2  },
@@ -37,7 +39,7 @@ async function stampPdf(pdfBuffer, customerEmail, customerName) {
     ];
 
     for (const { x, y } of positions) {
-      page.drawText(customerEmail, {
+      page.drawText(stamp, {
         x,
         y,
         size: 4,
