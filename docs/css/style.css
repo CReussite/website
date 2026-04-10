@@ -627,6 +627,74 @@ footer a:hover { color: var(--quicksand); }
 .extract-popup--pack .form-note { color: rgba(255,255,255,0.45); }
 .extract-popup .form-note { font-size: 0.8rem; color: var(--shellstone); margin-top: 12px; margin-bottom: 0; }
 
+/* ===== BETA FEEDBACK ===== */
+.beta-page {
+  min-height: 100vh;
+  background: var(--swan-wing);
+  padding: 48px 0;
+}
+.beta-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 48px 40px;
+  max-width: 640px;
+  margin: 0 auto;
+  box-shadow: var(--shadow-md);
+}
+.beta-card h1 { font-size: 1.5rem; margin-bottom: 12px; }
+.beta-card > .text-center > p { margin-bottom: 28px; }
+.beta-fieldset {
+  border: none;
+  padding: 0;
+}
+.beta-fieldset legend.form-label { margin-bottom: 10px; }
+.beta-checks, .beta-radios {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.beta-check, .beta-radio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.92rem;
+  color: var(--text-dark);
+  cursor: pointer;
+  padding: 8px 12px;
+  border: 1.5px solid var(--shellstone);
+  border-radius: var(--radius);
+  transition: border-color 0.2s, background 0.2s;
+}
+.beta-check:hover, .beta-radio:hover {
+  border-color: var(--sapphire);
+  background: var(--swan-wing);
+}
+.beta-check input, .beta-radio input {
+  accent-color: var(--sapphire);
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+.beta-success {
+  text-align: center;
+  padding: 40px 0;
+}
+.beta-success-icon {
+  width: 64px;
+  height: 64px;
+  background: var(--royal-blue);
+  color: var(--quicksand);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 1.8rem;
+}
+@media (max-width: 600px) {
+  .beta-card { padding: 28px 20px; }
+}
+
 /* ===== BURGER ===== */
 .nav-burger {
   display: none;

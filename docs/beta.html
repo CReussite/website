@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="img/favicon.ico">
+  <title>Retour bêta-testeur | C'Réussite</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <section class="beta-page">
+    <div class="container">
+
+      <div class="beta-card">
+        <div class="text-center">
+          <h1>📝 Retour bêta-testeur</h1>
+          <p>Merci d'avoir testé les fiches ! Tes réponses m'aident à les améliorer avant la version finale.</p>
+        </div>
+
+        <form id="beta-form" class="beta-form" novalidate>
+
+          <!-- Identité -->
+          <div class="form-group">
+            <label class="form-label" for="beta-email">Ton adresse email *</label>
+            <input class="form-control" type="email" id="beta-email" name="email" placeholder="ton@email.fr" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="beta-prenom">Ton prénom</label>
+            <input class="form-control" type="text" id="beta-prenom" name="prenom" placeholder="Prénom">
+          </div>
+
+          <!-- Q1 : Quelles fiches as-tu testées ? (multiselect) -->
+          <fieldset class="form-group beta-fieldset">
+            <legend class="form-label">Quelles fiches as-tu testées ? *</legend>
+            <div class="beta-checks">
+              <label class="beta-check"><input type="checkbox" name="fiches" value="maths"> Maths</label>
+              <label class="beta-check"><input type="checkbox" name="fiches" value="physique"> Physique-Chimie</label>
+            </div>
+          </fieldset>
+
+          <!-- Q2 : Note globale (radio) -->
+          <fieldset class="form-group beta-fieldset">
+            <legend class="form-label">Note globale des fiches *</legend>
+            <div class="beta-radios">
+              <label class="beta-radio"><input type="radio" name="note_globale" value="5" required> ⭐ 5 — Excellentes</label>
+              <label class="beta-radio"><input type="radio" name="note_globale" value="4"> ⭐ 4 — Très bien</label>
+              <label class="beta-radio"><input type="radio" name="note_globale" value="3"> ⭐ 3 — Correctes</label>
+              <label class="beta-radio"><input type="radio" name="note_globale" value="2"> ⭐ 2 — À améliorer</label>
+              <label class="beta-radio"><input type="radio" name="note_globale" value="1"> ⭐ 1 — Insuffisantes</label>
+            </div>
+          </fieldset>
+
+          <!-- Q3 : Clarté des explications (radio) -->
+          <fieldset class="form-group beta-fieldset">
+            <legend class="form-label">Les explications sont-elles claires ? *</legend>
+            <div class="beta-radios">
+              <label class="beta-radio"><input type="radio" name="clarte" value="tres_clair" required> Très claires, je comprends tout</label>
+              <label class="beta-radio"><input type="radio" name="clarte" value="globalement_clair"> Globalement claires, quelques passages flous</label>
+              <label class="beta-radio"><input type="radio" name="clarte" value="moyen"> Moyennement claires</label>
+              <label class="beta-radio"><input type="radio" name="clarte" value="pas_clair"> Pas assez claires</label>
+            </div>
+          </fieldset>
+
+          <!-- Q4 : Présentation visuelle (radio) -->
+          <fieldset class="form-group beta-fieldset">
+            <legend class="form-label">Que penses-tu de la mise en page / présentation ? *</legend>
+            <div class="beta-radios">
+              <label class="beta-radio"><input type="radio" name="presentation" value="top" required> Top, agréable à lire</label>
+              <label class="beta-radio"><input type="radio" name="presentation" value="bien"> Bien mais peut être améliorée</label>
+              <label class="beta-radio"><input type="radio" name="presentation" value="moyenne"> Moyenne</label>
+              <label class="beta-radio"><input type="radio" name="presentation" value="confuse"> Confuse / difficile à suivre</label>
+            </div>
+          </fieldset>
+
+          <!-- Q5 : Contenu suffisant (radio) -->
+          <fieldset class="form-group beta-fieldset">
+            <legend class="form-label">Le contenu couvre-t-il bien le programme ? *</legend>
+            <div class="beta-radios">
+              <label class="beta-radio"><input type="radio" name="couverture" value="complet" required> Oui, c'est complet</label>
+              <label class="beta-radio"><input type="radio" name="couverture" value="quasi_complet"> Quasi complet, quelques manques</label>
+              <label class="beta-radio"><input type="radio" name="couverture" value="lacunes"> Plusieurs chapitres manquent</label>
+            </div>
+          </fieldset>
+
+          <!-- Q6 : Points forts (multiselect) -->
+          <fieldset class="form-group beta-fieldset">
+            <legend class="form-label">Qu'est-ce que tu as le plus apprécié ? (plusieurs réponses possibles)</legend>
+            <div class="beta-checks">
+              <label class="beta-check"><input type="checkbox" name="points_forts" value="synthese"> La synthèse / concision</label>
+              <label class="beta-check"><input type="checkbox" name="points_forts" value="exemples"> Les exemples et exercices types</label>
+              <label class="beta-check"><input type="checkbox" name="points_forts" value="formules"> Le récap des formules</label>
+              <label class="beta-check"><input type="checkbox" name="points_forts" value="mise_en_page"> La mise en page / les couleurs</label>
+              <label class="beta-check"><input type="checkbox" name="points_forts" value="structure"> L'organisation par chapitre</label>
+              <label class="beta-check"><input type="checkbox" name="points_forts" value="methodes"> Les méthodes pas à pas</label>
+            </div>
+          </fieldset>
+
+          <!-- Q7 : Points à améliorer (multiselect) -->
+          <fieldset class="form-group beta-fieldset">
+            <legend class="form-label">Qu'est-ce qui pourrait être amélioré ? (plusieurs réponses possibles)</legend>
+            <div class="beta-checks">
+              <label class="beta-check"><input type="checkbox" name="ameliorations" value="plus_exemples"> Plus d'exemples</label>
+              <label class="beta-check"><input type="checkbox" name="ameliorations" value="plus_exos"> Plus d'exercices corrigés</label>
+              <label class="beta-check"><input type="checkbox" name="ameliorations" value="plus_schemas"> Plus de schémas / figures</label>
+              <label class="beta-check"><input type="checkbox" name="ameliorations" value="lisibilite"> Meilleure lisibilité (police, taille)</label>
+              <label class="beta-check"><input type="checkbox" name="ameliorations" value="couleurs"> Couleurs / design à revoir</label>
+              <label class="beta-check"><input type="checkbox" name="ameliorations" value="chapitres_manquants"> Chapitres manquants</label>
+              <label class="beta-check"><input type="checkbox" name="ameliorations" value="erreurs"> Corrections d'erreurs repérées</label>
+            </div>
+          </fieldset>
+
+          <!-- Q8 : Comment les as-tu utilisées ? (radio) -->
+          <fieldset class="form-group beta-fieldset">
+            <legend class="form-label">Comment as-tu utilisé les fiches ?</legend>
+            <div class="beta-radios">
+              <label class="beta-radio"><input type="radio" name="utilisation" value="revision_exam"> Révision avant un contrôle / examen</label>
+              <label class="beta-radio"><input type="radio" name="utilisation" value="complement_cours"> En complément du cours</label>
+              <label class="beta-radio"><input type="radio" name="utilisation" value="decouverte"> Lecture rapide pour découvrir</label>
+              <label class="beta-radio"><input type="radio" name="utilisation" value="regulier"> Utilisation régulière (plusieurs fois)</label>
+            </div>
+          </fieldset>
+
+          <!-- Q9 : Recommanderais-tu ? (radio) -->
+          <fieldset class="form-group beta-fieldset">
+            <legend class="form-label">Recommanderais-tu ces fiches à un(e) ami(e) ? *</legend>
+            <div class="beta-radios">
+              <label class="beta-radio"><input type="radio" name="recommandation" value="oui_certain" required> Oui, sans hésiter</label>
+              <label class="beta-radio"><input type="radio" name="recommandation" value="oui_probablement"> Oui, probablement</label>
+              <label class="beta-radio"><input type="radio" name="recommandation" value="pas_sur"> Pas sûr(e)</label>
+              <label class="beta-radio"><input type="radio" name="recommandation" value="non"> Non</label>
+            </div>
+          </fieldset>
+
+          <!-- Q10 : Prix juste ? (radio) -->
+          <fieldset class="form-group beta-fieldset">
+            <legend class="form-label">Le prix te semble-t-il juste ? (14,99 € par matière)</legend>
+            <div class="beta-radios">
+              <label class="beta-radio"><input type="radio" name="prix" value="bon_rapport"> Oui, bon rapport qualité/prix</label>
+              <label class="beta-radio"><input type="radio" name="prix" value="un_peu_cher"> Un peu cher</label>
+              <label class="beta-radio"><input type="radio" name="prix" value="trop_cher"> Trop cher</label>
+              <label class="beta-radio"><input type="radio" name="prix" value="pas_cher"> Pas cher pour ce que c'est</label>
+            </div>
+          </fieldset>
+
+          <!-- Q11 : Commentaire libre -->
+          <div class="form-group">
+            <label class="form-label" for="beta-commentaire">Un commentaire, une suggestion, une erreur repérée ?</label>
+            <textarea class="form-control" id="beta-commentaire" name="commentaire" rows="5" placeholder="Dis-moi tout ce qui te passe par la tête..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" id="beta-submit">Envoyer mon retour</button>
+
+          <p class="form-note text-center">Tes réponses sont anonymes et servent uniquement à améliorer les fiches.</p>
+        </form>
+
+        <!-- Message de confirmation (caché par défaut) -->
+        <div id="beta-success" class="beta-success" hidden>
+          <div class="beta-success-icon">✓</div>
+          <h2>Merci pour ton retour !</h2>
+          <p>Tes réponses ont bien été enregistrées. Elles m'aideront à améliorer les fiches.</p>
+          <a href="/" class="btn btn-outline" style="margin-top: 20px;">Retour au site</a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <script src="js/beta.js"></script>
+</body>
+</html>
