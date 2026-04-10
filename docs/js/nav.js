@@ -6,7 +6,7 @@
   document.getElementById('nav-placeholder').outerHTML = `
     <nav aria-label="Navigation principale">
       <div class="nav-inner">
-        <a href="${base || '#'}${isHome ? '' : '#'}" class="nav-logo"><img src="${isHome ? '' : ''}img/logo.jpeg" alt="C'R\u00e9ussite" class="nav-logo-img"></a>
+        <a href="${base || '#'}${isHome ? '' : '#'}" class="nav-logo"><img src="${isHome ? '' : ''}img/icon.jpeg" alt="C'R\u00e9ussite" class="nav-logo-img"></a>
         <div class="nav-tools">
           <ul class="nav-links">
             <li><a href="${base}#fiches">Les fiches</a></li>
