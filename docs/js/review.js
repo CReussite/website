@@ -48,4 +48,14 @@
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && !overlay.hidden) close();
   });
+
+  document.getElementById('review-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name    = encodeURIComponent(document.getElementById('review-name').value);
+    var message = encodeURIComponent(document.getElementById('review-message').value);
+    var subject = encodeURIComponent(ratingInput.value);
+    var body    = encodeURIComponent('Prénom : ') + name + '%0A' + encodeURIComponent('Avis : ') + message;
+    window.location.href = 'mailto:contact@creussite.fr?subject=' + subject + '&body=' + body;
+    close();
+  });
 })();
