@@ -122,4 +122,4 @@ async function saveInvoicePath(stripeSessionId, invoicePath) {
   if (error) console.warn(`[storage] saveInvoicePath échoué : ${error.message}`);
 }
 
-module.exports = { insertOrderIdempotent, markEmailSent, getOrders, uploadInvoicePdf, saveInvoicePath };
+module.exports = { getClient, insertOrderIdempotent, markEmailSent, getOrders, uploadInvoicePdf, saveInvoicePath };
