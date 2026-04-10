@@ -531,7 +531,7 @@ footer {
   text-align: center;
 }
 footer p { color: rgba(255,255,255,0.5); font-size: 0.82rem; margin-bottom: 6px; }
-footer a { color: rgba(255,255,255,0.6); }
+footer a { color: rgba(255,255,255,0.85); text-decoration: underline; cursor: pointer; }
 footer a:hover { color: var(--quicksand); }
 .footer-logo {
   font-size: 1.1rem;
