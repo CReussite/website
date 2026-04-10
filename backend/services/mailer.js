@@ -1,7 +1,7 @@
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 const fs   = require('fs');
 const path = require('path');
-const { PDFDocument, rgb, degrees } = require('pdf-lib');
+const { PDFDocument, rgb } = require('pdf-lib');
 
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 defaultClient.authentications['api-key'].apiKey = process.env.BREVO_API_KEY;
@@ -14,24 +14,37 @@ const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 async function stampPdf(pdfBuffer, customerEmail, customerName) {
   const pdfDoc = await PDFDocument.load(pdfBuffer);
 
-  // Métadonnées de traçabilité
+  // Métadonnées de traçabilité (supprimables, mais première ligne de défense)
   pdfDoc.setAuthor(`Acheté par : ${customerName} <${customerEmail}>`);
   pdfDoc.setKeywords([`acheteur:${customerEmail}`, `client:${customerName}`, 'C\'Réussite']);
   pdfDoc.setSubject(`Document personnel — ${customerName}`);
   pdfDoc.setCreator('C\'Réussite');
 
-  // Filigrane semi-transparent sur chaque page
+  // Stéganographie : texte invisible intégré dans le flux de contenu de chaque page.
+  // Opacité 0, blanc sur blanc, taille 4pt — visuellement absent mais physiquement présent
+  // dans le PDF. Résiste à la suppression des métadonnées. Détectable via "Sélectionner tout"
+  // dans Adobe Acrobat ou tout outil d'analyse forensique de PDF.
   const pages = pdfDoc.getPages();
   for (const page of pages) {
     const { width, height } = page.getSize();
-    page.drawText(`${customerEmail}`, {
-      x: width / 2 - 120,
-      y: height / 2,
-      size: 28,
-      color: rgb(0.75, 0.75, 0.75),
-      opacity: 0.18,
-      rotate: degrees(45),
-    });
+
+    const positions = [
+      { x: 50,              y: height - 30 },
+      { x: width / 2 - 60, y: height / 2  },
+      { x: 50,              y: 30          },
+      { x: width - 160,     y: height - 30 },
+      { x: width - 160,     y: 30          },
+    ];
+
+    for (const { x, y } of positions) {
+      page.drawText(customerEmail, {
+        x,
+        y,
+        size: 4,
+        color: rgb(1, 1, 1),
+        opacity: 0.004, // imperceptible à l'oeil, présent dans le flux PDF
+      });
+    }
   }
 
   return Buffer.from(await pdfDoc.save());
