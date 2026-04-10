@@ -413,10 +413,15 @@ Les tests se lancent avec `npm test` dans le dossier `backend/`. 14 tests passen
 
 ### Ce qui manque pour fiabiliser davantage le projet
 
-- Le champ `email_sent` (présent dans le code webhook mais absent de la migration SQL actuelle) devrait être ajouté à la base de données pour permettre le retry intelligent des emails
-- Aucune alerte automatique n'est en place si un email échoue
-- Les factures ne sont pas archivées
-- Il n'y a pas de tableau de bord pour suivre les ventes en temps réel
+Le point `email_sent` n'est plus un manque : une migration existe désormais pour l'ajouter à la table `orders`, ce qui fiabilise bien le retry intelligent des emails.
+
+Les principaux manques restants sont aujourd'hui :
+
+- Aucune alerte automatique n'est en place si un email échoue, si le webhook Stripe échoue plusieurs fois, ou si le backend Railway devient indisponible
+- Les tests backend existent, mais ils ne sont pas encore lancés automatiquement en CI avant les déploiements
+- Les factures sont générées en mémoire puis envoyées, mais elles ne sont pas archivées dans un stockage durable pour pouvoir les renvoyer facilement
+- Il n'existe pas encore de sauvegarde métier indépendante (export régulier des commandes/factures) en plus des mécanismes natifs de Supabase
+- Il n'y a pas de tableau de bord simple pour suivre les ventes, les commandes récentes et les éventuels échecs d'envoi en un coup d'oeil
 
 ---
 
