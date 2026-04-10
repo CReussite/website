@@ -81,7 +81,7 @@ async function sendOrderEmail({ toEmail, customerName, product, invoicePdf, invo
         Une question ? Réponds à cet email ou écris à
         <a href="mailto:${process.env.FROM_EMAIL}">${process.env.FROM_EMAIL}</a>.
       </p>
-      <p style="font-size:0.85rem;color:#6b7280;">— Clara Renaud, C'Réussite</p>
+      <p style="font-size:0.85rem;color:#6b7280;">Camille Reinhard, C'Réussite</p>
     </div>
   `;
 
