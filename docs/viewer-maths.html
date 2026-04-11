@@ -434,13 +434,14 @@
       .vn-label { display: none; }
       .vn-expires { display: none; }
 
-      .page-wrap { padding: 20px 12px 52px; }
+      .page-wrap { padding: 0 0 52px; }
+      .pdf-card { border-radius: 0; margin-bottom: 16px; }
 
       .pdf-header { padding: 12px 14px; gap: 8px; }
       .pdf-header-title { font-size: .82rem; width: 100%; }
       .pdf-controls { width: 100%; justify-content: center; }
       .pdf-btn { padding: 9px 14px; font-size: .88rem; min-height: 40px; }
-      .pdf-body { padding: 20px 8px; }
+      .pdf-body { padding: 6px 0; }
 
       .q-body { padding: 24px 16px; }
       .q-head { padding: 16px 18px; }
@@ -575,6 +576,8 @@
           <button class="pdf-btn" onclick="zoomOut()">&#8722;</button>
           <span class="pdf-zoom-lbl" id="zoom-lbl">150%</span>
           <button class="pdf-btn" onclick="zoomIn()">+</button>
+          <span class="pdf-sep"></span>
+          <button class="pdf-btn" id="btn-print" onclick="printPDF()" title="Imprimer les fiches">&#128424;</button>
         </div>
       </div>
       <div class="pdf-body" id="pdf-body">
@@ -952,7 +955,9 @@
     curPage = n;
     var canvas = document.getElementById('pdf-canvas');
     var container = canvas.parentElement;
-    var availW = Math.max(100, container.clientWidth - 32); // .pdf-body padding: 16px each side
+    var _pl = parseFloat(getComputedStyle(container).paddingLeft) || 0;
+    var _pr = parseFloat(getComputedStyle(container).paddingRight) || 0;
+    var availW = Math.max(100, container.clientWidth - _pl - _pr);
     pdfDoc.getPage(n).then(function(page) {
       var dpr = window.devicePixelRatio || 1;
       // Clamp scale to container width so the canvas never overflows
@@ -965,7 +970,6 @@
       canvas.style.height = (vp.height / dpr) + 'px';
       return page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
     }).then(function() {
-      addWatermark(canvas);
       document.getElementById('pg-cur').textContent = n;
       document.getElementById('btn-pp').disabled = (n <= 1);
       document.getElementById('btn-np').disabled = (n >= pdfDoc.numPages);
@@ -979,24 +983,31 @@
     _resizeTimer = setTimeout(function() { if (pdfDoc) renderPage(curPage); }, 180);
   });
 
-  function addWatermark(canvas) {
-    var ctx = canvas.getContext('2d');
-    var dpr = window.devicePixelRatio || 1;
-    ctx.save();
-    ctx.font = 'bold ' + Math.round(42 * dpr) + 'px Arial';
-    ctx.fillStyle = 'rgba(80,80,80,0.07)';
-    ctx.textAlign = 'center';
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.rotate(-Math.PI / 5.5);
-    var txt = 'PRÉVISUALISATION  C\'Réussite';
-    var gap = 140 * dpr;
-    for (var y = -canvas.height; y < canvas.height; y += gap) {
-      for (var x = -canvas.width; x < canvas.width; x += 420 * dpr) {
-        ctx.fillText(txt, x, y);
+  window.printPDF = function() {
+    if (!pdfDoc) return;
+    var btn = document.getElementById('btn-print');
+    btn.disabled = true; btn.textContent = '…';
+    var imgs = [];
+    var renderNext = function(i) {
+      if (i > pdfDoc.numPages) {
+        var win = window.open('', '_blank');
+        win.document.write('<!DOCTYPE html><html><head><title>Fiches Maths \u2014 C\u2019R\u00e9ussite</title><style>@page{margin:0}body{margin:0}img{width:100%;display:block;page-break-after:always}</style></head><body>' + imgs.join('') + '</body></html>');
+        win.document.close();
+        setTimeout(function(){ win.print(); btn.disabled = false; btn.innerHTML = '&#128424;'; }, 500);
+        return;
       }
-    }
-    ctx.restore();
-  }
+      pdfDoc.getPage(i).then(function(page) {
+        var c = document.createElement('canvas');
+        var vp = page.getViewport({ scale: 2 });
+        c.width = vp.width; c.height = vp.height;
+        page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise.then(function() {
+          imgs.push('<img src="' + c.toDataURL('image/jpeg', 0.92) + '">');
+          renderNext(i + 1);
+        });
+      });
+    };
+    renderNext(1);
+  };
 
   window.prevPage = function(){ if (curPage > 1) renderPage(curPage - 1); };
   window.nextPage = function(){ if (pdfDoc && curPage < pdfDoc.numPages) renderPage(curPage + 1); };
