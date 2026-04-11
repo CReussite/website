@@ -4,130 +4,222 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Fiches Maths — C'Réussite</title>
+  <title>Fiches Maths — C'Réussite bêta</title>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --blue: #112250; --gold: #E0C58F; --bg: #F5F0E9;
-      --white: #fff; --shadow: 0 4px 20px rgba(0,0,0,0.10);
+      --blue:   #112250;
+      --blue2:  #1a3066;
+      --gold:   #E0C58F;
+      --bg:     #F5F0E9;
+      --white:  #fff;
+      --text:   #1a1a2e;
+      --muted:  #6b7280;
+      --border: #e5e7eb;
+      --red:    #dc2626;
+      --green:  #16a34a;
+      --sh:     0 2px 16px rgba(0,0,0,.10);
+      --sh-lg:  0 8px 40px rgba(0,0,0,.16);
     }
-    body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--blue);
-           user-select: none; -webkit-user-select: none; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg); color: var(--text);
+      user-select: none; -webkit-user-select: none;
+    }
     @media print { body { display: none !important; } }
 
-    /* ── AUTH ── */
-    #auth-screen {
-      min-height: 100vh; display: flex; align-items: center; justify-content: center;
-      background: var(--blue); padding: 20px;
+    /* ─── AUTH OVERLAY ─────────────────────────────────── */
+    #auth-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      transition: opacity .4s ease;
     }
     .auth-card {
-      background: var(--white); border-radius: 20px; padding: 48px 40px;
-      max-width: 420px; width: 100%; text-align: center; box-shadow: var(--shadow);
+      background: var(--white); border-radius: 24px;
+      padding: 52px 44px 44px; max-width: 420px; width: 100%;
+      text-align: center; box-shadow: var(--sh-lg);
     }
-    .auth-logo { height: 72px; width: auto; margin-bottom: 24px; }
-    .auth-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 6px; }
-    .auth-sub { font-size: .88rem; color: #6b7280; margin-bottom: 28px; }
+    .auth-logo { height: 80px; width: auto; margin-bottom: 28px; }
+    .auth-product {
+      display: inline-block;
+      background: rgba(17,34,80,.08); color: var(--blue);
+      border-radius: 8px; font-size: .75rem; font-weight: 700;
+      letter-spacing: .05em; text-transform: uppercase;
+      padding: 4px 12px; margin-bottom: 16px;
+    }
+    .auth-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 6px; }
+    .auth-sub   { font-size: .88rem; color: var(--muted); margin-bottom: 32px; }
+    .auth-field { position: relative; margin-bottom: 12px; }
     .auth-input {
-      width: 100%; padding: 13px 16px; border: 1.5px solid #d1d5db;
-      border-radius: 10px; font-size: .95rem; outline: none; margin-bottom: 12px;
-      transition: border-color .2s;
+      width: 100%; padding: 14px 48px 14px 18px;
+      border: 1.5px solid var(--border); border-radius: 12px;
+      font-size: .95rem; outline: none;
+      transition: border-color .2s, box-shadow .2s;
     }
-    .auth-input:focus { border-color: var(--blue); }
+    .auth-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(17,34,80,.10); }
     .auth-btn {
-      width: 100%; padding: 14px; background: var(--blue); color: var(--gold);
-      border: none; border-radius: 10px; font-size: .95rem; font-weight: 700;
-      cursor: pointer; transition: opacity .2s;
+      width: 100%; padding: 15px;
+      background: var(--blue); color: var(--gold);
+      border: none; border-radius: 12px;
+      font-size: .95rem; font-weight: 800; letter-spacing: .02em;
+      cursor: pointer; transition: opacity .2s, transform .15s;
     }
-    .auth-btn:hover { opacity: .88; }
-    .auth-btn:disabled { opacity: .5; cursor: not-allowed; }
-    .auth-error { color: #dc2626; font-size: .85rem; margin-top: 12px; }
+    .auth-btn:hover:not(:disabled) { opacity: .88; transform: translateY(-1px); }
+    .auth-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .auth-error {
+      color: var(--red); font-size: .85rem;
+      margin-top: 12px; min-height: 20px;
+    }
+    .auth-note { font-size: .76rem; color: var(--muted); margin-top: 20px; }
 
-    /* ── VIEWER ── */
-    #viewer-screen { min-height: 100vh; }
+    /* ─── MAIN VIEWER ──────────────────────────────────── */
+    #viewer { display: none; opacity: 0; transition: opacity .35s ease; min-height: 100vh; }
 
     /* Nav */
-    .v-nav {
-      background: var(--blue); padding: 0 24px; height: 60px;
+    .vn {
+      background: var(--blue); height: 64px; padding: 0 28px;
       display: flex; align-items: center; justify-content: space-between;
       position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,.18);
     }
-    .v-nav-logo { height: 44px; width: auto; }
-    .v-nav-title { color: var(--gold); font-size: .9rem; font-weight: 600; }
-    .v-nav-badge {
+    .vn-logo  { height: 46px; width: auto; }
+    .vn-label { color: var(--gold); font-size: .88rem; font-weight: 700; }
+    .vn-badge {
       background: rgba(224,197,143,.15); color: var(--gold);
-      border: 1px solid rgba(224,197,143,.3); border-radius: 20px;
-      font-size: .75rem; padding: 4px 12px;
+      border: 1px solid rgba(224,197,143,.3);
+      border-radius: 20px; font-size: .75rem; padding: 5px 14px; font-weight: 600;
     }
 
     /* Banner */
-    .access-banner {
-      background: #fef3c7; border-bottom: 1px solid #fde68a;
-      padding: 10px 24px; font-size: .85rem; color: #92400e; text-align: center;
+    .banner {
+      background: #fffbeb; border-bottom: 1px solid #fde68a;
+      padding: 11px 28px; font-size: .84rem; color: #78350f;
+      text-align: center; letter-spacing: .01em;
+    }
+    .banner strong { color: #92400e; }
+
+    /* ─── LAYOUT ───────────────────────────────────────── */
+    .page-wrap { max-width: 900px; margin: 0 auto; padding: 28px 20px 60px; }
+
+    /* ─── PDF VIEWER ───────────────────────────────────── */
+    .pdf-card {
+      background: var(--white); border-radius: 20px;
+      box-shadow: var(--sh); overflow: hidden; margin-bottom: 28px;
+    }
+    .pdf-header {
+      background: var(--blue); padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 10px;
+    }
+    .pdf-header-title { color: var(--gold); font-size: .95rem; font-weight: 800; }
+    .pdf-controls { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .pdf-btn {
+      background: rgba(255,255,255,.12); color: var(--gold);
+      border: 1px solid rgba(224,197,143,.25); border-radius: 8px;
+      padding: 7px 14px; font-size: .85rem; cursor: pointer;
+      transition: background .15s; min-width: 36px; text-align: center;
+      font-weight: 600;
+    }
+    .pdf-btn:hover:not(:disabled) { background: rgba(255,255,255,.22); }
+    .pdf-btn:disabled { opacity: .3; cursor: not-allowed; }
+    .pdf-info { font-size: .82rem; color: rgba(255,255,255,.65); padding: 0 4px; white-space: nowrap; }
+    .pdf-zoom-lbl { font-size: .78rem; color: rgba(255,255,255,.5); min-width: 40px; text-align: center; }
+
+    .pdf-body { background: #dde1e8; padding: 28px 20px; display: flex; flex-direction: column; align-items: center; min-height: 400px; }
+
+    .pdf-spinner-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 60px 20px; color: var(--muted); font-size: .9rem; }
+    .pdf-spinner {
+      width: 40px; height: 40px; border: 3px solid #d1d5db; border-top-color: var(--blue);
+      border-radius: 50%; animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .pdf-error { color: var(--red); font-size: .9rem; text-align: center; padding: 40px 20px; }
+
+    #pdf-canvas {
+      display: block; max-width: 100%; height: auto;
+      box-shadow: 0 6px 32px rgba(0,0,0,.22); border-radius: 4px;
     }
 
-    /* ── QUESTIONNAIRE ── */
-    .section-wrap { max-width: 820px; margin: 0 auto; padding: 0 16px; }
-
-    .q-panel { background: var(--white); border-radius: 16px; margin: 24px auto;
-               box-shadow: var(--shadow); overflow: hidden; max-width: 820px; }
-    .q-header {
+    /* ─── QUESTIONNAIRE ────────────────────────────────── */
+    .q-card {
+      background: var(--white); border-radius: 20px;
+      box-shadow: var(--sh); overflow: hidden;
+    }
+    .q-head {
       background: var(--blue); padding: 18px 24px;
       display: flex; align-items: center; justify-content: space-between;
-      cursor: pointer; user-select: none;
+      cursor: pointer;
     }
-    .q-header h2 { color: var(--gold); font-size: 1rem; font-weight: 700; }
-    .q-toggle { color: var(--gold); font-size: 1.1rem; transition: transform .2s; }
-    .q-toggle.open { transform: rotate(180deg); }
+    .q-head-left { display: flex; align-items: center; gap: 12px; }
+    .q-head-icon { font-size: 1.15rem; }
+    .q-head-title { color: var(--gold); font-size: 1rem; font-weight: 700; }
+    .q-head-count {
+      background: rgba(224,197,143,.2); color: var(--gold);
+      border-radius: 10px; font-size: .72rem; font-weight: 700;
+      padding: 2px 9px; letter-spacing: .03em;
+    }
+    .q-chevron { color: var(--gold); font-size: .9rem; transition: transform .25s; }
+    .q-chevron.open { transform: rotate(180deg); }
 
-    .q-body { padding: 28px 24px; }
-    .q-success {
-      padding: 40px 24px; text-align: center;
-    }
-    .q-success-icon {
-      width: 56px; height: 56px; background: #dcfce7; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.6rem; margin: 0 auto 16px;
-    }
-    .q-success h3 { margin-bottom: 8px; }
-    .q-success p { color: #6b7280; font-size: .9rem; }
+    .q-inner { overflow: hidden; max-height: 0; transition: max-height .35s ease; }
+    .q-inner.open { max-height: 4000px; }
+
+    .q-body { padding: 32px 28px; }
 
     /* Progress */
-    .prog-bar { background: #e5e7eb; border-radius: 99px; height: 6px; margin-bottom: 6px; }
-    .prog-fill { background: var(--blue); height: 6px; border-radius: 99px; transition: width .3s; }
-    .prog-label { font-size: .78rem; color: #9ca3af; margin-bottom: 24px; text-align: right; }
+    .q-prog { margin-bottom: 28px; }
+    .q-prog-bar { background: var(--border); border-radius: 99px; height: 5px; margin-bottom: 6px; }
+    .q-prog-fill { background: var(--blue); height: 5px; border-radius: 99px; transition: width .35s; }
+    .q-prog-label { font-size: .77rem; color: var(--muted); text-align: right; }
 
     /* Steps */
     .step { display: none; }
     .step.active { display: block; }
 
-    .q-label { font-weight: 600; font-size: .93rem; margin-bottom: 12px; color: var(--blue); }
-    .q-hint { font-size: .8rem; color: #6b7280; margin-bottom: 10px; margin-top: -8px; }
-    .q-field { margin-bottom: 28px; }
+    .sec-title {
+      font-size: .71rem; font-weight: 800; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border);
+    }
+    .q-field { margin-bottom: 26px; }
+    .q-label {
+      font-weight: 700; font-size: .92rem; margin-bottom: 10px;
+      color: var(--text); display: block;
+    }
+    .q-hint { font-size: .8rem; color: var(--muted); margin-top: -6px; margin-bottom: 10px; }
+    .req { color: var(--red); }
 
     .q-textarea {
-      width: 100%; padding: 11px 14px; border: 1.5px solid #d1d5db; border-radius: 10px;
-      font-size: .9rem; font-family: inherit; resize: vertical; min-height: 80px;
-      outline: none; transition: border-color .2s; user-select: text; -webkit-user-select: text;
-    }
-    .q-textarea:focus { border-color: var(--blue); }
-    .q-input {
-      width: 100%; padding: 11px 14px; border: 1.5px solid #d1d5db; border-radius: 10px;
-      font-size: .9rem; font-family: inherit; outline: none; transition: border-color .2s;
+      width: 100%; padding: 12px 15px; border: 1.5px solid var(--border);
+      border-radius: 12px; font-size: .9rem; font-family: inherit;
+      resize: vertical; min-height: 80px; outline: none;
+      transition: border-color .2s, box-shadow .2s;
       user-select: text; -webkit-user-select: text;
     }
-    .q-input:focus { border-color: var(--blue); }
+    .q-textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(17,34,80,.08); }
+    .q-input {
+      width: 100%; padding: 12px 15px; border: 1.5px solid var(--border);
+      border-radius: 12px; font-size: .9rem; font-family: inherit; outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      user-select: text; -webkit-user-select: text;
+    }
+    .q-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(17,34,80,.08); }
 
     .radio-grid { display: flex; flex-direction: column; gap: 8px; }
     .radio-opt {
-      display: flex; align-items: center; gap: 10px; padding: 10px 14px;
-      border: 1.5px solid #e5e7eb; border-radius: 10px; cursor: pointer;
+      display: flex; align-items: center; gap: 10px; padding: 11px 15px;
+      border: 1.5px solid var(--border); border-radius: 12px; cursor: pointer;
       transition: border-color .15s, background .15s; font-size: .9rem;
     }
-    .radio-opt:hover { border-color: var(--blue); background: #f8f9ff; }
-    .radio-opt.selected { border-color: var(--blue); background: #eef1f9; }
+    .radio-opt:hover { border-color: var(--blue); background: #f5f7ff; }
+    .radio-opt.selected { border-color: var(--blue); background: #eef1fa; }
     .radio-dot {
-      width: 16px; height: 16px; border-radius: 50%; border: 2px solid #d1d5db;
+      width: 17px; height: 17px; border-radius: 50%; border: 2px solid var(--border);
       flex-shrink: 0; transition: border-color .15s, background .15s;
     }
     .radio-opt.selected .radio-dot { border-color: var(--blue); background: var(--blue); }
@@ -135,494 +227,511 @@
     .cond-field { margin-top: 10px; display: none; }
     .cond-field.visible { display: block; }
 
-    .stars-row { display: flex; gap: 6px; margin-top: 4px; }
+    .stars-row { display: flex; gap: 8px; margin-top: 4px; }
     .star-btn {
-      background: none; border: none; font-size: 1.8rem; cursor: pointer;
-      color: #d1d5db; transition: color .1s; line-height: 1;
+      background: none; border: none; font-size: 2rem; cursor: pointer;
+      color: var(--border); transition: color .1s, transform .1s; line-height: 1;
     }
     .star-btn.lit { color: #f59e0b; }
+    .star-btn:hover { transform: scale(1.15); }
 
     .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .check-opt {
       display: flex; align-items: center; gap: 8px; padding: 10px 14px;
-      border: 1.5px solid #e5e7eb; border-radius: 10px; cursor: pointer;
+      border: 1.5px solid var(--border); border-radius: 12px; cursor: pointer;
       transition: border-color .15s, background .15s; font-size: .88rem;
     }
-    .check-opt:hover { border-color: var(--blue); background: #f8f9ff; }
-    .check-opt.selected { border-color: var(--blue); background: #eef1f9; }
+    .check-opt:hover { border-color: var(--blue); background: #f5f7ff; }
+    .check-opt.selected { border-color: var(--blue); background: #eef1fa; }
     .check-box {
-      width: 16px; height: 16px; border: 2px solid #d1d5db; border-radius: 4px;
+      width: 17px; height: 17px; border: 2px solid var(--border); border-radius: 5px;
       flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-      font-size: .7rem; color: var(--white); background: transparent;
+      font-size: .65rem; color: var(--white); background: transparent;
       transition: border-color .15s, background .15s;
     }
     .check-opt.selected .check-box { border-color: var(--blue); background: var(--blue); }
 
     .opt-badge {
-      display: inline-block; font-size: .72rem; color: #6b7280; background: #f3f4f6;
-      border-radius: 6px; padding: 2px 8px; margin-left: 4px;
+      font-size: .7rem; color: var(--muted); background: #f3f4f6;
+      border-radius: 5px; padding: 2px 7px; margin-left: 4px;
     }
-    .section-title {
-      font-size: .72rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
-      color: #9ca3af; margin-bottom: 18px; padding-bottom: 8px; border-bottom: 1px solid #f3f4f6;
-    }
-    .field-error { color: #dc2626; font-size: .8rem; margin-top: 4px; display: none; }
+    .field-error { color: var(--red); font-size: .8rem; margin-top: 5px; display: none; }
 
     /* Nav buttons */
-    .q-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 28px; }
+    .q-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
     .btn-prev {
-      background: none; border: 1.5px solid #d1d5db; color: #6b7280;
+      background: none; border: 1.5px solid var(--border); color: var(--muted);
       border-radius: 10px; padding: 10px 22px; font-size: .9rem; cursor: pointer;
       transition: border-color .2s, color .2s;
     }
     .btn-prev:hover { border-color: var(--blue); color: var(--blue); }
-    .btn-prev.hidden { visibility: hidden; }
-    .btn-next, .btn-submit {
+    .btn-prev.hidden { visibility: hidden; pointer-events: none; }
+    .btn-next {
       background: var(--blue); color: var(--gold); border: none;
-      border-radius: 10px; padding: 11px 28px; font-size: .9rem;
+      border-radius: 10px; padding: 12px 28px; font-size: .9rem;
+      font-weight: 700; cursor: pointer; transition: opacity .2s, transform .15s;
+    }
+    .btn-next:hover { opacity: .88; transform: translateY(-1px); }
+    .btn-submit {
+      background: var(--green); color: #fff; border: none;
+      border-radius: 10px; padding: 12px 28px; font-size: .9rem;
       font-weight: 700; cursor: pointer; transition: opacity .2s;
     }
-    .btn-next:hover, .btn-submit:hover { opacity: .88; }
-    .btn-submit { background: #16a34a; color: #fff; }
+    .btn-submit:hover { opacity: .88; }
     .btn-submit:disabled { opacity: .5; cursor: not-allowed; }
-    .submit-error { color: #dc2626; font-size: .83rem; margin-top: 10px; text-align: center; }
+    .submit-error { color: var(--red); font-size: .83rem; margin-top: 10px; text-align: center; display: none; }
 
-    /* ── PDF VIEWER ── */
-    .pdf-panel { max-width: 900px; margin: 0 auto 40px; padding: 0 16px; }
-    .pdf-panel-header {
-      background: var(--blue); color: var(--gold); border-radius: 16px 16px 0 0;
-      padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
+    /* Success */
+    .q-success { padding: 48px 28px; text-align: center; }
+    .q-success-icon {
+      width: 64px; height: 64px; background: #dcfce7; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; margin: 0 auto 20px;
     }
-    .pdf-panel-title { font-weight: 700; font-size: .95rem; }
-    .pdf-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .pdf-btn {
-      background: rgba(255,255,255,.12); color: var(--gold); border: 1px solid rgba(224,197,143,.3);
-      border-radius: 8px; padding: 6px 14px; font-size: .85rem; cursor: pointer;
-      transition: background .15s; min-width: 36px; text-align: center;
-    }
-    .pdf-btn:hover { background: rgba(255,255,255,.2); }
-    .pdf-btn:disabled { opacity: .35; cursor: not-allowed; }
-    .pdf-page-info { font-size: .85rem; color: rgba(255,255,255,.7); margin: 0 4px; white-space: nowrap; }
-    .pdf-zoom { font-size: .8rem; color: rgba(255,255,255,.55); margin-left: 8px; }
+    .q-success h3 { font-size: 1.15rem; margin-bottom: 8px; }
+    .q-success p { color: var(--muted); font-size: .9rem; line-height: 1.6; }
 
-    .pdf-loading {
-      background: var(--white); border-radius: 0 0 16px 16px;
-      padding: 60px 20px; text-align: center; color: #9ca3af; font-size: .9rem;
-    }
-    .pdf-spinner {
-      width: 36px; height: 36px; border: 3px solid #e5e7eb; border-top-color: var(--blue);
-      border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 16px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .pdf-canvas-wrap {
-      background: #e5e7eb; border-radius: 0 0 16px 16px; overflow: hidden;
-      display: flex; justify-content: center; padding: 20px;
-      position: relative;
-    }
-    #pdf-canvas {
-      display: block; max-width: 100%; height: auto;
-      box-shadow: 0 4px 24px rgba(0,0,0,.18);
-      border-radius: 4px;
-    }
-    /* Invisible shield over canvas — prevents right-click on canvas specifically */
-    .pdf-shield {
-      position: absolute; inset: 0; z-index: 2; cursor: default;
-    }
-
-    @media (max-width: 600px) {
-      .auth-card { padding: 36px 24px; }
-      .q-body { padding: 20px 16px; }
+    /* ─── RESPONSIVE ───────────────────────────────────── */
+    @media (max-width: 640px) {
+      .auth-card { padding: 36px 24px 32px; }
+      .page-wrap { padding: 20px 12px 48px; }
+      .q-body { padding: 24px 18px; }
+      .vn-label { display: none; }
       .check-grid { grid-template-columns: 1fr; }
-      .pdf-controls { gap: 4px; }
-      .pdf-btn { padding: 5px 10px; font-size: .8rem; }
-      .v-nav-title { display: none; }
+      .pdf-btn { padding: 6px 10px; font-size: .8rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- ══════════════ AUTH ══════════════ -->
-<div id="auth-screen">
+<!-- ══ AUTH OVERLAY ════════════════════════════════════════ -->
+<div id="auth-overlay">
   <div class="auth-card">
     <img src="img/logo.jpeg" alt="C'Réussite" class="auth-logo">
-    <div class="auth-title">Accès bêta-testeur</div>
-    <div class="auth-sub">Fiches Mathématiques — Terminale Spécialité</div>
-    <input type="password" id="pwd-input" class="auth-input" placeholder="Mot de passe d'accès"
-           onkeydown="if(event.key==='Enter')doAuth()">
+    <div class="auth-product">Bêta-testeur</div>
+    <div class="auth-title">Accès aux fiches Maths</div>
+    <div class="auth-sub">Terminale Spécialité &mdash; Prévisualisation réservée aux bêta-testeurs</div>
+    <div class="auth-field">
+      <input type="password" id="pwd-input" class="auth-input"
+             placeholder="Mot de passe d'accès"
+             onkeydown="if(event.key==='Enter')doAuth()">
+    </div>
     <button id="auth-btn" class="auth-btn" onclick="doAuth()">Accéder aux fiches</button>
-    <div id="auth-error" class="auth-error" hidden></div>
+    <div id="auth-error" class="auth-error"></div>
+    <p class="auth-note">Accès personnel et non transférable &bull; Durée limitée</p>
   </div>
 </div>
 
-<!-- ══════════════ VIEWER ══════════════ -->
-<div id="viewer-screen" hidden>
+<!-- ══ VIEWER ══════════════════════════════════════════════ -->
+<div id="viewer">
 
-  <nav class="v-nav">
-    <a href="index.html"><img src="img/logo.jpeg" alt="C'Réussite" class="v-nav-logo"></a>
-    <span class="v-nav-title">Fiches Maths — Prévisualisation bêta</span>
-    <span class="v-nav-badge">Accès limité</span>
+  <nav class="vn">
+    <a href="index.html"><img src="img/logo.jpeg" alt="C'Réussite" class="vn-logo"></a>
+    <span class="vn-label">Fiches Maths &mdash; Prévisualisation bêta</span>
+    <span class="vn-badge">Accès limité</span>
   </nav>
 
-  <div class="access-banner" id="access-banner">
+  <div class="banner">
     Accès valide jusqu'au <strong id="expires-date"></strong>.
-    Merci de remplir le questionnaire ci-dessous après ta lecture.
+    Merci de remplir le questionnaire après ta lecture.
   </div>
 
-  <!-- QUESTIONNAIRE -->
-  <div class="section-wrap">
-    <div class="q-panel" id="q-panel">
-      <div class="q-header" onclick="toggleQ()">
-        <h2>📋 Questionnaire de retour</h2>
-        <span class="q-toggle" id="q-toggle">▼</span>
-      </div>
+  <div class="page-wrap">
 
-      <div id="q-form-wrap">
-        <div class="q-body" id="q-body">
-          <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:20%"></div></div>
-          <div class="prog-label" id="prog-label">Étape 1 / 5</div>
-
-          <!-- STEP 0 — Identification -->
-          <div class="step active" id="step-0">
-            <div class="section-title">Identification</div>
-            <div class="q-field">
-              <div class="q-label">Ton prénom <span style="color:#dc2626">*</span></div>
-              <input type="text" class="q-input" id="f-prenom" placeholder="Marie" maxlength="100">
-              <div class="field-error" id="err-prenom">Ce champ est requis.</div>
-            </div>
-          </div>
-
-          <!-- STEP 1 — Expérience Maths -->
-          <div class="step" id="step-1">
-            <div class="section-title">Expérience e-book Mathématiques</div>
-
-            <div class="q-field">
-              <div class="q-label">Quelle fiche t'a semblé la plus utile ou la mieux faite ? <span style="color:#dc2626">*</span></div>
-              <div class="q-hint">Si tu devais n'en garder qu'une, laquelle ce serait ?</div>
-              <textarea class="q-textarea" id="f-maths-q1" placeholder="Ex : la fiche sur les suites, parce que…"></textarea>
-              <div class="field-error" id="err-maths-q1">Ce champ est requis.</div>
-            </div>
-
-            <div class="q-field">
-              <div class="q-label">Est-ce qu'il y a des choses qui t'ont semblé fausses ?</div>
-              <div class="radio-grid" id="rg-maths-q2">
-                <div class="radio-opt" data-group="maths_q2" data-val="non" onclick="selectRadio(this)">
-                  <div class="radio-dot"></div><span>Non, rien de faux</span>
-                </div>
-                <div class="radio-opt" data-group="maths_q2" data-val="oui" onclick="selectRadio(this)">
-                  <div class="radio-dot"></div><span>Oui</span>
-                </div>
-              </div>
-              <div class="cond-field" id="cond-maths-q2">
-                <textarea class="q-textarea" id="f-maths-q2-detail" placeholder="Précise lesquelles…"></textarea>
-              </div>
-            </div>
-
-            <div class="q-field">
-              <div class="q-label">Y a-t-il une notion que tu n'as pas réussi à comprendre avec les fiches ?</div>
-              <div class="radio-grid" id="rg-maths-q3">
-                <div class="radio-opt" data-group="maths_q3" data-val="non" onclick="selectRadio(this)">
-                  <div class="radio-dot"></div><span>Non, tout était clair</span>
-                </div>
-                <div class="radio-opt" data-group="maths_q3" data-val="oui" onclick="selectRadio(this)">
-                  <div class="radio-dot"></div><span>Oui</span>
-                </div>
-              </div>
-              <div class="cond-field" id="cond-maths-q3">
-                <textarea class="q-textarea" id="f-maths-q3-detail" placeholder="Laquelle, et pourquoi selon toi ?"></textarea>
-              </div>
-            </div>
-
-            <div class="q-field">
-              <div class="q-label">Y a-t-il quelque chose d'important qui manque dans les fiches ?</div>
-              <div class="radio-grid" id="rg-maths-q4">
-                <div class="radio-opt" data-group="maths_q4" data-val="non" onclick="selectRadio(this)">
-                  <div class="radio-dot"></div><span>Non, le programme est bien couvert</span>
-                </div>
-                <div class="radio-opt" data-group="maths_q4" data-val="oui" onclick="selectRadio(this)">
-                  <div class="radio-dot"></div><span>Oui</span>
-                </div>
-              </div>
-              <div class="cond-field" id="cond-maths-q4">
-                <textarea class="q-textarea" id="f-maths-q4-detail" placeholder="Précise ce qui manque…"></textarea>
-              </div>
-            </div>
-          </div>
-
-          <!-- STEP 2 — Avis global -->
-          <div class="step" id="step-2">
-            <div class="section-title">Avis global</div>
-
-            <div class="q-field">
-              <div class="q-label">Note cet e-book <span style="color:#dc2626">*</span></div>
-              <div class="stars-row" id="stars-maths">
-                <button class="star-btn" data-v="1" onclick="setStar('maths',1)">★</button>
-                <button class="star-btn" data-v="2" onclick="setStar('maths',2)">★</button>
-                <button class="star-btn" data-v="3" onclick="setStar('maths',3)">★</button>
-                <button class="star-btn" data-v="4" onclick="setStar('maths',4)">★</button>
-                <button class="star-btn" data-v="5" onclick="setStar('maths',5)">★</button>
-              </div>
-              <div class="field-error" id="err-note-maths">Sélectionne une note.</div>
-            </div>
-
-            <div class="q-field">
-              <div class="q-label">En parlerais-tu à un(e) camarade qui prépare le bac ? <span style="color:#dc2626">*</span></div>
-              <div class="radio-grid" id="rg-recommandation">
-                <div class="radio-opt" data-group="recommandation" data-val="oui_certain" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Oui, sans hésiter</span></div>
-                <div class="radio-opt" data-group="recommandation" data-val="oui_probablement" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Probablement oui</span></div>
-                <div class="radio-opt" data-group="recommandation" data-val="je_sais_pas" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Je ne sais pas</span></div>
-                <div class="radio-opt" data-group="recommandation" data-val="probablement_pas" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Probablement pas</span></div>
-                <div class="radio-opt" data-group="recommandation" data-val="non" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Non</span></div>
-              </div>
-              <div class="field-error" id="err-recommandation">Sélectionne une réponse.</div>
-            </div>
-
-            <div class="q-field">
-              <div class="q-label">Pourquoi ?</div>
-              <textarea class="q-textarea" id="f-recommandation-pourquoi" placeholder="Explique en quelques mots…"></textarea>
-            </div>
-
-            <div class="q-field">
-              <div class="q-label">Qu'est-ce qui t'aurait empêché d'acheter ces fiches si tu avais dû les payer ?</div>
-              <textarea class="q-textarea" id="f-frein" placeholder="Le prix, le format, autre chose…"></textarea>
-            </div>
-
-            <div class="q-field">
-              <div class="q-label">Écris un avis qu'on pourrait publier sur le site</div>
-              <textarea class="q-textarea" id="f-avis" placeholder="En quelques phrases, ce que tu penses des fiches…"></textarea>
-              <div class="cond-field visible" style="margin-top:12px" id="avis-accord-wrap">
-                <div class="radio-grid" id="rg-accord">
-                  <div class="radio-opt" data-group="accord" data-val="oui" onclick="selectRadio(this);showAvisPub(true)"><div class="radio-dot"></div><span>J'accepte que cet avis soit publié</span></div>
-                  <div class="radio-opt" data-group="accord" data-val="non" onclick="selectRadio(this);showAvisPub(false)"><div class="radio-dot"></div><span>Je préfère garder cet avis privé</span></div>
-                </div>
-                <div class="cond-field" id="cond-prenom-pub" style="margin-top:10px">
-                  <input type="text" class="q-input" id="f-prenom-pub" placeholder="Prénom à afficher sur le site">
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- STEP 3 — Avis parents -->
-          <div class="step" id="step-3">
-            <div class="section-title">Avis de tes parents <span class="opt-badge">optionnel</span></div>
-            <p style="font-size:.85rem;color:#6b7280;margin-bottom:20px">
-              Si tu veux, montre les fiches à tes parents. Cette section est facultative.
-            </p>
-
-            <div class="q-field">
-              <div class="q-label">Qu'est-ce qu'ils en pensent ?</div>
-              <textarea class="q-textarea" id="f-parents-avis" placeholder="Leur réaction, leurs remarques…"></textarea>
-            </div>
-
-            <div class="q-field">
-              <div class="q-label">L'e-book Maths est vendu 14,99 €. Vos parents trouvent-ils ce prix raisonnable ?</div>
-              <div class="radio-grid" id="rg-parents-prix">
-                <div class="radio-opt" data-group="parents_prix" data-val="oui_certain" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Oui, sans hésiter</span></div>
-                <div class="radio-opt" data-group="parents_prix" data-val="oui_probablement" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Oui, probablement</span></div>
-                <div class="radio-opt" data-group="parents_prix" data-val="je_sais_pas" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Je ne sais pas</span></div>
-                <div class="radio-opt" data-group="parents_prix" data-val="probablement_pas" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Probablement pas</span></div>
-                <div class="radio-opt" data-group="parents_prix" data-val="non" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Non</span></div>
-              </div>
-            </div>
-
-            <div class="q-field">
-              <div class="q-label">Si le prix ne leur convient pas, à combien seraient-ils prêts à l'acheter ?</div>
-              <input type="text" class="q-input" id="f-parents-prix-propose" placeholder="Ex : 9,99 €">
-            </div>
-
-            <div class="q-field">
-              <div class="q-label">Avis de tes parents à publier sur le site</div>
-              <textarea class="q-textarea" id="f-parents-avis-pub" placeholder="En quelques phrases…"></textarea>
-              <input type="text" class="q-input" id="f-parents-prenom" placeholder="Prénom du parent" style="margin-top:10px">
-              <div class="radio-grid" id="rg-parents-accord" style="margin-top:10px">
-                <div class="radio-opt" data-group="parents_accord" data-val="oui" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Accord de publication</span></div>
-                <div class="radio-opt" data-group="parents_accord" data-val="non" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Pas d'accord</span></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- STEP 4 — Pour la suite -->
-          <div class="step" id="step-4">
-            <div class="section-title">Pour la suite</div>
-
-            <div class="q-field">
-              <div class="q-label">Aimerais-tu des fiches similaires dans d'autres matières ?</div>
-              <div class="check-grid" id="cg-matieres">
-                <div class="check-opt" data-val="hg" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>Histoire-Géographie</span></div>
-                <div class="check-opt" data-val="ses" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>SES</span></div>
-                <div class="check-opt" data-val="philo" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>Philosophie</span></div>
-                <div class="check-opt" data-val="svt" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>SVT</span></div>
-                <div class="check-opt" data-val="anglais" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>Anglais</span></div>
-                <div class="check-opt" data-val="physique" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>Physique-Chimie</span></div>
-                <div class="check-opt" data-val="non" onclick="toggleCheck(this)"><div class="check-box">✓</div><span>Pas intéressé(e)</span></div>
-              </div>
-            </div>
-
-            <div class="q-field">
-              <div class="q-label">Ce type de fiches t'aurait-il été utile les années précédentes ?</div>
-              <div class="radio-grid" id="rg-utile-avant">
-                <div class="radio-opt" data-group="utile_avant" data-val="oui" onclick="selectRadio(this);showUtileDetail(true)"><div class="radio-dot"></div><span>Oui, vraiment</span></div>
-                <div class="radio-opt" data-group="utile_avant" data-val="peut_etre" onclick="selectRadio(this);showUtileDetail(true)"><div class="radio-dot"></div><span>Peut-être</span></div>
-                <div class="radio-opt" data-group="utile_avant" data-val="non" onclick="selectRadio(this);showUtileDetail(false)"><div class="radio-dot"></div><span>Non, pas vraiment</span></div>
-              </div>
-              <div class="cond-field" id="cond-utile-detail">
-                <textarea class="q-textarea" id="f-utile-detail" placeholder="Dans quelles matières et à quel niveau ?"></textarea>
-              </div>
-            </div>
-
-            <div class="q-field">
-              <div class="q-label">Commentaires généraux ou suggestions</div>
-              <textarea class="q-textarea" id="f-commentaires" placeholder="Tout ce que tu veux nous dire…"></textarea>
-            </div>
-          </div>
-
-          <!-- Nav -->
-          <div class="q-nav">
-            <button class="btn-prev hidden" id="btn-prev" onclick="prevStep()">← Précédent</button>
-            <div>
-              <button class="btn-next" id="btn-next" onclick="nextStep()">Suivant →</button>
-              <button class="btn-submit" id="btn-submit" onclick="submitForm()" style="display:none">Envoyer mes retours</button>
-            </div>
-          </div>
-          <div class="submit-error" id="submit-error" style="display:none"></div>
+    <!-- PDF VIEWER -->
+    <div class="pdf-card">
+      <div class="pdf-header">
+        <span class="pdf-header-title">Fiches Maths &mdash; Terminale Spécialité</span>
+        <div class="pdf-controls">
+          <button class="pdf-btn" id="btn-pp" onclick="prevPage()" disabled>&#8249;</button>
+          <span class="pdf-info"><span id="pg-cur">—</span> / <span id="pg-tot">—</span></span>
+          <button class="pdf-btn" id="btn-np" onclick="nextPage()" disabled>&#8250;</button>
+          <span style="width:1px;height:20px;background:rgba(255,255,255,.15);margin:0 4px"></span>
+          <button class="pdf-btn" onclick="zoomOut()">&#8722;</button>
+          <span class="pdf-zoom-lbl" id="zoom-lbl">100%</span>
+          <button class="pdf-btn" onclick="zoomIn()">+</button>
         </div>
       </div>
-
-      <!-- Succès questionnaire -->
-      <div class="q-success" id="q-success" hidden>
-        <div class="q-success-icon">✓</div>
-        <h3>Merci pour tes retours !</h3>
-        <p>Tes réponses ont bien été envoyées. Tu peux maintenant lire les fiches ci-dessous.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- PDF VIEWER -->
-  <div class="pdf-panel">
-    <div class="pdf-panel-header">
-      <span class="pdf-panel-title">📄 Fiches Maths — Terminale Spécialité</span>
-      <div class="pdf-controls">
-        <button class="pdf-btn" id="btn-prev-p" onclick="prevPage()" disabled>‹</button>
-        <span class="pdf-page-info"><span id="pg-num">—</span> / <span id="pg-total">—</span></span>
-        <button class="pdf-btn" id="btn-next-p" onclick="nextPage()" disabled>›</button>
-        <button class="pdf-btn" onclick="zoomOut()">−</button>
-        <span class="pdf-zoom" id="zoom-label">100%</span>
-        <button class="pdf-btn" onclick="zoomIn()">+</button>
+      <div class="pdf-body" id="pdf-body">
+        <div class="pdf-spinner-wrap" id="pdf-loading">
+          <div class="pdf-spinner"></div>
+          Chargement des fiches en cours&hellip;
+        </div>
+        <canvas id="pdf-canvas" style="display:none"
+                oncontextmenu="return false"></canvas>
       </div>
     </div>
 
-    <div id="pdf-loading" class="pdf-loading">
-      <div class="pdf-spinner"></div>
-      Chargement des fiches en cours…
-    </div>
+    <!-- QUESTIONNAIRE -->
+    <div class="q-card">
+      <div class="q-head" onclick="toggleQ()" role="button" aria-expanded="false" id="q-head">
+        <div class="q-head-left">
+          <span class="q-head-icon">📋</span>
+          <span class="q-head-title">Questionnaire de retour</span>
+          <span class="q-head-count" id="q-step-badge">Étape 1/5</span>
+        </div>
+        <span class="q-chevron" id="q-chevron">&#9660;</span>
+      </div>
 
-    <div class="pdf-canvas-wrap" id="canvas-wrap" style="display:none">
-      <canvas id="pdf-canvas"></canvas>
-      <div class="pdf-shield" oncontextmenu="return false"></div>
-    </div>
-  </div>
+      <div class="q-inner" id="q-inner">
 
-</div><!-- /viewer-screen -->
+        <!-- FORM -->
+        <div id="q-form-wrap">
+          <div class="q-body">
+            <div class="q-prog">
+              <div class="q-prog-bar">
+                <div class="q-prog-fill" id="prog-fill" style="width:20%"></div>
+              </div>
+              <div class="q-prog-label" id="prog-label">Étape 1 / 5</div>
+            </div>
+
+            <!-- STEP 0 — Identification -->
+            <div class="step active" id="step-0">
+              <div class="sec-title">Identification</div>
+              <div class="q-field">
+                <label class="q-label" for="f-prenom">Ton prénom <span class="req">*</span></label>
+                <input type="text" class="q-input" id="f-prenom" placeholder="Marie" maxlength="100">
+                <div class="field-error" id="err-prenom">Ce champ est requis.</div>
+              </div>
+            </div>
+
+            <!-- STEP 1 — Expérience Maths -->
+            <div class="step" id="step-1">
+              <div class="sec-title">Expérience e-book Mathématiques</div>
+
+              <div class="q-field">
+                <label class="q-label">Quelle fiche t'a semblé la plus utile ou la mieux faite&nbsp;? <span class="req">*</span></label>
+                <div class="q-hint">Si tu devais n'en garder qu'une, laquelle ce serait&nbsp;?</div>
+                <textarea class="q-textarea" id="f-maths-q1" placeholder="Ex&nbsp;: la fiche sur les suites, parce que…"></textarea>
+                <div class="field-error" id="err-maths-q1">Ce champ est requis.</div>
+              </div>
+
+              <div class="q-field">
+                <label class="q-label">Est-ce qu'il y a des choses qui t'ont semblé fausses&nbsp;?</label>
+                <div class="radio-grid" id="rg-mq2">
+                  <div class="radio-opt" data-group="maths_q2" data-val="non" onclick="selectRadio(this)">
+                    <div class="radio-dot"></div><span>Non, rien de faux</span>
+                  </div>
+                  <div class="radio-opt" data-group="maths_q2" data-val="oui" onclick="selectRadio(this)">
+                    <div class="radio-dot"></div><span>Oui</span>
+                  </div>
+                </div>
+                <div class="cond-field" id="cond-mq2">
+                  <textarea class="q-textarea" id="f-maths-q2-detail" placeholder="Décris ce qui te semble inexact…"></textarea>
+                </div>
+              </div>
+
+              <div class="q-field">
+                <label class="q-label">Est-ce qu'une notion te semblait incomprise avant, et toujours incomprise après&nbsp;?</label>
+                <div class="radio-grid" id="rg-mq3">
+                  <div class="radio-opt" data-group="maths_q3" data-val="non" onclick="selectRadio(this)">
+                    <div class="radio-dot"></div><span>Non, les fiches m'ont aidé(e)</span>
+                  </div>
+                  <div class="radio-opt" data-group="maths_q3" data-val="oui" onclick="selectRadio(this)">
+                    <div class="radio-dot"></div><span>Oui</span>
+                  </div>
+                </div>
+                <div class="cond-field" id="cond-mq3">
+                  <textarea class="q-textarea" id="f-maths-q3-detail" placeholder="Quelle notion reste floue&nbsp;?"></textarea>
+                </div>
+              </div>
+
+              <div class="q-field">
+                <label class="q-label">Est-ce qu'il manque quelque chose d'important selon toi&nbsp;?</label>
+                <div class="radio-grid" id="rg-mq4">
+                  <div class="radio-opt" data-group="maths_q4" data-val="non" onclick="selectRadio(this)">
+                    <div class="radio-dot"></div><span>Non, c'est complet</span>
+                  </div>
+                  <div class="radio-opt" data-group="maths_q4" data-val="oui" onclick="selectRadio(this)">
+                    <div class="radio-dot"></div><span>Oui</span>
+                  </div>
+                </div>
+                <div class="cond-field" id="cond-mq4">
+                  <textarea class="q-textarea" id="f-maths-q4-detail" placeholder="Qu'est-ce qui manque&nbsp;?"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- STEP 2 — Avis global -->
+            <div class="step" id="step-2">
+              <div class="sec-title">Avis global</div>
+
+              <div class="q-field">
+                <label class="q-label">Note les fiches Mathématiques</label>
+                <div class="stars-row" id="stars-maths">
+                  <button class="star-btn" data-val="1" onclick="setStar('maths',1)">&#9733;</button>
+                  <button class="star-btn" data-val="2" onclick="setStar('maths',2)">&#9733;</button>
+                  <button class="star-btn" data-val="3" onclick="setStar('maths',3)">&#9733;</button>
+                  <button class="star-btn" data-val="4" onclick="setStar('maths',4)">&#9733;</button>
+                  <button class="star-btn" data-val="5" onclick="setStar('maths',5)">&#9733;</button>
+                </div>
+              </div>
+
+              <div class="q-field">
+                <label class="q-label">Est-ce que tu recommanderais ces fiches à d'autres élèves&nbsp;? <span class="req">*</span></label>
+                <div class="radio-grid" id="rg-reco">
+                  <div class="radio-opt" data-group="recommandation" data-val="oui_certain" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Oui, sans hésiter</span></div>
+                  <div class="radio-opt" data-group="recommandation" data-val="oui_probablement" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Probablement oui</span></div>
+                  <div class="radio-opt" data-group="recommandation" data-val="je_sais_pas" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Je ne sais pas</span></div>
+                  <div class="radio-opt" data-group="recommandation" data-val="probablement_pas" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Probablement pas</span></div>
+                  <div class="radio-opt" data-group="recommandation" data-val="non" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Non</span></div>
+                </div>
+                <div class="field-error" id="err-reco">Merci de choisir une option.</div>
+              </div>
+
+              <div class="q-field">
+                <label class="q-label">Pourquoi&nbsp;? <span class="opt-badge">optionnel</span></label>
+                <textarea class="q-textarea" id="f-reco-pourquoi" placeholder="En quelques mots…"></textarea>
+              </div>
+
+              <div class="q-field">
+                <label class="q-label">Qu'est-ce qui te freinerait à l'achat&nbsp;? <span class="opt-badge">optionnel</span></label>
+                <textarea class="q-textarea" id="f-frein" placeholder="Prix, format, autre chose…"></textarea>
+              </div>
+
+              <div class="q-field">
+                <label class="q-label">As-tu un avis qu'on pourrait publier sur le site&nbsp;? <span class="opt-badge">optionnel</span></label>
+                <textarea class="q-textarea" id="f-avis-pub" placeholder="Un avis court et sincère…"></textarea>
+              </div>
+
+              <div class="q-field">
+                <label class="q-label">Tu acceptes qu'on le publie sur le site&nbsp;?</label>
+                <div class="radio-grid" id="rg-accord">
+                  <div class="radio-opt" data-group="accord_publication" data-val="oui" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Oui</span></div>
+                  <div class="radio-opt" data-group="accord_publication" data-val="non" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Non</span></div>
+                </div>
+              </div>
+
+              <div class="q-field">
+                <label class="q-label">Prénom à afficher pour la publication <span class="opt-badge">optionnel</span></label>
+                <input type="text" class="q-input" id="f-prenom-pub" placeholder="Marie T." maxlength="60">
+              </div>
+            </div>
+
+            <!-- STEP 3 — Parents -->
+            <div class="step" id="step-3">
+              <div class="sec-title">Avis des parents <span class="opt-badge">optionnel</span></div>
+
+              <div class="q-field">
+                <label class="q-label">Est-ce qu'un parent a pu jeter un œil aux fiches&nbsp;? Si oui, qu'en pense-t-il/elle&nbsp;?</label>
+                <textarea class="q-textarea" id="f-parents-avis" placeholder="Avis du parent…"></textarea>
+              </div>
+
+              <div class="q-field">
+                <label class="q-label">Le prix vous semble-t-il raisonnable&nbsp;?</label>
+                <div class="radio-grid" id="rg-prix">
+                  <div class="radio-opt" data-group="parents_prix" data-val="oui_certain" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Oui, sans hésiter</span></div>
+                  <div class="radio-opt" data-group="parents_prix" data-val="oui_probablement" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Oui, probablement</span></div>
+                  <div class="radio-opt" data-group="parents_prix" data-val="je_sais_pas" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Je ne sais pas</span></div>
+                  <div class="radio-opt" data-group="parents_prix" data-val="probablement_pas" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Probablement pas</span></div>
+                  <div class="radio-opt" data-group="parents_prix" data-val="non" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Non</span></div>
+                </div>
+              </div>
+
+              <div class="q-field">
+                <label class="q-label">Quel prix vous semblerait juste&nbsp;? <span class="opt-badge">optionnel</span></label>
+                <input type="text" class="q-input" id="f-parents-prix-prop" placeholder="Ex : 9,99 €" maxlength="20">
+              </div>
+
+              <div class="q-field">
+                <label class="q-label">Un avis du parent à publier&nbsp;? <span class="opt-badge">optionnel</span></label>
+                <textarea class="q-textarea" id="f-parents-avis-pub" placeholder="Court et sincère…"></textarea>
+              </div>
+
+              <div class="q-field">
+                <label class="q-label">Prénom du parent pour publication <span class="opt-badge">optionnel</span></label>
+                <input type="text" class="q-input" id="f-parents-prenom-pub" placeholder="Parent de Marie" maxlength="60">
+              </div>
+
+              <div class="q-field">
+                <label class="q-label">Accord pour publier l'avis du parent&nbsp;?</label>
+                <div class="radio-grid" id="rg-parents-accord">
+                  <div class="radio-opt" data-group="parents_accord_publication" data-val="oui" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Oui</span></div>
+                  <div class="radio-opt" data-group="parents_accord_publication" data-val="non" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Non</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- STEP 4 — Pour la suite -->
+            <div class="step" id="step-4">
+              <div class="sec-title">Pour la suite</div>
+
+              <div class="q-field">
+                <label class="q-label">Si on créait des fiches pour d'autres matières, lesquelles t'intéresseraient&nbsp;?</label>
+                <div class="check-grid" id="cg-matieres">
+                  <div class="check-opt" data-val="hg" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span>Histoire-Géographie</span></div>
+                  <div class="check-opt" data-val="ses" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span>SES</span></div>
+                  <div class="check-opt" data-val="philo" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span>Philosophie</span></div>
+                  <div class="check-opt" data-val="svt" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span>SVT</span></div>
+                  <div class="check-opt" data-val="anglais" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span>Anglais</span></div>
+                  <div class="check-opt" data-val="physique" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span>Physique-Chimie</span></div>
+                  <div class="check-opt" data-val="non" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span>Pas intéressé(e)</span></div>
+                </div>
+              </div>
+
+              <div class="q-field">
+                <label class="q-label">Ce type de fiches t'aurait-il été utile les années précédentes&nbsp;?</label>
+                <div class="radio-grid" id="rg-utile">
+                  <div class="radio-opt" data-group="utile_avant" data-val="oui" onclick="selectRadio(this);showCond('cond-utile',true)"><div class="radio-dot"></div><span>Oui, vraiment</span></div>
+                  <div class="radio-opt" data-group="utile_avant" data-val="peut_etre" onclick="selectRadio(this);showCond('cond-utile',true)"><div class="radio-dot"></div><span>Peut-être</span></div>
+                  <div class="radio-opt" data-group="utile_avant" data-val="non" onclick="selectRadio(this);showCond('cond-utile',false)"><div class="radio-dot"></div><span>Non, pas vraiment</span></div>
+                </div>
+                <div class="cond-field" id="cond-utile">
+                  <textarea class="q-textarea" id="f-utile-detail" placeholder="Dans quelles matières et à quel niveau&nbsp;?"></textarea>
+                </div>
+              </div>
+
+              <div class="q-field">
+                <label class="q-label">Commentaires généraux ou suggestions <span class="opt-badge">optionnel</span></label>
+                <textarea class="q-textarea" id="f-commentaires" placeholder="Tout ce que tu veux nous dire…"></textarea>
+              </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="q-nav">
+              <button class="btn-prev hidden" id="btn-prev" onclick="prevStep()">&#8592; Précédent</button>
+              <div>
+                <button class="btn-next" id="btn-next" onclick="nextStep()">Suivant &#8594;</button>
+                <button class="btn-submit" id="btn-submit" onclick="submitForm()" style="display:none">Envoyer mes retours</button>
+              </div>
+            </div>
+            <div class="submit-error" id="submit-error"></div>
+          </div>
+        </div>
+
+        <!-- Success -->
+        <div class="q-success" id="q-success" style="display:none">
+          <div class="q-success-icon">&#10003;</div>
+          <h3>Merci pour tes retours !</h3>
+          <p>Tes réponses ont bien été envoyées.<br>Tu peux maintenant lire les fiches ci-dessus.</p>
+        </div>
+
+      </div><!-- /q-inner -->
+    </div><!-- /q-card -->
+
+  </div><!-- /page-wrap -->
+</div><!-- /viewer -->
 
 <script>
 (function () {
-  // ── Config ──
+  'use strict';
   var BACKEND = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
     ? 'http://localhost:3000' : 'https://creussite-backend.onrender.com';
-  var PDF_TYPE   = 'maths';
-  var FORM_TYPE  = 'maths';
-  var TOTAL_STEPS = 5;
-  var authPwd = '';
 
-  // ── Anti-copie ──
+  // ── Anti-copie ──────────────────────────────────────────
   document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
   document.addEventListener('keydown', function(e){
-    if ((e.ctrlKey || e.metaKey) && ['c','a','p','s','u','j'].indexOf(e.key.toLowerCase()) > -1) {
+    if ((e.ctrlKey || e.metaKey) && 'capsuji'.indexOf(e.key.toLowerCase()) > -1) {
       e.preventDefault(); return false;
     }
     if (e.key === 'F12') { e.preventDefault(); return false; }
   });
   document.addEventListener('dragstart', function(e){ e.preventDefault(); });
 
-  // ── AUTH ──
-  window.doAuth = async function() {
+  // Warmup
+  fetch(BACKEND + '/api/healthz').catch(function(){});
+
+  // ── AUTH ────────────────────────────────────────────────
+  var authPwd = '';
+  window.doAuth = function() {
     var pwd = document.getElementById('pwd-input').value.trim();
     if (!pwd) return;
     var btn = document.getElementById('auth-btn');
-    btn.disabled = true; btn.textContent = 'Vérification…';
     var errEl = document.getElementById('auth-error');
-    errEl.hidden = true;
-    try {
-      var res  = await fetch(BACKEND + '/api/beta-viewer/auth', {
-        method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ password: pwd })
-      });
-      var data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Accès refusé.');
+    btn.disabled = true; btn.textContent = 'Vérification…';
+    errEl.textContent = '';
+
+    fetch(BACKEND + '/api/beta-viewer/auth', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ password: pwd })
+    })
+    .then(function(r){ return r.json().then(function(d){ return { ok: r.ok, data: d }; }); })
+    .then(function(r) {
+      if (!r.ok) throw new Error(r.data.error || 'Accès refusé.');
       authPwd = pwd;
-      document.getElementById('auth-screen').hidden = true;
-      document.getElementById('viewer-screen').hidden = false;
-      document.getElementById('expires-date').textContent = data.expires;
+      document.getElementById('expires-date').textContent = r.data.expires;
+      // Transition fluide
+      var overlay = document.getElementById('auth-overlay');
+      var viewer  = document.getElementById('viewer');
+      overlay.style.opacity = '0';
+      viewer.style.display = 'block';
+      setTimeout(function(){
+        overlay.style.display = 'none';
+        viewer.style.opacity = '1';
+        window.scrollTo(0, 0);
+      }, 380);
       loadPDF();
-    } catch(e) {
+    })
+    .catch(function(e) {
       errEl.textContent = e.message;
-      errEl.hidden = false;
       btn.disabled = false; btn.textContent = 'Accéder aux fiches';
-    }
+    });
   };
 
-  // ── PDF ──
-  var pdfDoc = null, curPage = 1, scale = 1.4;
+  // ── PDF ─────────────────────────────────────────────────
+  var pdfDoc = null, curPage = 1, scale = 1.5;
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
 
-  async function loadPDF() {
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-      'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
-    try {
-      var res = await fetch(BACKEND + '/api/beta-viewer/pdf/' + PDF_TYPE, {
-        headers: { 'Authorization': 'Bearer ' + authPwd }
-      });
-      if (!res.ok) throw new Error('Erreur de chargement');
-      var buf = await res.arrayBuffer();
-      pdfDoc = await pdfjsLib.getDocument({ data: buf }).promise;
-      document.getElementById('pg-total').textContent = pdfDoc.numPages;
+  function loadPDF() {
+    fetch(BACKEND + '/api/beta-viewer/pdf/maths', {
+      headers: { 'Authorization': 'Bearer ' + authPwd }
+    })
+    .then(function(r) {
+      if (!r.ok) throw new Error('Accès refusé (code ' + r.status + ')');
+      return r.arrayBuffer();
+    })
+    .then(function(buf) {
+      return pdfjsLib.getDocument({ data: buf }).promise;
+    })
+    .then(function(doc) {
+      pdfDoc = doc;
+      document.getElementById('pg-tot').textContent = doc.numPages;
+      document.getElementById('btn-pp').disabled = false;
+      document.getElementById('btn-np').disabled = false;
       document.getElementById('pdf-loading').style.display = 'none';
-      document.getElementById('canvas-wrap').style.display  = 'flex';
-      document.getElementById('btn-prev-p').disabled = false;
-      document.getElementById('btn-next-p').disabled = false;
+      document.getElementById('pdf-canvas').style.display  = 'block';
       renderPage(1);
-    } catch(e) {
+    })
+    .catch(function(e) {
       document.getElementById('pdf-loading').innerHTML =
-        '<p style="color:#dc2626">Erreur de chargement des fiches. Recharge la page.</p>';
-    }
+        '<p class="pdf-error">Impossible de charger les fiches.<br><small>' + e.message + '</small></p>';
+    });
   }
 
-  async function renderPage(n) {
+  function renderPage(n) {
     curPage = n;
-    var page = await pdfDoc.getPage(n);
     var canvas = document.getElementById('pdf-canvas');
-    var ctx    = canvas.getContext('2d');
-    var vp     = page.getViewport({ scale: scale });
-    canvas.width = vp.width; canvas.height = vp.height;
-    await page.render({ canvasContext: ctx, viewport: vp }).promise;
-    addWatermark(canvas);
-    document.getElementById('pg-num').textContent = n;
-    document.getElementById('btn-prev-p').disabled = (n <= 1);
-    document.getElementById('btn-next-p').disabled = (n >= pdfDoc.numPages);
-    document.getElementById('zoom-label').textContent = Math.round(scale * 100) + '%';
-    document.getElementById('canvas-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    pdfDoc.getPage(n).then(function(page) {
+      var dpr = window.devicePixelRatio || 1;
+      var vp  = page.getViewport({ scale: scale * dpr });
+      canvas.width  = vp.width;
+      canvas.height = vp.height;
+      canvas.style.width  = (vp.width  / dpr) + 'px';
+      canvas.style.height = (vp.height / dpr) + 'px';
+      return page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+    }).then(function() {
+      addWatermark(canvas);
+      document.getElementById('pg-cur').textContent = n;
+      document.getElementById('btn-pp').disabled = (n <= 1);
+      document.getElementById('btn-np').disabled = (n >= pdfDoc.numPages);
+      document.getElementById('zoom-lbl').textContent = Math.round(scale * 100) + '%';
+    });
   }
 
   function addWatermark(canvas) {
     var ctx = canvas.getContext('2d');
+    var dpr = window.devicePixelRatio || 1;
     ctx.save();
-    ctx.font = 'bold 40px Arial';
-    ctx.fillStyle = 'rgba(80,80,80,0.09)';
+    ctx.font = 'bold ' + Math.round(42 * dpr) + 'px Arial';
+    ctx.fillStyle = 'rgba(80,80,80,0.07)';
     ctx.textAlign = 'center';
     ctx.translate(canvas.width / 2, canvas.height / 2);
     ctx.rotate(-Math.PI / 5.5);
     var txt = 'PRÉVISUALISATION  C\'Réussite';
-    for (var y = -canvas.height; y < canvas.height; y += 130) {
-      for (var x = -canvas.width; x < canvas.width; x += 380) {
+    var gap = 140 * dpr;
+    for (var y = -canvas.height; y < canvas.height; y += gap) {
+      for (var x = -canvas.width; x < canvas.width; x += 420 * dpr) {
         ctx.fillText(txt, x, y);
       }
     }
@@ -631,163 +740,157 @@
 
   window.prevPage = function(){ if (curPage > 1) renderPage(curPage - 1); };
   window.nextPage = function(){ if (pdfDoc && curPage < pdfDoc.numPages) renderPage(curPage + 1); };
-  window.zoomIn   = function(){ scale = Math.min(3, +(scale + 0.2).toFixed(1)); renderPage(curPage); };
-  window.zoomOut  = function(){ scale = Math.max(0.5, +(scale - 0.2).toFixed(1)); renderPage(curPage); };
+  window.zoomIn   = function(){ scale = Math.min(3, +(scale + 0.25).toFixed(2)); if (pdfDoc) renderPage(curPage); };
+  window.zoomOut  = function(){ scale = Math.max(0.5, +(scale - 0.25).toFixed(2)); if (pdfDoc) renderPage(curPage); };
 
-  // ── QUESTIONNAIRE ──
-  var curStep  = 0;
-  var starNote = { maths: 0 };
-  var formData = {};
+  // ── QUESTIONNAIRE ────────────────────────────────────────
+  var TOTAL = 5, curStep = 0, starVals = { maths: 0 };
+
+  window.toggleQ = function() {
+    var inner   = document.getElementById('q-inner');
+    var chevron = document.getElementById('q-chevron');
+    var head    = document.getElementById('q-head');
+    var open = inner.classList.toggle('open');
+    chevron.classList.toggle('open', open);
+    head.setAttribute('aria-expanded', open);
+  };
 
   function showStep(n) {
-    document.querySelectorAll('.step').forEach(function(el, i){ el.classList.toggle('active', i === n); });
+    document.querySelectorAll('.step').forEach(function(el, i){
+      el.classList.toggle('active', i === n);
+    });
+    var pct = Math.round((n + 1) / TOTAL * 100);
+    document.getElementById('prog-fill').style.width  = pct + '%';
+    document.getElementById('prog-label').textContent = 'Étape ' + (n + 1) + ' / ' + TOTAL;
+    document.getElementById('q-step-badge').textContent = 'Étape ' + (n + 1) + '/' + TOTAL;
     document.getElementById('btn-prev').classList.toggle('hidden', n === 0);
-    document.getElementById('btn-next').style.display   = n === TOTAL_STEPS - 1 ? 'none' : '';
-    document.getElementById('btn-submit').style.display = n === TOTAL_STEPS - 1 ? '' : 'none';
-    document.getElementById('prog-fill').style.width = Math.round((n + 1) / TOTAL_STEPS * 100) + '%';
-    document.getElementById('prog-label').textContent = 'Étape ' + (n + 1) + ' / ' + TOTAL_STEPS;
-    document.getElementById('q-body').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('btn-next').style.display   = n === TOTAL - 1 ? 'none' : '';
+    document.getElementById('btn-submit').style.display = n === TOTAL - 1 ? '' : 'none';
+    document.querySelector('.q-body').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  function validateStep() {
+  function validate() {
     var ok = true;
     if (curStep === 0) {
-      var p = document.getElementById('f-prenom').value.trim();
-      document.getElementById('err-prenom').style.display = p ? 'none' : 'block';
-      if (!p) ok = false;
+      var v = document.getElementById('f-prenom').value.trim();
+      document.getElementById('err-prenom').style.display = v ? 'none' : 'block';
+      if (!v) ok = false;
     }
     if (curStep === 1) {
-      var q1 = document.getElementById('f-maths-q1').value.trim();
-      document.getElementById('err-maths-q1').style.display = q1 ? 'none' : 'block';
-      if (!q1) ok = false;
+      var v2 = document.getElementById('f-maths-q1').value.trim();
+      document.getElementById('err-maths-q1').style.display = v2 ? 'none' : 'block';
+      if (!v2) ok = false;
     }
     if (curStep === 2) {
-      var noteOk = starNote.maths > 0;
-      document.getElementById('err-note-maths').style.display = noteOk ? 'none' : 'block';
-      var recOk = !!document.querySelector('[data-group="recommandation"].selected');
-      document.getElementById('err-recommandation').style.display = recOk ? 'none' : 'block';
-      if (!noteOk || !recOk) ok = false;
+      var sel = document.querySelector('[data-group="recommandation"].selected');
+      document.getElementById('err-reco').style.display = sel ? 'none' : 'block';
+      if (!sel) ok = false;
     }
     return ok;
   }
 
-  window.nextStep = function(){ if (validateStep() && curStep < TOTAL_STEPS - 1) { curStep++; showStep(curStep); } };
-  window.prevStep = function(){ if (curStep > 0) { curStep--; showStep(curStep); } };
+  window.nextStep = function() {
+    if (!validate()) return;
+    if (curStep < TOTAL - 1) { curStep++; showStep(curStep); }
+  };
+  window.prevStep = function() {
+    if (curStep > 0) { curStep--; showStep(curStep); }
+  };
 
   window.selectRadio = function(el) {
     var group = el.dataset.group;
     document.querySelectorAll('[data-group="' + group + '"]').forEach(function(o){ o.classList.remove('selected'); });
     el.classList.add('selected');
-    // Conditional field
-    var condId = 'cond-' + group.replace(/_/g,'-');
-    var condEl = document.getElementById(condId);
-    if (condEl) condEl.classList.toggle('visible', el.dataset.val === 'oui');
+    // Conditional fields triggered by data-group
+    var condMap = {
+      maths_q2: 'cond-mq2', maths_q3: 'cond-mq3', maths_q4: 'cond-mq4',
+    };
+    if (condMap[group]) showCond(condMap[group], el.dataset.val === 'oui');
   };
 
-  window.showAvisPub = function(show){
-    document.getElementById('cond-prenom-pub').classList.toggle('visible', show);
-  };
-  window.showUtileDetail = function(show){
-    document.getElementById('cond-utile-detail').classList.toggle('visible', show);
+  window.showCond = function(id, visible) {
+    var el = document.getElementById(id);
+    if (el) el.classList.toggle('visible', visible);
   };
 
-  window.setStar = function(field, n) {
-    starNote[field] = n;
-    document.querySelectorAll('#stars-' + field + ' .star-btn').forEach(function(btn){
-      btn.classList.toggle('lit', +btn.dataset.v <= n);
+  window.setStar = function(key, val) {
+    starVals[key] = val;
+    document.querySelectorAll('#stars-' + key + ' .star-btn').forEach(function(btn){
+      btn.classList.toggle('lit', +btn.dataset.val <= val);
     });
   };
 
-  window.toggleCheck = function(el) {
-    el.classList.toggle('selected');
-  };
+  window.toggleCheck = function(el) { el.classList.toggle('selected'); };
 
-  window.toggleQ = function() {
-    var body = document.getElementById('q-body');
-    var suc  = document.getElementById('q-success');
-    var t    = document.getElementById('q-toggle');
-    var visible = body && !body.hidden || suc && !suc.hidden;
-    if (body) body.hidden = visible;
-    if (suc)  suc.hidden  = visible;
-    t.classList.toggle('open', !visible);
-  };
-
-  function collectData() {
-    var d = {};
-    d.prenom             = document.getElementById('f-prenom').value.trim();
-    d.maths_q1_fiche_utile = document.getElementById('f-maths-q1').value.trim();
-    var q2 = document.querySelector('[data-group="maths_q2"].selected');
-    d.maths_q2_erreurs   = q2 ? q2.dataset.val : '';
-    d.maths_q2_erreurs_detail = document.getElementById('f-maths-q2-detail').value.trim();
-    var q3 = document.querySelector('[data-group="maths_q3"].selected');
-    d.maths_q3_incompris = q3 ? q3.dataset.val : '';
-    d.maths_q3_incompris_detail = document.getElementById('f-maths-q3-detail').value.trim();
-    var q4 = document.querySelector('[data-group="maths_q4"].selected');
-    d.maths_q4_manquant  = q4 ? q4.dataset.val : '';
-    d.maths_q4_manquant_detail = document.getElementById('f-maths-q4-detail').value.trim();
-    d.note_maths         = starNote.maths;
-    var rec = document.querySelector('[data-group="recommandation"].selected');
-    d.recommandation     = rec ? rec.dataset.val : '';
-    d.recommandation_pourquoi = document.getElementById('f-recommandation-pourquoi').value.trim();
-    d.frein_achat        = document.getElementById('f-frein').value.trim();
-    d.avis_publiable     = document.getElementById('f-avis').value.trim();
-    var acc = document.querySelector('[data-group="accord"].selected');
-    d.accord_publication = acc ? acc.dataset.val : '';
-    d.prenom_publication = document.getElementById('f-prenom-pub').value.trim();
-    d.parents_avis       = document.getElementById('f-parents-avis').value.trim();
-    var pp = document.querySelector('[data-group="parents_prix"].selected');
-    d.parents_prix       = pp ? pp.dataset.val : '';
-    d.parents_prix_propose = document.getElementById('f-parents-prix-propose').value.trim();
-    d.parents_avis_publiable = document.getElementById('f-parents-avis-pub').value.trim();
-    d.parents_prenom_publication = document.getElementById('f-parents-prenom').value.trim();
-    var pa = document.querySelector('[data-group="parents_accord"].selected');
-    d.parents_accord_publication = pa ? pa.dataset.val : '';
-    d.matieres_souhaitees = Array.from(document.querySelectorAll('#cg-matieres .check-opt.selected')).map(function(el){ return el.dataset.val; });
-    var ua = document.querySelector('[data-group="utile_avant"].selected');
-    d.utile_avant        = ua ? ua.dataset.val : '';
-    d.utile_avant_detail = document.getElementById('f-utile-detail').value.trim();
-    d.commentaires       = document.getElementById('f-commentaires').value.trim();
-    return d;
+  function getRadio(group) {
+    var sel = document.querySelector('[data-group="' + group + '"].selected');
+    return sel ? sel.dataset.val : '';
   }
+  function getChecked(gridId) {
+    return Array.from(document.querySelectorAll('#' + gridId + ' .check-opt.selected')).map(function(el){ return el.dataset.val; });
+  }
+  function val(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
 
-  window.submitForm = async function() {
-    if (!validateStep()) return;
+  window.submitForm = function() {
+    if (!validate()) return;
     var btn = document.getElementById('btn-submit');
     var errEl = document.getElementById('submit-error');
     btn.disabled = true; btn.textContent = 'Envoi en cours…';
     errEl.style.display = 'none';
-    var payload = collectData();
-    payload.type = FORM_TYPE;
 
-    async function tryFetch() {
-      var ctrl = new AbortController();
-      var t = setTimeout(function(){ ctrl.abort(); }, 70000);
-      try {
-        var r = await fetch(BACKEND + '/api/beta-feedback', {
-          method: 'POST', headers: {'Content-Type':'application/json'},
-          body: JSON.stringify(payload), signal: ctrl.signal
-        });
-        clearTimeout(t); return r;
-      } catch(e) { clearTimeout(t); throw e; }
+    var payload = JSON.stringify({
+      type:  'maths',
+      prenom: val('f-prenom'),
+      maths_q1_fiche_utile:     val('f-maths-q1'),
+      maths_q2_erreurs:         getRadio('maths_q2'),
+      maths_q2_erreurs_detail:  val('f-maths-q2-detail'),
+      maths_q3_incompris:       getRadio('maths_q3'),
+      maths_q3_incompris_detail:val('f-maths-q3-detail'),
+      maths_q4_manquant:        getRadio('maths_q4'),
+      maths_q4_manquant_detail: val('f-maths-q4-detail'),
+      note_maths:               starVals.maths,
+      recommandation:           getRadio('recommandation'),
+      recommandation_pourquoi:  val('f-reco-pourquoi'),
+      frein_achat:              val('f-frein'),
+      avis_publiable:           val('f-avis-pub'),
+      accord_publication:       getRadio('accord_publication'),
+      prenom_publication:       val('f-prenom-pub'),
+      parents_avis:             val('f-parents-avis'),
+      parents_prix:             getRadio('parents_prix'),
+      parents_prix_propose:     val('f-parents-prix-prop'),
+      parents_avis_publiable:   val('f-parents-avis-pub'),
+      parents_prenom_publication: val('f-parents-prenom-pub'),
+      parents_accord_publication: getRadio('parents_accord_publication'),
+      matieres_souhaitees:      getChecked('cg-matieres'),
+      utile_avant:              getRadio('utile_avant'),
+      utile_avant_detail:       val('f-utile-detail'),
+      commentaires:             val('f-commentaires'),
+    });
+
+    function tryFetch() {
+      var ctrl  = new AbortController();
+      var timer = setTimeout(function(){ ctrl.abort(); }, 70000);
+      return fetch(BACKEND + '/api/beta-feedback', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: payload, signal: ctrl.signal
+      }).then(function(r){ clearTimeout(timer); return r; },
+              function(e){ clearTimeout(timer); throw e; });
     }
 
-    try {
-      var res;
-      try { res = await tryFetch(); }
-      catch(e) {
-        btn.textContent = 'Connexion au serveur…';
-        await new Promise(function(r){ setTimeout(r, 4000); });
-        res = await tryFetch();
-      }
-      var data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Erreur serveur');
-      document.getElementById('q-form-wrap').hidden = true;
-      document.getElementById('q-success').hidden = false;
-    } catch(e) {
-      btn.disabled = false; btn.textContent = 'Envoyer mes retours';
-      errEl.textContent = 'Envoi échoué. Vérifie ta connexion et réessaie.';
+    tryFetch()
+    .catch(function(){ return new Promise(function(res){ setTimeout(res, 4000); }).then(tryFetch); })
+    .then(function(r){ return r.json().then(function(d){ return { ok: r.ok, data: d }; }); })
+    .then(function(r) {
+      if (!r.ok) throw new Error(r.data.error || 'Erreur serveur.');
+      document.getElementById('q-form-wrap').style.display = 'none';
+      document.getElementById('q-success').style.display   = 'block';
+      document.getElementById('q-step-badge').textContent  = 'Envoyé ✓';
+    })
+    .catch(function(e) {
+      errEl.textContent = e.message || "Erreur d'envoi. Réessaie dans quelques secondes.";
       errEl.style.display = 'block';
-    }
+      btn.disabled = false; btn.textContent = 'Envoyer mes retours';
+    });
   };
 
 })();
