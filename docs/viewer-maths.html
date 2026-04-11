@@ -767,7 +767,8 @@
     .then(function(r) {
       if (!r.ok) throw new Error(r.data.error || 'Accès refusé.');
       authPwd = pwd;
-      document.getElementById('expires-date').textContent = r.data.expires;
+      var expEl = document.getElementById('expires-date');
+      if (expEl) expEl.textContent = r.data.expires;
       document.getElementById('auth-page').style.display  = 'none';
       document.getElementById('viewer').style.display     = 'block';
       window.scrollTo(0, 0);
