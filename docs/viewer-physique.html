@@ -6,6 +6,7 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Fiches Physique-Chimie — C'Réussite bêta</title>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+  <style>@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Manrope:wght@400;500;700;800&display=swap');</style>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -24,7 +25,7 @@
     }
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-family: 'Manrope', system-ui, sans-serif;
       background: var(--bg); color: var(--text);
       user-select: none; -webkit-user-select: none;
     }
@@ -33,51 +34,154 @@
     /* ─── AUTH OVERLAY ─────────────────────────────────── */
     #auth-overlay {
       position: fixed; inset: 0; z-index: 9999;
-      background: radial-gradient(ellipse at 60% 30%, #1a3066 0%, #0b1630 100%);
+      background:
+        radial-gradient(circle at top left, rgba(224,197,143,.16), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(105,152,255,.18), transparent 24%),
+        linear-gradient(135deg, #081126 0%, #16295c 48%, #0b1530 100%);
       display: flex; align-items: center; justify-content: center;
       padding: 24px;
       transition: opacity .45s ease;
+      overflow: auto;
+    }
+    #auth-overlay::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 42px 42px;
+      opacity: .35;
+      pointer-events: none;
     }
     .auth-card {
+      position: relative;
       background: var(--white); border-radius: 28px;
-      padding: 56px 48px 48px; max-width: 440px; width: 100%;
-      text-align: center;
-      box-shadow: 0 24px 80px rgba(0,0,0,.35), 0 4px 16px rgba(0,0,0,.2);
+      max-width: 980px; width: 100%; overflow: hidden;
+      display: grid; grid-template-columns: minmax(290px, 1.02fr) minmax(360px, .98fr);
+      box-shadow: 0 32px 80px rgba(0,0,0,.34), 0 4px 16px rgba(0,0,0,.18);
     }
-    .auth-logo { height: 88px; width: auto; margin-bottom: 32px; }
+    .auth-header {
+      position: relative;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,.18), transparent 34%),
+        linear-gradient(160deg, #0f214c 0%, #162f68 55%, #0c1737 100%);
+      padding: 42px 38px 36px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      min-height: 560px;
+    }
+    .auth-logo { height: 82px; width: auto; margin-bottom: 18px; }
     .auth-product {
       display: inline-block;
-      background: rgba(17,34,80,.07); color: var(--blue);
-      border-radius: 20px; font-size: .72rem; font-weight: 700;
+      background: rgba(224,197,143,.14); color: var(--gold);
+      border-radius: 999px; font-size: .72rem; font-weight: 800;
       letter-spacing: .07em; text-transform: uppercase;
-      padding: 5px 14px; margin-bottom: 18px; border: 1px solid rgba(17,34,80,.10);
+      padding: 7px 14px; margin-bottom: 22px; border: 1px solid rgba(224,197,143,.26);
     }
-    .auth-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -.01em; }
-    .auth-sub   { font-size: .87rem; color: var(--muted); margin-bottom: 36px; line-height: 1.5; }
+    .auth-kicker {
+      color: rgba(255,255,255,.72);
+      font-size: .8rem; text-transform: uppercase; letter-spacing: .16em;
+      margin-bottom: 12px; font-weight: 700;
+    }
+    .auth-hero {
+      font-family: 'Fraunces', Georgia, serif;
+      color: #fff; font-size: 2.6rem; line-height: 1.02;
+      letter-spacing: -.03em; margin-bottom: 14px;
+      max-width: 8ch;
+    }
+    .auth-hero span { color: var(--gold); }
+    .auth-hero-copy {
+      color: rgba(255,255,255,.76);
+      font-size: .96rem; line-height: 1.7; max-width: 34ch;
+    }
+    .auth-feature-list { display: grid; gap: 12px; margin-top: 28px; }
+    .auth-feature {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 13px 14px; border-radius: 16px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.08);
+      backdrop-filter: blur(6px);
+    }
+    .auth-feature-mark {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: rgba(224,197,143,.2); color: var(--gold);
+      font-size: .88rem; font-weight: 800; flex-shrink: 0;
+    }
+    .auth-feature strong {
+      display: block; color: #fff; font-size: .9rem; margin-bottom: 3px;
+    }
+    .auth-feature span {
+      display: block; color: rgba(255,255,255,.68); font-size: .8rem; line-height: 1.5;
+    }
+    .auth-brand-foot {
+      margin-top: 26px; color: rgba(255,255,255,.48); font-size: .76rem; line-height: 1.55;
+    }
+    .auth-body {
+      padding: 46px 42px 38px;
+      display: flex; flex-direction: column; justify-content: center;
+      background: linear-gradient(180deg, #fff 0%, #fbfaf7 100%);
+    }
+    .auth-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 2.05rem; line-height: 1.05; font-weight: 700;
+      margin-bottom: 10px; letter-spacing: -.03em; color: #111b36;
+      max-width: 13ch;
+    }
+    .auth-sub   { font-size: .92rem; color: var(--muted); margin-bottom: 26px; line-height: 1.7; max-width: 38ch; }
     .auth-field { margin-bottom: 14px; }
     .auth-input {
-      width: 100%; padding: 15px 20px;
-      border: 1.5px solid var(--border); border-radius: 14px;
-      font-size: 1rem; outline: none; background: #fafafa;
+      width: 100%; padding: 16px 18px;
+      border: 1.5px solid #dde4f0; border-radius: 16px;
+      font-size: 1rem; outline: none; background: #f7f8fb;
       transition: border-color .2s, box-shadow .2s, background .2s;
+      letter-spacing: .03em;
     }
     .auth-input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(17,34,80,.08); background: var(--white); }
     .auth-btn {
-      width: 100%; padding: 16px;
-      background: var(--blue); color: var(--gold);
-      border: none; border-radius: 14px;
+      width: 100%; padding: 16px 18px;
+      background: linear-gradient(135deg, #112250 0%, #1f3c81 100%); color: #f4dfb3;
+      border: none; border-radius: 16px;
       font-size: 1rem; font-weight: 800; letter-spacing: .02em;
       cursor: pointer; transition: opacity .2s, transform .15s, box-shadow .2s;
-      box-shadow: 0 4px 20px rgba(17,34,80,.3);
+      margin-top: 6px; box-shadow: 0 18px 30px rgba(17,34,80,.18);
     }
-    .auth-btn:hover:not(:disabled) { opacity: .9; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(17,34,80,.35); }
+    .auth-btn:hover:not(:disabled) { opacity: .94; transform: translateY(-1px); box-shadow: 0 20px 34px rgba(17,34,80,.24); }
     .auth-btn:active:not(:disabled) { transform: translateY(0); }
     .auth-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow: none; }
     .auth-error {
       color: var(--red); font-size: .84rem;
-      margin-top: 14px; min-height: 20px; font-weight: 500;
+      margin-top: 14px; min-height: 20px; font-weight: 600;
     }
-    .auth-note { font-size: .74rem; color: #b0b8c8; margin-top: 24px; }
+    .auth-note { font-size: .76rem; color: #8f98ab; margin-top: 16px; line-height: 1.6; }
+    .auth-access-list {
+      display: grid; gap: 10px; margin: 0 0 26px;
+      text-align: left;
+    }
+    .auth-access-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 14px 15px; border: 1px solid #e8ebf2; border-radius: 16px;
+      background: #ffffff;
+    }
+    .auth-access-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      margin-top: 5px; flex-shrink: 0; background: var(--gold);
+    }
+    .auth-access-item strong {
+      color: var(--blue); display: block; font-size: .86rem; margin-bottom: 2px;
+    }
+    .auth-access-item span { color: var(--muted); font-size: .8rem; line-height: 1.45; }
+    .auth-switch {
+      margin-top: 20px; padding-top: 18px; border-top: 1px solid #eceff5;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      text-align: left;
+    }
+    .auth-switch-copy { font-size: .78rem; color: var(--muted); line-height: 1.45; }
+    .auth-switch-link {
+      color: var(--blue); font-size: .82rem; font-weight: 700; text-decoration: none;
+      border: 1px solid rgba(17,34,80,.14); border-radius: 999px; padding: 8px 12px;
+      white-space: nowrap;
+    }
+    .auth-switch-link:hover { background: rgba(17,34,80,.05); }
 
     /* ─── MAIN VIEWER ──────────────────────────────────── */
     #viewer { display: none; opacity: 0; transition: opacity .4s ease; min-height: 100vh; }
@@ -261,9 +365,15 @@
       border-radius: 5px; padding: 2px 7px; margin-left: 4px;
     }
     .field-error { color: var(--red); font-size: .8rem; margin-top: 5px; display: none; }
+    .field-error.visible { display: block; }
+    .invalid-field {
+      border-color: var(--red) !important;
+      box-shadow: 0 0 0 3px rgba(220,38,38,.08) !important;
+    }
 
     /* Nav buttons */
     .q-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .q-nav-actions { display: flex; gap: 10px; justify-content: flex-end; }
     .btn-prev {
       background: none; border: 1.5px solid var(--border); color: var(--muted);
       border-radius: 10px; padding: 10px 22px; font-size: .9rem; cursor: pointer;
@@ -298,10 +408,16 @@
 
     /* ─── RESPONSIVE ───────────────────────────────────── */
     @media (max-width: 600px) {
-      .auth-card { padding: 40px 24px 36px; border-radius: 22px; }
-      .auth-logo { height: 72px; margin-bottom: 24px; }
-      .auth-title { font-size: 1.2rem; }
-      .auth-sub { font-size: .84rem; margin-bottom: 28px; }
+      .auth-card { grid-template-columns: 1fr; }
+      .auth-header { min-height: auto; padding: 28px 24px 24px; }
+      .auth-logo { height: 58px; margin-bottom: 14px; }
+      .auth-kicker { font-size: .72rem; }
+      .auth-hero { font-size: 2rem; max-width: none; }
+      .auth-hero-copy { font-size: .88rem; max-width: none; }
+      .auth-feature-list { margin-top: 22px; }
+      .auth-body { padding: 28px 24px 30px; }
+      .auth-title { font-size: 1.6rem; max-width: none; }
+      .auth-sub { font-size: .86rem; margin-bottom: 22px; max-width: none; }
       .auth-input { padding: 14px 16px; font-size: .95rem; }
       .auth-btn { padding: 15px; font-size: .95rem; }
 
@@ -323,14 +439,24 @@
       .check-grid { grid-template-columns: 1fr; }
       .btn-next, .btn-submit { padding: 12px 24px; }
       .q-nav { flex-direction: row; gap: 10px; }
+      .q-nav-actions { width: 100%; }
+      .q-nav-actions .btn-next,
+      .q-nav-actions .btn-submit { flex: 1; }
+      .auth-switch {
+        flex-direction: column; align-items: stretch;
+      }
+      .auth-switch-link {
+        text-align: center;
+      }
       .stars-row { gap: 10px; }
       .star-btn { font-size: 2.2rem; }
     }
 
     @media (max-width: 380px) {
-      .auth-card { padding: 32px 18px 28px; }
       .pdf-controls { gap: 3px; }
       .pdf-btn { padding: 8px 10px; font-size: .82rem; }
+      .auth-header { padding: 24px 18px 20px; }
+      .auth-body { padding: 24px 18px 24px; }
     }
   </style>
 </head>
@@ -339,18 +465,73 @@
 <!-- ══ AUTH OVERLAY ════════════════════════════════════════ -->
 <div id="auth-overlay">
   <div class="auth-card">
-    <img src="img/logo.jpeg" alt="C'Réussite" class="auth-logo">
-    <div class="auth-product">Bêta-testeur</div>
-    <div class="auth-title">Accès aux fiches Physique-Chimie</div>
-    <div class="auth-sub">Terminale Spécialité &mdash; Prévisualisation réservée aux bêta-testeurs</div>
-    <div class="auth-field">
-      <input type="password" id="pwd-input" class="auth-input"
-             placeholder="Mot de passe d'accès"
-             onkeydown="if(event.key==='Enter')doAuth()">
+    <div class="auth-header">
+      <div>
+        <img src="img/logo.jpeg" alt="C'Réussite" class="auth-logo">
+        <div class="auth-product">Bêta-testeur</div>
+        <div class="auth-kicker">Physique-Chimie Terminale</div>
+        <div class="auth-hero">Relire les fiches <span>avant sortie</span>.</div>
+        <p class="auth-hero-copy">Cet espace privé permet de tester la version complète des fiches Physique-Chimie, puis de laisser un retour exploitable pour la version finale.</p>
+      </div>
+      <div>
+        <div class="auth-feature-list">
+          <div class="auth-feature">
+            <span class="auth-feature-mark">1</span>
+            <div>
+              <strong>Accès restreint</strong>
+              <span>Seuls les mots de passe bêta valides ouvrent la consultation complète.</span>
+            </div>
+          </div>
+          <div class="auth-feature">
+            <span class="auth-feature-mark">2</span>
+            <div>
+              <strong>Prévisualisation réelle</strong>
+              <span>Le contenu affiché correspond aux fiches finales, avec la même densité et la même lecture.</span>
+            </div>
+          </div>
+          <div class="auth-feature">
+            <span class="auth-feature-mark">3</span>
+            <div>
+              <strong>Retour complet demandé</strong>
+              <span>Le questionnaire a été durci pour éviter les retours vagues et récupérer de vrais points d’amélioration.</span>
+            </div>
+          </div>
+        </div>
+        <div class="auth-brand-foot">Vos réponses servent à corriger la compréhension, la précision scientifique et le rythme global des fiches avant la mise en vente.</div>
+      </div>
     </div>
-    <button id="auth-btn" class="auth-btn" onclick="doAuth()">Accéder aux fiches</button>
-    <div id="auth-error" class="auth-error"></div>
-    <p class="auth-note">Accès personnel et non transférable &bull; Durée limitée</p>
+    <div class="auth-body">
+      <div class="auth-title">Ouvrir la session bêta Physique-Chimie</div>
+      <div class="auth-sub">Entre le mot de passe qui t’a été transmis. Si tu as reçu un accès bundle, il fonctionne aussi ici.</div>
+      <div class="auth-access-list">
+        <div class="auth-access-item">
+          <span class="auth-access-dot"></span>
+          <div>
+            <strong>Mot de passe Physique-Chimie</strong>
+            <span>Déverrouille l’intégralité des fiches de Physique-Chimie Terminale Spécialité.</span>
+          </div>
+        </div>
+        <div class="auth-access-item">
+          <span class="auth-access-dot"></span>
+          <div>
+            <strong>Mot de passe bundle</strong>
+            <span>Donne accès à cette page et au viewer Mathématiques avec le même identifiant.</span>
+          </div>
+        </div>
+      </div>
+      <div class="auth-field">
+        <input type="password" id="pwd-input" class="auth-input"
+               placeholder="Mot de passe bêta"
+               onkeydown="if(event.key==='Enter')doAuth()">
+      </div>
+      <button type="button" id="auth-btn" class="auth-btn" onclick="doAuth()">Entrer dans l’espace bêta</button>
+      <div id="auth-error" class="auth-error"></div>
+      <p class="auth-note">Accès personnel, temporaire et non transférable. La consultation reste réservée aux bêta-testeurs autorisés.</p>
+      <div class="auth-switch">
+        <div class="auth-switch-copy">Tu veux basculer vers l’autre viewer avec le même mot de passe&nbsp;?</div>
+        <a class="auth-switch-link" href="viewer-maths.html">Ouvrir Mathématiques</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -443,7 +624,7 @@
               </div>
 
               <div class="q-field">
-                <label class="q-label">Est-ce qu'il y a des choses qui t'ont semblé fausses&nbsp;?</label>
+                <label class="q-label">Est-ce qu'il y a des choses qui t'ont semblé fausses&nbsp;? <span class="req">*</span></label>
                 <div class="radio-grid" id="rg-pq2">
                   <div class="radio-opt" data-group="pc_q2" data-val="non" onclick="selectRadio(this)">
                     <div class="radio-dot"></div><span>Non, rien de faux</span>
@@ -455,10 +636,11 @@
                 <div class="cond-field" id="cond-pq2">
                   <textarea class="q-textarea" id="f-pc-q2-detail" placeholder="Décris ce qui te semble inexact…"></textarea>
                 </div>
+                <div class="field-error" id="err-pc-q2">Merci de répondre à la question et de préciser si besoin.</div>
               </div>
 
               <div class="q-field">
-                <label class="q-label">Est-ce qu'une notion te semblait incomprise avant, et toujours incomprise après&nbsp;?</label>
+                <label class="q-label">Est-ce qu'une notion te semblait incomprise avant, et toujours incomprise après&nbsp;? <span class="req">*</span></label>
                 <div class="radio-grid" id="rg-pq3">
                   <div class="radio-opt" data-group="pc_q3" data-val="non" onclick="selectRadio(this)">
                     <div class="radio-dot"></div><span>Non, les fiches m'ont aidé(e)</span>
@@ -470,10 +652,11 @@
                 <div class="cond-field" id="cond-pq3">
                   <textarea class="q-textarea" id="f-pc-q3-detail" placeholder="Quelle notion reste floue&nbsp;?"></textarea>
                 </div>
+                <div class="field-error" id="err-pc-q3">Merci de répondre à la question et de préciser si besoin.</div>
               </div>
 
               <div class="q-field">
-                <label class="q-label">Est-ce qu'il manque quelque chose d'important selon toi&nbsp;?</label>
+                <label class="q-label">Est-ce qu'il manque quelque chose d'important selon toi&nbsp;? <span class="req">*</span></label>
                 <div class="radio-grid" id="rg-pq4">
                   <div class="radio-opt" data-group="pc_q4" data-val="non" onclick="selectRadio(this)">
                     <div class="radio-dot"></div><span>Non, c'est complet</span>
@@ -485,6 +668,7 @@
                 <div class="cond-field" id="cond-pq4">
                   <textarea class="q-textarea" id="f-pc-q4-detail" placeholder="Qu'est-ce qui manque&nbsp;?"></textarea>
                 </div>
+                <div class="field-error" id="err-pc-q4">Merci de répondre à la question et de préciser si besoin.</div>
               </div>
             </div>
 
@@ -493,7 +677,7 @@
               <div class="sec-title">Avis global</div>
 
               <div class="q-field">
-                <label class="q-label">Note les fiches Physique-Chimie</label>
+                <label class="q-label">Note les fiches Physique-Chimie <span class="req">*</span></label>
                 <div class="stars-row" id="stars-pc">
                   <button class="star-btn" data-val="1" onclick="setStar('pc',1)">&#9733;</button>
                   <button class="star-btn" data-val="2" onclick="setStar('pc',2)">&#9733;</button>
@@ -501,6 +685,7 @@
                   <button class="star-btn" data-val="4" onclick="setStar('pc',4)">&#9733;</button>
                   <button class="star-btn" data-val="5" onclick="setStar('pc',5)">&#9733;</button>
                 </div>
+                <div class="field-error" id="err-note-pc">Merci de donner une note.</div>
               </div>
 
               <div class="q-field">
@@ -516,45 +701,51 @@
               </div>
 
               <div class="q-field">
-                <label class="q-label">Pourquoi&nbsp;? <span class="opt-badge">optionnel</span></label>
+                <label class="q-label">Pourquoi&nbsp;? <span class="req">*</span></label>
                 <textarea class="q-textarea" id="f-reco-pourquoi" placeholder="En quelques mots…"></textarea>
+                <div class="field-error" id="err-reco-pourquoi">Ce champ est requis.</div>
               </div>
 
               <div class="q-field">
-                <label class="q-label">Qu'est-ce qui te freinerait à l'achat&nbsp;? <span class="opt-badge">optionnel</span></label>
+                <label class="q-label">Qu'est-ce qui te freinerait à l'achat&nbsp;? <span class="req">*</span></label>
                 <textarea class="q-textarea" id="f-frein" placeholder="Prix, format, autre chose…"></textarea>
+                <div class="field-error" id="err-frein">Ce champ est requis.</div>
               </div>
 
               <div class="q-field">
-                <label class="q-label">As-tu un avis qu'on pourrait publier sur le site&nbsp;? <span class="opt-badge">optionnel</span></label>
+                <label class="q-label">As-tu un avis qu'on pourrait publier sur le site&nbsp;? <span class="req">*</span></label>
                 <textarea class="q-textarea" id="f-avis-pub" placeholder="Un avis court et sincère…"></textarea>
+                <div class="field-error" id="err-avis-pub">Ce champ est requis.</div>
               </div>
 
               <div class="q-field">
-                <label class="q-label">Tu acceptes qu'on le publie sur le site&nbsp;?</label>
+                <label class="q-label">Tu acceptes qu'on le publie sur le site&nbsp;? <span class="req">*</span></label>
                 <div class="radio-grid" id="rg-accord">
                   <div class="radio-opt" data-group="accord_publication" data-val="oui" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Oui</span></div>
                   <div class="radio-opt" data-group="accord_publication" data-val="non" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Non</span></div>
                 </div>
+                <div class="field-error" id="err-accord">Merci de choisir une option.</div>
               </div>
 
               <div class="q-field">
-                <label class="q-label">Prénom à afficher pour la publication <span class="opt-badge">optionnel</span></label>
+                <label class="q-label">Prénom à afficher pour la publication <span class="req">*</span></label>
                 <input type="text" class="q-input" id="f-prenom-pub" placeholder="Marie T." maxlength="60">
+                <div class="field-error" id="err-prenom-pub">Ce champ est requis.</div>
               </div>
             </div>
 
             <!-- STEP 3 — Parents -->
             <div class="step" id="step-3">
-              <div class="sec-title">Avis des parents <span class="opt-badge">optionnel</span></div>
+              <div class="sec-title">Avis des parents</div>
 
               <div class="q-field">
                 <label class="q-label">Est-ce qu'un parent a pu jeter un œil aux fiches&nbsp;? Si oui, qu'en pense-t-il/elle&nbsp;?</label>
                 <textarea class="q-textarea" id="f-parents-avis" placeholder="Avis du parent…"></textarea>
+                <div class="field-error" id="err-parents-avis">Ce champ est requis.</div>
               </div>
 
               <div class="q-field">
-                <label class="q-label">Le prix vous semble-t-il raisonnable&nbsp;?</label>
+                <label class="q-label">Le prix vous semble-t-il raisonnable&nbsp;? <span class="req">*</span></label>
                 <div class="radio-grid" id="rg-prix">
                   <div class="radio-opt" data-group="parents_prix" data-val="oui_certain" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Oui, sans hésiter</span></div>
                   <div class="radio-opt" data-group="parents_prix" data-val="oui_probablement" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Oui, probablement</span></div>
@@ -562,29 +753,34 @@
                   <div class="radio-opt" data-group="parents_prix" data-val="probablement_pas" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Probablement pas</span></div>
                   <div class="radio-opt" data-group="parents_prix" data-val="non" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Non</span></div>
                 </div>
+                <div class="field-error" id="err-parents-prix">Merci de choisir une option.</div>
               </div>
 
               <div class="q-field">
-                <label class="q-label">Quel prix vous semblerait juste&nbsp;? <span class="opt-badge">optionnel</span></label>
+                <label class="q-label">Quel prix vous semblerait juste&nbsp;? <span class="req">*</span></label>
                 <input type="text" class="q-input" id="f-parents-prix-prop" placeholder="Ex : 9,99 €" maxlength="20">
+                <div class="field-error" id="err-parents-prix-prop">Ce champ est requis.</div>
               </div>
 
               <div class="q-field">
-                <label class="q-label">Un avis du parent à publier&nbsp;? <span class="opt-badge">optionnel</span></label>
+                <label class="q-label">Un avis du parent à publier&nbsp;? <span class="req">*</span></label>
                 <textarea class="q-textarea" id="f-parents-avis-pub" placeholder="Court et sincère…"></textarea>
+                <div class="field-error" id="err-parents-avis-pub">Ce champ est requis.</div>
               </div>
 
               <div class="q-field">
-                <label class="q-label">Prénom du parent pour publication <span class="opt-badge">optionnel</span></label>
+                <label class="q-label">Prénom du parent pour publication <span class="req">*</span></label>
                 <input type="text" class="q-input" id="f-parents-prenom-pub" placeholder="Parent de Marie" maxlength="60">
+                <div class="field-error" id="err-parents-prenom-pub">Ce champ est requis.</div>
               </div>
 
               <div class="q-field">
-                <label class="q-label">Accord pour publier l'avis du parent&nbsp;?</label>
+                <label class="q-label">Accord pour publier l'avis du parent&nbsp;? <span class="req">*</span></label>
                 <div class="radio-grid" id="rg-parents-accord">
                   <div class="radio-opt" data-group="parents_accord_publication" data-val="oui" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Oui</span></div>
                   <div class="radio-opt" data-group="parents_accord_publication" data-val="non" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Non</span></div>
                 </div>
+                <div class="field-error" id="err-parents-accord">Merci de choisir une option.</div>
               </div>
             </div>
 
@@ -593,7 +789,7 @@
               <div class="sec-title">Pour la suite</div>
 
               <div class="q-field">
-                <label class="q-label">Si on créait des fiches pour d'autres matières, lesquelles t'intéresseraient&nbsp;?</label>
+                <label class="q-label">Si on créait des fiches pour d'autres matières, lesquelles t'intéresseraient&nbsp;? <span class="req">*</span></label>
                 <div class="check-grid" id="cg-matieres">
                   <div class="check-opt" data-val="hg" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span>Histoire-Géographie</span></div>
                   <div class="check-opt" data-val="ses" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span>SES</span></div>
@@ -603,10 +799,11 @@
                   <div class="check-opt" data-val="maths" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span>Mathématiques</span></div>
                   <div class="check-opt" data-val="non" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span>Pas intéressé(e)</span></div>
                 </div>
+                <div class="field-error" id="err-matieres">Merci de sélectionner au moins une réponse.</div>
               </div>
 
               <div class="q-field">
-                <label class="q-label">Ce type de fiches t'aurait-il été utile les années précédentes&nbsp;?</label>
+                <label class="q-label">Ce type de fiches t'aurait-il été utile les années précédentes&nbsp;? <span class="req">*</span></label>
                 <div class="radio-grid" id="rg-utile">
                   <div class="radio-opt" data-group="utile_avant" data-val="oui" onclick="selectRadio(this);showCond('cond-utile',true)"><div class="radio-dot"></div><span>Oui, vraiment</span></div>
                   <div class="radio-opt" data-group="utile_avant" data-val="peut_etre" onclick="selectRadio(this);showCond('cond-utile',true)"><div class="radio-dot"></div><span>Peut-être</span></div>
@@ -615,20 +812,22 @@
                 <div class="cond-field" id="cond-utile">
                   <textarea class="q-textarea" id="f-utile-detail" placeholder="Dans quelles matières et à quel niveau&nbsp;?"></textarea>
                 </div>
+                <div class="field-error" id="err-utile">Merci de répondre à la question et de préciser si besoin.</div>
               </div>
 
               <div class="q-field">
-                <label class="q-label">Commentaires généraux ou suggestions <span class="opt-badge">optionnel</span></label>
+                <label class="q-label">Commentaires généraux ou suggestions <span class="req">*</span></label>
                 <textarea class="q-textarea" id="f-commentaires" placeholder="Tout ce que tu veux nous dire…"></textarea>
+                <div class="field-error" id="err-commentaires">Ce champ est requis.</div>
               </div>
             </div>
 
             <!-- Navigation -->
             <div class="q-nav">
-              <button class="btn-prev hidden" id="btn-prev" onclick="prevStep()">&#8592; Précédent</button>
-              <div>
-                <button class="btn-next" id="btn-next" onclick="nextStep()">Suivant &#8594;</button>
-                <button class="btn-submit" id="btn-submit" onclick="submitForm()" style="display:none">Envoyer mes retours</button>
+              <button type="button" class="btn-prev hidden" id="btn-prev" onclick="prevStep()">&#8592; Précédent</button>
+              <div class="q-nav-actions">
+                <button type="button" class="btn-next" id="btn-next" onclick="nextStep()">Suivant &#8594;</button>
+                <button type="button" class="btn-submit" id="btn-submit" onclick="submitForm()" style="display:none">Envoyer mes retours</button>
               </div>
             </div>
             <div class="submit-error" id="submit-error"></div>
@@ -698,11 +897,13 @@
         });
       });
       setTimeout(function(){ overlay.style.display = 'none'; }, 460);
+      isAuthenticated = true;
+      history.pushState({ viewer: true, step: 0 }, '', location.pathname + '#questionnaire');
       loadPDF();
     })
     .catch(function(e) {
       errEl.textContent = e.message;
-      btn.disabled = false; btn.textContent = 'Accéder aux fiches';
+      btn.disabled = false; btn.textContent = 'Ouvrir la prévisualisation';
     });
   };
 
@@ -740,9 +941,14 @@
   function renderPage(n) {
     curPage = n;
     var canvas = document.getElementById('pdf-canvas');
+    var container = canvas.parentElement;
+    var availW = Math.max(100, container.clientWidth - 32); // .pdf-body padding: 16px each side
     pdfDoc.getPage(n).then(function(page) {
       var dpr = window.devicePixelRatio || 1;
-      var vp  = page.getViewport({ scale: scale * dpr });
+      // Clamp scale to container width so the canvas never overflows
+      var natural = page.getViewport({ scale: scale });
+      var effectiveScale = natural.width > availW ? scale * (availW / natural.width) : scale;
+      var vp = page.getViewport({ scale: effectiveScale * dpr });
       canvas.width  = vp.width;
       canvas.height = vp.height;
       canvas.style.width  = (vp.width  / dpr) + 'px';
@@ -756,6 +962,12 @@
       document.getElementById('zoom-lbl').textContent = Math.round(scale * 100) + '%';
     });
   }
+
+  var _resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(_resizeTimer);
+    _resizeTimer = setTimeout(function() { if (pdfDoc) renderPage(curPage); }, 180);
+  });
 
   function addWatermark(canvas) {
     var ctx = canvas.getContext('2d');
@@ -782,7 +994,9 @@
   window.zoomOut  = function(){ scale = Math.max(0.5, +(scale - 0.25).toFixed(2)); if (pdfDoc) renderPage(curPage); };
 
   // ── QUESTIONNAIRE ────────────────────────────────────────
-  var TOTAL = 5, curStep = 0, starVals = { pc: 0 };
+  var TOTAL = 5, curStep = 0, starVals = { pc: 0 }, isAuthenticated = false;
+
+  history.replaceState({ viewer: false, step: 0 }, '', location.pathname + location.search);
 
   window.toggleQ = function() {
     var inner   = document.getElementById('q-inner');
@@ -793,7 +1007,75 @@
     head.setAttribute('aria-expanded', open);
   };
 
-  function showStep(n) {
+  function scrollQuestionnaire() {
+    var wrap = document.getElementById('q-form-wrap');
+    if (wrap) wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function setInvalid(id, invalid) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.classList.toggle('invalid-field', invalid);
+  }
+
+  function setError(id, visible) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.classList.toggle('visible', visible);
+  }
+
+  function hasRadio(group) {
+    return !!document.querySelector('[data-group="' + group + '"].selected');
+  }
+
+  function requireText(id, errId) {
+    var missing = !val(id);
+    setInvalid(id, missing);
+    setError(errId, missing);
+    return !missing;
+  }
+
+  function requireRadio(group, errId) {
+    var ok = hasRadio(group);
+    setError(errId, !ok);
+    return ok;
+  }
+
+  function requireConditional(group, detailId, errId) {
+    var selected = getRadio(group);
+    var ok = !!selected;
+    if (selected === 'oui' || selected === 'peut_etre') {
+      ok = !!val(detailId);
+      setInvalid(detailId, !ok);
+    } else {
+      setInvalid(detailId, false);
+    }
+    setError(errId, !ok);
+    return ok;
+  }
+
+  function requireAtLeastOne(gridId, errId) {
+    var ok = getChecked(gridId).length > 0;
+    setError(errId, !ok);
+    return ok;
+  }
+
+  function requireStar(key, errId) {
+    var ok = !!starVals[key];
+    setError(errId, !ok);
+    return ok;
+  }
+
+  function resetStepFeedback() {
+    document.querySelectorAll('.field-error').forEach(function(el){ el.classList.remove('visible'); });
+    document.querySelectorAll('.invalid-field').forEach(function(el){ el.classList.remove('invalid-field'); });
+    var errEl = document.getElementById('submit-error');
+    errEl.style.display = 'none';
+    errEl.textContent = '';
+  }
+
+  function showStep(n, options) {
+    var opts = options || {};
     document.querySelectorAll('.step').forEach(function(el, i){
       el.classList.toggle('active', i === n);
     });
@@ -804,36 +1086,89 @@
     document.getElementById('btn-prev').classList.toggle('hidden', n === 0);
     document.getElementById('btn-next').style.display   = n === TOTAL - 1 ? 'none' : '';
     document.getElementById('btn-submit').style.display = n === TOTAL - 1 ? '' : 'none';
-    document.querySelector('.q-body').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    resetStepFeedback();
+    if (!opts.skipScroll) scrollQuestionnaire();
   }
 
   function validate() {
+    resetStepFeedback();
     var ok = true;
+
     if (curStep === 0) {
-      var v = document.getElementById('f-prenom').value.trim();
-      document.getElementById('err-prenom').style.display = v ? 'none' : 'block';
-      if (!v) ok = false;
+      ok = requireText('f-prenom', 'err-prenom');
     }
     if (curStep === 1) {
-      var v2 = document.getElementById('f-pc-q1').value.trim();
-      document.getElementById('err-pc-q1').style.display = v2 ? 'none' : 'block';
-      if (!v2) ok = false;
+      ok = requireText('f-pc-q1', 'err-pc-q1') && ok;
+      ok = requireConditional('pc_q2', 'f-pc-q2-detail', 'err-pc-q2') && ok;
+      ok = requireConditional('pc_q3', 'f-pc-q3-detail', 'err-pc-q3') && ok;
+      ok = requireConditional('pc_q4', 'f-pc-q4-detail', 'err-pc-q4') && ok;
     }
     if (curStep === 2) {
-      var sel = document.querySelector('[data-group="recommandation"].selected');
-      document.getElementById('err-reco').style.display = sel ? 'none' : 'block';
-      if (!sel) ok = false;
+      ok = requireStar('pc', 'err-note-pc') && ok;
+      ok = requireRadio('recommandation', 'err-reco') && ok;
+      ok = requireText('f-reco-pourquoi', 'err-reco-pourquoi') && ok;
+      ok = requireText('f-frein', 'err-frein') && ok;
+      ok = requireText('f-avis-pub', 'err-avis-pub') && ok;
+      ok = requireRadio('accord_publication', 'err-accord') && ok;
+      ok = requireText('f-prenom-pub', 'err-prenom-pub') && ok;
     }
+    if (curStep === 3) {
+      ok = requireText('f-parents-avis', 'err-parents-avis') && ok;
+      ok = requireRadio('parents_prix', 'err-parents-prix') && ok;
+      ok = requireText('f-parents-prix-prop', 'err-parents-prix-prop') && ok;
+      ok = requireText('f-parents-avis-pub', 'err-parents-avis-pub') && ok;
+      ok = requireText('f-parents-prenom-pub', 'err-parents-prenom-pub') && ok;
+      ok = requireRadio('parents_accord_publication', 'err-parents-accord') && ok;
+    }
+    if (curStep === 4) {
+      ok = requireAtLeastOne('cg-matieres', 'err-matieres') && ok;
+      ok = requireConditional('utile_avant', 'f-utile-detail', 'err-utile') && ok;
+      ok = requireText('f-commentaires', 'err-commentaires') && ok;
+    }
+
+    if (!ok) {
+      var errEl = document.getElementById('submit-error');
+      errEl.textContent = 'Merci de répondre à toutes les questions avant de continuer.';
+      errEl.style.display = 'block';
+    }
+
     return ok;
   }
 
   window.nextStep = function() {
     if (!validate()) return;
-    if (curStep < TOTAL - 1) { curStep++; showStep(curStep); }
+    if (curStep < TOTAL - 1) {
+      curStep++;
+      showStep(curStep);
+      if (isAuthenticated) history.pushState({ viewer: true, step: curStep }, '', location.pathname + '#step-' + curStep);
+    }
   };
   window.prevStep = function() {
-    if (curStep > 0) { curStep--; showStep(curStep); }
+    if (curStep > 0) {
+      if (isAuthenticated) {
+        history.back();
+      } else {
+        curStep--;
+        showStep(curStep);
+      }
+    }
   };
+
+  window.addEventListener('popstate', function(event) {
+    var state = event.state || { viewer: false, step: 0 };
+    if (!state.viewer) {
+      if (!isAuthenticated) return;
+      isAuthenticated = false;
+      authPwd = '';
+      document.getElementById('viewer').style.opacity = '0';
+      document.getElementById('viewer').style.display = 'none';
+      document.getElementById('auth-overlay').style.display = 'flex';
+      requestAnimationFrame(function(){ document.getElementById('auth-overlay').style.opacity = '1'; });
+      return;
+    }
+    curStep = Math.max(0, Math.min(TOTAL - 1, state.step || 0));
+    showStep(curStep);
+  });
 
   window.selectRadio = function(el) {
     var group = el.dataset.group;
