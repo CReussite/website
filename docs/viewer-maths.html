@@ -72,8 +72,7 @@
     .auth-logo {
       height: 72px; width: auto; max-width: 150px;
       display: block; margin-bottom: 18px;
-      object-fit: contain; border-radius: 10px;
-      background: rgba(255,255,255,.9); padding: 6px 10px;
+      object-fit: contain;
     }
     .auth-product {
       display: inline-block;
@@ -400,7 +399,7 @@
     @media (max-width: 600px) {
       .auth-card { grid-template-columns: 1fr; }
       .auth-header { min-height: auto; padding: 28px 24px 24px; }
-      .auth-logo { height: 50px; max-width: 120px; margin-bottom: 12px; padding: 4px 8px; }
+      .auth-logo { height: 50px; max-width: 120px; margin-bottom: 12px; }
       .auth-kicker { font-size: .72rem; }
       .auth-hero { font-size: 2rem; max-width: none; }
       .auth-hero-copy { font-size: .88rem; max-width: none; }
@@ -681,13 +680,13 @@
               </div>
 
               <div class="q-field">
-                <label class="q-label">As-tu un avis qu'on pourrait publier sur le site&nbsp;? <span class="req">*</span></label>
+                <label class="q-label">As-tu un avis qu'on pourrait publier sur le site&nbsp;?</label>
                 <textarea class="q-textarea" id="f-avis-pub" placeholder="Un avis court et sincère…"></textarea>
                 <div class="field-error" id="err-avis-pub">Ce champ est requis.</div>
               </div>
 
               <div class="q-field">
-                <label class="q-label">Tu acceptes qu'on le publie sur le site&nbsp;? <span class="req">*</span></label>
+                <label class="q-label">Tu acceptes qu'on le publie sur le site&nbsp;?</label>
                 <div class="radio-grid" id="rg-accord">
                   <div class="radio-opt" data-group="accord_publication" data-val="oui" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Oui</span></div>
                   <div class="radio-opt" data-group="accord_publication" data-val="non" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Non</span></div>
@@ -696,7 +695,7 @@
               </div>
 
               <div class="q-field">
-                <label class="q-label">Prénom à afficher pour la publication <span class="req">*</span></label>
+                <label class="q-label">Prénom à afficher pour la publication</label>
                 <input type="text" class="q-input" id="f-prenom-pub" placeholder="Marie T." maxlength="60">
                 <div class="field-error" id="err-prenom-pub">Ce champ est requis.</div>
               </div>
@@ -713,7 +712,7 @@
               </div>
 
               <div class="q-field">
-                <label class="q-label">Le prix vous semble-t-il raisonnable&nbsp;? <span class="req">*</span></label>
+                <label class="q-label">Le prix vous semble-t-il raisonnable&nbsp;?</label>
                 <div class="radio-grid" id="rg-prix">
                   <div class="radio-opt" data-group="parents_prix" data-val="oui_certain" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Oui, sans hésiter</span></div>
                   <div class="radio-opt" data-group="parents_prix" data-val="oui_probablement" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Oui, probablement</span></div>
@@ -725,25 +724,25 @@
               </div>
 
               <div class="q-field">
-                <label class="q-label">Quel prix vous semblerait juste&nbsp;? <span class="req">*</span></label>
+                <label class="q-label">Quel prix vous semblerait juste&nbsp;?</label>
                 <input type="text" class="q-input" id="f-parents-prix-prop" placeholder="Ex : 9,99 €" maxlength="20">
                 <div class="field-error" id="err-parents-prix-prop">Ce champ est requis.</div>
               </div>
 
               <div class="q-field">
-                <label class="q-label">Un avis du parent à publier&nbsp;? <span class="req">*</span></label>
+                <label class="q-label">Un avis du parent à publier&nbsp;?</label>
                 <textarea class="q-textarea" id="f-parents-avis-pub" placeholder="Court et sincère…"></textarea>
                 <div class="field-error" id="err-parents-avis-pub">Ce champ est requis.</div>
               </div>
 
               <div class="q-field">
-                <label class="q-label">Prénom du parent pour publication <span class="req">*</span></label>
+                <label class="q-label">Prénom du parent pour publication</label>
                 <input type="text" class="q-input" id="f-parents-prenom-pub" placeholder="Parent de Marie" maxlength="60">
                 <div class="field-error" id="err-parents-prenom-pub">Ce champ est requis.</div>
               </div>
 
               <div class="q-field">
-                <label class="q-label">Accord pour publier l'avis du parent&nbsp;? <span class="req">*</span></label>
+                <label class="q-label">Accord pour publier l'avis du parent&nbsp;?</label>
                 <div class="radio-grid" id="rg-parents-accord">
                   <div class="radio-opt" data-group="parents_accord_publication" data-val="oui" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Oui</span></div>
                   <div class="radio-opt" data-group="parents_accord_publication" data-val="non" onclick="selectRadio(this)"><div class="radio-dot"></div><span>Non</span></div>
@@ -784,7 +783,7 @@
               </div>
 
               <div class="q-field">
-                <label class="q-label">Commentaires généraux ou suggestions <span class="req">*</span></label>
+                <label class="q-label">Commentaires généraux ou suggestions</label>
                 <textarea class="q-textarea" id="f-commentaires" placeholder="Tout ce que tu veux nous dire…"></textarea>
                 <div class="field-error" id="err-commentaires">Ce champ est requis.</div>
               </div>
@@ -1146,22 +1145,13 @@
       ok = requireRadio('recommandation', 'err-reco') && ok;
       ok = requireText('f-reco-pourquoi', 'err-reco-pourquoi') && ok;
       ok = requireText('f-frein', 'err-frein') && ok;
-      ok = requireText('f-avis-pub', 'err-avis-pub') && ok;
-      ok = requireRadio('accord_publication', 'err-accord') && ok;
-      ok = requireText('f-prenom-pub', 'err-prenom-pub') && ok;
     }
     if (curStep === 3) {
-      ok = requireText('f-parents-avis', 'err-parents-avis') && ok;
-      ok = requireRadio('parents_prix', 'err-parents-prix') && ok;
-      ok = requireText('f-parents-prix-prop', 'err-parents-prix-prop') && ok;
-      ok = requireText('f-parents-avis-pub', 'err-parents-avis-pub') && ok;
-      ok = requireText('f-parents-prenom-pub', 'err-parents-prenom-pub') && ok;
-      ok = requireRadio('parents_accord_publication', 'err-parents-accord') && ok;
+      // Section parents entièrement optionnelle
     }
     if (curStep === 4) {
       ok = requireAtLeastOne('cg-matieres', 'err-matieres') && ok;
       ok = requireConditional('utile_avant', 'f-utile-detail', 'err-utile') && ok;
-      ok = requireText('f-commentaires', 'err-commentaires') && ok;
     }
 
     if (!ok) {
