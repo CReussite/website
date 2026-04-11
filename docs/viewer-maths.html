@@ -93,14 +93,18 @@
 
     /* Back to top */
     .back-top {
-      display: block; width: fit-content; margin: 36px auto 12px;
-      padding: 10px 20px; border-radius: 20px;
-      background: var(--white); border: 1.5px solid var(--border);
-      font-size: .84rem; color: var(--muted); font-weight: 600;
-      cursor: pointer; transition: border-color .15s, color .15s;
-      text-align: center;
+      display: flex; align-items: center; gap: 8px;
+      width: fit-content; margin: 40px auto 16px;
+      padding: 12px 28px; border-radius: 999px;
+      background: linear-gradient(135deg, var(--blue) 0%, #1a3270 100%);
+      border: none; color: var(--gold); font-size: .85rem; font-weight: 700;
+      letter-spacing: .03em; cursor: pointer;
+      box-shadow: 0 4px 18px rgba(17,34,80,.25);
+      transition: transform .2s, box-shadow .2s;
     }
-    .back-top:hover { border-color: var(--blue); color: var(--blue); }
+    .back-top:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(17,34,80,.35); }
+    .back-top:active { transform: translateY(0); }
+    .back-top svg { flex-shrink: 0; }
 
     /* ─── LAYOUT ───────────────────────────────────────── */
     .page-wrap { max-width: 920px; margin: 0 auto; padding: 28px 20px 20px; }
@@ -679,7 +683,7 @@
       </div><!-- /q-inner -->
     </div><!-- /q-card -->
 
-    <button class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593; Revenir en haut</button>
+    <button class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg> Revenir en haut</button>
 
   </div><!-- /page-wrap -->
 </div><!-- /viewer -->
