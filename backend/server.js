@@ -49,6 +49,9 @@ app.use('/api/admin', require('./routes/admin'));
 // Beta feedback
 app.use('/api/beta-feedback', require('./routes/beta'));
 
+// Beta viewer (pages protégées par mot de passe)
+app.use('/api/beta-viewer', require('./routes/betaViewer'));
+
 app.get('/api/healthz', async (req, res) => {
   const missingEnv = REQUIRED_ENV_VARS.filter((key) => !process.env[key]);
   const isOk = missingEnv.length === 0;
