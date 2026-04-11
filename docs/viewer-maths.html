@@ -345,7 +345,7 @@
     @media print {
       body > *:not(#pdf-print-pages) { display: none !important; }
       #pdf-print-pages { display: block !important; }
-      #pdf-print-pages img { width: 100%; display: block; page-break-after: always; }
+      #pdf-print-pages img { max-width: 100%; max-height: 100vh; object-fit: contain; display: block; page-break-after: always; page-break-inside: avoid; margin: 0 auto; }
       @page { margin: 0; }
     }
   </style>
@@ -400,7 +400,7 @@
           </div>
           <span class="pdf-sep pdf-sep-rows"></span>
           <div class="pdf-row">
-            <button class="pdf-btn" id="btn-toc" onclick="firstPage()" title="Sommaire"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+            <button class="pdf-btn" id="btn-toc" onclick="goToTOC()" title="Sommaire"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
             <span class="pdf-sep"></span>
             <button class="pdf-btn" onclick="zoomOut()">&#8722;</button>
             <span class="pdf-zoom-lbl" id="zoom-lbl">150%</span>
@@ -769,6 +769,7 @@
       document.getElementById('btn-lp').disabled = false;
       document.getElementById('pdf-loading').style.display = 'none';
       document.getElementById('pdf-page-wrap').style.display = 'inline-block';
+      findTOCPage();
       renderPage(1);
     })
     .catch(function(e) {
@@ -912,6 +913,27 @@
   window.nextPage  = function(){ if (pdfDoc && curPage < pdfDoc.numPages) renderPage(curPage + 1); };
   window.firstPage = function(){ if (pdfDoc) renderPage(1); };
   window.lastPage  = function(){ if (pdfDoc) renderPage(pdfDoc.numPages); };
+
+  var tocPage = 1;
+  function findTOCPage() {
+    var maxScan = Math.min(6, pdfDoc.numPages);
+    var checks = [];
+    for (var i = 1; i <= maxScan; i++) {
+      checks.push((function(num) {
+        return pdfDoc.getPage(num).then(function(page) {
+          return page.getTextContent().then(function(tc) {
+            var txt = tc.items.map(function(it) { return it.str; }).join(' ').toLowerCase();
+            if (txt.indexOf('sommaire') !== -1) return num;
+            return null;
+          });
+        });
+      })(i));
+    }
+    Promise.all(checks).then(function(res) {
+      for (var j = 0; j < res.length; j++) { if (res[j]) { tocPage = res[j]; return; } }
+    });
+  }
+  window.goToTOC = function() { if (pdfDoc) renderPage(tocPage); };
   window.zoomIn    = function(){ scale = Math.min(3, +(scale + 0.25).toFixed(2)); if (pdfDoc) renderPage(curPage); };
   window.zoomOut   = function(){ scale = Math.max(0.5, +(scale - 0.25).toFixed(2)); if (pdfDoc) renderPage(curPage); };
 
