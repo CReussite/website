@@ -147,7 +147,7 @@
     .pdf-error { color: var(--red); font-size: .9rem; text-align: center; padding: 40px 20px; line-height: 1.6; }
 
     #pdf-canvas {
-      display: block; max-width: 100%; height: auto;
+      display: block; height: auto;
       box-shadow: 0 8px 40px rgba(0,0,0,.28); border-radius: 3px;
       cursor: zoom-in;
     }
@@ -426,8 +426,6 @@
             <button class="pdf-btn" onclick="zoomOut()">&#8722;</button>
             <span class="pdf-zoom-lbl" id="zoom-lbl">150%</span>
             <button class="pdf-btn" onclick="zoomIn()">+</button>
-            <span class="pdf-sep"></span>
-            <button class="pdf-btn" id="btn-print" onclick="printPDF()" title="Imprimer les fiches"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
           </div>
         </div>
       </div>
@@ -886,51 +884,7 @@
     _resizeTimer = setTimeout(function() { if (pdfDoc) renderPage(curPage); }, 180);
   });
 
-  var PRINT_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>';
-  window.printPDF = function() {
-    if (!pdfDoc) return;
-    var btn = document.getElementById('btn-print');
-    btn.disabled = true; btn.textContent = '…';
 
-    var printWin = window.open('', '_blank');
-    if (!printWin) {
-      btn.disabled = false; btn.innerHTML = PRINT_ICON;
-      alert('Popup bloquee. Autorise les popups pour imprimer.');
-      return;
-    }
-    printWin.document.write('<!DOCTYPE html><html><head><title>Preparation impression...</title><style>body{font-family:system-ui;margin:24px;color:#334155}</style></head><body>Preparation du document...</body></html>');
-    printWin.document.close();
-
-    var pending = pdfDoc.numPages;
-    var pages   = new Array(pdfDoc.numPages);
-    function finishPrint() {
-      btn.disabled = false; btn.innerHTML = PRINT_ICON;
-      printWin.document.open();
-      printWin.document.write('<!DOCTYPE html><html><head><title>Fiches Maths - C\'Reussite</title><style>@page{margin:0}body{margin:0}img{max-width:100%;max-height:100vh;object-fit:contain;display:block;page-break-after:always;page-break-inside:avoid;margin:0 auto}</style></head><body>' + pages.join('') + '</body></html>');
-      printWin.document.close();
-      setTimeout(function() {
-        try {
-          printWin.focus();
-          printWin.print();
-        } catch (e) {
-          alert('Impression non supportee sur ce navigateur mobile. Utilise Partager > Imprimer depuis l\'onglet ouvert.');
-        }
-      }, 300);
-    }
-    for (var i = 1; i <= pdfDoc.numPages; i++) {
-      (function(n) {
-        pdfDoc.getPage(n).then(function(page) {
-          var c = document.createElement('canvas');
-          var vp = page.getViewport({ scale: 2 });
-          c.width = vp.width; c.height = vp.height;
-          page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise.then(function() {
-            pages[n - 1] = '<img src="' + c.toDataURL('image/jpeg', 0.92) + '">';
-            if (--pending === 0) finishPrint();
-          });
-        });
-      })(i);
-    }
-  };
 
   window.prevPage  = function(){ if (curPage > 1) renderPage(curPage - 1); };
   window.nextPage  = function(){ if (pdfDoc && curPage < pdfDoc.numPages) renderPage(curPage + 1); };
