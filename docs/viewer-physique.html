@@ -227,6 +227,15 @@
       display: block; max-width: 100%; height: auto;
       box-shadow: 0 8px 40px rgba(0,0,0,.28); border-radius: 3px;
     }
+    #pdf-page-wrap { position: relative; display: inline-block; }
+    #pdf-annotations {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+    }
+    #pdf-annotations a {
+      position: absolute; pointer-events: all; cursor: pointer;
+    }
+    #pdf-annotations a:hover { background: rgba(0,100,200,.12); }
 
     /* ─── QUESTIONNAIRE ────────────────────────────────── */
     .q-card {
@@ -526,8 +535,10 @@
           <div class="pdf-spinner"></div>
           Chargement des fiches en cours&hellip;
         </div>
-        <canvas id="pdf-canvas" style="display:none"
-                oncontextmenu="return false"></canvas>
+        <div id="pdf-page-wrap" style="display:none">
+          <canvas id="pdf-canvas" oncontextmenu="return false"></canvas>
+          <div id="pdf-annotations"></div>
+        </div>
       </div>
     </div>
 
@@ -881,7 +892,7 @@
       document.getElementById('btn-pp').disabled = false;
       document.getElementById('btn-np').disabled = false;
       document.getElementById('pdf-loading').style.display = 'none';
-      document.getElementById('pdf-canvas').style.display  = 'block';
+      document.getElementById('pdf-page-wrap').style.display = 'inline-block';
       renderPage(1);
     })
     .catch(function(e) {
@@ -893,13 +904,15 @@
   function renderPage(n) {
     curPage = n;
     var canvas = document.getElementById('pdf-canvas');
-    var container = canvas.parentElement;
+    var wrap = document.getElementById('pdf-page-wrap');
+    var container = wrap.parentElement;
     var _pl = parseFloat(getComputedStyle(container).paddingLeft) || 0;
     var _pr = parseFloat(getComputedStyle(container).paddingRight) || 0;
     var availW = Math.max(100, container.clientWidth - _pl - _pr);
+    var currentPage;
     pdfDoc.getPage(n).then(function(page) {
+      currentPage = page;
       var dpr = window.devicePixelRatio || 1;
-      // Clamp scale to container width so the canvas never overflows
       var natural = page.getViewport({ scale: scale });
       var effectiveScale = natural.width > availW ? scale * (availW / natural.width) : scale;
       var vp = page.getViewport({ scale: effectiveScale * dpr });
@@ -907,13 +920,69 @@
       canvas.height = vp.height;
       canvas.style.width  = (vp.width  / dpr) + 'px';
       canvas.style.height = (vp.height / dpr) + 'px';
+      wrap._effectiveScale = effectiveScale;
       return page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
     }).then(function() {
       document.getElementById('pg-cur').textContent = n;
       document.getElementById('btn-pp').disabled = (n <= 1);
       document.getElementById('btn-np').disabled = (n >= pdfDoc.numPages);
       document.getElementById('zoom-lbl').textContent = Math.round(scale * 100) + '%';
+      return currentPage.getAnnotations();
+    }).then(function(annots) {
+      renderAnnotations(annots, currentPage, wrap._effectiveScale);
     });
+  }
+
+  function renderAnnotations(annots, page, effectiveScale) {
+    var overlay = document.getElementById('pdf-annotations');
+    overlay.innerHTML = '';
+    var vp = page.getViewport({ scale: effectiveScale });
+    annots.forEach(function(a) {
+      if (a.subtype !== 'Link' || !a.rect) return;
+      var r = a.rect;
+      var x1 = r[0], y1 = r[1], x2 = r[2], y2 = r[3];
+      var p1 = pdfjsLib.Util.transform(vp.transform, [x1, y1]);
+      var p2 = pdfjsLib.Util.transform(vp.transform, [x2, y2]);
+      var left   = Math.min(p1[0], p2[0]);
+      var top    = Math.min(p1[1], p2[1]);
+      var width  = Math.abs(p2[0] - p1[0]);
+      var height = Math.abs(p2[1] - p1[1]);
+
+      var link = document.createElement('a');
+      link.style.left   = left + 'px';
+      link.style.top    = top + 'px';
+      link.style.width  = width + 'px';
+      link.style.height = height + 'px';
+
+      if (a.url) {
+        link.href = a.url;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+      } else if (a.dest) {
+        link.href = '#';
+        (function(dest) {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            resolveDestPage(dest).then(function(pg) { if (pg) renderPage(pg); });
+          });
+        })(a.dest);
+      } else if (a.newWindow === undefined && a.unsafeUrl) {
+        link.href = a.unsafeUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+      }
+      overlay.appendChild(link);
+    });
+  }
+
+  function resolveDestPage(dest) {
+    var p = typeof dest === 'string'
+      ? pdfDoc.getDestination(dest)
+      : Promise.resolve(dest);
+    return p.then(function(d) {
+      if (!d || !d[0]) return null;
+      return pdfDoc.getPageIndex(d[0]).then(function(idx) { return idx + 1; });
+    }).catch(function() { return null; });
   }
 
   var _resizeTimer;
