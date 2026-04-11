@@ -766,7 +766,7 @@
   };
 
   // ── PDF ─────────────────────────────────────────────────
-  var pdfDoc = null, curPage = 1, scale = 1.5;
+  var pdfDoc = null, curPage = 1, scale = window.innerWidth < 768 ? 1.0 : 1.5;
   pdfjsLib.GlobalWorkerOptions.workerSrc =
     'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
 
@@ -1257,8 +1257,6 @@
   });
   document.getElementById('fs-canvas').addEventListener('click', function() { closeFS(); });
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeFS(); });
-
-})();
 </script>
 
 <div id="fs-overlay" role="dialog" aria-modal="true" aria-label="Encart agrandi">
