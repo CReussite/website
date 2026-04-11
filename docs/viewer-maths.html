@@ -336,6 +336,15 @@
       .pdf-controls { gap: 3px; }
       .pdf-btn { padding: 8px 10px; font-size: .82rem; }
     }
+
+    /* ─── PRINT ─────────────────────────────────────────── */
+    #pdf-print-pages { display: none; }
+    @media print {
+      body > *:not(#pdf-print-pages) { display: none !important; }
+      #pdf-print-pages { display: block !important; }
+      #pdf-print-pages img { width: 100%; display: block; page-break-after: always; }
+      @page { margin: 0; }
+    }
   </style>
 </head>
 <body>
@@ -379,9 +388,11 @@
       <div class="pdf-header">
         <span class="pdf-header-title">Fiches Maths &mdash; Terminale Spécialité</span>
         <div class="pdf-controls">
+          <button class="pdf-btn" id="btn-fp" onclick="firstPage()" disabled title="Première page">&#171;</button>
           <button class="pdf-btn" id="btn-pp" onclick="prevPage()" disabled>&#8249;</button>
           <span class="pdf-info"><span id="pg-cur">—</span> / <span id="pg-tot">—</span></span>
           <button class="pdf-btn" id="btn-np" onclick="nextPage()" disabled>&#8250;</button>
+          <button class="pdf-btn" id="btn-lp" onclick="lastPage()" disabled title="Dernière page">&#187;</button>
           <span class="pdf-sep"></span>
           <button class="pdf-btn" onclick="zoomOut()">&#8722;</button>
           <span class="pdf-zoom-lbl" id="zoom-lbl">150%</span>
@@ -743,8 +754,10 @@
     .then(function(doc) {
       pdfDoc = doc;
       document.getElementById('pg-tot').textContent = doc.numPages;
+      document.getElementById('btn-fp').disabled = false;
       document.getElementById('btn-pp').disabled = false;
       document.getElementById('btn-np').disabled = false;
+      document.getElementById('btn-lp').disabled = false;
       document.getElementById('pdf-loading').style.display = 'none';
       document.getElementById('pdf-page-wrap').style.display = 'inline-block';
       renderPage(1);
@@ -778,8 +791,10 @@
       return page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
     }).then(function() {
       document.getElementById('pg-cur').textContent = n;
+      document.getElementById('btn-fp').disabled = (n <= 1);
       document.getElementById('btn-pp').disabled = (n <= 1);
       document.getElementById('btn-np').disabled = (n >= pdfDoc.numPages);
+      document.getElementById('btn-lp').disabled = (n >= pdfDoc.numPages);
       document.getElementById('zoom-lbl').textContent = Math.round(scale * 100) + '%';
       return currentPage.getAnnotations();
     }).then(function(annots) {
@@ -794,11 +809,9 @@
     annots.forEach(function(a) {
       if (a.subtype !== 'Link' || !a.rect) return;
       var r = a.rect;
-      // PDF coords: bottom-left origin → convert to top-left CSS
       var x1 = r[0], y1 = r[1], x2 = r[2], y2 = r[3];
-      // Transform rect through viewport
-      var p1 = pdfjsLib.Util.transform(vp.transform, [x1, y1]);
-      var p2 = pdfjsLib.Util.transform(vp.transform, [x2, y2]);
+      var p1 = pdfjsLib.Util.applyTransform([x1, y1], vp.transform);
+      var p2 = pdfjsLib.Util.applyTransform([x2, y2], vp.transform);
       var left   = Math.min(p1[0], p2[0]);
       var top    = Math.min(p1[1], p2[1]);
       var width  = Math.abs(p2[0] - p1[0]);
@@ -847,42 +860,64 @@
     _resizeTimer = setTimeout(function() { if (pdfDoc) renderPage(curPage); }, 180);
   });
 
-  var PRINT_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>';
+  var PRINT_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>';
   window.printPDF = function() {
     if (!pdfDoc) return;
     var btn = document.getElementById('btn-print');
     btn.disabled = true; btn.textContent = '…';
-    var imgs = [];
-    var renderNext = function(i) {
-      if (i > pdfDoc.numPages) {
-        var win = window.open('', '_blank');
-        if (!win) {
-          alert('Autorise les popups pour imprimer.');
-          btn.disabled = false; btn.innerHTML = PRINT_ICON; return;
-        }
-        win.document.write('<!DOCTYPE html><html><head><title>Fiches Maths \u2014 C\u2019R\u00e9ussite</title><style>@page{margin:0}body{margin:0}img{width:100%;display:block;page-break-after:always}</style></head><body>' + imgs.join('') + '</body></html>');
-        win.document.close();
-        win.onload = function(){ win.print(); win.onafterprint = function(){ win.close(); }; };
-        btn.disabled = false; btn.innerHTML = PRINT_ICON;
-        return;
-      }
-      pdfDoc.getPage(i).then(function(page) {
-        var c = document.createElement('canvas');
-        var vp = page.getViewport({ scale: 2 });
-        c.width = vp.width; c.height = vp.height;
-        page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise.then(function() {
-          imgs.push('<img src="' + c.toDataURL('image/jpeg', 0.92) + '">');
-          renderNext(i + 1);
+    var container = document.getElementById('pdf-print-pages');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'pdf-print-pages';
+      document.body.appendChild(container);
+    }
+    container.innerHTML = '';
+    var pending = pdfDoc.numPages;
+    var pages   = new Array(pdfDoc.numPages);
+    function finishPrint() {
+      container.innerHTML = pages.join('');
+      btn.disabled = false; btn.innerHTML = PRINT_ICON;
+      window.print();
+      setTimeout(function() { container.innerHTML = ''; }, 4000);
+    }
+    for (var i = 1; i <= pdfDoc.numPages; i++) {
+      (function(n) {
+        pdfDoc.getPage(n).then(function(page) {
+          var c = document.createElement('canvas');
+          var vp = page.getViewport({ scale: 2 });
+          c.width = vp.width; c.height = vp.height;
+          page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise.then(function() {
+            pages[n - 1] = '<img src="' + c.toDataURL('image/jpeg', 0.92) + '">';
+            if (--pending === 0) finishPrint();
+          });
         });
-      });
-    };
-    renderNext(1);
+      })(i);
+    }
   };
 
-  window.prevPage = function(){ if (curPage > 1) renderPage(curPage - 1); };
-  window.nextPage = function(){ if (pdfDoc && curPage < pdfDoc.numPages) renderPage(curPage + 1); };
-  window.zoomIn   = function(){ scale = Math.min(3, +(scale + 0.25).toFixed(2)); if (pdfDoc) renderPage(curPage); };
-  window.zoomOut  = function(){ scale = Math.max(0.5, +(scale - 0.25).toFixed(2)); if (pdfDoc) renderPage(curPage); };
+  window.prevPage  = function(){ if (curPage > 1) renderPage(curPage - 1); };
+  window.nextPage  = function(){ if (pdfDoc && curPage < pdfDoc.numPages) renderPage(curPage + 1); };
+  window.firstPage = function(){ if (pdfDoc) renderPage(1); };
+  window.lastPage  = function(){ if (pdfDoc) renderPage(pdfDoc.numPages); };
+  window.zoomIn    = function(){ scale = Math.min(3, +(scale + 0.25).toFixed(2)); if (pdfDoc) renderPage(curPage); };
+  window.zoomOut   = function(){ scale = Math.max(0.5, +(scale - 0.25).toFixed(2)); if (pdfDoc) renderPage(curPage); };
+
+  // Touch swipe (mobile page navigation)
+  (function() {
+    var startX = 0, startY = 0;
+    var el = document.getElementById('pdf-body');
+    el.addEventListener('touchstart', function(e) {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+    el.addEventListener('touchend', function(e) {
+      var dx = e.changedTouches[0].clientX - startX;
+      var dy = e.changedTouches[0].clientY - startY;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+        if (dx < 0) window.nextPage(); else window.prevPage();
+      }
+    }, { passive: true });
+  })();
 
   // ── QUESTIONNAIRE ────────────────────────────────────────
   var TOTAL = 5, curStep = 0, starVals = { maths: 0 };
