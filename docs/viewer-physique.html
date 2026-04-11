@@ -33,77 +33,79 @@
     /* ─── AUTH OVERLAY ─────────────────────────────────── */
     #auth-overlay {
       position: fixed; inset: 0; z-index: 9999;
-      background: var(--blue);
+      background: radial-gradient(ellipse at 60% 30%, #1a3066 0%, #0b1630 100%);
       display: flex; align-items: center; justify-content: center;
-      padding: 20px;
-      transition: opacity .4s ease;
+      padding: 24px;
+      transition: opacity .45s ease;
     }
     .auth-card {
-      background: var(--white); border-radius: 24px;
-      padding: 52px 44px 44px; max-width: 420px; width: 100%;
-      text-align: center; box-shadow: var(--sh-lg);
+      background: var(--white); border-radius: 28px;
+      padding: 56px 48px 48px; max-width: 440px; width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 80px rgba(0,0,0,.35), 0 4px 16px rgba(0,0,0,.2);
     }
-    .auth-logo { height: 80px; width: auto; margin-bottom: 28px; }
+    .auth-logo { height: 88px; width: auto; margin-bottom: 32px; }
     .auth-product {
       display: inline-block;
-      background: rgba(17,34,80,.08); color: var(--blue);
-      border-radius: 8px; font-size: .75rem; font-weight: 700;
-      letter-spacing: .05em; text-transform: uppercase;
-      padding: 4px 12px; margin-bottom: 16px;
+      background: rgba(17,34,80,.07); color: var(--blue);
+      border-radius: 20px; font-size: .72rem; font-weight: 700;
+      letter-spacing: .07em; text-transform: uppercase;
+      padding: 5px 14px; margin-bottom: 18px; border: 1px solid rgba(17,34,80,.10);
     }
-    .auth-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 6px; }
-    .auth-sub   { font-size: .88rem; color: var(--muted); margin-bottom: 32px; }
-    .auth-field { position: relative; margin-bottom: 12px; }
+    .auth-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -.01em; }
+    .auth-sub   { font-size: .87rem; color: var(--muted); margin-bottom: 36px; line-height: 1.5; }
+    .auth-field { margin-bottom: 14px; }
     .auth-input {
-      width: 100%; padding: 14px 48px 14px 18px;
-      border: 1.5px solid var(--border); border-radius: 12px;
-      font-size: .95rem; outline: none;
-      transition: border-color .2s, box-shadow .2s;
+      width: 100%; padding: 15px 20px;
+      border: 1.5px solid var(--border); border-radius: 14px;
+      font-size: 1rem; outline: none; background: #fafafa;
+      transition: border-color .2s, box-shadow .2s, background .2s;
     }
-    .auth-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(17,34,80,.10); }
+    .auth-input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(17,34,80,.08); background: var(--white); }
     .auth-btn {
-      width: 100%; padding: 15px;
+      width: 100%; padding: 16px;
       background: var(--blue); color: var(--gold);
-      border: none; border-radius: 12px;
-      font-size: .95rem; font-weight: 800; letter-spacing: .02em;
-      cursor: pointer; transition: opacity .2s, transform .15s;
+      border: none; border-radius: 14px;
+      font-size: 1rem; font-weight: 800; letter-spacing: .02em;
+      cursor: pointer; transition: opacity .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(17,34,80,.3);
     }
-    .auth-btn:hover:not(:disabled) { opacity: .88; transform: translateY(-1px); }
-    .auth-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .auth-btn:hover:not(:disabled) { opacity: .9; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(17,34,80,.35); }
+    .auth-btn:active:not(:disabled) { transform: translateY(0); }
+    .auth-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow: none; }
     .auth-error {
-      color: var(--red); font-size: .85rem;
-      margin-top: 12px; min-height: 20px;
+      color: var(--red); font-size: .84rem;
+      margin-top: 14px; min-height: 20px; font-weight: 500;
     }
-    .auth-note { font-size: .76rem; color: var(--muted); margin-top: 20px; }
+    .auth-note { font-size: .74rem; color: #b0b8c8; margin-top: 24px; }
 
     /* ─── MAIN VIEWER ──────────────────────────────────── */
-    #viewer { display: none; opacity: 0; transition: opacity .35s ease; min-height: 100vh; }
+    #viewer { display: none; opacity: 0; transition: opacity .4s ease; min-height: 100vh; }
 
     /* Nav */
     .vn {
-      background: var(--blue); height: 64px; padding: 0 28px;
+      background: var(--blue); height: 64px; padding: 0 24px;
       display: flex; align-items: center; justify-content: space-between;
       position: sticky; top: 0; z-index: 100;
-      box-shadow: 0 2px 12px rgba(0,0,0,.18);
+      box-shadow: 0 2px 16px rgba(0,0,0,.22);
     }
-    .vn-logo  { height: 46px; width: auto; }
-    .vn-label { color: var(--gold); font-size: .88rem; font-weight: 700; }
-    .vn-badge {
-      background: rgba(224,197,143,.15); color: var(--gold);
-      border: 1px solid rgba(224,197,143,.3);
-      border-radius: 20px; font-size: .75rem; padding: 5px 14px; font-weight: 600;
-    }
+    .vn-left  { display: flex; align-items: center; gap: 14px; }
+    .vn-logo  { height: 44px; width: auto; }
+    .vn-label { color: var(--gold); font-size: .87rem; font-weight: 700; opacity: .9; }
+    .vn-right { display: flex; align-items: center; gap: 10px; }
+    .vn-expires { font-size: .75rem; color: rgba(255,255,255,.5); }
 
     /* Banner */
     .banner {
-      background: #fffbeb; border-bottom: 1px solid #fde68a;
-      padding: 11px 28px; font-size: .84rem; color: #78350f;
-      text-align: center; letter-spacing: .01em;
+      background: linear-gradient(90deg, #fef9ec, #fffbf0, #fef9ec);
+      border-bottom: 1px solid #fde68a;
+      padding: 12px 24px; font-size: .85rem; color: #78350f;
+      text-align: center;
     }
-    .banner strong { color: #92400e; }
+    .banner strong { color: #92400e; font-weight: 700; }
 
     /* ─── LAYOUT ───────────────────────────────────────── */
-    .page-wrap { max-width: 900px; margin: 0 auto; padding: 28px 20px 60px; }
+    .page-wrap { max-width: 920px; margin: 0 auto; padding: 32px 20px 64px; }
 
     /* ─── PDF VIEWER ───────────────────────────────────── */
     .pdf-card {
@@ -111,38 +113,39 @@
       box-shadow: var(--sh); overflow: hidden; margin-bottom: 28px;
     }
     .pdf-header {
-      background: var(--blue); padding: 16px 24px;
+      background: var(--blue); padding: 14px 20px;
       display: flex; align-items: center; justify-content: space-between;
       flex-wrap: wrap; gap: 10px;
     }
-    .pdf-header-title { color: var(--gold); font-size: .95rem; font-weight: 800; }
-    .pdf-controls { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .pdf-header-title { color: var(--gold); font-size: .9rem; font-weight: 700; }
+    .pdf-controls { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
     .pdf-btn {
-      background: rgba(255,255,255,.12); color: var(--gold);
-      border: 1px solid rgba(224,197,143,.25); border-radius: 8px;
-      padding: 7px 14px; font-size: .85rem; cursor: pointer;
-      transition: background .15s; min-width: 36px; text-align: center;
-      font-weight: 600;
+      background: rgba(255,255,255,.10); color: var(--gold);
+      border: 1px solid rgba(224,197,143,.2); border-radius: 8px;
+      padding: 8px 16px; font-size: .88rem; cursor: pointer;
+      transition: background .15s; min-width: 40px; min-height: 36px;
+      text-align: center; font-weight: 600; touch-action: manipulation;
     }
-    .pdf-btn:hover:not(:disabled) { background: rgba(255,255,255,.22); }
-    .pdf-btn:disabled { opacity: .3; cursor: not-allowed; }
-    .pdf-info { font-size: .82rem; color: rgba(255,255,255,.65); padding: 0 4px; white-space: nowrap; }
-    .pdf-zoom-lbl { font-size: .78rem; color: rgba(255,255,255,.5); min-width: 40px; text-align: center; }
+    .pdf-btn:hover:not(:disabled) { background: rgba(255,255,255,.2); }
+    .pdf-btn:disabled { opacity: .28; cursor: not-allowed; }
+    .pdf-info { font-size: .83rem; color: rgba(255,255,255,.6); padding: 0 6px; white-space: nowrap; }
+    .pdf-sep  { width: 1px; height: 18px; background: rgba(255,255,255,.15); margin: 0 2px; }
+    .pdf-zoom-lbl { font-size: .78rem; color: rgba(255,255,255,.45); min-width: 44px; text-align: center; }
 
-    .pdf-body { background: #dde1e8; padding: 28px 20px; display: flex; flex-direction: column; align-items: center; min-height: 400px; }
+    .pdf-body { background: #cdd1db; padding: 32px 16px; display: flex; flex-direction: column; align-items: center; min-height: 400px; }
 
-    .pdf-spinner-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 60px 20px; color: var(--muted); font-size: .9rem; }
+    .pdf-spinner-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 70px 20px; color: var(--muted); font-size: .9rem; }
     .pdf-spinner {
-      width: 40px; height: 40px; border: 3px solid #d1d5db; border-top-color: var(--blue);
-      border-radius: 50%; animation: spin .8s linear infinite;
+      width: 44px; height: 44px; border: 3px solid rgba(17,34,80,.12); border-top-color: var(--blue);
+      border-radius: 50%; animation: spin .75s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .pdf-error { color: var(--red); font-size: .9rem; text-align: center; padding: 40px 20px; }
+    .pdf-error { color: var(--red); font-size: .9rem; text-align: center; padding: 40px 20px; line-height: 1.6; }
 
     #pdf-canvas {
       display: block; max-width: 100%; height: auto;
-      box-shadow: 0 6px 32px rgba(0,0,0,.22); border-radius: 4px;
+      box-shadow: 0 8px 40px rgba(0,0,0,.28); border-radius: 3px;
     }
 
     /* ─── QUESTIONNAIRE ────────────────────────────────── */
@@ -151,23 +154,25 @@
       box-shadow: var(--sh); overflow: hidden;
     }
     .q-head {
-      background: var(--blue); padding: 18px 24px;
+      background: var(--blue); padding: 18px 22px;
       display: flex; align-items: center; justify-content: space-between;
-      cursor: pointer;
+      cursor: pointer; user-select: none; -webkit-user-select: none;
+      touch-action: manipulation;
     }
-    .q-head-left { display: flex; align-items: center; gap: 12px; }
-    .q-head-icon { font-size: 1.15rem; }
-    .q-head-title { color: var(--gold); font-size: 1rem; font-weight: 700; }
+    .q-head:active { opacity: .9; }
+    .q-head-left { display: flex; align-items: center; gap: 10px; }
+    .q-head-icon { font-size: 1.1rem; }
+    .q-head-title { color: var(--gold); font-size: .98rem; font-weight: 700; }
     .q-head-count {
-      background: rgba(224,197,143,.2); color: var(--gold);
-      border-radius: 10px; font-size: .72rem; font-weight: 700;
-      padding: 2px 9px; letter-spacing: .03em;
+      background: rgba(224,197,143,.18); color: var(--gold);
+      border-radius: 20px; font-size: .71rem; font-weight: 700;
+      padding: 3px 10px; letter-spacing: .03em;
     }
-    .q-chevron { color: var(--gold); font-size: .9rem; transition: transform .25s; }
+    .q-chevron { color: rgba(224,197,143,.7); font-size: .85rem; transition: transform .3s; flex-shrink: 0; }
     .q-chevron.open { transform: rotate(180deg); }
 
-    .q-inner { overflow: hidden; max-height: 0; transition: max-height .35s ease; }
-    .q-inner.open { max-height: 4000px; }
+    .q-inner { overflow: hidden; max-height: 0; transition: max-height .4s cubic-bezier(.4,0,.2,1); }
+    .q-inner.open { max-height: 5000px; }
 
     .q-body { padding: 32px 28px; }
 
@@ -292,13 +297,40 @@
     .q-success p { color: var(--muted); font-size: .9rem; line-height: 1.6; }
 
     /* ─── RESPONSIVE ───────────────────────────────────── */
-    @media (max-width: 640px) {
-      .auth-card { padding: 36px 24px 32px; }
-      .page-wrap { padding: 20px 12px 48px; }
-      .q-body { padding: 24px 18px; }
+    @media (max-width: 600px) {
+      .auth-card { padding: 40px 24px 36px; border-radius: 22px; }
+      .auth-logo { height: 72px; margin-bottom: 24px; }
+      .auth-title { font-size: 1.2rem; }
+      .auth-sub { font-size: .84rem; margin-bottom: 28px; }
+      .auth-input { padding: 14px 16px; font-size: .95rem; }
+      .auth-btn { padding: 15px; font-size: .95rem; }
+
+      .vn { height: 56px; padding: 0 16px; }
+      .vn-logo { height: 38px; }
       .vn-label { display: none; }
+      .vn-expires { display: none; }
+
+      .page-wrap { padding: 20px 12px 52px; }
+
+      .pdf-header { padding: 12px 14px; gap: 8px; }
+      .pdf-header-title { font-size: .82rem; width: 100%; }
+      .pdf-controls { width: 100%; justify-content: center; }
+      .pdf-btn { padding: 9px 14px; font-size: .88rem; min-height: 40px; }
+      .pdf-body { padding: 20px 8px; }
+
+      .q-body { padding: 24px 16px; }
+      .q-head { padding: 16px 18px; }
       .check-grid { grid-template-columns: 1fr; }
-      .pdf-btn { padding: 6px 10px; font-size: .8rem; }
+      .btn-next, .btn-submit { padding: 12px 24px; }
+      .q-nav { flex-direction: row; gap: 10px; }
+      .stars-row { gap: 10px; }
+      .star-btn { font-size: 2.2rem; }
+    }
+
+    @media (max-width: 380px) {
+      .auth-card { padding: 32px 18px 28px; }
+      .pdf-controls { gap: 3px; }
+      .pdf-btn { padding: 8px 10px; font-size: .82rem; }
     }
   </style>
 </head>
@@ -326,9 +358,13 @@
 <div id="viewer">
 
   <nav class="vn">
-    <a href="index.html"><img src="img/logo.jpeg" alt="C'Réussite" class="vn-logo"></a>
-    <span class="vn-label">Fiches Physique-Chimie &mdash; Prévisualisation bêta</span>
-    <span class="vn-badge">Accès limité</span>
+    <div class="vn-left">
+      <a href="index.html"><img src="img/logo.jpeg" alt="C'Réussite" class="vn-logo"></a>
+      <span class="vn-label">Fiches Physique-Chimie &mdash; Prévisualisation bêta</span>
+    </div>
+    <div class="vn-right">
+      <span class="vn-expires">Accès jusqu'au <strong id="expires-nav" style="color:rgba(255,255,255,.7)"></strong></span>
+    </div>
   </nav>
 
   <div class="banner">
@@ -346,9 +382,9 @@
           <button class="pdf-btn" id="btn-pp" onclick="prevPage()" disabled>&#8249;</button>
           <span class="pdf-info"><span id="pg-cur">—</span> / <span id="pg-tot">—</span></span>
           <button class="pdf-btn" id="btn-np" onclick="nextPage()" disabled>&#8250;</button>
-          <span style="width:1px;height:20px;background:rgba(255,255,255,.15);margin:0 4px"></span>
+          <span class="pdf-sep"></span>
           <button class="pdf-btn" onclick="zoomOut()">&#8722;</button>
-          <span class="pdf-zoom-lbl" id="zoom-lbl">100%</span>
+          <span class="pdf-zoom-lbl" id="zoom-lbl">150%</span>
           <button class="pdf-btn" onclick="zoomIn()">+</button>
         </div>
       </div>
@@ -650,15 +686,18 @@
       if (!r.ok) throw new Error(r.data.error || 'Accès refusé.');
       authPwd = pwd;
       document.getElementById('expires-date').textContent = r.data.expires;
+      document.getElementById('expires-nav').textContent  = r.data.expires;
       var overlay = document.getElementById('auth-overlay');
       var viewer  = document.getElementById('viewer');
       overlay.style.opacity = '0';
       viewer.style.display  = 'block';
-      setTimeout(function(){
-        overlay.style.display = 'none';
-        viewer.style.opacity  = '1';
-        window.scrollTo(0, 0);
-      }, 380);
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          viewer.style.opacity = '1';
+          window.scrollTo(0, 0);
+        });
+      });
+      setTimeout(function(){ overlay.style.display = 'none'; }, 460);
       loadPDF();
     })
     .catch(function(e) {
