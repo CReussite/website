@@ -328,14 +328,6 @@
       .pdf-controls { gap: 3px; }
       .pdf-btn { padding: 8px 10px; font-size: .82rem; }
     }
-
-    /* ─── PRINT ─────────────────────────────────────────── */
-    #pdf-print-pages { display: none; }
-    @media print {
-      body > *:not(#pdf-print-pages) { display: none !important; }
-      #pdf-print-pages { display: block !important; }
-      #pdf-print-pages img { max-width: 100%; max-height: 100vh; object-fit: contain; display: block; page-break-after: always; page-break-inside: avoid; margin: 0 auto; }
-      @page { margin: 0; }
     }
   </style>
 </head>
@@ -864,24 +856,15 @@
     if (!pdfDoc) return;
     var btn = document.getElementById('btn-print');
     btn.disabled = true; btn.textContent = '…';
-    var container = document.getElementById('pdf-print-pages');
-    if (!container) {
-      container = document.createElement('div');
-      container.id = 'pdf-print-pages';
-      document.body.appendChild(container);
-    }
-    container.innerHTML = '';
     var pending = pdfDoc.numPages;
     var pages   = new Array(pdfDoc.numPages);
     function finishPrint() {
-      container.style.cssText = 'position:absolute;left:-9999px;display:block';
-      container.innerHTML = pages.join('');
+      var win = window.open('', '_blank');
+      if (!win) { btn.disabled = false; btn.innerHTML = PRINT_ICON; alert('Autorise les pop-ups pour imprimer.'); return; }
+      win.document.write('<!DOCTYPE html><html><head><title>Fiches Physique-Chimie \u2014 C\u2019R\u00e9ussite</title><style>@page{margin:0}body{margin:0}img{max-width:100%;max-height:100vh;object-fit:contain;display:block;page-break-after:always;page-break-inside:avoid;margin:0 auto}</style></head><body>' + pages.join('') + '</body></html>');
+      win.document.close();
       btn.disabled = false; btn.innerHTML = PRINT_ICON;
-      setTimeout(function() {
-        container.removeAttribute('style');
-        window.print();
-        setTimeout(function() { container.innerHTML = ''; }, 4000);
-      }, 400);
+      win.onload = function() { win.focus(); win.print(); };
     }
     for (var i = 1; i <= pdfDoc.numPages; i++) {
       (function(n) {
