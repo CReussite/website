@@ -1,13 +1,13 @@
-const express = require('express');
-const path    = require('path');
-const fs      = require('fs');
+const express      = require('express');
+const { getClient } = require('../services/db');
 
 const router = express.Router();
 router.use(express.json({ limit: '10kb' }));
 
+// Noms des fichiers dans le bucket Supabase Storage "beta-assets" (privé)
 const PDF_FILES = {
-  maths:    'fiches-maths.pdf',
-  physique: 'fiches-physique-chimie.pdf',
+  maths:    'maths.pdf',
+  physique: 'physique.pdf',
 };
 
 // BETA_VIEWER_PASSWORDS = JSON dans Render, ex :
@@ -45,7 +45,7 @@ router.post('/auth', (req, res) => {
 });
 
 // GET /api/beta-viewer/pdf/:type  (maths | physique)
-router.get('/pdf/:type', (req, res) => {
+router.get('/pdf/:type', async (req, res) => {
   const password = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
   const entry    = validatePassword(password);
   const reqType  = req.params.type;
@@ -57,19 +57,27 @@ router.get('/pdf/:type', (req, res) => {
     return res.status(403).json({ error: 'Accès non autorisé.' });
   }
 
-  const filePath = path.join(__dirname, '../assets', PDF_FILES[reqType]);
-  if (!fs.existsSync(filePath)) {
-    return res.status(404).json({ error: 'Fichier introuvable.' });
-  }
+  try {
+    const { data, error } = await getClient()
+      .storage
+      .from('beta-assets')
+      .download(PDF_FILES[reqType]);
 
-  const stat = fs.statSync(filePath);
-  res.setHeader('Content-Type',           'application/pdf');
-  res.setHeader('Content-Length',         stat.size);
-  res.setHeader('Cache-Control',          'no-store, no-cache, must-revalidate');
-  res.setHeader('Pragma',                 'no-cache');
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  // Pas de Content-Disposition: attachment — évite le prompt "Enregistrer sous"
-  fs.createReadStream(filePath).pipe(res);
+    if (error) throw error;
+
+    const buffer = Buffer.from(await data.arrayBuffer());
+
+    res.setHeader('Content-Type',           'application/pdf');
+    res.setHeader('Content-Length',         buffer.length);
+    res.setHeader('Cache-Control',          'no-store, no-cache, must-revalidate');
+    res.setHeader('Pragma',                 'no-cache');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.send(buffer);
+
+  } catch (err) {
+    console.error('[betaViewer] Storage error:', err.message);
+    res.status(404).json({ error: 'Fichier introuvable. Contacte l\'administrateur.' });
+  }
 });
 
 module.exports = router;
