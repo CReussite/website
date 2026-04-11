@@ -162,7 +162,7 @@
 
     /* ─── FULLSCREEN ENCART ───────────────────────────────── */
     #fs-overlay {
-      display: none; position: fixed; inset: 0; z-index: 9999;
+      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999;
       background: rgba(0,0,0,.92);
       overflow: hidden;
     }
@@ -422,11 +422,6 @@
 
 <!-- ══ VIEWER ══════════════════════════════════════════════ -->
 <div id="viewer">
-
-  <div class="banner">
-    Accès valide jusqu’au <strong id="expires-date"></strong>.
-    Merci de remplir le questionnaire après ta lecture.
-  </div>
 
   <div class="page-wrap">
 
@@ -1206,6 +1201,9 @@
     var wrap     = document.getElementById('fs-pz-wrap');
     overlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
+    if (overlay.requestFullscreen) {
+      overlay.requestFullscreen().catch(function(){});
+    }
     if (fsPZ) { try { fsPZ.destroy(); } catch(e){} fsPZ = null; }
     fsCurrentScale = 1;
     updateZoomLabel();
@@ -1273,9 +1271,18 @@
     if (fsPZ) { try { fsPZ.destroy(); } catch(e){} fsPZ = null; }
     document.getElementById('fs-overlay').style.display = 'none';
     document.body.style.overflow = '';
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().catch(function(){});
+    }
   };
 
   document.getElementById('fs-close').addEventListener('click', function() { closeFS(); });
+  document.addEventListener('fullscreenchange', function() {
+    if (!document.fullscreenElement) {
+      document.getElementById('fs-overlay').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  });
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeFS(); });
 
 })();
