@@ -253,10 +253,10 @@ Ces pages existent déjà sur c-reussite.fr mais **certaines doivent être compl
 
 | Priorité | Action | Pourquoi |
 |---|---|---|
-| 2 | **Configurer `ALERT_EMAIL` dans Render** | Être prévenue immédiatement si une commande échoue. Le code est prêt |
-| 3 | **Compléter les mentions légales** (SIRET + adresse dans mentions-legales.html) | Obligation légale |
-| 4 | **Configurer `BCC_EMAIL` dans Render** | Recevoir une copie de chaque email de commande |
-| 5 | **Le bucket "invoices" dans Supabase Storage** | Activer l'archivage des factures (sans cela, les factures ne sont pas sauvegardées en dehors de l'admin) |
+| 1 | **Configurer `ALERT_EMAIL` dans Render** | Être prévenue immédiatement si une commande échoue. Le code est prêt |
+| 2 | **Compléter les mentions légales** (SIRET + adresse dans mentions-legales.html) | Obligation légale |
+| 3 | **Configurer `BCC_EMAIL` dans Render** | Recevoir une copie de chaque email de commande |
+| 4 | **Le bucket "invoices" dans Supabase Storage** | Activer l'archivage des factures (sans cela, les factures ne sont pas sauvegardées en dehors de l'admin) |
 
 ---
 
