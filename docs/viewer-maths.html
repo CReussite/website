@@ -161,35 +161,6 @@
     .auth-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
     .auth-error { color: var(--red); font-size: .83rem; margin-top: 12px; min-height: 18px; font-weight: 600; }
     .auth-note  { font-size: .76rem; color: #8f98ab; margin-top: 16px; line-height: 1.6; }
-    .auth-access-list {
-      display: grid; gap: 10px; margin: 0 0 26px;
-      text-align: left;
-    }
-    .auth-access-item {
-      display: flex; align-items: flex-start; gap: 10px;
-      padding: 14px 15px; border: 1px solid #e8ebf2; border-radius: 16px;
-      background: #ffffff;
-    }
-    .auth-access-dot {
-      width: 9px; height: 9px; border-radius: 50%;
-      margin-top: 5px; flex-shrink: 0; background: var(--gold);
-    }
-    .auth-access-item strong {
-      color: var(--blue); display: block; font-size: .86rem; margin-bottom: 2px;
-    }
-    .auth-access-item span { color: var(--muted); font-size: .8rem; line-height: 1.45; }
-    .auth-switch {
-      margin-top: 20px; padding-top: 18px; border-top: 1px solid #eceff5;
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      text-align: left;
-    }
-    .auth-switch-copy { font-size: .78rem; color: var(--muted); line-height: 1.45; }
-    .auth-switch-link {
-      color: var(--blue); font-size: .82rem; font-weight: 700; text-decoration: none;
-      border: 1px solid rgba(17,34,80,.14); border-radius: 999px; padding: 8px 12px;
-      white-space: nowrap;
-    }
-    .auth-switch-link:hover { background: rgba(17,34,80,.05); }
 
     /* ─── MAIN VIEWER ──────────────────────────────────── */
     #viewer { display: none; opacity: 0; transition: opacity .4s ease; min-height: 100vh; }
@@ -420,7 +391,7 @@
     @media (max-width: 600px) {
       .auth-card { grid-template-columns: 1fr; }
       .auth-header { min-height: auto; padding: 28px 24px 24px; }
-      .auth-logo { height: 58px; margin-bottom: 14px; }
+      .auth-logo { height: 50px; max-width: 120px; margin-bottom: 12px; padding: 4px 8px; }
       .auth-kicker { font-size: .72rem; }
       .auth-hero { font-size: 2rem; max-width: none; }
       .auth-hero-copy { font-size: .88rem; max-width: none; }
@@ -452,13 +423,6 @@
       .q-nav { flex-direction: row; gap: 10px; }
       .q-nav-actions { width: 100%; }
       .q-nav-actions .btn-next,
-      .q-nav-actions .btn-submit { flex: 1; }
-      .auth-switch {
-        flex-direction: column; align-items: stretch;
-      }
-      .auth-switch-link {
-        text-align: center;
-      }
       .stars-row { gap: 10px; }
       .star-btn { font-size: 2.2rem; }
     }
@@ -522,7 +486,6 @@
       <button type="button" id="auth-btn" class="auth-btn" onclick="doAuth()">Entrer dans l’espace bêta</button>
       <div id="auth-error" class="auth-error"></div>
       <p class="auth-note">Accès personnel, temporaire et non transférable.</p>
-    </div>
     </div>
   </div>
 </div>
