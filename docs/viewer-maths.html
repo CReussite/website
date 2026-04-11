@@ -135,7 +135,7 @@
     .pdf-sep  { width: 1px; height: 18px; background: rgba(255,255,255,.15); margin: 0 2px; }
     .pdf-zoom-lbl { font-size: .78rem; color: rgba(255,255,255,.45); min-width: 44px; text-align: center; }
 
-    .pdf-body { background: #cdd1db; padding: 32px 16px; display: flex; flex-direction: column; align-items: center; min-height: 400px; }
+    .pdf-body { background: #cdd1db; padding: 32px 16px; display: flex; flex-direction: column; align-items: center; min-height: 400px; overflow: auto; }
 
     .pdf-spinner-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 70px 20px; color: var(--muted); font-size: .9rem; }
     .pdf-spinner {
@@ -778,16 +778,11 @@
     curPage = n;
     var canvas = document.getElementById('pdf-canvas');
     var wrap = document.getElementById('pdf-page-wrap');
-    var container = wrap.parentElement;
-    var _pl = parseFloat(getComputedStyle(container).paddingLeft) || 0;
-    var _pr = parseFloat(getComputedStyle(container).paddingRight) || 0;
-    var availW = Math.max(100, container.clientWidth - _pl - _pr);
     var currentPage;
     pdfDoc.getPage(n).then(function(page) {
       currentPage = page;
       var dpr = window.devicePixelRatio || 1;
-      var natural = page.getViewport({ scale: scale });
-      var effectiveScale = natural.width > availW ? scale * (availW / natural.width) : scale;
+      var effectiveScale = scale;
       var vp = page.getViewport({ scale: effectiveScale * dpr });
       canvas.width  = vp.width;
       canvas.height = vp.height;
@@ -871,15 +866,31 @@
     if (!pdfDoc) return;
     var btn = document.getElementById('btn-print');
     btn.disabled = true; btn.textContent = '…';
+
+    var printWin = window.open('', '_blank');
+    if (!printWin) {
+      btn.disabled = false; btn.innerHTML = PRINT_ICON;
+      alert('Popup bloquee. Autorise les popups pour imprimer.');
+      return;
+    }
+    printWin.document.write('<!DOCTYPE html><html><head><title>Preparation impression...</title><style>body{font-family:system-ui;margin:24px;color:#334155}</style></head><body>Preparation du document...</body></html>');
+    printWin.document.close();
+
     var pending = pdfDoc.numPages;
     var pages   = new Array(pdfDoc.numPages);
     function finishPrint() {
-      var win = window.open('', '_blank');
-      if (!win) { btn.disabled = false; btn.innerHTML = PRINT_ICON; alert('Autorise les pop-ups pour imprimer.'); return; }
-      win.document.write('<!DOCTYPE html><html><head><title>Fiches Maths \u2014 C\u2019R\u00e9ussite</title><style>@page{margin:0}body{margin:0}img{max-width:100%;max-height:100vh;object-fit:contain;display:block;page-break-after:always;page-break-inside:avoid;margin:0 auto}</style></head><body>' + pages.join('') + '</body></html>');
-      win.document.close();
       btn.disabled = false; btn.innerHTML = PRINT_ICON;
-      win.onload = function() { win.focus(); win.print(); };
+      printWin.document.open();
+      printWin.document.write('<!DOCTYPE html><html><head><title>Fiches Maths - C\'Reussite</title><style>@page{margin:0}body{margin:0}img{max-width:100%;max-height:100vh;object-fit:contain;display:block;page-break-after:always;page-break-inside:avoid;margin:0 auto}</style></head><body>' + pages.join('') + '</body></html>');
+      printWin.document.close();
+      setTimeout(function() {
+        try {
+          printWin.focus();
+          printWin.print();
+        } catch (e) {
+          alert('Impression non supportee sur ce navigateur mobile. Utilise Partager > Imprimer depuis l\'onglet ouvert.');
+        }
+      }, 300);
     }
     for (var i = 1; i <= pdfDoc.numPages; i++) {
       (function(n) {
