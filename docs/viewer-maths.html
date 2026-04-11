@@ -10,7 +10,7 @@
   <link rel="apple-touch-icon" href="img/favicon-192x192.png">
   <link rel="stylesheet" href="css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+
   <style>
     :root {
       --blue:   #112250;
@@ -166,44 +166,43 @@
       background: rgba(0,0,0,.92);
       overflow: hidden;
     }
-    #fs-pz-wrap {
-      position: absolute; top: 44px; left: 0; right: 0; bottom: 76px;
-      overflow: hidden;
+    #fs-scroll {
+      position: absolute; top: 40px; left: 0; right: 0; bottom: 68px;
+      overflow: auto; -webkit-overflow-scrolling: touch;
     }
     #fs-canvas {
-      display: block; cursor: grab;
-      touch-action: none;
+      display: block;
+      margin: 0 auto;
     }
-    #fs-canvas:active { cursor: grabbing; }
     #fs-toolbar {
-      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-      display: flex; align-items: center; gap: 8px;
+      position: absolute; bottom: 0; left: 0; right: 0; height: 68px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
       background: rgba(0,0,0,.7); backdrop-filter: blur(8px);
-      border-radius: 12px; padding: 8px 14px; z-index: 10001;
+      z-index: 10001;
     }
     .fs-btn {
       background: rgba(255,255,255,.12); color: #fff; border: none;
-      border-radius: 8px; width: 40px; height: 40px; font-size: 1.2rem;
+      border-radius: 8px; width: 44px; height: 44px; font-size: 1.3rem;
       cursor: pointer; display: flex; align-items: center; justify-content: center;
       transition: background .15s;
     }
     .fs-btn:hover { background: rgba(255,255,255,.25); }
     .fs-btn:active { background: rgba(255,255,255,.35); }
     #fs-zoom-lbl {
-      color: rgba(255,255,255,.7); font-size: .8rem; min-width: 44px;
-      text-align: center; font-variant-numeric: tabular-nums;
+      color: rgba(255,255,255,.85); font-size: .85rem; min-width: 50px;
+      text-align: center; font-variant-numeric: tabular-nums; font-weight: 600;
     }
     #fs-close {
-      position: fixed; top: 12px; right: 14px;
+      position: absolute; top: 8px; right: 12px;
       background: rgba(255,255,255,.15); color: #fff; border: none;
-      border-radius: 50%; width: 42px; height: 42px; font-size: 1.3rem;
-      cursor: pointer; z-index: 10002; line-height: 42px; text-align: center;
+      border-radius: 50%; width: 38px; height: 38px; font-size: 1.2rem;
+      cursor: pointer; z-index: 10002; line-height: 38px; text-align: center;
       transition: background .2s;
     }
     #fs-close:hover { background: rgba(255,255,255,.3); }
     #fs-hint {
-      position: fixed; top: 14px; left: 50%; transform: translateX(-50%);
-      color: rgba(255,255,255,.45); font-size: .75rem; pointer-events: none;
+      position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,.45); font-size: .72rem; pointer-events: none;
       white-space: nowrap; z-index: 10001;
     }
 
@@ -1186,93 +1185,95 @@
     });
   };
 
-  // ── ENCART PLEIN ÉCRAN + PANZOOM ─────────────────────
-  var fsPZ = null, fsCurrentScale = 1;
+  // ── ENCART PLEIN ÉCRAN (zoom natif, sans librairie) ──
+  var fsZoom = 1;
+  var FS_ZOOM_MIN = 0.5, FS_ZOOM_MAX = 5, FS_ZOOM_STEP = 0.25;
+  var _fsPage = null; // page PDF.js en cache
 
-  function updateZoomLabel() {
+  function fsUpdateLabel() {
     var el = document.getElementById('fs-zoom-lbl');
-    if (el) el.textContent = Math.round(fsCurrentScale * 100) + '%';
+    if (el) el.textContent = Math.round(fsZoom * 100) + '%';
+  }
+
+  function fsRenderAtZoom() {
+    if (!_fsPage) return;
+    var scroll = document.getElementById('fs-scroll');
+    var canvas = document.getElementById('fs-canvas');
+    var dpr = window.devicePixelRatio || 1;
+
+    // viewport de base (taille naturelle du PDF)
+    var baseVP = _fsPage.getViewport({ scale: 1 });
+    var scrollW = scroll.clientWidth;
+    var scrollH = scroll.clientHeight;
+
+    // fitScale = zoom 100% = page entière visible
+    var fitScale = Math.min(scrollW / baseVP.width, scrollH / baseVP.height);
+    var renderScale = fitScale * fsZoom;
+
+    // Canvas haute résolution (DPR) pour netteté
+    var vp = _fsPage.getViewport({ scale: renderScale * dpr });
+    canvas.width  = vp.width;
+    canvas.height = vp.height;
+    canvas.style.width  = Math.round(vp.width / dpr) + 'px';
+    canvas.style.height = Math.round(vp.height / dpr) + 'px';
+
+    // Centrage vertical si plus petit que le conteneur
+    var displayH = Math.round(vp.height / dpr);
+    canvas.style.marginTop = (displayH < scrollH)
+      ? Math.round((scrollH - displayH) / 2) + 'px'
+      : '8px';
+
+    _fsPage.render({ canvasContext: canvas.getContext('2d'), viewport: vp });
+    fsUpdateLabel();
   }
 
   window.openFS = function() {
     if (!pdfDoc) return;
-    var overlay  = document.getElementById('fs-overlay');
-    var fsCanvas = document.getElementById('fs-canvas');
-    var wrap     = document.getElementById('fs-pz-wrap');
+    var overlay = document.getElementById('fs-overlay');
     overlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
-    if (fsPZ) { try { fsPZ.destroy(); } catch(e){} fsPZ = null; }
-    fsCurrentScale = 1;
-    updateZoomLabel();
+    fsZoom = 1;
+    fsUpdateLabel();
 
     pdfDoc.getPage(curPage).then(function(page) {
-      var dpr = window.devicePixelRatio || 1;
-      // Render haute résolution pour zoom net
-      var hiResScale = 3.0;
-      var vp = page.getViewport({ scale: hiResScale * dpr });
-      fsCanvas.width  = vp.width;
-      fsCanvas.height = vp.height;
-
-      // Fit dans le wrapper (dimensions réelles après layout)
-      var wrapW = wrap.clientWidth;
-      var wrapH = wrap.clientHeight;
-      var natW = vp.width / dpr;
-      var natH = vp.height / dpr;
-      var fitRatio = Math.min(wrapW / natW, wrapH / natH);
-      var displayW = Math.round(natW * fitRatio);
-      var displayH = Math.round(natH * fitRatio);
-      fsCanvas.style.width  = displayW + 'px';
-      fsCanvas.style.height = displayH + 'px';
-      // Centrer manuellement (pas de flex = pas de conflit Panzoom)
-      fsCanvas.style.marginLeft = Math.max(0, (wrapW - displayW) / 2) + 'px';
-      fsCanvas.style.marginTop  = Math.max(0, (wrapH - displayH) / 2) + 'px';
-
-      return page.render({ canvasContext: fsCanvas.getContext('2d'), viewport: vp }).promise;
-    }).then(function() {
-      fsPZ = Panzoom(fsCanvas, {
-        maxScale: 10,
-        minScale: 0.5,
-        startScale: 1,
-        contain: 'outside',
-        cursor: 'grab',
-        pinchAndPan: true,
-        step: 0.3,
-      });
-      // Molette
-      wrap.addEventListener('wheel', fsPZ.zoomWithWheel, { passive: false });
-      // Double-clic = toggle entre 1× et 2.5×
-      fsCanvas.addEventListener('dblclick', function() {
-        if (fsCurrentScale > 1.5) {
-          fsPZ.reset({ animate: true });
-        } else {
-          fsPZ.zoom(2.5, { animate: true });
-        }
-      });
-      // Mise à jour du label
-      fsCanvas.addEventListener('panzoomchange', function(e) {
-        fsCurrentScale = e.detail.scale;
-        updateZoomLabel();
-      });
+      _fsPage = page;
+      // Petit délai pour que le layout de l'overlay soit calculé
+      requestAnimationFrame(function() { fsRenderAtZoom(); });
     });
   };
 
   window.fsZoomIn = function() {
-    if (fsPZ) fsPZ.zoomIn();
+    if (fsZoom < FS_ZOOM_MAX) {
+      fsZoom = Math.min(FS_ZOOM_MAX, Math.round((fsZoom + FS_ZOOM_STEP) * 100) / 100);
+      fsRenderAtZoom();
+    }
   };
   window.fsZoomOut = function() {
-    if (fsPZ) fsPZ.zoomOut();
+    if (fsZoom > FS_ZOOM_MIN) {
+      fsZoom = Math.max(FS_ZOOM_MIN, Math.round((fsZoom - FS_ZOOM_STEP) * 100) / 100);
+      fsRenderAtZoom();
+    }
   };
   window.fsReset = function() {
-    if (fsPZ) fsPZ.reset();
+    fsZoom = 1;
+    fsRenderAtZoom();
+    var scroll = document.getElementById('fs-scroll');
+    scroll.scrollTop = 0; scroll.scrollLeft = 0;
   };
 
   window.closeFS = function() {
-    if (fsPZ) { try { fsPZ.destroy(); } catch(e){} fsPZ = null; }
+    _fsPage = null;
     document.getElementById('fs-overlay').style.display = 'none';
     document.body.style.overflow = '';
   };
 
-  document.getElementById('fs-close').addEventListener('click', function() { closeFS(); });
+  // Molette = zoom
+  document.getElementById('fs-scroll').addEventListener('wheel', function(e) {
+    if (!e.ctrlKey && !e.metaKey) return; // scroll normal sans Ctrl
+    e.preventDefault();
+    if (e.deltaY < 0) fsZoomIn(); else fsZoomOut();
+  }, { passive: false });
+
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeFS(); });
 
 })();
@@ -1280,15 +1281,15 @@
 
 <div id="fs-overlay" role="dialog" aria-modal="true" aria-label="Encart agrandi">
   <button id="fs-close" aria-label="Fermer" onclick="closeFS()">&#x2715;</button>
-  <div id="fs-hint">Pincer ou molette pour zoomer • Glisser pour déplacer</div>
-  <div id="fs-pz-wrap">
+  <div id="fs-hint">Ctrl+molette pour zoomer • Défiler pour naviguer</div>
+  <div id="fs-scroll">
     <canvas id="fs-canvas"></canvas>
   </div>
   <div id="fs-toolbar">
     <button class="fs-btn" onclick="fsZoomOut()" title="Dézoomer" aria-label="Dézoomer">−</button>
     <span id="fs-zoom-lbl">100%</span>
     <button class="fs-btn" onclick="fsZoomIn()" title="Zoomer" aria-label="Zoomer">+</button>
-    <button class="fs-btn" onclick="fsReset()" title="Réinitialiser" aria-label="Réinitialiser" style="font-size:.85rem">1:1</button>
+    <button class="fs-btn" onclick="fsReset()" title="Taille originale" aria-label="Taille originale" style="font-size:.85rem">1:1</button>
     <button class="fs-btn" onclick="closeFS()" title="Fermer" aria-label="Fermer" style="font-size:1rem">&#x2715;</button>
   </div>
 </div>
