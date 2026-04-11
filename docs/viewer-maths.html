@@ -167,8 +167,7 @@
       overflow: hidden;
     }
     #fs-pz-wrap {
-      width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
+      position: absolute; top: 44px; left: 0; right: 0; bottom: 76px;
       overflow: hidden;
     }
     #fs-canvas {
@@ -1202,9 +1201,6 @@
     var wrap     = document.getElementById('fs-pz-wrap');
     overlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
-    if (overlay.requestFullscreen) {
-      overlay.requestFullscreen().catch(function(){});
-    }
     if (fsPZ) { try { fsPZ.destroy(); } catch(e){} fsPZ = null; }
     fsCurrentScale = 1;
     updateZoomLabel();
@@ -1217,17 +1213,19 @@
       fsCanvas.width  = vp.width;
       fsCanvas.height = vp.height;
 
-      // Taille d'affichage = fit dans la fenêtre
-      var padX = 16, padY = 100; // marge pour toolbar + hint
+      // Fit dans le wrapper (dimensions réelles après layout)
+      var wrapW = wrap.clientWidth;
+      var wrapH = wrap.clientHeight;
       var natW = vp.width / dpr;
       var natH = vp.height / dpr;
-      var availW = window.innerWidth - padX * 2;
-      var availH = window.innerHeight - padY;
-      var fitRatio = Math.min(availW / natW, availH / natH);
+      var fitRatio = Math.min(wrapW / natW, wrapH / natH);
       var displayW = Math.round(natW * fitRatio);
       var displayH = Math.round(natH * fitRatio);
       fsCanvas.style.width  = displayW + 'px';
       fsCanvas.style.height = displayH + 'px';
+      // Centrer manuellement (pas de flex = pas de conflit Panzoom)
+      fsCanvas.style.marginLeft = Math.max(0, (wrapW - displayW) / 2) + 'px';
+      fsCanvas.style.marginTop  = Math.max(0, (wrapH - displayH) / 2) + 'px';
 
       return page.render({ canvasContext: fsCanvas.getContext('2d'), viewport: vp }).promise;
     }).then(function() {
@@ -1272,18 +1270,9 @@
     if (fsPZ) { try { fsPZ.destroy(); } catch(e){} fsPZ = null; }
     document.getElementById('fs-overlay').style.display = 'none';
     document.body.style.overflow = '';
-    if (document.fullscreenElement && document.exitFullscreen) {
-      document.exitFullscreen().catch(function(){});
-    }
   };
 
   document.getElementById('fs-close').addEventListener('click', function() { closeFS(); });
-  document.addEventListener('fullscreenchange', function() {
-    if (!document.fullscreenElement) {
-      document.getElementById('fs-overlay').style.display = 'none';
-      document.body.style.overflow = '';
-    }
-  });
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeFS(); });
 
 })();
