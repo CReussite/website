@@ -95,7 +95,7 @@
     /* Back to top */
     .back-top {
       display: flex; align-items: center; gap: 8px;
-      width: fit-content; margin: 64px auto 28px;
+      width: fit-content; margin: 40px auto 16px;
       padding: 12px 28px; border-radius: 999px;
       background: linear-gradient(135deg, var(--blue) 0%, #1a3270 100%);
       border: none; color: var(--gold); font-size: .85rem; font-weight: 700;
@@ -406,15 +406,6 @@
       .pdf-btn { padding: 8px 10px; font-size: .82rem; }
     }
 
-    /* ─── PRINT ─────────────────────────────────────────── */
-    #pdf-print-pages { display: none; }
-    @media print {
-      body > *:not(#pdf-print-pages) { display: none !important; }
-      #pdf-print-pages { display: block !important; }
-      #pdf-print-pages img { width: 100%; display: block; page-break-after: always; }
-      @page { margin: 0; }
-    }
-
   </style>
 </head>
 <body>
@@ -463,8 +454,6 @@
           <span class="pdf-sep pdf-sep-rows"></span>
           <div class="pdf-row">
             <button class="pdf-btn" id="btn-toc" onclick="goToTOC()" title="Sommaire"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
-            <span class="pdf-sep"></span>
-            <button class="pdf-btn" id="btn-print" onclick="printPDF()" title="Imprimer"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
             <span class="pdf-sep"></span>
             <button class="pdf-btn" onclick="openFS()" title="Plein écran"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg></button>
           </div>
@@ -959,35 +948,6 @@
     });
   }
   window.goToTOC = function() { if (pdfDoc) renderPage(tocPage); };
-
-  var PRINT_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>';
-  window.printPDF = function() {
-    if (!pdfDoc) return;
-    var btn = document.getElementById('btn-print');
-    btn.disabled = true; btn.textContent = '…';
-    var cont = document.getElementById('pdf-print-pages');
-    if (!cont) { cont = document.createElement('div'); cont.id = 'pdf-print-pages'; document.body.appendChild(cont); }
-    cont.innerHTML = '';
-    var pending = pdfDoc.numPages, pages = new Array(pdfDoc.numPages);
-    function finish() {
-      cont.innerHTML = pages.join('');
-      btn.disabled = false; btn.innerHTML = PRINT_ICON;
-      window.print();
-      setTimeout(function(){ cont.innerHTML = ''; }, 4000);
-    }
-    for (var i = 1; i <= pdfDoc.numPages; i++) {
-      (function(n) {
-        pdfDoc.getPage(n).then(function(page) {
-          var c = document.createElement('canvas'), vp = page.getViewport({ scale: 2 });
-          c.width = vp.width; c.height = vp.height;
-          page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise.then(function() {
-            pages[n-1] = '<img src="' + c.toDataURL('image/jpeg', 0.92) + '">';
-            if (--pending === 0) finish();
-          });
-        });
-      })(i);
-    }
-  };
 
   // Touch swipe (mobile page navigation)
   (function() {
