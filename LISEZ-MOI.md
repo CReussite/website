@@ -1,7 +1,7 @@
 # C'Réussite - Guide propriétaire
 
 > Document rédigé pour Camille Reinhardt, sans connaissance technique requise.
-> Dernière mise à jour : 10 avril 2026
+> Dernière mise à jour : 11 avril 2026
 
 ---
 
@@ -17,7 +17,8 @@
 8. [Tableau de bord admin](#8-tableau-de-bord-admin)
 9. [Coûts des services](#9-coûts-des-services)
 10. [Que faire si quelque chose ne fonctionne pas](#10-que-faire-si-quelque-chose-ne-fonctionne-pas)
-11. [Actions prioritaires](#11-actions-prioritaires)
+11. [Accès bêta-testeurs](#11-accès-bêta-testeurs)
+12. [Actions prioritaires](#12-actions-prioritaires)
 
 ---
 
@@ -38,7 +39,8 @@ C'Réussite est une boutique automatisée : le client paie, reçoit ses fiches P
 | Conditions Générales d'Utilisation | c-reussite.fr/cgu.html | Oui |
 | Mentions légales | c-reussite.fr/mentions-legales.html | Oui - ⚠️ SIRET et adresse à compléter |
 | Politique de confidentialité | c-reussite.fr/confidentialite.html | Oui |
-| Formulaire beta-testeurs | c-reussite.fr/beta.html | Non référencé, lien à partager manuellement |
+| Formulaire bêta (Maths) | c-reussite.fr/viewer-maths.html | Protégé par mot de passe bêta-testeur |
+| Formulaire bêta (Physique-Chimie) | c-reussite.fr/viewer-physique.html | Protégé par mot de passe bêta-testeur |
 | Tableau de bord admin | c-reussite.fr/admin.html | Protégé par mot de passe (`ADMIN_KEY`) |
 
 ---
@@ -152,15 +154,56 @@ Pour activer les alertes email automatiques en cas d'erreur : configurer `ALERT_
 
 ---
 
-## 11. Actions prioritaires
+## 11. Accès bêta-testeurs
 
-| Priorité | Action | Pourquoi |
-|---|---|---|
-| 1 | **Configurer `ALERT_EMAIL` dans Render** | Être prévenue immédiatement si une commande échoue. Le code est prêt |
-| 2 | **Compléter les mentions légales** (SIRET + adresse dans mentions-legales.html) | Obligation légale |
-| 3 | **Configurer `BCC_EMAIL` dans Render** | Recevoir une copie de chaque email de commande |
-| 4 | **Créer le bucket "invoices" dans Supabase Storage** | Activer l'archivage des factures (sans cela, les factures ne sont pas sauvegardées en dehors de l'admin) |
+Les pages `viewer-maths.html` et `viewer-physique.html` permettent à tes bêta-testeurs de consulter les vraies fiches PDF directement dans le navigateur, sans pouvoir les télécharger ni les copier. Un questionnaire de retour est intégré au début de chaque page.
+
+### Donner l'accès à un bêta-testeur
+
+L'accès se gère via la variable `BETA_VIEWER_PASSWORDS` dans Render. Il s'agit d'une liste au format JSON, à modifier manuellement dans le dashboard Render.
+
+**Format :**
+```
+[
+  {"password":"motdepasse1","type":"maths","expires":"2026-05-15"},
+  {"password":"motdepasse2","type":"physique","expires":"2026-05-15"},
+  {"password":"motdepasse3","type":"bundle","expires":"2026-05-15"}
+]
+```
+
+| Valeur `type` | Donne accès à |
+|---|---|
+| `maths` | Fiches Mathématiques uniquement |
+| `physique` | Fiches Physique-Chimie uniquement |
+| `bundle` | Les deux fiches |
+
+**Procédure pour ajouter un accès :**
+1. Aller sur [dashboard.render.com](https://dashboard.render.com/web/srv-d7chdpa8qa3s73bjljs0)
+2. Cliquer sur "Environment" dans le menu de gauche
+3. Trouver la variable `BETA_VIEWER_PASSWORDS` (la créer si elle n'existe pas encore)
+4. Ajouter une entrée avec le mot de passe choisi, le type et la date d'expiration
+5. Cliquer "Save Changes" - le serveur redémarre automatiquement (30 secondes)
+6. Envoyer le lien et le mot de passe au bêta-testeur par email
+
+**Procédure pour révoquer un accès :**
+Supprimer la ligne correspondante dans `BETA_VIEWER_PASSWORDS`, sauvegarder. L'accès est coupé immédiatement après le redémarrage.
+
+### Ce qui est protégé
+
+Les fiches s'affichent dans le navigateur mais ne peuvent pas être téléchargées, copiées ou imprimées. La mention "PRÉVISUALISATION" est affichée en filigrane sur chaque page.
 
 ---
 
-*Dernière synchronisation : 10 avril 2026*
+## 12. Actions prioritaires
+
+| Priorité | Action | Pourquoi |
+|---|---|---|
+| 1 | **Configurer `BETA_VIEWER_PASSWORDS` dans Render** | Activer l'accès bêta-testeurs aux fiches PDF (voir section 11) |
+| 2 | **Configurer `ALERT_EMAIL` dans Render** | Être prévenue immédiatement si une commande échoue. Le code est prêt |
+| 3 | **Compléter les mentions légales** (SIRET + adresse dans mentions-legales.html) | Obligation légale |
+| 4 | **Configurer `BCC_EMAIL` dans Render** | Recevoir une copie de chaque email de commande |
+| 5 | **Créer le bucket "invoices" dans Supabase Storage** | Activer l'archivage des factures (sans cela, les factures ne sont pas sauvegardées en dehors de l'admin) |
+
+---
+
+*Dernière synchronisation : 11 avril 2026*

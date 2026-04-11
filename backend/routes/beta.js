@@ -91,47 +91,56 @@ function row(label, value) {
 
 // ── Build structured HTML email ─────────────────────────
 function buildEmailHtml(type, d) {
-  const isPack   = type === 'bundle';
-  const formName = isPack ? 'Pack Maths + Physique-Chimie' : 'Physique-Chimie uniquement';
+  const isPack  = type === 'bundle';
+  const isMaths = type === 'maths';
+  const formName = isPack ? 'Pack Maths + Physique-Chimie'
+                 : isMaths ? 'Mathématiques uniquement'
+                 : 'Physique-Chimie uniquement';
 
   let rows = '';
 
   // ── Identification
   rows += sectionRow('Bêta-testeur');
-  rows += row('Prénom',    esc(d.prenom));
+  rows += row('Prénom',     esc(d.prenom));
   rows += row('Formulaire', formName);
-  rows += row('Date',      new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' }));
+  rows += row('Date',       new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' }));
 
   if (isPack) {
-    // ── Bloc Maths
     rows += sectionRow('Bloc 1 — Expérience e-book Mathématiques');
-    rows += row('Fiche Maths la plus utile',   esc(d.maths_q1_fiche_utile));
-    rows += row('Erreurs (Maths)',              cond(d.maths_q2_erreurs, 'oui', d.maths_q2_erreurs_detail));
-    rows += row('Notion incomprise (Maths)',    cond(d.maths_q3_incompris, 'oui', d.maths_q3_incompris_detail));
-    rows += row('Contenu manquant (Maths)',     cond(d.maths_q4_manquant, 'oui', d.maths_q4_manquant_detail));
+    rows += row('Fiche Maths la plus utile', esc(d.maths_q1_fiche_utile));
+    rows += row('Erreurs (Maths)',           cond(d.maths_q2_erreurs, 'oui', d.maths_q2_erreurs_detail));
+    rows += row('Notion incomprise (Maths)', cond(d.maths_q3_incompris, 'oui', d.maths_q3_incompris_detail));
+    rows += row('Contenu manquant (Maths)',  cond(d.maths_q4_manquant, 'oui', d.maths_q4_manquant_detail));
 
-    // ── Bloc PC
     rows += sectionRow('Bloc 2 — Expérience e-book Physique-Chimie');
-    rows += row('Fiche PC la plus utile',       esc(d.pc_q1_fiche_utile));
-    rows += row('Erreurs (PC)',                 cond(d.pc_q2_erreurs, 'oui', d.pc_q2_erreurs_detail));
-    rows += row('Notion incomprise (PC)',       cond(d.pc_q3_incompris, 'oui', d.pc_q3_incompris_detail));
-    rows += row('Contenu manquant (PC)',        cond(d.pc_q4_manquant, 'oui', d.pc_q4_manquant_detail));
+    rows += row('Fiche PC la plus utile',   esc(d.pc_q1_fiche_utile));
+    rows += row('Erreurs (PC)',             cond(d.pc_q2_erreurs, 'oui', d.pc_q2_erreurs_detail));
+    rows += row('Notion incomprise (PC)',   cond(d.pc_q3_incompris, 'oui', d.pc_q3_incompris_detail));
+    rows += row('Contenu manquant (PC)',    cond(d.pc_q4_manquant, 'oui', d.pc_q4_manquant_detail));
 
-    // ── Avis global
     rows += sectionRow('Bloc 3 — Avis global');
-    rows += row('Note e-book Maths',            stars(d.note_maths));
-    rows += row('Note e-book PC',               stars(d.note_pc));
+    rows += row('Note e-book Maths', stars(d.note_maths));
+    rows += row('Note e-book PC',    stars(d.note_pc));
 
-  } else {
-    // ── PC only
-    rows += sectionRow('Bloc 1 — Expérience e-book Physique-Chimie');
-    rows += row('Fiche la plus utile',          esc(d.pc_q1_fiche_utile));
-    rows += row('Erreurs repérées',             cond(d.pc_q2_erreurs, 'oui', d.pc_q2_erreurs_detail));
-    rows += row('Notion incomprise',            cond(d.pc_q3_incompris, 'oui', d.pc_q3_incompris_detail));
-    rows += row('Contenu manquant',             cond(d.pc_q4_manquant, 'oui', d.pc_q4_manquant_detail));
+  } else if (isMaths) {
+    rows += sectionRow('Bloc 1 — Expérience e-book Mathématiques');
+    rows += row('Fiche la plus utile', esc(d.maths_q1_fiche_utile));
+    rows += row('Erreurs repérées',    cond(d.maths_q2_erreurs, 'oui', d.maths_q2_erreurs_detail));
+    rows += row('Notion incomprise',   cond(d.maths_q3_incompris, 'oui', d.maths_q3_incompris_detail));
+    rows += row('Contenu manquant',    cond(d.maths_q4_manquant, 'oui', d.maths_q4_manquant_detail));
 
     rows += sectionRow('Bloc 2 — Avis global');
-    rows += row('Note',                         stars(d.note_pc));
+    rows += row('Note', stars(d.note_maths));
+
+  } else {
+    rows += sectionRow('Bloc 1 — Expérience e-book Physique-Chimie');
+    rows += row('Fiche la plus utile', esc(d.pc_q1_fiche_utile));
+    rows += row('Erreurs repérées',    cond(d.pc_q2_erreurs, 'oui', d.pc_q2_erreurs_detail));
+    rows += row('Notion incomprise',   cond(d.pc_q3_incompris, 'oui', d.pc_q3_incompris_detail));
+    rows += row('Contenu manquant',    cond(d.pc_q4_manquant, 'oui', d.pc_q4_manquant_detail));
+
+    rows += sectionRow('Bloc 2 — Avis global');
+    rows += row('Note', stars(d.note_pc));
   }
 
   // Shared avis global fields
@@ -185,7 +194,7 @@ router.post('/', async (req, res) => {
   try {
     const { type, ...rest } = req.body || {};
 
-    if (!['pc', 'bundle'].includes(type)) {
+    if (!['pc', 'maths', 'bundle'].includes(type)) {
       return res.status(400).json({ error: 'Type de formulaire invalide.' });
     }
 
@@ -196,7 +205,8 @@ router.post('/', async (req, res) => {
     };
 
     const htmlContent = buildEmailHtml(type, d);
-    const subject     = `[Beta] ${type === 'bundle' ? 'Pack Maths + PC' : 'Physique-Chimie'} — ${d.prenom || 'Anonyme'}`;
+    const subjectType = type === 'bundle' ? 'Pack Maths + PC' : type === 'maths' ? 'Maths' : 'Physique-Chimie';
+    const subject     = `[Beta] ${subjectType} — ${d.prenom || 'Anonyme'}`;
 
     const sendSmtpEmail          = new SibApiV3Sdk.SendSmtpEmail();
     sendSmtpEmail.sender         = { name: "C'Réussite", email: process.env.FROM_EMAIL };
