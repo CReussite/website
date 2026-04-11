@@ -1,6 +1,6 @@
-# C'Réussite — Documentation technique
+# C'Réussite - Documentation technique
 
-Boutique de fiches de révision PDF. Flux : client paie via Stripe → webhook → Supabase → facture PDF → email Brevo.
+Boutique de fiches de révision PDF. Flux : client paie via Stripe, webhook, Supabase, facture PDF, email Brevo.
 
 ---
 
@@ -10,10 +10,10 @@ Boutique de fiches de révision PDF. Flux : client paie via Stripe → webhook �
 Client
   │  POST /api/checkout  { product_id }
   ▼
-Frontend (GitHub Pages — c-reussite.fr)
+Frontend (GitHub Pages - c-reussite.fr)
   ▼
-Backend Express (Render — creussite-backend.onrender.com)
-  │  crée Stripe Checkout Session → redirige le client
+Backend Express (Render - creussite-backend.onrender.com)
+  │  crée Stripe Checkout Session, redirige le client
   ▼
 Stripe Checkout
   │  checkout.session.completed
@@ -22,7 +22,7 @@ POST /webhook
   ├─ vérifie signature Stripe
   ├─ insertOrderIdempotent() → Supabase (stripe_session_id UNIQUE)
   ├─ generateInvoice() → PDF en mémoire (PDFKit)
-  ├─ stéganographie sur PDFs produits (pdf-lib — texte blanc 4pt, 5×/page)
+  ├─ stéganographie sur PDFs produits (pdf-lib - texte blanc 4pt, 5x/page)
   ├─ sendOrderEmail() → Brevo (PDFs + facture en pièces jointes)
   ├─ email_sent = true → Supabase
   ├─ upload facture → Supabase Storage (bucket "invoices")
@@ -79,7 +79,7 @@ CReussite/
 │   │   ├── invoice.js                 ← Génération PDF facture (PDFKit)
 │   │   ├── mailer.js                  ← Brevo : email commande + extraits
 │   │   └── alerts.js                  ← Brevo : email d'alerte ops
-│   ├── assets/                        ← PDFs produits + extraits (non versionnés)
+│   ├── assets/                        ← PDFs produits + extraits
 │   ├── tests/                         ← Tests node:test
 │   ├── .env.example
 │   └── package.json
@@ -98,19 +98,19 @@ CReussite/
 
 | Méthode | Route | Auth | Description |
 |---------|-------|------|-------------|
-| POST | `/api/checkout` | — | Crée une Stripe Checkout Session, retourne l'URL |
-| POST | `/webhook` | Stripe signature | Pipeline complet : DB → facture → email |
-| POST | `/api/extract` | — | Envoie un extrait gratuit par email (avec stéganographie) |
-| POST | `/api/beta-feedback` | — | Envoie les retours beta par email à `creussite2026@gmail.com` |
-| GET | `/api/products` | — | Retourne `docs/content/products.json` |
+| POST | `/api/checkout` | - | Crée une Stripe Checkout Session, retourne l'URL |
+| POST | `/webhook` | Stripe signature | Pipeline complet : DB, facture, email |
+| POST | `/api/extract` | - | Envoie un extrait gratuit par email (avec stéganographie) |
+| POST | `/api/beta-feedback` | - | Envoie les retours beta par email à `creussite2026@gmail.com` |
+| GET | `/api/products` | - | Retourne `docs/content/products.json` |
 | GET | `/api/admin/orders` | ADMIN_KEY | Liste des commandes (JSON) |
 | GET | `/api/admin/stats` | ADMIN_KEY | Stats agrégées (CA, nb commandes, emails) |
 | GET | `/api/admin/extracts` | ADMIN_KEY | Historique des extraits envoyés |
 | GET | `/api/admin/export` | ADMIN_KEY | Export CSV (BOM UTF-8) |
 | GET | `/api/admin/invoice/:num` | ADMIN_KEY | Re-génère et télécharge une facture PDF |
 | GET | `/api/admin/config` | ADMIN_KEY | Retourne `{ stripe_mode: 'live' \| 'test' }` |
-| GET | `/api/health` | — | `{"status":"ok"}` |
-| GET | `/api/healthz` | — | Health check détaillé — `503` si variable manquante |
+| GET | `/api/health` | - | `{"status":"ok"}` |
+| GET | `/api/healthz` | - | Health check détaillé, `503` si variable manquante |
 
 ---
 
@@ -126,7 +126,7 @@ CREATE TABLE orders (
   amount            integer     NOT NULL,           -- centimes
   stripe_session_id text        UNIQUE NOT NULL,    -- idempotence
   invoice_number    text        NOT NULL,           -- ex: 2026-001
-  email_sent        boolean     DEFAULT false,      -- double livraison
+  email_sent        boolean     DEFAULT false,      -- anti double livraison
   invoice_path      text,                           -- Supabase Storage, nullable
   created_at        timestamptz DEFAULT now()
 );
@@ -163,12 +163,12 @@ cp backend/.env.example backend/.env  # en local
 | `STRIPE_WEBHOOK_SECRET` | Stripe → Développeurs → Webhooks → Signing secret (`whsec_...`) |
 | `SUPABASE_URL` | Supabase → Settings → API |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Settings → API (`sb_secret_...`) |
-| `BREVO_API_KEY` | brevo.com → Paramètres → Clés API (`xkeysib-...`) — PAS la clé SMTP |
+| `BREVO_API_KEY` | brevo.com → Paramètres → Clés API (`xkeysib-...`) - PAS la clé SMTP |
 | `FROM_EMAIL` | `contact@c-reussite.fr` |
 | `FROM_NAME` | `C'Réussite` |
 | `BCC_EMAIL` | Copie cachée de chaque email de commande + extrait |
 | `ALERT_EMAIL` | Reçoit les alertes ops en cas d'erreur webhook |
-| `ADMIN_KEY` | Clé secrète pour `/admin.html` — valeur longue aléatoire |
+| `ADMIN_KEY` | Clé secrète pour `/admin.html`, valeur longue aléatoire |
 
 ---
 
@@ -188,7 +188,7 @@ Build Render : `npm ci --omit=dev` / Start : `node server.js`
 
 ---
 
-## Stripe — webhook
+## Stripe - webhook
 
 1. Dashboard Stripe → Développeurs → Webhooks → Ajouter un endpoint
    - URL : `https://creussite-backend.onrender.com/webhook`
@@ -203,7 +203,7 @@ stripe trigger checkout.session.completed
 
 ---
 
-## DNS — domaine c-reussite.fr (OVH)
+## DNS - domaine c-reussite.fr (OVH)
 
 ```
 Type    Sous-domaine    Valeur                    TTL
@@ -218,7 +218,7 @@ GitHub → Settings → Pages : Custom domain `c-reussite.fr` + Enforce HTTPS.
 Certificat Let's Encrypt généré automatiquement (~30 min après propagation DNS).
 
 ```bash
-dig c-reussite.fr +short   # → 185.199.10[8-1].153
+dig c-reussite.fr +short        # → 185.199.10[8-1].153
 curl -sI https://c-reussite.fr | head -1  # → HTTP/2 200
 ```
 
