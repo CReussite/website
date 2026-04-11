@@ -18,7 +18,8 @@
 9. [Coûts des services](#9-coûts-des-services)
 10. [Que faire si quelque chose ne fonctionne pas](#10-que-faire-si-quelque-chose-ne-fonctionne-pas)
 11. [Accès bêta-testeurs](#11-accès-bêta-testeurs)
-12. [Actions prioritaires](#12-actions-prioritaires)
+12. [Checklist juridique — passer en production](#12-checklist-juridique--passer-en-production)
+13. [Actions prioritaires](#13-actions-prioritaires)
 
 ---
 
@@ -194,7 +195,62 @@ Les fiches s'affichent dans le navigateur mais ne peuvent pas être télécharg�
 
 ---
 
-## 12. Actions prioritaires
+## 12. Checklist juridique — passer en production
+
+Actuellement, le site fonctionne en **mode test** sur Stripe : aucun vrai paiement n'est possible. Pour accepter de vrais paiements, il faut fournir à Stripe des informations légales et s'assurer que le site est conforme.
+
+### A. Informations à fournir à Stripe
+
+Ces informations se renseignent directement dans le dashboard Stripe, onglet **"Basculer sur le compte de production"**.
+
+| Information | Détail | Statut |
+|---|---|---|
+| **Forme juridique** | Auto-entrepreneur, SAS, SARL, association… | À renseigner |
+| **Numéro SIREN / SIRET** | Identifiant de l'entreprise (disponible sur annuaire-entreprises.data.gouv.fr) | À renseigner |
+| **Adresse du siège social** | Adresse officielle de l'entreprise | À renseigner |
+| **Description de l'activité** | Vente de fiches de révision PDF pour lycéens | À renseigner |
+| **URL du site** | `https://c-reussite.fr` | ✅ Prêt |
+| **Nom complet du représentant légal** | Prénom + nom | À renseigner |
+| **Date de naissance** | Du représentant légal | À renseigner |
+| **Adresse personnelle** | Du représentant légal | À renseigner |
+| **Pièce d'identité** | Passeport ou carte nationale d'identité (scan PDF ou photo JPEG/PNG, non retouchée) | À fournir |
+| **Justificatif de domicile** | Facture EDF, relevé bancaire, avis d'imposition — daté de moins de 6 mois (peut être demandé par Stripe) | À préparer |
+| **IBAN français** | Compte bancaire pour recevoir les virements Stripe | À renseigner |
+
+> Après envoi des documents, Stripe met **3 jours ouvrés maximum** pour valider le compte.
+
+### B. Pages légales obligatoires sur le site
+
+Ces pages existent déjà sur c-reussite.fr mais **certaines doivent être complétées** :
+
+| Page | Adresse | Ce qu'il faut vérifier / compléter |
+|---|---|---|
+| **Mentions légales** | c-reussite.fr/mentions-legales.html | ⚠️ **SIRET et adresse du siège à compléter** — obligatoire en France |
+| **CGV** | c-reussite.fr/cgv.html | Vérifier que le nom de l'entreprise, le SIRET et les coordonnées y figurent |
+| **CGU** | c-reussite.fr/cgu.html | ✅ Présente |
+| **Politique de confidentialité** | c-reussite.fr/confidentialite.html | Vérifier la conformité RGPD (responsable du traitement, durée de conservation, droits des utilisateurs) |
+
+### C. Obligations comptables et fiscales
+
+| Obligation | Détail |
+|---|---|
+| **Déclaration de chiffre d'affaires** | Si auto-entrepreneur : déclaration mensuelle ou trimestrielle sur autoentrepreneur.urssaf.fr |
+| **TVA** | Si micro-entreprise sous le seuil : mention "TVA non applicable, article 293 B du CGI" (✅ déjà sur les factures) |
+| **Conservation des factures** | 10 ans minimum — les factures sont archivées dans Supabase Storage et re-téléchargeables depuis le tableau de bord admin |
+| **Livre des recettes** | Obligatoire pour les auto-entrepreneurs — l'export CSV du tableau de bord admin peut servir de base |
+
+### D. Procédure pour activer le mode production
+
+1. Aller sur [dashboard.stripe.com](https://dashboard.stripe.com)
+2. Cliquer sur **"Basculer sur le compte de production"** (bouton violet en haut)
+3. Remplir le formulaire étape par étape avec les informations ci-dessus
+4. Attendre la validation Stripe (1 à 3 jours)
+5. Une fois validé : le développeur mettra à jour les clés API dans Render (`STRIPE_SECRET_KEY` en `sk_live_...` et le nouveau `STRIPE_WEBHOOK_SECRET`)
+6. Le site acceptera alors les vrais paiements
+
+---
+
+## 13. Actions prioritaires
 
 | Priorité | Action | Pourquoi |
 |---|---|---|
