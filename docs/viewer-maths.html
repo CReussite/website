@@ -200,6 +200,19 @@
       transition: background .2s;
     }
     #fs-close:hover { background: rgba(255,255,255,.3); }
+    .fs-nav {
+      display: none; position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0,0,0,.45); color: #fff; border: none;
+      border-radius: 50%; width: 44px; height: 44px; font-size: 1.3rem;
+      cursor: pointer; z-index: 10003; align-items: center;
+      justify-content: center; -webkit-tap-highlight-color: transparent;
+    }
+    .fs-nav:active { background: rgba(0,0,0,.7); }
+    #fs-prev { left: 4px; }
+    #fs-next { right: 4px; }
+    @media (max-width: 768px) {
+      .fs-nav { display: flex; }
+    }
     #fs-page-info {
       color: rgba(255,255,255,.7); font-size: .8rem;
       font-variant-numeric: tabular-nums; min-width: 54px; text-align: center;
@@ -1313,6 +1326,8 @@
 <div id="fs-overlay" role="dialog" aria-modal="true" aria-label="Encart agrandi">
   <button id="fs-close" aria-label="Fermer" onclick="closeFS()">&#x2715;</button>
   <div id="fs-hint">&#x2190;&#x2192; pour naviguer • Molette pour zoomer</div>
+  <button id="fs-prev" class="fs-nav" onclick="fsPrev()" aria-label="Page précédente">&#x276E;</button>
+  <button id="fs-next" class="fs-nav" onclick="fsNext()" aria-label="Page suivante">&#x276F;</button>
   <div id="fs-scroll">
     <canvas id="fs-canvas"></canvas>
   </div>
