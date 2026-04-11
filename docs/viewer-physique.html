@@ -149,7 +149,6 @@
     #pdf-canvas {
       display: block; max-width: 100%; height: auto;
       box-shadow: 0 8px 40px rgba(0,0,0,.28); border-radius: 3px;
-      cursor: zoom-in;
     }
     #pdf-page-wrap { position: relative; display: inline-block; }
     #pdf-annotations {
@@ -447,7 +446,7 @@
           <div class="pdf-row">
             <button class="pdf-btn" id="btn-toc" onclick="goToTOC()" title="Sommaire"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
             <span class="pdf-sep"></span>
-            <button class="pdf-btn" onclick="openFS()" title="Agrandir / Zoomer"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></button>
+            <button class="pdf-btn" onclick="openFS()" title="Plein écran"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg></button>
           </div>
         </div>
       </div>
@@ -1199,15 +1198,11 @@
     if (el) el.textContent = Math.round(fsCurrentScale * 100) + '%';
   }
 
-  document.getElementById('pdf-canvas').addEventListener('click', function() {
-    if (!pdfDoc) return;
-    openFS();
-  });
-
   window.openFS = function() {
     if (!pdfDoc) return;
     var overlay  = document.getElementById('fs-overlay');
     var fsCanvas = document.getElementById('fs-canvas');
+    var wrap     = document.getElementById('fs-pz-wrap');
     overlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
     if (fsPZ) { try { fsPZ.destroy(); } catch(e){} fsPZ = null; }
@@ -1216,25 +1211,41 @@
 
     pdfDoc.getPage(curPage).then(function(page) {
       var dpr = window.devicePixelRatio || 1;
-      var vp = page.getViewport({ scale: 3.0 * dpr });
+      var hiResScale = 3.0;
+      var vp = page.getViewport({ scale: hiResScale * dpr });
       fsCanvas.width  = vp.width;
       fsCanvas.height = vp.height;
-      var maxW = window.innerWidth - 16;
-      var maxH = window.innerHeight - 16;
+
+      var padX = 16, padY = 100;
       var natW = vp.width / dpr;
       var natH = vp.height / dpr;
-      var fitRatio = Math.min(maxW / natW, maxH / natH, 1);
-      fsCanvas.style.width  = Math.round(natW * fitRatio) + 'px';
-      fsCanvas.style.height = Math.round(natH * fitRatio) + 'px';
+      var availW = window.innerWidth - padX * 2;
+      var availH = window.innerHeight - padY;
+      var fitRatio = Math.min(availW / natW, availH / natH);
+      var displayW = Math.round(natW * fitRatio);
+      var displayH = Math.round(natH * fitRatio);
+      fsCanvas.style.width  = displayW + 'px';
+      fsCanvas.style.height = displayH + 'px';
+
       return page.render({ canvasContext: fsCanvas.getContext('2d'), viewport: vp }).promise;
     }).then(function() {
-      var wrap = document.getElementById('fs-pz-wrap');
       fsPZ = Panzoom(fsCanvas, {
-        maxScale: 10, minScale: 1, startScale: 1,
-        contain: 'outside', cursor: 'grab',
+        maxScale: 10,
+        minScale: 0.5,
+        startScale: 1,
+        contain: 'outside',
+        cursor: 'grab',
         pinchAndPan: true,
+        step: 0.3,
       });
       wrap.addEventListener('wheel', fsPZ.zoomWithWheel, { passive: false });
+      fsCanvas.addEventListener('dblclick', function() {
+        if (fsCurrentScale > 1.5) {
+          fsPZ.reset({ animate: true });
+        } else {
+          fsPZ.zoom(2.5, { animate: true });
+        }
+      });
       fsCanvas.addEventListener('panzoomchange', function(e) {
         fsCurrentScale = e.detail.scale;
         updateZoomLabel();
