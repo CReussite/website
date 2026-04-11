@@ -200,6 +200,21 @@
       transition: background .2s;
     }
     #fs-close:hover { background: rgba(255,255,255,.3); }
+    .fs-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,.12); color: #fff; border: none;
+      border-radius: 50%; width: 48px; height: 48px; font-size: 1.5rem;
+      cursor: pointer; z-index: 10002; display: flex; align-items: center;
+      justify-content: center; transition: background .2s, opacity .2s;
+    }
+    .fs-nav:hover { background: rgba(255,255,255,.3); }
+    .fs-nav:disabled { opacity: .2; cursor: default; }
+    #fs-prev { left: 10px; }
+    #fs-next { right: 10px; }
+    #fs-page-info {
+      color: rgba(255,255,255,.7); font-size: .8rem;
+      font-variant-numeric: tabular-nums; min-width: 54px; text-align: center;
+    }
     #fs-hint {
       position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
       color: rgba(255,255,255,.45); font-size: .72rem; pointer-events: none;
@@ -1227,6 +1242,28 @@
     fsUpdateLabel();
   }
 
+  function fsUpdatePageInfo() {
+    var el = document.getElementById('fs-page-info');
+    if (el && pdfDoc) el.textContent = curPage + ' / ' + pdfDoc.numPages;
+    var prev = document.getElementById('fs-prev');
+    var next = document.getElementById('fs-next');
+    if (prev) prev.disabled = (curPage <= 1);
+    if (next) next.disabled = (!pdfDoc || curPage >= pdfDoc.numPages);
+  }
+
+  function fsGoToPage(n) {
+    if (!pdfDoc || n < 1 || n > pdfDoc.numPages) return;
+    curPage = n;
+    renderPage(curPage);
+    fsZoom = 1;
+    pdfDoc.getPage(curPage).then(function(page) {
+      _fsPage = page;
+      var scroll = document.getElementById('fs-scroll');
+      scroll.scrollTop = 0; scroll.scrollLeft = 0;
+      requestAnimationFrame(function() { fsRenderAtZoom(); fsUpdatePageInfo(); });
+    });
+  }
+
   window.openFS = function() {
     if (!pdfDoc) return;
     var overlay = document.getElementById('fs-overlay');
@@ -1234,13 +1271,16 @@
     document.body.style.overflow = 'hidden';
     fsZoom = 1;
     fsUpdateLabel();
+    fsUpdatePageInfo();
 
     pdfDoc.getPage(curPage).then(function(page) {
       _fsPage = page;
-      // Petit délai pour que le layout de l'overlay soit calculé
       requestAnimationFrame(function() { fsRenderAtZoom(); });
     });
   };
+
+  window.fsPrev = function() { fsGoToPage(curPage - 1); };
+  window.fsNext = function() { fsGoToPage(curPage + 1); };
 
   window.fsZoomIn = function() {
     if (fsZoom < FS_ZOOM_MAX) {
@@ -1274,22 +1314,34 @@
     if (e.deltaY < 0) fsZoomIn(); else fsZoomOut();
   }, { passive: false });
 
-  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeFS(); });
+  document.addEventListener('keydown', function(e) {
+    if (document.getElementById('fs-overlay').style.display !== 'block') return;
+    if (e.key === 'Escape') closeFS();
+    if (e.key === 'ArrowLeft')  fsPrev();
+    if (e.key === 'ArrowRight') fsNext();
+  });
 
 })();
 </script>
 
 <div id="fs-overlay" role="dialog" aria-modal="true" aria-label="Encart agrandi">
   <button id="fs-close" aria-label="Fermer" onclick="closeFS()">&#x2715;</button>
-  <div id="fs-hint">Ctrl+molette pour zoomer • Défiler pour naviguer</div>
+  <div id="fs-hint">&#x2190;&#x2192; pour naviguer • Ctrl+molette pour zoomer</div>
+  <button id="fs-prev" class="fs-nav" onclick="fsPrev()" aria-label="Page précédente">&#x276E;</button>
+  <button id="fs-next" class="fs-nav" onclick="fsNext()" aria-label="Page suivante">&#x276F;</button>
   <div id="fs-scroll">
     <canvas id="fs-canvas"></canvas>
   </div>
   <div id="fs-toolbar">
+    <button class="fs-btn" onclick="fsPrev()" title="Page précédente" aria-label="Page précédente">&#x276E;</button>
+    <span id="fs-page-info">1 / 1</span>
+    <button class="fs-btn" onclick="fsNext()" title="Page suivante" aria-label="Page suivante">&#x276F;</button>
+    <span style="width:1px;height:24px;background:rgba(255,255,255,.2);margin:0 4px"></span>
     <button class="fs-btn" onclick="fsZoomOut()" title="Dézoomer" aria-label="Dézoomer">−</button>
     <span id="fs-zoom-lbl">100%</span>
     <button class="fs-btn" onclick="fsZoomIn()" title="Zoomer" aria-label="Zoomer">+</button>
     <button class="fs-btn" onclick="fsReset()" title="Taille originale" aria-label="Taille originale" style="font-size:.85rem">1:1</button>
+    <span style="width:1px;height:24px;background:rgba(255,255,255,.2);margin:0 4px"></span>
     <button class="fs-btn" onclick="closeFS()" title="Fermer" aria-label="Fermer" style="font-size:1rem">&#x2715;</button>
   </div>
 </div>
