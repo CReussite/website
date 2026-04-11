@@ -644,7 +644,7 @@ footer a:hover { color: var(--quicksand); }
 
 /* Footer logo image sizing & centering */
 .footer-logo-img {
-  height: 90px;
+  height: 100px;
   width: auto;
   display: block;
   margin: 0 auto 12px;
