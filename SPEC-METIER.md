@@ -1,6 +1,5 @@
 # C'Réussite - Guide propriétaire
 
-> Document rédigé pour Camille Reinhardt, sans connaissance technique requise.
 > Dernière mise à jour : 11 avril 2026
 
 ---
