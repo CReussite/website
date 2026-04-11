@@ -6,8 +6,8 @@ const router = express.Router();
 router.use(express.json({ limit: '10kb' }));
 
 const PDF_FILES = {
-  maths:    'C_Réussite_Maths_TleSpe.pdf',
-  physique: 'C_Réussite_PhysiqueChimie_TleSpe.pdf',
+  maths:    'fiches-maths.pdf',
+  physique: 'fiches-physique-chimie.pdf',
 };
 
 // BETA_VIEWER_PASSWORDS = JSON dans Render, ex :
