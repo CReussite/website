@@ -200,18 +200,6 @@
       transition: background .2s;
     }
     #fs-close:hover { background: rgba(255,255,255,.3); }
-    .fs-nav {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      background: rgba(0,0,0,.45); color: #fff; border: none;
-      border-radius: 50%; width: 44px; height: 44px; font-size: 1.3rem;
-      cursor: pointer; z-index: 10003; display: flex; align-items: center;
-      justify-content: center; transition: background .2s, opacity .2s;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .fs-nav:hover { background: rgba(0,0,0,.65); }
-    .fs-nav:disabled { opacity: .15; cursor: default; pointer-events: none; }
-    #fs-prev { left: 4px; }
-    #fs-next { right: 4px; }
     #fs-page-info {
       color: rgba(255,255,255,.7); font-size: .8rem;
       font-variant-numeric: tabular-nums; min-width: 54px; text-align: center;
@@ -1240,10 +1228,6 @@
   function fsUpdatePageInfo() {
     var el = document.getElementById('fs-page-info');
     if (el && pdfDoc) el.textContent = curPage + ' / ' + pdfDoc.numPages;
-    var prev = document.getElementById('fs-prev');
-    var next = document.getElementById('fs-next');
-    if (prev) prev.disabled = (curPage <= 1);
-    if (next) next.disabled = (!pdfDoc || curPage >= pdfDoc.numPages);
   }
 
   function fsGoToPage(n) {
@@ -1322,8 +1306,6 @@
 <div id="fs-overlay" role="dialog" aria-modal="true" aria-label="Encart agrandi">
   <button id="fs-close" aria-label="Fermer" onclick="closeFS()">&#x2715;</button>
   <div id="fs-hint">&#x2190;&#x2192; pour naviguer • Molette pour zoomer</div>
-  <button id="fs-prev" class="fs-nav" onclick="fsPrev()" aria-label="Page précédente">&#x276E;</button>
-  <button id="fs-next" class="fs-nav" onclick="fsNext()" aria-label="Page suivante">&#x276F;</button>
   <div id="fs-scroll">
     <canvas id="fs-canvas"></canvas>
   </div>
