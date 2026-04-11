@@ -1302,10 +1302,12 @@
     document.body.style.overflow = '';
   };
 
-  document.getElementById('fs-scroll').addEventListener('wheel', function(e) {
+  document.addEventListener('wheel', function(e) {
+    if (document.getElementById('fs-overlay').style.display !== 'block') return;
     e.preventDefault();
+    e.stopPropagation();
     if (e.deltaY < 0) fsZoomIn(); else fsZoomOut();
-  }, { passive: false });
+  }, { passive: false, capture: true });
 
   document.addEventListener('keydown', function(e) {
     if (document.getElementById('fs-overlay').style.display !== 'block') return;
