@@ -149,6 +149,7 @@
     #pdf-canvas {
       display: block; max-width: 100%; height: auto;
       box-shadow: 0 8px 40px rgba(0,0,0,.28); border-radius: 3px;
+      cursor: zoom-in;
     }
     #pdf-page-wrap { position: relative; display: inline-block; }
     #pdf-annotations {
@@ -159,6 +160,30 @@
       position: absolute; pointer-events: all; cursor: pointer;
     }
     #pdf-annotations a:hover { background: rgba(0,100,200,.12); }
+
+    /* ─── FULLSCREEN ENCART ───────────────────────────────── */
+    #fs-overlay {
+      display: none; position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,.88); overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    #fs-canvas {
+      display: block; margin: 56px auto 40px; cursor: zoom-out;
+      box-shadow: 0 8px 40px rgba(0,0,0,.5); border-radius: 3px;
+    }
+    #fs-close {
+      position: fixed; top: 12px; right: 14px;
+      background: rgba(255,255,255,.15); color: #fff; border: none;
+      border-radius: 50%; width: 42px; height: 42px; font-size: 1.3rem;
+      cursor: pointer; z-index: 10000; line-height: 42px; text-align: center;
+      transition: background .2s;
+    }
+    #fs-close:hover { background: rgba(255,255,255,.3); }
+    #fs-hint {
+      position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,.55); font-size: .78rem; pointer-events: none;
+      white-space: nowrap; letter-spacing: .02em;
+    }
 
     /* ─── QUESTIONNAIRE ────────────────────────────────── */
     .q-card {
@@ -1188,6 +1213,58 @@
   };
 
 })();
+  // ── ENCART PLEIN ÉCRAN ─────────────────────────────────
+  var fsRendering = false;
+
+  document.getElementById('pdf-canvas').addEventListener('click', function(e) {
+    if (!pdfDoc) return;
+    var rect = this.getBoundingClientRect();
+    openFS(curPage, (e.clientX - rect.left) / rect.width, (e.clientY - rect.top) / rect.height);
+  });
+
+  function openFS(pageNum, rx, ry) {
+    var overlay  = document.getElementById('fs-overlay');
+    var fsCanvas = document.getElementById('fs-canvas');
+    overlay.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    fsRendering = true;
+    pdfDoc.getPage(pageNum).then(function(page) {
+      if (!fsRendering) return null;
+      var dpr = window.devicePixelRatio || 1;
+      var vp = page.getViewport({ scale: 3.0 * dpr });
+      fsCanvas.width  = vp.width;
+      fsCanvas.height = vp.height;
+      fsCanvas.style.width  = (vp.width  / dpr) + 'px';
+      fsCanvas.style.height = (vp.height / dpr) + 'px';
+      return page.render({ canvasContext: fsCanvas.getContext('2d'), viewport: vp }).promise;
+    }).then(function() {
+      if (!fsRendering) return;
+      var scrollX = rx * fsCanvas.clientWidth  - window.innerWidth  / 2;
+      var scrollY = ry * fsCanvas.clientHeight - window.innerHeight / 2 + 56;
+      overlay.scrollLeft = Math.max(0, scrollX);
+      overlay.scrollTop  = Math.max(0, scrollY);
+    });
+  }
+
+  window.closeFS = function() {
+    fsRendering = false;
+    document.getElementById('fs-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+  };
+
+  document.getElementById('fs-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeFS();
+  });
+  document.getElementById('fs-canvas').addEventListener('click', function() { closeFS(); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeFS(); });
+
+})();
 </script>
+
+<div id="fs-overlay" role="dialog" aria-modal="true" aria-label="Encart agrandi">
+  <button id="fs-close" aria-label="Fermer" onclick="closeFS()">&#x2715;</button>
+  <canvas id="fs-canvas"></canvas>
+  <div id="fs-hint">Cliquer ou appuyer sur Échap pour fermer</div>
+</div>
 </body>
 </html>
