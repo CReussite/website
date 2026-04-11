@@ -5,13 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>Fiches Maths — C'Réussite bêta</title>
+  <link rel="icon" href="img/favicon.ico" sizes="any">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="img/favicon-192x192.png">
+  <link rel="stylesheet" href="css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
-  <style>@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Manrope:wght@400;500;700;800&display=swap');</style>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --blue:   #112250;
-      --blue2:  #1a3066;
       --gold:   #E0C58F;
       --bg:     #F5F0E9;
       --white:  #fff;
@@ -21,175 +22,88 @@
       --red:    #dc2626;
       --green:  #16a34a;
       --sh:     0 2px 16px rgba(0,0,0,.10);
-      --sh-lg:  0 8px 40px rgba(0,0,0,.16);
     }
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'Manrope', system-ui, sans-serif;
       background: var(--bg); color: var(--text);
       user-select: none; -webkit-user-select: none;
     }
-    @media print { body { display: none !important; } }
 
-    /* ─── AUTH OVERLAY ─────────────────────────────────── */
-    #auth-overlay {
-      position: fixed; inset: 0; z-index: 9999;
-      background:
-        radial-gradient(circle at top left, rgba(224,197,143,.18), transparent 28%),
-        radial-gradient(circle at bottom right, rgba(105,152,255,.18), transparent 24%),
-        linear-gradient(135deg, #081126 0%, #16295c 48%, #0b1530 100%);
+    /* ─── AUTH PAGE ─────────────────────────────────────── */
+    #auth-page {
+      min-height: calc(100vh - 92px);
       display: flex; align-items: center; justify-content: center;
-      padding: 24px;
-      transition: opacity .45s ease;
-      overflow: auto;
-    }
-    #auth-overlay::before {
-      content: '';
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
-      background-size: 42px 42px;
-      opacity: .35;
-      pointer-events: none;
+      padding: 40px 20px;
+      background: var(--bg);
     }
     .auth-card {
-      position: relative;
-      background: var(--white); border-radius: 28px;
-      max-width: 980px; width: 100%; overflow: hidden;
-      display: grid; grid-template-columns: minmax(290px, 1.02fr) minmax(360px, .98fr);
-      box-shadow: 0 32px 80px rgba(0,0,0,.34), 0 4px 16px rgba(0,0,0,.18);
+      background: var(--white); border-radius: 24px;
+      max-width: 440px; width: 100%; overflow: hidden;
+      box-shadow: 0 8px 40px rgba(17,34,80,.12), 0 2px 8px rgba(17,34,80,.06);
     }
-    .auth-header {
-      position: relative;
-      background:
-        radial-gradient(circle at top, rgba(255,255,255,.18), transparent 34%),
-        linear-gradient(160deg, #0f214c 0%, #162f68 55%, #0c1737 100%);
-      padding: 42px 38px 36px;
-      display: flex; flex-direction: column; justify-content: space-between;
-      min-height: 560px;
+    .auth-card-header {
+      background: var(--blue);
+      padding: 32px 36px 28px; text-align: center;
     }
-    .auth-logo {
-      height: 72px; width: auto; max-width: 150px;
-      display: block; margin-bottom: 18px;
-      object-fit: contain;
-    }
+    .auth-logo { height: 68px; width: auto; margin: 0 auto 16px; display: block; }
     .auth-product {
       display: inline-block;
       background: rgba(224,197,143,.14); color: var(--gold);
-      border-radius: 999px; font-size: .72rem; font-weight: 800;
-      letter-spacing: .09em; text-transform: uppercase;
-      padding: 7px 14px; border: 1px solid rgba(224,197,143,.26);
-      margin-bottom: 22px;
+      border-radius: 20px; font-size: .71rem; font-weight: 700;
+      letter-spacing: .07em; text-transform: uppercase;
+      padding: 5px 13px; border: 1px solid rgba(224,197,143,.24);
     }
-    .auth-kicker {
-      color: rgba(255,255,255,.72);
-      font-size: .8rem; text-transform: uppercase; letter-spacing: .16em;
-      margin-bottom: 12px; font-weight: 700;
-    }
-    .auth-hero {
-      font-family: 'Fraunces', Georgia, serif;
-      color: #fff; font-size: 2.6rem; line-height: 1.02;
-      letter-spacing: -.03em; margin-bottom: 14px;
-      max-width: 8ch;
-    }
-    .auth-hero span { color: var(--gold); }
-    .auth-hero-copy {
-      color: rgba(255,255,255,.76);
-      font-size: .96rem; line-height: 1.7; max-width: 34ch;
-    }
-    .auth-feature-list {
-      display: grid; gap: 12px; margin-top: 28px;
-    }
-    .auth-feature {
-      display: flex; gap: 12px; align-items: center;
-      padding: 13px 14px; border-radius: 16px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.08);
-      backdrop-filter: blur(6px);
-    }
-    .auth-feature-mark {
-      width: 28px; height: 28px; border-radius: 50%;
-      display: inline-flex; align-items: center; justify-content: center;
-      background: rgba(224,197,143,.2); color: var(--gold);
-      font-size: .88rem; font-weight: 800; flex-shrink: 0;
-    }
-    .auth-feature strong {
-      display: block; color: #fff; font-size: .9rem; margin-bottom: 3px;
-    }
-    .auth-feature span {
-      display: block; color: rgba(255,255,255,.68); font-size: .8rem; line-height: 1.5;
-    }
-    .auth-brand-foot {
-      margin-top: 26px; color: rgba(255,255,255,.48); font-size: .76rem; line-height: 1.55;
-    }
-    .auth-body {
-      padding: 46px 42px 38px;
-      display: flex; flex-direction: column; justify-content: center;
-      background: linear-gradient(180deg, #fff 0%, #fbfaf7 100%);
-    }
+    .auth-body { padding: 32px 36px 36px; }
     .auth-title {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: 2.05rem; line-height: 1.05; font-weight: 700;
-      margin-bottom: 10px; letter-spacing: -.03em; color: #111b36;
-      max-width: 12ch;
+      font-size: 1.3rem; font-weight: 800; color: var(--blue);
+      margin-bottom: 6px; letter-spacing: -.01em;
     }
-    .auth-sub {
-      font-size: .92rem; color: var(--muted); margin-bottom: 26px; line-height: 1.7;
-      max-width: 38ch;
-    }
-    .auth-field { margin-bottom: 14px; }
+    .auth-sub { font-size: .87rem; color: var(--muted); margin-bottom: 24px; line-height: 1.6; }
+    .auth-field { margin-bottom: 12px; }
     .auth-input {
-      width: 100%; padding: 16px 18px;
-      border: 1.5px solid #dde4f0; border-radius: 16px;
-      font-size: 1rem; outline: none; background: #f7f8fb;
-      transition: border-color .2s, box-shadow .2s, background .2s;
-      letter-spacing: .03em;
+      width: 100%; padding: 14px 16px;
+      border: 1.5px solid var(--border); border-radius: 12px;
+      font-size: .97rem; outline: none; background: #f8f9fb;
+      transition: border-color .2s, box-shadow .2s;
     }
-    .auth-input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(17,34,80,.08); background: var(--white); }
+    .auth-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(17,34,80,.09); background: var(--white); }
     .auth-btn {
-      width: 100%; padding: 16px 18px;
-      background: linear-gradient(135deg, #112250 0%, #1f3c81 100%); color: #f4dfb3;
-      border: none; border-radius: 16px;
-      font-size: 1rem; font-weight: 800; letter-spacing: .02em;
-      cursor: pointer; transition: opacity .2s, transform .15s, box-shadow .2s;
-      margin-top: 6px; box-shadow: 0 18px 30px rgba(17,34,80,.18);
+      width: 100%; padding: 14px 16px;
+      background: var(--blue); color: var(--gold);
+      border: none; border-radius: 12px;
+      font-size: .97rem; font-weight: 800;
+      cursor: pointer; margin-top: 4px;
+      transition: opacity .2s, transform .1s;
     }
-    .auth-btn:hover:not(:disabled) { opacity: .94; transform: translateY(-1px); box-shadow: 0 20px 34px rgba(17,34,80,.24); }
-    .auth-btn:active:not(:disabled) { transform: translateY(0); }
+    .auth-btn:hover:not(:disabled) { opacity: .88; transform: translateY(-1px); }
     .auth-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
-    .auth-error { color: var(--red); font-size: .83rem; margin-top: 12px; min-height: 18px; font-weight: 600; }
-    .auth-note  { font-size: .76rem; color: #8f98ab; margin-top: 16px; line-height: 1.6; }
+    .auth-error { color: var(--red); font-size: .83rem; margin-top: 10px; min-height: 16px; font-weight: 600; }
+    .auth-note  { font-size: .74rem; color: #aab3c2; margin-top: 14px; text-align: center; }
 
     /* ─── MAIN VIEWER ──────────────────────────────────── */
-    #viewer { display: none; opacity: 0; transition: opacity .4s ease; min-height: 100vh; }
-
-    /* Nav */
-    .vn {
-      background: var(--blue); height: 64px; padding: 0 24px;
-      display: flex; align-items: center; justify-content: space-between;
-      position: sticky; top: 0; z-index: 100;
-      box-shadow: 0 2px 16px rgba(0,0,0,.22);
-    }
-    .vn-left  { display: flex; align-items: center; gap: 14px; }
-    .vn-logo  { height: 44px; width: auto; }
-    .vn-label { color: var(--gold); font-size: .87rem; font-weight: 700; opacity: .9; }
-    .vn-right { display: flex; align-items: center; gap: 10px; }
-    .vn-expires {
-      font-size: .75rem; color: rgba(255,255,255,.5);
-    }
+    #viewer { display: none; }
 
     /* Banner */
     .banner {
-      background: linear-gradient(90deg, #fef9ec, #fffbf0, #fef9ec);
-      border-bottom: 1px solid #fde68a;
-      padding: 12px 24px; font-size: .85rem; color: #78350f;
+      background: #fffbeb; border-bottom: 1px solid #fde68a;
+      padding: 11px 24px; font-size: .84rem; color: #78350f;
       text-align: center;
     }
     .banner strong { color: #92400e; font-weight: 700; }
 
+    /* Back to top */
+    .back-top {
+      display: block; width: fit-content; margin: 0 auto 12px;
+      padding: 10px 20px; border-radius: 20px;
+      background: var(--white); border: 1.5px solid var(--border);
+      font-size: .84rem; color: var(--muted); font-weight: 600;
+      cursor: pointer; transition: border-color .15s, color .15s;
+      text-align: center;
+    }
+    .back-top:hover { border-color: var(--blue); color: var(--blue); }
+
     /* ─── LAYOUT ───────────────────────────────────────── */
-    .page-wrap { max-width: 920px; margin: 0 auto; padding: 32px 20px 64px; }
+    .page-wrap { max-width: 920px; margin: 0 auto; padding: 28px 20px 20px; }
 
     /* ─── PDF VIEWER ───────────────────────────────────── */
     .pdf-card {
@@ -397,27 +311,14 @@
 
     /* ─── RESPONSIVE ───────────────────────────────────── */
     @media (max-width: 600px) {
-      .auth-card { grid-template-columns: 1fr; }
-      .auth-header { min-height: auto; padding: 28px 24px 24px; }
-      .auth-logo { height: 50px; max-width: 120px; margin-bottom: 12px; }
-      .auth-kicker { font-size: .72rem; }
-      .auth-hero { font-size: 2rem; max-width: none; }
-      .auth-hero-copy { font-size: .88rem; max-width: none; }
-      .auth-feature-list { margin-top: 22px; }
-      .auth-body { padding: 28px 24px 30px; }
-      .auth-title { font-size: 1.6rem; max-width: none; }
-      .auth-sub { font-size: .86rem; margin-bottom: 22px; max-width: none; }
-      .auth-input { padding: 14px 16px; font-size: .95rem; }
-      .auth-btn { padding: 15px; font-size: .95rem; }
+      #auth-page { padding: 24px 16px; align-items: flex-start; padding-top: 32px; }
+      .auth-card-header { padding: 24px 24px 20px; }
+      .auth-logo { height: 56px; margin-bottom: 12px; }
+      .auth-body { padding: 24px 24px 28px; }
+      .auth-title { font-size: 1.15rem; }
 
-      .vn { height: 56px; padding: 0 16px; }
-      .vn-logo { height: 38px; }
-      .vn-label { display: none; }
-      .vn-expires { display: none; }
-
-      .page-wrap { padding: 0 0 52px; }
+      .page-wrap { padding: 0 0 20px; }
       .pdf-card { border-radius: 0; margin-bottom: 16px; }
-
       .pdf-header { padding: 12px 14px; gap: 8px; }
       .pdf-header-title { font-size: .82rem; width: 100%; }
       .pdf-controls { width: 100%; justify-content: center; }
@@ -427,10 +328,6 @@
       .q-body { padding: 24px 16px; }
       .q-head { padding: 16px 18px; }
       .check-grid { grid-template-columns: 1fr; }
-      .btn-next, .btn-submit { padding: 12px 24px; }
-      .q-nav { flex-direction: row; gap: 10px; }
-      .q-nav-actions { width: 100%; }
-      .q-nav-actions .btn-next,
       .stars-row { gap: 10px; }
       .star-btn { font-size: 2.2rem; }
     }
@@ -438,60 +335,29 @@
     @media (max-width: 380px) {
       .pdf-controls { gap: 3px; }
       .pdf-btn { padding: 8px 10px; font-size: .82rem; }
-      .auth-header { padding: 24px 18px 20px; }
-      .auth-body { padding: 24px 18px 24px; }
     }
   </style>
 </head>
 <body>
 
-<!-- ══ AUTH OVERLAY ════════════════════════════════════════ -->
-<div id="auth-overlay">
+<div id="nav-placeholder"></div>
+
+<!-- ══ AUTH PAGE ═══════════════════════════════════════════ -->
+<div id="auth-page">
   <div class="auth-card">
-    <div class="auth-header">
-      <div>
-        <img src="img/logo.jpeg" alt="C'Réussite" class="auth-logo">
-        <div class="auth-product">Bêta-testeur</div>
-        <div class="auth-kicker">Mathématiques Terminale</div>
-        <div class="auth-hero">Des fiches <span>claires</span>, relues avant publication.</div>
-        <p class="auth-hero-copy">Tu es sur l’espace privé de prévisualisation. Lis les fiches dans les vraies conditions de consultation, puis laisse un retour complet.</p>
-      </div>
-      <div>
-        <div class="auth-feature-list">
-          <div class="auth-feature">
-            <span class="auth-feature-mark">1</span>
-            <div>
-              <strong>Connexion privée</strong>
-              <span>Ton mot de passe active un accès personnel, temporaire et non partageable.</span>
-            </div>
-          </div>
-          <div class="auth-feature">
-            <span class="auth-feature-mark">2</span>
-            <div>
-              <strong>Lecture réelle</strong>
-              <span>Tu consultes les fiches complètes dans le navigateur, avec la même structure que la version finale.</span>
-            </div>
-          </div>
-          <div class="auth-feature">
-            <span class="auth-feature-mark">3</span>
-            <div>
-              <strong>Retour exploitable</strong>
-              <span>Toutes les réponses sont demandées pour obtenir un avis vraiment actionnable.</span>
-            </div>
-          </div>
-        </div>
-        <div class="auth-brand-foot">C'Réussite prépare ici la version commerciale des fiches. Vos retours servent à corriger le fond, le rythme et la lisibilité.</div>
-      </div>
+    <div class="auth-card-header">
+      <img src="img/logo.jpeg" alt="C’Réussite" class="auth-logo">
+      <div class="auth-product">Bêta-testeur &mdash; Maths</div>
     </div>
     <div class="auth-body">
-      <div class="auth-title">Ouvrir la session bêta Maths</div>
-      <div class="auth-sub">Entre le mot de passe qui t’a été transmis pour les fiches Maths.</div>
+      <div class="auth-title">Accéder aux fiches Maths</div>
+      <div class="auth-sub">Entre le mot de passe qui t’a été transmis. L’accès est personnel et temporaire.</div>
       <div class="auth-field">
         <input type="password" id="pwd-input" class="auth-input"
-               placeholder="Mot de passe bêta"
-               onkeydown="if(event.key==='Enter')doAuth()">
+               placeholder="Mot de passe d’accès"
+               onkeydown="if(event.key===’Enter’)doAuth()">
       </div>
-      <button type="button" id="auth-btn" class="auth-btn" onclick="doAuth()">Entrer dans l’espace bêta</button>
+      <button type="button" id="auth-btn" class="auth-btn" onclick="doAuth()">Accéder aux fiches</button>
       <div id="auth-error" class="auth-error"></div>
       <p class="auth-note">Accès personnel, temporaire et non transférable.</p>
     </div>
@@ -501,18 +367,8 @@
 <!-- ══ VIEWER ══════════════════════════════════════════════ -->
 <div id="viewer">
 
-  <nav class="vn">
-    <div class="vn-left">
-      <a href="index.html"><img src="img/logo.jpeg" alt="C'Réussite" class="vn-logo"></a>
-      <span class="vn-label">Fiches Maths &mdash; Prévisualisation bêta</span>
-    </div>
-    <div class="vn-right">
-      <span class="vn-expires">Accès jusqu'au <strong id="expires-nav" style="color:rgba(255,255,255,.7)"></strong></span>
-    </div>
-  </nav>
-
   <div class="banner">
-    Accès valide jusqu'au <strong id="expires-date"></strong>.
+    Accès valide jusqu’au <strong id="expires-date"></strong>.
     Merci de remplir le questionnaire après ta lecture.
   </div>
 
@@ -531,7 +387,7 @@
           <span class="pdf-zoom-lbl" id="zoom-lbl">150%</span>
           <button class="pdf-btn" onclick="zoomIn()">+</button>
           <span class="pdf-sep"></span>
-          <button class="pdf-btn" id="btn-print" onclick="printPDF()" title="Imprimer les fiches">&#128424;</button>
+          <button class="pdf-btn" id="btn-print" onclick="printPDF()" title="Imprimer les fiches"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
         </div>
       </div>
       <div class="pdf-body" id="pdf-body">
@@ -811,9 +667,14 @@
       </div><!-- /q-inner -->
     </div><!-- /q-card -->
 
+    <button class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593; Revenir en haut</button>
+
   </div><!-- /page-wrap -->
 </div><!-- /viewer -->
 
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+<script src="js/footer.js"></script>
 <script>
 (function () {
   'use strict';
@@ -852,27 +713,14 @@
       if (!r.ok) throw new Error(r.data.error || 'Accès refusé.');
       authPwd = pwd;
       document.getElementById('expires-date').textContent = r.data.expires;
-      document.getElementById('expires-nav').textContent  = r.data.expires;
-      // Transition fluide : fade out overlay, fade in viewer
-      var overlay = document.getElementById('auth-overlay');
-      var viewer  = document.getElementById('viewer');
-      overlay.style.opacity = '0';
-      viewer.style.display  = 'block';
-      // Forcer un repaint avant de déclencher la transition CSS
-      requestAnimationFrame(function(){
-        requestAnimationFrame(function(){
-          viewer.style.opacity = '1';
-          window.scrollTo(0, 0);
-        });
-      });
-      setTimeout(function(){ overlay.style.display = 'none'; }, 460);
-      isAuthenticated = true;
-      history.pushState({ viewer: true, step: 0 }, '', location.pathname + '#questionnaire');
+      document.getElementById('auth-page').style.display  = 'none';
+      document.getElementById('viewer').style.display     = 'block';
+      window.scrollTo(0, 0);
       loadPDF();
     })
     .catch(function(e) {
       errEl.textContent = e.message;
-      btn.disabled = false; btn.textContent = 'Ouvrir la prévisualisation';
+      btn.disabled = false; btn.textContent = 'Accéder aux fiches';
     });
   };
 
@@ -999,6 +847,7 @@
     _resizeTimer = setTimeout(function() { if (pdfDoc) renderPage(curPage); }, 180);
   });
 
+  var PRINT_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>';
   window.printPDF = function() {
     if (!pdfDoc) return;
     var btn = document.getElementById('btn-print');
@@ -1007,9 +856,14 @@
     var renderNext = function(i) {
       if (i > pdfDoc.numPages) {
         var win = window.open('', '_blank');
+        if (!win) {
+          alert('Autorise les popups pour imprimer.');
+          btn.disabled = false; btn.innerHTML = PRINT_ICON; return;
+        }
         win.document.write('<!DOCTYPE html><html><head><title>Fiches Maths \u2014 C\u2019R\u00e9ussite</title><style>@page{margin:0}body{margin:0}img{width:100%;display:block;page-break-after:always}</style></head><body>' + imgs.join('') + '</body></html>');
         win.document.close();
-        setTimeout(function(){ win.print(); btn.disabled = false; btn.innerHTML = '&#128424;'; }, 500);
+        win.onload = function(){ win.print(); win.onafterprint = function(){ win.close(); }; };
+        btn.disabled = false; btn.innerHTML = PRINT_ICON;
         return;
       }
       pdfDoc.getPage(i).then(function(page) {
@@ -1031,9 +885,7 @@
   window.zoomOut  = function(){ scale = Math.max(0.5, +(scale - 0.25).toFixed(2)); if (pdfDoc) renderPage(curPage); };
 
   // ── QUESTIONNAIRE ────────────────────────────────────────
-  var TOTAL = 5, curStep = 0, starVals = { maths: 0 }, isAuthenticated = false;
-
-  history.replaceState({ viewer: false, step: 0 }, '', location.pathname + location.search);
+  var TOTAL = 5, curStep = 0, starVals = { maths: 0 };
 
   window.toggleQ = function() {
     var inner   = document.getElementById('q-inner');
@@ -1165,38 +1017,11 @@
 
   window.nextStep = function() {
     if (!validate()) return;
-    if (curStep < TOTAL - 1) {
-      curStep++;
-      showStep(curStep);
-      if (isAuthenticated) history.pushState({ viewer: true, step: curStep }, '', location.pathname + '#step-' + curStep);
-    }
+    if (curStep < TOTAL - 1) { curStep++; showStep(curStep); }
   };
   window.prevStep = function() {
-    if (curStep > 0) {
-      if (isAuthenticated) {
-        history.back();
-      } else {
-        curStep--;
-        showStep(curStep);
-      }
-    }
+    if (curStep > 0) { curStep--; showStep(curStep); }
   };
-
-  window.addEventListener('popstate', function(event) {
-    var state = event.state || { viewer: false, step: 0 };
-    if (!state.viewer) {
-      if (!isAuthenticated) return;
-      isAuthenticated = false;
-      authPwd = '';
-      document.getElementById('viewer').style.opacity = '0';
-      document.getElementById('viewer').style.display = 'none';
-      document.getElementById('auth-overlay').style.display = 'flex';
-      requestAnimationFrame(function(){ document.getElementById('auth-overlay').style.opacity = '1'; });
-      return;
-    }
-    curStep = Math.max(0, Math.min(TOTAL - 1, state.step || 0));
-    showStep(curStep);
-  });
 
   window.selectRadio = function(el) {
     var group = el.dataset.group;
