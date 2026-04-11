@@ -39,8 +39,8 @@ C'Réussite est une boutique automatisée : le client paie, reçoit ses fiches P
 | Conditions Générales d'Utilisation | c-reussite.fr/cgu.html | Oui |
 | Mentions légales | c-reussite.fr/mentions-legales.html | Oui - ⚠️ SIRET et adresse à compléter |
 | Politique de confidentialité | c-reussite.fr/confidentialite.html | Oui |
-| Formulaire bêta (Maths) | c-reussite.fr/viewer-maths.html | Protégé par mot de passe bêta-testeur |
-| Formulaire bêta (Physique-Chimie) | c-reussite.fr/viewer-physique.html | Protégé par mot de passe bêta-testeur |
+| Accès bêta Maths | c-reussite.fr/viewer-maths.html | Protégé par mot de passe bêta-testeur |
+| Accès bêta Physique-Chimie | c-reussite.fr/viewer-physique.html | Protégé par mot de passe bêta-testeur |
 | Tableau de bord admin | c-reussite.fr/admin.html | Protégé par mot de passe (`ADMIN_KEY`) |
 
 ---
