@@ -106,6 +106,7 @@
     }
     .pdf-header-title { color: var(--gold); font-size: .9rem; font-weight: 700; }
     .pdf-controls { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+    .pdf-row { display: flex; align-items: center; gap: 5px; }
     .pdf-btn {
       background: rgba(255,255,255,.10); color: var(--gold);
       border: 1px solid rgba(224,197,143,.2); border-radius: 8px;
@@ -310,7 +311,9 @@
       .pdf-card { border-radius: 0; margin-bottom: 16px; }
       .pdf-header { padding: 12px 14px; gap: 8px; }
       .pdf-header-title { font-size: .82rem; width: 100%; }
-      .pdf-controls { width: 100%; justify-content: center; }
+      .pdf-controls { width: 100%; justify-content: center; flex-direction: column; gap: 8px; }
+      .pdf-row { justify-content: center; width: 100%; }
+      .pdf-sep-rows { display: none; }
       .pdf-btn { padding: 9px 14px; font-size: .88rem; min-height: 40px; }
       .pdf-body { padding: 6px 0; }
 
@@ -377,17 +380,23 @@
       <div class="pdf-header">
         <span class="pdf-header-title">Fiches Physique-Chimie &mdash; Terminale Spécialité</span>
         <div class="pdf-controls">
-          <button class="pdf-btn" id="btn-fp" onclick="firstPage()" disabled title="Première page">&#171;</button>
-          <button class="pdf-btn" id="btn-pp" onclick="prevPage()" disabled>&#8249;</button>
-          <span class="pdf-info"><span id="pg-cur">—</span> / <span id="pg-tot">—</span></span>
-          <button class="pdf-btn" id="btn-np" onclick="nextPage()" disabled>&#8250;</button>
-          <button class="pdf-btn" id="btn-lp" onclick="lastPage()" disabled title="Dernière page">&#187;</button>
-          <span class="pdf-sep"></span>
-          <button class="pdf-btn" onclick="zoomOut()">&#8722;</button>
-          <span class="pdf-zoom-lbl" id="zoom-lbl">150%</span>
-          <button class="pdf-btn" onclick="zoomIn()">+</button>
-          <span class="pdf-sep"></span>
-          <button class="pdf-btn" id="btn-print" onclick="printPDF()" title="Imprimer les fiches"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
+          <div class="pdf-row">
+            <button class="pdf-btn" id="btn-fp" onclick="firstPage()" disabled title="Première page">&#171;</button>
+            <button class="pdf-btn" id="btn-pp" onclick="prevPage()" disabled>&#8249;</button>
+            <span class="pdf-info"><span id="pg-cur">—</span> / <span id="pg-tot">—</span></span>
+            <button class="pdf-btn" id="btn-np" onclick="nextPage()" disabled>&#8250;</button>
+            <button class="pdf-btn" id="btn-lp" onclick="lastPage()" disabled title="Dernière page">&#187;</button>
+          </div>
+          <span class="pdf-sep pdf-sep-rows"></span>
+          <div class="pdf-row">
+            <button class="pdf-btn" id="btn-toc" onclick="firstPage()" title="Sommaire"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+            <span class="pdf-sep"></span>
+            <button class="pdf-btn" onclick="zoomOut()">&#8722;</button>
+            <span class="pdf-zoom-lbl" id="zoom-lbl">150%</span>
+            <button class="pdf-btn" onclick="zoomIn()">+</button>
+            <span class="pdf-sep"></span>
+            <button class="pdf-btn" id="btn-print" onclick="printPDF()" title="Imprimer les fiches"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
+          </div>
         </div>
       </div>
       <div class="pdf-body" id="pdf-body">
@@ -864,10 +873,14 @@
     var pending = pdfDoc.numPages;
     var pages   = new Array(pdfDoc.numPages);
     function finishPrint() {
+      container.style.cssText = 'position:absolute;left:-9999px;display:block';
       container.innerHTML = pages.join('');
       btn.disabled = false; btn.innerHTML = PRINT_ICON;
-      window.print();
-      setTimeout(function() { container.innerHTML = ''; }, 4000);
+      setTimeout(function() {
+        container.removeAttribute('style');
+        window.print();
+        setTimeout(function() { container.innerHTML = ''; }, 4000);
+      }, 400);
     }
     for (var i = 1; i <= pdfDoc.numPages; i++) {
       (function(n) {
