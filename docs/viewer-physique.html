@@ -69,7 +69,12 @@
       display: flex; flex-direction: column; justify-content: space-between;
       min-height: 560px;
     }
-    .auth-logo { height: 82px; width: auto; margin-bottom: 18px; }
+    .auth-logo {
+      height: 72px; width: auto; max-width: 150px;
+      display: block; margin-bottom: 18px;
+      object-fit: contain; border-radius: 10px;
+      background: rgba(255,255,255,.9); padding: 6px 10px;
+    }
     .auth-product {
       display: inline-block;
       background: rgba(224,197,143,.14); color: var(--gold);
@@ -95,7 +100,7 @@
     }
     .auth-feature-list { display: grid; gap: 12px; margin-top: 28px; }
     .auth-feature {
-      display: flex; gap: 12px; align-items: flex-start;
+      display: flex; gap: 12px; align-items: center;
       padding: 13px 14px; border-radius: 16px;
       background: rgba(255,255,255,.08);
       border: 1px solid rgba(255,255,255,.08);
@@ -503,23 +508,7 @@
     </div>
     <div class="auth-body">
       <div class="auth-title">Ouvrir la session bêta Physique-Chimie</div>
-      <div class="auth-sub">Entre le mot de passe qui t’a été transmis. Si tu as reçu un accès bundle, il fonctionne aussi ici.</div>
-      <div class="auth-access-list">
-        <div class="auth-access-item">
-          <span class="auth-access-dot"></span>
-          <div>
-            <strong>Mot de passe Physique-Chimie</strong>
-            <span>Déverrouille l’intégralité des fiches de Physique-Chimie Terminale Spécialité.</span>
-          </div>
-        </div>
-        <div class="auth-access-item">
-          <span class="auth-access-dot"></span>
-          <div>
-            <strong>Mot de passe bundle</strong>
-            <span>Donne accès à cette page et au viewer Mathématiques avec le même identifiant.</span>
-          </div>
-        </div>
-      </div>
+      <div class="auth-sub">Entre le mot de passe qui t’a été transmis pour les fiches Physique-Chimie.</div>
       <div class="auth-field">
         <input type="password" id="pwd-input" class="auth-input"
                placeholder="Mot de passe bêta"
@@ -527,11 +516,8 @@
       </div>
       <button type="button" id="auth-btn" class="auth-btn" onclick="doAuth()">Entrer dans l’espace bêta</button>
       <div id="auth-error" class="auth-error"></div>
-      <p class="auth-note">Accès personnel, temporaire et non transférable. La consultation reste réservée aux bêta-testeurs autorisés.</p>
-      <div class="auth-switch">
-        <div class="auth-switch-copy">Tu veux basculer vers l’autre viewer avec le même mot de passe&nbsp;?</div>
-        <a class="auth-switch-link" href="viewer-maths.html">Ouvrir Mathématiques</a>
-      </div>
+      <p class="auth-note">Accès personnel, temporaire et non transférable.</p>
+    </div>
     </div>
   </div>
 </div>
