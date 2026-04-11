@@ -1307,9 +1307,8 @@
     document.body.style.overflow = '';
   };
 
-  // Molette = zoom
+  // Molette = zoom PDF en plein écran
   document.getElementById('fs-scroll').addEventListener('wheel', function(e) {
-    if (!e.ctrlKey && !e.metaKey) return; // scroll normal sans Ctrl
     e.preventDefault();
     if (e.deltaY < 0) fsZoomIn(); else fsZoomOut();
   }, { passive: false });
@@ -1326,7 +1325,7 @@
 
 <div id="fs-overlay" role="dialog" aria-modal="true" aria-label="Encart agrandi">
   <button id="fs-close" aria-label="Fermer" onclick="closeFS()">&#x2715;</button>
-  <div id="fs-hint">&#x2190;&#x2192; pour naviguer • Ctrl+molette pour zoomer</div>
+  <div id="fs-hint">&#x2190;&#x2192; pour naviguer • Molette pour zoomer</div>
   <button id="fs-prev" class="fs-nav" onclick="fsPrev()" aria-label="Page précédente">&#x276E;</button>
   <button id="fs-next" class="fs-nav" onclick="fsNext()" aria-label="Page suivante">&#x276F;</button>
   <div id="fs-scroll">
