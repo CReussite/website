@@ -164,26 +164,49 @@
     /* ─── FULLSCREEN ENCART ───────────────────────────────── */
     #fs-overlay {
       display: none; position: fixed; inset: 0; z-index: 9999;
-      background: rgba(0,0,0,.88); overflow: auto;
-      -webkit-overflow-scrolling: touch;
+      background: rgba(0,0,0,.92);
+      overflow: hidden;
+    }
+    #fs-pz-wrap {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
     }
     #fs-canvas {
-      display: block; margin: 56px auto 40px; cursor: grab;
-      box-shadow: 0 8px 40px rgba(0,0,0,.5); border-radius: 3px;
+      display: block; cursor: grab;
       touch-action: none;
+    }
+    #fs-canvas:active { cursor: grabbing; }
+    #fs-toolbar {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(0,0,0,.7); backdrop-filter: blur(8px);
+      border-radius: 12px; padding: 8px 14px; z-index: 10001;
+    }
+    .fs-btn {
+      background: rgba(255,255,255,.12); color: #fff; border: none;
+      border-radius: 8px; width: 40px; height: 40px; font-size: 1.2rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .15s;
+    }
+    .fs-btn:hover { background: rgba(255,255,255,.25); }
+    .fs-btn:active { background: rgba(255,255,255,.35); }
+    #fs-zoom-lbl {
+      color: rgba(255,255,255,.7); font-size: .8rem; min-width: 44px;
+      text-align: center; font-variant-numeric: tabular-nums;
     }
     #fs-close {
       position: fixed; top: 12px; right: 14px;
       background: rgba(255,255,255,.15); color: #fff; border: none;
       border-radius: 50%; width: 42px; height: 42px; font-size: 1.3rem;
-      cursor: pointer; z-index: 10000; line-height: 42px; text-align: center;
+      cursor: pointer; z-index: 10002; line-height: 42px; text-align: center;
       transition: background .2s;
     }
     #fs-close:hover { background: rgba(255,255,255,.3); }
     #fs-hint {
-      position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%);
-      color: rgba(255,255,255,.55); font-size: .78rem; pointer-events: none;
-      white-space: nowrap; letter-spacing: .02em;
+      position: fixed; top: 14px; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,.45); font-size: .75rem; pointer-events: none;
+      white-space: nowrap; z-index: 10001;
     }
 
     /* ─── QUESTIONNAIRE ────────────────────────────────── */
@@ -880,10 +903,13 @@
     }).catch(function() { return null; });
   }
 
-  var _resizeTimer;
+  var _resizeTimer, _lastWidth = document.documentElement.clientWidth;
   window.addEventListener('resize', function() {
+    var newW = document.documentElement.clientWidth;
+    if (newW === _lastWidth) return;
+    _lastWidth = newW;
     clearTimeout(_resizeTimer);
-    _resizeTimer = setTimeout(function() { if (pdfDoc) renderPage(curPage); }, 180);
+    _resizeTimer = setTimeout(function() { if (pdfDoc) renderPage(curPage); }, 250);
   });
 
 
@@ -1166,9 +1192,14 @@
   };
 
   // ── ENCART PLEIN ÉCRAN + PANZOOM ─────────────────────
-  var fsPZ = null;
+  var fsPZ = null, fsCurrentScale = 1;
 
-  document.getElementById('pdf-canvas').addEventListener('click', function(e) {
+  function updateZoomLabel() {
+    var el = document.getElementById('fs-zoom-lbl');
+    if (el) el.textContent = Math.round(fsCurrentScale * 100) + '%';
+  }
+
+  document.getElementById('pdf-canvas').addEventListener('click', function() {
     if (!pdfDoc) return;
     openFS();
   });
@@ -1179,29 +1210,50 @@
     var fsCanvas = document.getElementById('fs-canvas');
     overlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
-    if (fsPZ) { fsPZ.destroy(); fsPZ = null; }
+    if (fsPZ) { try { fsPZ.destroy(); } catch(e){} fsPZ = null; }
+    fsCurrentScale = 1;
+    updateZoomLabel();
+
     pdfDoc.getPage(curPage).then(function(page) {
       var dpr = window.devicePixelRatio || 1;
       var vp = page.getViewport({ scale: 3.0 * dpr });
       fsCanvas.width  = vp.width;
       fsCanvas.height = vp.height;
-      var dispW = Math.min(vp.width / dpr, window.innerWidth - 20);
-      var ratio = dispW / (vp.width / dpr);
-      fsCanvas.style.width  = dispW + 'px';
-      fsCanvas.style.height = (vp.height / dpr * ratio) + 'px';
+      var maxW = window.innerWidth - 16;
+      var maxH = window.innerHeight - 16;
+      var natW = vp.width / dpr;
+      var natH = vp.height / dpr;
+      var fitRatio = Math.min(maxW / natW, maxH / natH, 1);
+      fsCanvas.style.width  = Math.round(natW * fitRatio) + 'px';
+      fsCanvas.style.height = Math.round(natH * fitRatio) + 'px';
       return page.render({ canvasContext: fsCanvas.getContext('2d'), viewport: vp }).promise;
     }).then(function() {
+      var wrap = document.getElementById('fs-pz-wrap');
       fsPZ = Panzoom(fsCanvas, {
-        maxScale: 8, minScale: 1, startScale: 1,
+        maxScale: 10, minScale: 1, startScale: 1,
         contain: 'outside', cursor: 'grab',
-        panOnlyWhenZoomed: true,
+        pinchAndPan: true,
       });
-      fsCanvas.parentElement.addEventListener('wheel', fsPZ.zoomWithWheel, { passive: false });
+      wrap.addEventListener('wheel', fsPZ.zoomWithWheel, { passive: false });
+      fsCanvas.addEventListener('panzoomchange', function(e) {
+        fsCurrentScale = e.detail.scale;
+        updateZoomLabel();
+      });
     });
   };
 
+  window.fsZoomIn = function() {
+    if (fsPZ) fsPZ.zoomIn();
+  };
+  window.fsZoomOut = function() {
+    if (fsPZ) fsPZ.zoomOut();
+  };
+  window.fsReset = function() {
+    if (fsPZ) fsPZ.reset();
+  };
+
   window.closeFS = function() {
-    if (fsPZ) { fsPZ.destroy(); fsPZ = null; }
+    if (fsPZ) { try { fsPZ.destroy(); } catch(e){} fsPZ = null; }
     document.getElementById('fs-overlay').style.display = 'none';
     document.body.style.overflow = '';
   };
@@ -1214,8 +1266,17 @@
 
 <div id="fs-overlay" role="dialog" aria-modal="true" aria-label="Encart agrandi">
   <button id="fs-close" aria-label="Fermer" onclick="closeFS()">&#x2715;</button>
-  <canvas id="fs-canvas"></canvas>
-  <div id="fs-hint">Cliquer ou appuyer sur Échap pour fermer</div>
+  <div id="fs-hint">Pincer ou molette pour zoomer • Glisser pour déplacer</div>
+  <div id="fs-pz-wrap">
+    <canvas id="fs-canvas"></canvas>
+  </div>
+  <div id="fs-toolbar">
+    <button class="fs-btn" onclick="fsZoomOut()" title="Dézoomer" aria-label="Dézoomer">−</button>
+    <span id="fs-zoom-lbl">100%</span>
+    <button class="fs-btn" onclick="fsZoomIn()" title="Zoomer" aria-label="Zoomer">+</button>
+    <button class="fs-btn" onclick="fsReset()" title="Réinitialiser" aria-label="Réinitialiser" style="font-size:.85rem">1:1</button>
+    <button class="fs-btn" onclick="closeFS()" title="Fermer" aria-label="Fermer" style="font-size:1rem">&#x2715;</button>
+  </div>
 </div>
 </body>
 </html>
