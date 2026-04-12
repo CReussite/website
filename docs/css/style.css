@@ -974,15 +974,57 @@ footer a:hover { color: var(--quicksand); }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
-  section { padding: 52px 0; }
+  section { padding: 40px 0; }
 
+  /* Countdown compact */
+  .bac-countdown { font-size: 0.75rem; padding: 7px 0; }
+  .bac-countdown strong { font-size: 0.8rem; }
+
+  /* Titres */
+  h1 { font-size: 1.25rem; }
+  h2 { font-size: 1.1rem; }
+
+  /* Hero */
+  .hero { padding: 48px 0 40px; }
+  .hero-sub { font-size: 0.88rem; margin-bottom: 24px; }
+  .badge { font-size: 0.7rem; padding: 5px 12px; }
+
+  /* Différenciation */
+  .section-diff { padding: 36px 0; }
+  .diff-intro { font-size: 0.85rem; line-height: 1.6; }
+  .section-diff h2 { font-size: 1rem; }
+  .diff-block h3 { font-size: 0.95rem; }
+  .diff-block p { font-size: 0.85rem; }
+  .diff-cta .btn { font-size: 0.82rem; padding: 10px 18px; }
+
+  /* Produits */
+  .product-benefit { font-size: 0.82rem; padding: 10px 12px; }
+  .product-toc { font-size: 0.82rem; }
+  .product-price { font-size: 1.3rem; }
+  .bundle-desc, .bundle-desc-detail { font-size: 0.85rem; }
+
+  /* Témoignages */
+  .reviews-summary { font-size: 0.82rem; }
+  .testimonial-text { font-size: 0.85rem; }
+
+  /* À propos */
+  .about-inner p { font-size: 0.85rem; }
+
+  /* FAQ */
+  .faq-q { font-size: 0.9rem; }
+  .faq-a { font-size: 0.85rem; }
+
+  /* SEO footer */
+  .seo-text { font-size: 0.75rem; }
+
+  /* Nav */
   .nav-burger { display: flex; }
   .nav-tools { gap: 10px; }
 
   .nav-links {
     display: none;
     position: absolute;
-    top: 92px;
+    top: 56px;
     left: 0;
     right: 0;
     background: var(--royal-blue);
@@ -1007,7 +1049,7 @@ footer a:hover { color: var(--quicksand); }
     height: 20px;
   }
 
-  .nav-logo-img { height: 52px; }
+  .nav-logo-img { height: 36px; }
   .bundle-card { padding: 28px 20px; }
   .hero-cards { flex-direction: column; align-items: stretch; }
   .hero-card {
