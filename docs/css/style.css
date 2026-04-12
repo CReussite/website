@@ -62,7 +62,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 92px;
+  min-height: 56px;
   gap: 24px;
 }
 .nav-tools {
@@ -76,7 +76,7 @@ nav {
   flex-shrink: 0;
 }
 .nav-logo-img {
-  height: 72px;
+  height: 44px;
   width: auto;
 }
 .nav-links {
@@ -121,8 +121,9 @@ nav {
 .hero-sub {
   font-size: 1.1rem;
   color: rgba(255,255,255,0.78);
-  max-width: 560px;
+  max-width: 100%;
   margin-bottom: 36px;
+  text-align: justify;
 }
 .hero-sub strong { color: var(--quicksand); font-weight: 600; }
 .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
@@ -277,12 +278,14 @@ nav {
 .bac-countdown-inner {
   display: flex;
   justify-content: center;
-  gap: 12px;
+  align-items: baseline;
+  gap: 0;
   flex-wrap: wrap;
 }
 .bac-countdown strong {
   font-weight: 800;
   font-size: 1rem;
+  color: #c0392b;
 }
 
 /* ===== DIFFERENTIATION SECTION ===== */
@@ -293,9 +296,10 @@ nav {
 .diff-intro {
   font-size: 1rem;
   color: var(--text-mid);
-  max-width: 640px;
+  max-width: 100%;
   margin-bottom: 24px;
   line-height: 1.7;
+  text-align: justify;
 }
 .section-diff h2 {
   font-size: clamp(1.1rem, 2.5vw, 1.35rem);
