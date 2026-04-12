@@ -294,7 +294,7 @@ Créer une nouvelle section avec 3 blocs (texte uniquement, pas de carte). Le te
   - Bouton CTA : "Recevoir un extrait gratuit" (ouvre la modale existante)
 </section>
 ```
-
+x
 ### TÂCHE 3 — Cartes produit : reformulation
 
 Fichier concerné : `index.html`, cartes Maths / PC / Pack.

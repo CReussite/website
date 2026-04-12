@@ -44,10 +44,15 @@ p  { color: var(--text-mid); margin-bottom: 16px; }
 p:last-child { margin-bottom: 0; }
 
 /* ===== NAV ===== */
-nav {
-  background: var(--royal-blue);
+/* ===== STICKY TOP WRAPPER (countdown + nav) ===== */
+.sticky-top {
   position: sticky;
   top: 0;
+  z-index: 100;
+}
+
+nav {
+  background: var(--royal-blue);
   z-index: 100;
 }
 .nav-inner {
@@ -57,7 +62,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 92px;
+  min-height: 56px;
   gap: 24px;
 }
 .nav-tools {
@@ -71,7 +76,7 @@ nav {
   flex-shrink: 0;
 }
 .nav-logo-img {
-  height: 72px;
+  height: 44px;
   width: auto;
 }
 .nav-links {
@@ -116,8 +121,9 @@ nav {
 .hero-sub {
   font-size: 1.1rem;
   color: rgba(255,255,255,0.78);
-  max-width: 560px;
+  max-width: 100%;
   margin-bottom: 36px;
+  text-align: justify;
 }
 .hero-sub strong { color: var(--quicksand); font-weight: 600; }
 .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
@@ -259,6 +265,148 @@ nav {
 .section-dark { background: var(--royal-blue); }
 .section-dark h2 { color: var(--white); }
 .section-dark h3, .section-dark p { color: rgba(255,255,255,0.88); }
+
+/* ===== BAC COUNTDOWN BANNER ===== */
+.bac-countdown {
+  background: var(--quicksand);
+  color: var(--royal-blue);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 10px 0;
+  text-align: center;
+}
+.bac-countdown-inner {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0;
+  flex-wrap: wrap;
+}
+.bac-countdown strong {
+  font-weight: 800;
+  font-size: 1rem;
+  color: #c0392b;
+}
+
+/* ===== DIFFERENTIATION SECTION ===== */
+.section-diff {
+  background: var(--swan-wing);
+  padding: 56px 0;
+}
+.diff-intro {
+  font-size: 1rem;
+  color: var(--text-mid);
+  max-width: 100%;
+  margin-bottom: 24px;
+  line-height: 1.7;
+  text-align: justify;
+}
+.section-diff h2 {
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  color: var(--royal-blue);
+  margin-bottom: 32px;
+  font-weight: 700;
+}
+.diff-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 36px;
+}
+.diff-block {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 28px 24px;
+  box-shadow: var(--shadow-sm);
+  border-top: 3px solid var(--sapphire);
+}
+.diff-icon {
+  font-size: 1.6rem;
+  margin-bottom: 12px;
+}
+.diff-block h3 {
+  font-size: 1rem;
+  color: var(--royal-blue);
+  margin-bottom: 8px;
+}
+.diff-block p {
+  font-size: 0.88rem;
+  color: var(--text-mid);
+  line-height: 1.65;
+}
+.diff-cta {
+  text-align: center;
+}
+.diff-cta .btn-extract {
+  background: transparent;
+  color: var(--sapphire);
+  border: 1.5px solid var(--sapphire);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 13px 28px;
+  cursor: pointer;
+  opacity: 1;
+}
+.diff-cta .btn-extract:hover {
+  background: var(--sapphire);
+  color: var(--white);
+}
+@media (max-width: 600px) {
+  .diff-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== PRODUCT BENEFIT ===== */
+.product-benefit {
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  line-height: 1.65;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  background: var(--swan-wing);
+  border-radius: 8px;
+  border-left: 3px solid var(--quicksand);
+}
+
+/* ===== BUNDLE DETAIL ===== */
+.bundle-desc-detail {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+/* ===== REVIEWS SUMMARY ===== */
+.reviews-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+.reviews-stars {
+  color: #F5A623;
+  letter-spacing: 2px;
+}
+.reviews-score {
+  font-weight: 700;
+  color: var(--royal-blue);
+}
+.reviews-count {
+  color: var(--text-mid);
+  font-size: 0.85rem;
+}
+
+/* ===== SEO FOOTER TEXT ===== */
+.seo-footer {
+  padding: 32px 0;
+  background: var(--swan-wing);
+}
+.seo-text {
+  font-size: 0.78rem;
+  color: var(--shellstone);
+  line-height: 1.7;
+  max-width: 720px;
+}
 
 /* ===== PRODUCT CARDS ===== */
 .products-grid {
@@ -727,6 +875,7 @@ footer a:hover { color: var(--quicksand); }
 .extract-popup--pack p { color: rgba(255,255,255,0.7); }
 .extract-popup--pack .form-label { color: rgba(255,255,255,0.8); }
 .extract-popup--pack .extract-close { color: rgba(255,255,255,0.6); }
+.extract-popup--pack .extract-choice-label { color: var(--white); }
 .extract-popup--pack .btn-primary { background: var(--white); color: var(--royal-blue); }
 .extract-popup--pack .form-note { color: rgba(255,255,255,0.45); }
 .extract-popup--pack .form-rgpd { color: rgba(255,255,255,0.55); }
