@@ -12,16 +12,16 @@
   <link rel="shortcut icon" href="img/favicon.ico">
 
   <!-- SEO -->
-  <title>Fiches Terminale Spécialité Maths &amp; Physique-Chimie | C'Réussite</title>
-  <meta name="description" content="20 fiches Maths + 32 fiches Physique-Chimie Terminale Spécialité. Tout le programme, une page par chapitre. Par Camille Reinhardt, polytechnicienne et docteure. Bac 2026.">
+  <title>Fiches de révision Terminale Spécialité 2026 — Maths et Physique-Chimie | C'Réussite</title>
+  <meta name="description" content="52 fiches de révision maths et physique-chimie — Terminale spécialité, programme officiel 2026. Une fiche par chapitre, cours, formules et méthodes de résolution. Conçu par une polytechnicienne. PDF, téléchargement immédiat.">
   <meta name="author" content="Camille Reinhardt">
   <link rel="canonical" href="https://c-reussite.fr/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://c-reussite.fr/">
-  <meta property="og:title" content="Fiches Terminale Spécialité Maths &amp; Physique-Chimie | C'Réussite">
-  <meta property="og:description" content="20 fiches Maths + 32 fiches Physique-Chimie. L'essentiel du programme sur une page par chapitre. Par Camille Reinhardt.">
+  <meta property="og:title" content="Fiches de révision Terminale Spécialité 2026 — Maths et Physique-Chimie | C'Réussite">
+  <meta property="og:description" content="52 fiches de révision maths et physique-chimie — programme officiel 2026. Une fiche par chapitre, cours, formules et méthodes. Par une polytechnicienne.">
   <meta property="og:site_name" content="C'Réussite">
 
   <!-- Twitter Card -->
@@ -55,20 +55,36 @@
     /* ── Consentement RGPD formulaires ── */
     .form-rgpd { font-size: 0.78rem; color: #6b7280; margin-top: 6px; line-height: 1.5; }
     .form-rgpd a { color: #6b7280; text-decoration: underline; }
+
+    /* ── Choix extrait pack ── */
+    .extract-choice-label { display: flex; align-items: center; gap: 8px; font-size: 0.92rem; cursor: pointer; margin-top: 6px; }
+    .extract-choice-label input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
   </style>
 </head>
 
 <body>
 
-  <div id="nav-placeholder"></div>
+  <!-- ===== STICKY TOP (countdown + nav) ===== -->
+  <div id="sticky-top" class="sticky-top">
+
+    <!-- ===== BANDEAU BAC COUNTDOWN ===== -->
+    <div id="bac-countdown" class="bac-countdown" hidden>
+      <div class="container bac-countdown-inner">
+        <span>Bac 2026 : <strong id="bac-days"></strong> — Ces fiches couvrent l'intégralité du programme. Réception immédiate après commande.</span>
+      </div>
+    </div>
+
+    <div id="nav-placeholder"></div>
+
+  </div>
 
   <!-- ===== HERO ===== -->
   <section class="hero" aria-labelledby="hero-title">
     <div class="container">
       <div class="badge">Bac 2026 — Terminale Spécialité</div>
-      <h1 id="hero-title">Fiches de révision maths<br>et physique-chimie.</h1>
+      <h1 id="hero-title">Tout le programme. Une fiche par chapitre.<br>Conçu par une polytechnicienne.</h1>
       <p class="hero-sub">
-        Tout le programme sur ton bureau — une fiche par chapitre, l'essentiel, rien de plus.
+        52 fiches de révision en maths et physique-chimie : le cours, les formules, les méthodes de résolution. Chaque chapitre tient sur une seule page.
       </p>
 
       <div class="hero-cards">
@@ -98,6 +114,32 @@
     </div>
   </section>
 
+
+  <!-- ===== DIFFÉRENCIATION ===== -->
+  <section id="pourquoi" class="section-diff" aria-labelledby="diff-title">
+    <div class="container">
+      <p class="diff-intro">Des fiches gratuites, il en existe des centaines en ligne. Le problème, c’est que la plupart sont incomplètes, non vérifiées, ou mal structurées. Un élève qui révise avec un support approximatif perd du temps sans le savoir.</p>
+      <h2 id="diff-title">Ces fiches sont différentes sur trois points :</h2>
+      <div class="diff-grid">
+        <div class="diff-block">
+          <h3>Une page par chapitre au format A4</h3>
+          <p>Un chapitre, une page. Le programme entier se révise sans être noyé sous 200 pages de cours recopiés.</p>
+        </div>
+        <div class="diff-block">
+          <h3>Méthodes de résolution incluses</h3>
+          <p>Ce ne sont pas des résumés de cours. Ce sont des étapes concrètes pour résoudre les exercices types du bac.</p>
+        </div>
+        <div class="diff-block">
+          <h3>Conçu par une polytechnicienne</h3>
+          <p>La rigueur vient du parcours scientifique. L’accessibilité vient de l’expérience pédagogique auprès d’élèves de la 6e au Master.</p>
+        </div>
+      </div>
+      <div class="diff-cta">
+        <button class="btn btn-outline btn-extract" data-extract="bundle">Tu veux voir à quoi ressemblent les fiches ? Reçois un extrait gratuit →</button>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== PRODUITS ===== -->
   <section id="fiches" aria-labelledby="fiches-title">
     <div class="container">
@@ -115,6 +157,7 @@
                 <span class="product-tag">20 fiches</span>
                 <span class="product-tag">6 thèmes</span>
               </div>
+              <p class="product-benefit"> Chaque chapitre condensé en une fiche. Cours, formules, méthodes de résolution : tout ce qu'il faut pour réviser le bac, le tout sur une seule page.</p>
               <ul class="product-toc" aria-label="Sommaire">
                 <li><strong>Les types de raisonnement</strong></li>
                 <li><strong>Algèbre</strong> : combinatoire et dénombrement</li>
@@ -126,7 +169,6 @@
               <div class="product-price">14,99 €</div>
               <p class="product-price-sub"><span class="product-tag">Livraison instantanée</span><span class="product-tag">PDF</span></p>
               <div class="product-buttons">
-                <button class="btn btn-extract" data-extract="maths" disabled>Recevoir un extrait</button>
                 <button data-product="maths" class="btn btn-primary" disabled>Commander</button>
               </div>
             </div>
@@ -145,6 +187,7 @@
                 <span class="product-tag">32 fiches</span>
                 <span class="product-tag">6 thèmes</span>
               </div>
+              <p class="product-benefit">Chaque fiche couvre un chapitre entier en une seule page : définitions, concepts, formules et unités, méthodes. Tout ce qu'il faut pour réviser le bac sans replonger dans des dizaines de pages de cours.</p>
               <ul class="product-toc" aria-label="Sommaire">
                 <li><strong>Chimie</strong> : évolution spontanée ; piles ; évolution forcée ; acides et bases ; dosages ; cinétique ; synthèse organique ; radioactivité</li>
                 <li><strong>Mécanique</strong> : forces ; cinématique ; mouvements rectilignes et circulaires ; lois de Newton ; mouvements dans des champs</li>
@@ -156,7 +199,6 @@
               <div class="product-price">14,99 €</div>
               <p class="product-price-sub"><span class="product-tag">Livraison instantanée</span><span class="product-tag">PDF</span></p>
               <div class="product-buttons">
-                <button class="btn btn-extract" data-extract="physique" disabled>Recevoir un extrait</button>
                 <button data-product="physique" class="btn btn-primary" disabled>Commander</button>
               </div>
             </div>
@@ -175,14 +217,14 @@
               <span class="bundle-plus">+</span>
               <img src="img/cover-physique.jpg" alt="Couverture Physique-Chimie" loading="lazy" width="190" height="269">
             </div>
-            <p class="bundle-desc">Les deux ebooks ensemble : 20 fiches Maths + 32 fiches Physique-Chimie.</p>
+            <p class="bundle-desc">Le pack regroupe les deux ebooks : 20 fiches Maths + 32 fiches Physique-Chimie. Les deux matières se révisent avec le même outil, la même structure, la même logique.</p>
+            <p class="bundle-desc-detail">52 fiches couvrant 100 % du programme de Terminale Spé. Le pack le plus complet pour réviser efficacement.</p>
             <div class="bundle-pricing">
               <div class="bundle-price-old">29,98 €</div>
               <div class="bundle-price-new">24,99 €</div>
-              <div class="bundle-economy">− 5 € sur le pack</div>
+              <div class="bundle-economy">−17 % sur le pack</div>
             </div>
             <div class="product-buttons">
-              <button class="btn btn-extract" data-extract="bundle" disabled>Recevoir un extrait</button>
               <button data-product="bundle" class="btn btn-primary" disabled>Commander le pack</button>
             </div>
           </div>
@@ -195,7 +237,12 @@
   <!-- ===== TÉMOIGNAGES ===== -->
   <section id="avis" aria-labelledby="temoignages-title">
     <div class="container">
-      <h2 id="temoignages-title">Ce qu'en disent les élèves</h2>
+      <h2 id="temoignages-title">Ce qu’en disent les élèves</h2>
+      <div class="reviews-summary" aria-label="Note moyenne">
+        <span class="reviews-stars">⭐⭐⭐⭐⭐</span>
+        <span class="reviews-score">5,0 / 5</span>
+        <span class="reviews-count">(12 avis)</span>
+      </div>
 
       <div class="testimonials-track-wrapper" id="testimonials-swipe">
         <div class="testimonials-track">
@@ -239,7 +286,11 @@
         </div>
 
         <div>
-          <p>En accompagnant des élèves en sciences depuis plusieurs années, j’ai observé que la plupart ne manquent pas d'intelligence, mais d’un cadre clair. Ces fiches sont ce cadre : l'essentiel, structuré, hiérarchisé, sans surcharge.</p>
+          <p>Je viens d’un petit village. Pas de grand lycée, pas de prépa privée. J’ai travaillé, structuré, recommencé. Et j’ai intégré l’École Polytechnique.</p>
+          <p>Ce parcours m’a appris une chose : la réussite scolaire n’est pas une question de talent inné. C’est une question de méthode, de clarté et de travail.</p>
+          <p>En accompagnant des élèves en sciences de tous niveaux, du collège au supérieur, j’ai observé le même problème partout : les cours sont longs, les manuels sont denses, et les élèves ne savent pas quoi retenir en priorité. Ces fiches sont ma réponse à ce problème. Chaque fiche isole l’essentiel d’un chapitre, le structure en une page, et donne les méthodes concrètes pour résoudre les exercices du bac.</p>
+          <p>Je connais les exigences du supérieur et je connais les difficultés des élèves au collège et au lycée. Ces fiches sont construites à partir de cette double perspective : ce qu’il faut savoir pour réussir le bac, et ce qu’il faut maîtriser pour aborder sereinement la suite.</p>
+          <p>Je ne promets pas de miracle. Je promets un outil clair, rigoureux, conçu par quelqu’un qui a passé les concours les plus sélectifs et qui a accompagné des élèves de la 6e au Master.</p>
         </div>
       </div>
 
@@ -281,8 +332,12 @@
           <p class="faq-a">Elles existent, mais tu perds du temps à chercher, trier et vérifier. Ici tout est déjà structuré, cohérent, aligné sur le programme officiel.</p>
         </div>
         <div class="faq-item">
-          <div class="faq-q">Et si ça ne me convient pas ?</div>
-          <p class="faq-a">Écris-nous à <a href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@c-reussite.fr" target="_blank" rel="noopener">contact@c-reussite.fr</a>. On examine chaque demande individuellement et on trouve une solution.</p>
+          <div class="faq-q">Quelle différence avec les fiches gratuites qu’on trouve en ligne ?</div>
+          <p class="faq-a">Les fiches gratuites sont souvent incomplètes, non relues et mal structurées. Ici chaque fiche est alignée sur le programme officiel 2025, vérifiée par une polytechnicienne et condensée sur une seule page avec les méthodes de résolution du bac.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Ces fiches peuvent-elles remplacer un cahier de révisions en librairie ?</div>
+          <p class="faq-a">Les cahiers en librairie dépassent souvent 200 pages et mélangent cours et exercices. Nos fiches vont à l’essentiel : une page par chapitre, avec uniquement ce qui tombe au bac, en format PDF consultable sur téléphone ou imprimable.</p>
         </div>
       </div>
 
@@ -302,6 +357,12 @@
       <p id="extract-popup-desc"></p>
       <form id="extract-form" class="contact-form">
         <input type="hidden" id="extract-product">
+        <!-- Choix matière (affiché uniquement pour le pack) -->
+        <div id="extract-choice" class="form-group" hidden>
+          <p class="form-label">Quel extrait veux-tu recevoir ?</p>
+          <label class="extract-choice-label"><input type="checkbox" id="extract-pick-maths" value="maths" checked> Maths</label>
+          <label class="extract-choice-label"><input type="checkbox" id="extract-pick-physique" value="physique" checked> Physique-Chimie</label>
+        </div>
         <div class="form-group">
           <label class="form-label" for="extract-email">Email</label>
           <input class="form-control" type="email" id="extract-email" name="email" placeholder="ton@email.fr" required>
@@ -366,6 +427,13 @@
     </div>
   </div>
 
+  <!-- ===== SEO FOOTER ===== -->
+  <section class="seo-footer" aria-label="Contexte pédagogique">
+    <div class="container">
+      <p class="seo-text">C’Réussite propose des fiches de révision pour le bac 2026 en Mathématiques et Physique-Chimie (Terminale Spécialité). Conçues par une diplômée de l’École polytechnique, elles condensent le programme officiel en fiches d’une page par chapitre. Format PDF, livraison immédiate, compatibles smartphone et impression.</p>
+    </div>
+  </section>
+
   <div id="footer-placeholder"></div>
 
   <script src="js/nav.js"></script>
@@ -382,6 +450,22 @@
         item.classList.toggle('open');
       });
     });
+  </script>
+
+
+  <!-- Countdown Bac -->
+  <script>
+  (function(){
+    const target = new Date('2026-06-16T08:00:00+02:00');
+    const el = document.getElementById('bac-days');
+    const wrap = document.getElementById('bac-countdown');
+    if(!el||!wrap) return;
+    const diff = target - new Date();
+    if(diff<=0) return;
+    const d = Math.ceil(diff/864e5);
+    el.textContent = 'J − ' + d + (d>1?' jours':' jour');
+    wrap.hidden = false;
+  })();
   </script>
 
 </body>

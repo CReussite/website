@@ -3,7 +3,6 @@ document.getElementById('contact-placeholder').outerHTML = `
     <div class="container">
       <div class="text-center">
         <h2 id="contact-title">Une question ?</h2>
-        <p>Commande, contenu des fiches, cours particuliers — écris-moi directement.</p>
       </div>
 
       <form class="contact-form" id="contact-form" aria-label="Formulaire de contact">
