@@ -55,20 +55,29 @@
     /* ── Consentement RGPD formulaires ── */
     .form-rgpd { font-size: 0.78rem; color: #6b7280; margin-top: 6px; line-height: 1.5; }
     .form-rgpd a { color: #6b7280; text-decoration: underline; }
+
+    /* ── Choix extrait pack ── */
+    .extract-choice-label { display: flex; align-items: center; gap: 8px; font-size: 0.92rem; cursor: pointer; margin-top: 6px; }
+    .extract-choice-label input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
   </style>
 </head>
 
 <body>
 
-  <!-- ===== BANDEAU BAC COUNTDOWN ===== -->
-  <div id="bac-countdown" class="bac-countdown" hidden>
-    <div class="container bac-countdown-inner">
-      <span>📅 Épreuves de spécialité du bac 2026 : <strong id="bac-days"></strong>.</span>
-      <span>Réception immédiate après commande.</span>
-    </div>
-  </div>
+  <!-- ===== STICKY TOP (countdown + nav) ===== -->
+  <div id="sticky-top" class="sticky-top">
 
-  <div id="nav-placeholder"></div>
+    <!-- ===== BANDEAU BAC COUNTDOWN ===== -->
+    <div id="bac-countdown" class="bac-countdown" hidden>
+      <div class="container bac-countdown-inner">
+        <span>Bac 2026 : <strong id="bac-days"></strong></span>
+        <span>. Ces fiches couvrent l'intégralité du programme. Réception immédiate après commande.</span>
+      </div>
+    </div>
+
+    <div id="nav-placeholder"></div>
+
+  </div>
 
   <!-- ===== HERO ===== -->
   <section class="hero" aria-labelledby="hero-title">
@@ -76,7 +85,7 @@
       <div class="badge">Bac 2026 — Terminale Spécialité</div>
       <h1 id="hero-title">Tout le programme. Une fiche par chapitre.<br>Conçu par une polytechnicienne.</h1>
       <p class="hero-sub">
-        52 fiches de révision en maths et physique-chimie : le cours, les formules, les méthodes de résolution — chaque chapitre tient sur une seule page.
+        52 fiches de révision en maths et physique-chimie : le cours, les formules, les méthodes de résolution. Chaque chapitre tient sur une seule page.
       </p>
 
       <div class="hero-cards">
@@ -114,17 +123,14 @@
       <h2 id="diff-title">Ces fiches sont différentes sur trois points :</h2>
       <div class="diff-grid">
         <div class="diff-block">
-          <div class="diff-icon">📄</div>
-          <h3>Une page par chapitre</h3>
+          <h3>Une page par chapitre au format A4</h3>
           <p>Un chapitre, une page. Le programme entier se révise sans être noyé sous 200 pages de cours recopiés.</p>
         </div>
         <div class="diff-block">
-          <div class="diff-icon">🧩</div>
           <h3>Méthodes de résolution incluses</h3>
           <p>Ce ne sont pas des résumés de cours. Ce sont des étapes concrètes pour résoudre les exercices types du bac.</p>
         </div>
         <div class="diff-block">
-          <div class="diff-icon">🎓</div>
           <h3>Conçu par une polytechnicienne</h3>
           <p>La rigueur vient du parcours scientifique. L’accessibilité vient de l’expérience pédagogique auprès d’élèves de la 6e au Master.</p>
         </div>
@@ -152,7 +158,7 @@
                 <span class="product-tag">20 fiches</span>
                 <span class="product-tag">6 thèmes</span>
               </div>
-              <p class="product-benefit">Chaque fiche condense l’essentiel d’un chapitre : théorèmes clés, méthodes de résolution et pièges classiques du bac, le tout sur une seule page.</p>
+              <p class="product-benefit"> Chaque chapitre condensé en une fiche. Cours, formules, méthodes de résolution : tout ce qu'il faut pour réviser le bac, le tout sur une seule page.</p>
               <ul class="product-toc" aria-label="Sommaire">
                 <li><strong>Les types de raisonnement</strong></li>
                 <li><strong>Algèbre</strong> : combinatoire et dénombrement</li>
@@ -182,7 +188,7 @@
                 <span class="product-tag">32 fiches</span>
                 <span class="product-tag">6 thèmes</span>
               </div>
-              <p class="product-benefit">Chaque fiche couvre un chapitre entier : lois fondamentales, démarches de résolution et erreurs fréquentes à éviter le jour J, en une page recto.</p>
+              <p class="product-benefit">Chaque fiche couvre un chapitre entier en une seule page : définitions, concepts, formules et unités, méthodes. Tout ce qu'il faut pour réviser le bac sans replonger dans des dizaines de pages de cours.</p>
               <ul class="product-toc" aria-label="Sommaire">
                 <li><strong>Chimie</strong> : évolution spontanée ; piles ; évolution forcée ; acides et bases ; dosages ; cinétique ; synthèse organique ; radioactivité</li>
                 <li><strong>Mécanique</strong> : forces ; cinématique ; mouvements rectilignes et circulaires ; lois de Newton ; mouvements dans des champs</li>
@@ -212,7 +218,7 @@
               <span class="bundle-plus">+</span>
               <img src="img/cover-physique.jpg" alt="Couverture Physique-Chimie" loading="lazy" width="190" height="269">
             </div>
-            <p class="bundle-desc">Les deux ebooks ensemble : 20 fiches Maths + 32 fiches Physique-Chimie.</p>
+            <p class="bundle-desc">Le pack regroupe les deux ebooks : 20 fiches Maths + 32 fiches Physique-Chimie. Les deux matières se révisent avec le même outil, la même structure, la même logique.</p>
             <p class="bundle-desc-detail">52 fiches couvrant 100 % du programme de Terminale Spé. Le pack le plus complet pour réviser efficacement.</p>
             <div class="bundle-pricing">
               <div class="bundle-price-old">29,98 €</div>
@@ -334,10 +340,6 @@
           <div class="faq-q">Ces fiches peuvent-elles remplacer un cahier de révisions en librairie ?</div>
           <p class="faq-a">Les cahiers en librairie dépassent souvent 200 pages et mélangent cours et exercices. Nos fiches vont à l’essentiel : une page par chapitre, avec uniquement ce qui tombe au bac, en format PDF consultable sur téléphone ou imprimable.</p>
         </div>
-        <div class="faq-item">
-          <div class="faq-q">Et si ça ne me convient pas ?</div>
-          <p class="faq-a">Écris-nous à <a href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@c-reussite.fr" target="_blank" rel="noopener">contact@c-reussite.fr</a>. On examine chaque demande individuellement et on trouve une solution.</p>
-        </div>
       </div>
 
     </div>
@@ -356,6 +358,12 @@
       <p id="extract-popup-desc"></p>
       <form id="extract-form" class="contact-form">
         <input type="hidden" id="extract-product">
+        <!-- Choix matière (affiché uniquement pour le pack) -->
+        <div id="extract-choice" class="form-group" hidden>
+          <p class="form-label">Quel extrait veux-tu recevoir ?</p>
+          <label class="extract-choice-label"><input type="checkbox" id="extract-pick-maths" value="maths" checked> Maths</label>
+          <label class="extract-choice-label"><input type="checkbox" id="extract-pick-physique" value="physique" checked> Physique-Chimie</label>
+        </div>
         <div class="form-group">
           <label class="form-label" for="extract-email">Email</label>
           <input class="form-control" type="email" id="extract-email" name="email" placeholder="ton@email.fr" required>
@@ -423,7 +431,7 @@
   <!-- ===== SEO FOOTER ===== -->
   <section class="seo-footer" aria-label="Contexte pédagogique">
     <div class="container">
-      <p class="seo-text">C’Réussite propose des fiches de révision pour le bac 2026 en Mathématiques et Physique-Chimie (Terminale Spécialité). Conçues par une diplômée de l’École polytechnique, elles condensent le programme officiel en fiches d’une page, avec les méthodes de résolution attendues aux épreuves de spécialité. Format PDF, livraison immédiate, compatibles smartphone et impression.</p>
+      <p class="seo-text">C’Réussite propose des fiches de révision pour le bac 2026 en Mathématiques et Physique-Chimie (Terminale Spécialité). Conçues par une diplômée de l’École polytechnique, elles condensent le programme officiel en fiches d’une page par chapitre. Format PDF, livraison immédiate, compatibles smartphone et impression.</p>
     </div>
   </section>
 

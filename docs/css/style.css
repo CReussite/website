@@ -44,10 +44,15 @@ p  { color: var(--text-mid); margin-bottom: 16px; }
 p:last-child { margin-bottom: 0; }
 
 /* ===== NAV ===== */
-nav {
-  background: var(--royal-blue);
+/* ===== STICKY TOP WRAPPER (countdown + nav) ===== */
+.sticky-top {
   position: sticky;
   top: 0;
+  z-index: 100;
+}
+
+nav {
+  background: var(--royal-blue);
   z-index: 100;
 }
 .nav-inner {
@@ -264,7 +269,7 @@ nav {
 .bac-countdown {
   background: var(--quicksand);
   color: var(--royal-blue);
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 600;
   padding: 10px 0;
   text-align: center;
@@ -277,6 +282,7 @@ nav {
 }
 .bac-countdown strong {
   font-weight: 800;
+  font-size: 1rem;
 }
 
 /* ===== DIFFERENTIATION SECTION ===== */
@@ -865,6 +871,7 @@ footer a:hover { color: var(--quicksand); }
 .extract-popup--pack p { color: rgba(255,255,255,0.7); }
 .extract-popup--pack .form-label { color: rgba(255,255,255,0.8); }
 .extract-popup--pack .extract-close { color: rgba(255,255,255,0.6); }
+.extract-popup--pack .extract-choice-label { color: var(--white); }
 .extract-popup--pack .btn-primary { background: var(--white); color: var(--royal-blue); }
 .extract-popup--pack .form-note { color: rgba(255,255,255,0.45); }
 .extract-popup--pack .form-rgpd { color: rgba(255,255,255,0.55); }
