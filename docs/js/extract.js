@@ -3,18 +3,18 @@
 
   var labels = {
     maths: {
-      title: 'Recevoir un extrait Maths',
+      title: 'Recevoir un extrait gratuit',
       desc: 'Reçois une fiche Maths Terminale Spécialité gratuitement par email.',
       productId: 'maths'
     },
     physique: {
-      title: 'Recevoir un extrait Physique-Chimie',
+      title: 'Recevoir un extrait gratuit',
       desc: 'Reçois une fiche Physique-Chimie Terminale Spécialité gratuitement par email.',
       productId: 'physique'
     },
     bundle: {
-      title: 'Recevoir un extrait Pack complet',
-      desc: 'Reçois une fiche Maths et une fiche Physique-Chimie gratuitement par email.',
+      title: 'Recevoir un extrait gratuit',
+      desc: 'Choisis la ou les matières et reçois un extrait gratuitement par email.',
       productId: 'bundle'
     }
   };
@@ -28,6 +28,20 @@
   var form     = document.getElementById('extract-form');
   var submitBtn = form.querySelector('button[type="submit"]');
 
+  // Choix matière (pack)
+  var choiceGroup  = document.getElementById('extract-choice');
+  var pickMaths    = document.getElementById('extract-pick-maths');
+  var pickPhysique = document.getElementById('extract-pick-physique');
+
+  // Au moins une case cochée pour soumettre
+  function updateSubmitState() {
+    if (choiceGroup && !choiceGroup.hidden) {
+      submitBtn.disabled = !pickMaths.checked && !pickPhysique.checked;
+    }
+  }
+  if (pickMaths) pickMaths.addEventListener('change', updateSubmitState);
+  if (pickPhysique) pickPhysique.addEventListener('change', updateSubmitState);
+
   document.querySelectorAll('[data-extract]').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var key  = btn.getAttribute('data-extract');
@@ -36,12 +50,31 @@
       desc.textContent  = info.desc;
       product.value     = info.productId;
       popup.classList.toggle('extract-popup--pack', key === 'bundle');
+
+      // Afficher le choix uniquement pour le pack
+      if (choiceGroup) {
+        if (key === 'bundle') {
+          choiceGroup.hidden = false;
+          pickMaths.checked = true;
+          pickPhysique.checked = true;
+        } else {
+          choiceGroup.hidden = true;
+        }
+      }
+
       // Réinitialiser l'état du formulaire à chaque ouverture
       form.reset();
       form.hidden = false;
+      submitBtn.disabled = false;
       hideMessage();
       overlay.hidden = false;
       document.body.style.overflow = 'hidden';
+
+      // Re-cocher après reset pour le pack
+      if (key === 'bundle' && choiceGroup) {
+        pickMaths.checked = true;
+        pickPhysique.checked = true;
+      }
     });
   });
 
@@ -83,6 +116,21 @@
 
     var email      = document.getElementById('extract-email').value;
     var product_id = product.value;
+
+    // Si pack : déterminer le choix de l'élève
+    if (product_id === 'bundle' && choiceGroup && !choiceGroup.hidden) {
+      var wantsMaths    = pickMaths.checked;
+      var wantsPhysique = pickPhysique.checked;
+      if (wantsMaths && wantsPhysique) {
+        product_id = 'bundle';
+      } else if (wantsMaths) {
+        product_id = 'maths';
+      } else if (wantsPhysique) {
+        product_id = 'physique';
+      } else {
+        return; // aucune case cochée
+      }
+    }
 
     submitBtn.disabled    = true;
     submitBtn.textContent = 'Envoi en cours…';
