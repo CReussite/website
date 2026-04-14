@@ -21,6 +21,9 @@
     .legal ul { padding-left: 20px; margin-bottom: 16px; }
     .legal li { margin-bottom: 6px; }
     .legal a { color: var(--sapphire); text-decoration: underline; }
+    .legal table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.88rem; }
+    .legal th, .legal td { border: 1px solid #ccc; padding: 10px 12px; text-align: left; line-height: 1.6; }
+    .legal th { background: rgba(0,0,0,0.04); font-weight: 600; }
   </style>
 </head>
 <body>
@@ -29,62 +32,152 @@
 
   <div class="legal">
     <h1>Politique de confidentialité</h1>
-    <p class="legal-date">En vigueur au 10 avril 2026</p>
+    <p class="legal-date">En vigueur au 14 avril 2026</p>
 
-    <h2>1. Responsable du traitement</h2>
+    <p>La présente politique décrit la manière dont Camille Reinhardt, en tant que responsable de traitement, collecte, utilise et protège les données personnelles des utilisateurs du site c-reussite.fr, conformément au Règlement Général sur la Protection des Données (RGPD — Règlement UE 2016/679) et à la loi n° 78-17 du 6 janvier 1978 (loi Informatique et Libertés).</p>
+
+    <h2>1. Responsable de traitement</h2>
     <p>
-      Camille Reinhardt — Micro-entrepreneur<br>
+      Camille Reinhardt<br>
       Email : <a href="mailto:contact@c-reussite.fr">contact@c-reussite.fr</a>
     </p>
 
-    <h2>2. Données collectées et finalités</h2>
+    <h2>2. Données collectées</h2>
+    <p>Les données personnelles collectées sur le site sont les suivantes :</p>
 
-    <p><strong>Lors d'une commande :</strong></p>
+    <p><strong>Lors d'une commande d'ebook :</strong></p>
     <ul>
-      <li>Adresse email — pour la livraison du produit et l'envoi de la facture</li>
-      <li>Nom — pour la personnalisation de l'email et la facture</li>
-      <li>Données de paiement — traitées exclusivement par Stripe (C'Réussite n'a pas accès aux numéros de carte)</li>
+      <li>adresse email (nécessaire à la livraison et à la confirmation de commande) ;</li>
+      <li>nom et prénom (si communiqués lors du paiement via Stancer) ;</li>
+      <li>données de transaction (montant, date, référence — traitées par Stancer, conservées par le vendeur à des fins comptables et fiscales).</li>
     </ul>
 
-    <p><strong>Lors d'une demande d'extrait gratuit :</strong></p>
+    <p><strong>Lors de la demande d'extrait gratuit :</strong></p>
     <ul>
-      <li>Adresse email — pour l'envoi de l'extrait uniquement. Aucune utilisation commerciale, aucun abonnement automatique.</li>
+      <li>adresse email.</li>
     </ul>
 
-    <p><strong>Lors de l'utilisation du formulaire de contact :</strong></p>
+    <p><strong>Données de navigation :</strong></p>
+    <p>Le site n'utilise pas de cookies de mesure d'audience ni de cookies publicitaires. Seuls des cookies strictement nécessaires au fonctionnement du paiement (Stancer) sont déposés. Ces cookies techniques ne nécessitent pas le consentement de l'utilisateur conformément à l'article 82 de la loi Informatique et Libertés.</p>
+    <p>Si un outil d'analyse (de type Matomo ou équivalent) venait à être installé ultérieurement, la présente politique serait mise à jour en conséquence et, le cas échéant, un bandeau de consentement cookies serait mis en place conformément aux recommandations de la CNIL.</p>
+
+    <h2>3. Finalités et bases légales</h2>
+    <p>Les données sont collectées pour les finalités suivantes :</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Finalité</th>
+          <th>Base légale (article 6 RGPD)</th>
+          <th>Données concernées</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Exécution de la commande (livraison du PDF, confirmation)</td>
+          <td>Exécution du contrat (art. 6.1.b)</td>
+          <td>Email, nom, données de transaction</td>
+        </tr>
+        <tr>
+          <td>Envoi de l'extrait gratuit</td>
+          <td>Consentement (art. 6.1.a)</td>
+          <td>Email</td>
+        </tr>
+        <tr>
+          <td>Gestion de la relation client (réclamations, SAV)</td>
+          <td>Intérêt légitime (art. 6.1.f)</td>
+          <td>Email, nom</td>
+        </tr>
+        <tr>
+          <td>Respect des obligations légales (facturation, comptabilité)</td>
+          <td>Obligation légale (art. 6.1.c)</td>
+          <td>Données de transaction</td>
+        </tr>
+        <tr>
+          <td>Protection de la propriété intellectuelle (marquage numérique des PDF)</td>
+          <td>Intérêt légitime (art. 6.1.f)</td>
+          <td>Email</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>4. Marquage numérique des fichiers PDF</h2>
+    <p>Les fichiers PDF livrés après commande contiennent un marquage numérique invisible intégrant l'adresse email de l'acheteur ou du demandeur dans le contenu des pages. Ce marquage a pour unique finalité la protection des droits d'auteur et l'identification de la source en cas de diffusion non autorisée.</p>
+    <p>La base légale de ce traitement est l'intérêt légitime du responsable de traitement (article 6.1.f du RGPD) : la protection de ses œuvres contre la contrefaçon. Ce marquage est strictement proportionné à cette finalité. Il ne fait l'objet d'aucune exploitation commerciale et n'est consulté qu'en cas de constatation d'une diffusion illicite.</p>
+
+    <h2>5. Durée de conservation</h2>
+    <p>Les données sont conservées pour les durées suivantes :</p>
     <ul>
-      <li>Nom, email, message — pour répondre à votre demande uniquement.</li>
+      <li>Données liées à une commande (email, nom, données de transaction) : 10 ans à compter de la commande pour les pièces comptables (article L123-22 du Code de commerce), 6 ans pour les justificatifs fiscaux (article L102 B du Livre des procédures fiscales). La durée de conservation retenue est de 10 ans.</li>
+      <li>Adresses email collectées via le formulaire d'extrait : supprimées après l'envoi de l'extrait. Le vendeur ne conserve pas ces adresses en base de données.</li>
+      <li>Données de paiement (numéro de carte, etc.) : traitées et conservées par Stancer selon sa propre politique de confidentialité. Le vendeur ne stocke pas de données bancaires.</li>
     </ul>
 
-    <h2>3. Sous-traitants</h2>
+    <h2>6. Sous-traitants et destinataires</h2>
+    <p>Les données personnelles peuvent être communiquées aux sous-traitants suivants, dans le cadre strict des finalités décrites :</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Sous-traitant</th>
+          <th>Rôle</th>
+          <th>Localisation</th>
+          <th>Garanties</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Stancer</td>
+          <td>Traitement des paiements</td>
+          <td>France / UE</td>
+          <td>Certifié PCI-DSS</td>
+        </tr>
+        <tr>
+          <td>Brevo (ex-Sendinblue)</td>
+          <td>Envoi d'emails transactionnels (extrait, confirmation)</td>
+          <td>France / UE</td>
+          <td>Hébergement UE, conforme RGPD</td>
+        </tr>
+        <tr>
+          <td>GitHub Pages (GitHub Inc.)</td>
+          <td>Hébergement du site (frontend)</td>
+          <td>États-Unis</td>
+          <td>Clauses contractuelles types (CCT), Data Privacy Framework</td>
+        </tr>
+        <tr>
+          <td>Railway (Railway Corp.)</td>
+          <td>Hébergement du backend</td>
+          <td>États-Unis</td>
+          <td>Clauses contractuelles types (CCT)</td>
+        </tr>
+        <tr>
+          <td>Supabase (Supabase Inc.)</td>
+          <td>Hébergement de la base de données</td>
+          <td>États-Unis</td>
+          <td>Clauses contractuelles types (CCT)</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Les données ne sont ni vendues, ni louées, ni cédées à des tiers à des fins commerciales.</p>
+    <p>Pour les transferts vers les États-Unis (GitHub, Railway, Supabase), les garanties reposent sur les clauses contractuelles types adoptées par la Commission européenne, conformément à l'article 46 du RGPD. Le cas échéant, ces transferts peuvent également s'appuyer sur le EU-US Data Privacy Framework pour les prestataires certifiés.</p>
+
+    <h2>7. Droits des utilisateurs</h2>
+    <p>Conformément aux articles 15 à 22 du RGPD, chaque utilisateur dispose des droits suivants :</p>
     <ul>
-      <li><strong>Stripe</strong> — traitement des paiements (certifié PCI-DSS). <a href="https://stripe.com/fr/privacy" target="_blank" rel="noopener">Politique Stripe</a>.</li>
-      <li><strong>Brevo (ex-Sendinblue)</strong> — envoi des emails transactionnels. <a href="https://www.brevo.com/fr/legal/privacypolicy/" target="_blank" rel="noopener">Politique Brevo</a>.</li>
-      <li><strong>Supabase</strong> — stockage des commandes (hébergé en Europe). <a href="https://supabase.com/privacy" target="_blank" rel="noopener">Politique Supabase</a>.</li>
+      <li>droit d'accès à ses données personnelles ;</li>
+      <li>droit de rectification des données inexactes ou incomplètes ;</li>
+      <li>droit à l'effacement (droit à l'oubli), sous réserve des obligations légales de conservation ;</li>
+      <li>droit à la limitation du traitement ;</li>
+      <li>droit à la portabilité des données ;</li>
+      <li>droit d'opposition au traitement fondé sur l'intérêt légitime ;</li>
+      <li>droit de retirer son consentement à tout moment, sans que cela ne remette en cause la licéité du traitement fondé sur le consentement donné avant son retrait.</li>
     </ul>
+    <p>Pour exercer ces droits, l'utilisateur peut adresser sa demande à <a href="mailto:contact@c-reussite.fr">contact@c-reussite.fr</a>. Une réponse sera apportée dans un délai d'un mois.</p>
+    <p>En cas de difficulté, l'utilisateur peut introduire une réclamation auprès de la Commission Nationale de l'Informatique et des Libertés (CNIL) : <a href="https://www.cnil.fr" target="_blank" rel="noopener">https://www.cnil.fr</a></p>
 
-    <h2>4. Durée de conservation</h2>
-    <ul>
-      <li>Données de commande (email, produit, montant, facture) : conservées 10 ans conformément aux obligations comptables.</li>
-      <li>Emails de demande d'extrait : non stockés en base de données.</li>
-    </ul>
+    <h2>8. Sécurité</h2>
+    <p>Le vendeur met en œuvre les mesures techniques et organisationnelles appropriées pour protéger les données personnelles contre tout accès non autorisé, toute perte, altération ou divulgation. Le site utilise le protocole HTTPS pour sécuriser les échanges. Les données de paiement sont traitées par Stancer dans un environnement sécurisé certifié PCI-DSS.</p>
 
-    <h2>5. Protection des fichiers PDF</h2>
-    <p>Les fichiers PDF livrés après commande contiennent un marquage stéganographique invisible (email de l'acheteur intégré dans le contenu des pages). Ce traçage est mis en place pour protéger les droits d'auteur et identifier toute diffusion illégale. Il ne constitue pas un traitement de données à caractère personnel au sens du RGPD, mais un mécanisme de protection de la propriété intellectuelle.</p>
-
-    <h2>6. Vos droits</h2>
-    <p>Conformément au RGPD, vous disposez des droits suivants sur vos données :</p>
-    <ul>
-      <li>Droit d'accès</li>
-      <li>Droit de rectification</li>
-      <li>Droit à l'effacement (dans les limites des obligations légales de conservation)</li>
-      <li>Droit d'opposition</li>
-    </ul>
-    <p>Pour exercer ces droits : <a href="mailto:contact@c-reussite.fr">contact@c-reussite.fr</a>.</p>
-    <p>En cas de réclamation non résolue, vous pouvez saisir la <a href="https://www.cnil.fr" target="_blank" rel="noopener">CNIL</a>.</p>
-
-    <h2>7. Cookies</h2>
-    <p>Ce site n'utilise pas de cookies de traçage ou publicitaires. Aucun bandeau de consentement cookies n'est requis.</p>
+    <h2>9. Modification de la politique</h2>
+    <p>La présente politique peut être mise à jour à tout moment. La date de dernière mise à jour est indiquée en tête du document. L'utilisateur est invité à consulter régulièrement cette page.</p>
   </div>
 
   <div id="footer-placeholder"></div>
