@@ -178,7 +178,103 @@
       z-index: 100;
     }
     .test-banner svg { vertical-align: middle; margin-right: 6px; }
+
+    /* ─── Modale facture ─── */
+    .invoice-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(4px);
+      overflow-y: auto;
+      padding: 32px 16px;
+    }
+    .invoice-overlay.active { display: flex; align-items: flex-start; justify-content: center; }
+    .invoice-modal {
+      position: relative;
+      width: 100%;
+      max-width: 840px;
+      margin: 0 auto;
+    }
+    .invoice-modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .invoice-modal-actions button {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .88rem;
+      font-weight: 500;
+      padding: 10px 24px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-invoice-print { background: #112250; color: #fff; }
+    .btn-invoice-print:hover { background: #3C5070; }
+    .btn-invoice-close { background: #fff; color: #112250; border: 1px solid #e5e7eb !important; }
+    .btn-invoice-close:hover { border-color: #b91c1c !important; color: #b91c1c; }
+    .btn-invoice-pdf { background: #fff; color: #112250; border: 1px solid #e5e7eb !important; }
+    .btn-invoice-pdf:hover { background: #f6f8fc; }
+    .invoice-frame {
+      background: #fff;
+      border-radius: 2px;
+      box-shadow: 0 1px 6px rgba(17, 34, 80, 0.08);
+      overflow: hidden;
+    }
+    /* En-tête facture */
+    .inv-header { background: #112250; color: #fff; padding: 36px 48px; display: flex; justify-content: space-between; align-items: center; }
+    .inv-header .logo-block { display: flex; align-items: center; gap: 18px; }
+    .inv-header .logo-block img { width: 70px; height: 70px; border-radius: 8px; }
+    .inv-header .brand-name { font-family: 'EB Garamond', serif; font-size: 26px; font-weight: 500; letter-spacing: 0.5px; }
+    .inv-header .inv-label { font-family: 'EB Garamond', serif; font-size: 32px; font-weight: 600; letter-spacing: 1px; }
+    /* Barre meta */
+    .inv-meta-bar { background: #F5F0E9; padding: 16px 48px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 13px; color: #3C5070; }
+    .inv-meta-bar .meta-label { font-weight: 600; }
+    /* Corps */
+    .inv-body { padding: 36px 48px 24px; }
+    .inv-parties { display: flex; justify-content: space-between; gap: 32px; margin-bottom: 36px; }
+    .inv-party { flex: 1; }
+    .inv-party-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: #E0C58F; font-weight: 600; margin-bottom: 8px; border-bottom: 2px solid #E0C58F; padding-bottom: 4px; display: inline-block; }
+    .inv-party-name { font-family: 'EB Garamond', serif; font-size: 17px; font-weight: 600; color: #112250; margin-bottom: 4px; }
+    .inv-party-details { font-size: 13px; color: #6b7280; line-height: 1.6; }
+    /* Tableau articles */
+    .inv-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
+    .inv-table thead th { background: #3C5070; color: #fff; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; padding: 10px 14px; text-align: left; font-weight: 500; }
+    .inv-table thead th:last-child, .inv-table thead th:nth-child(3), .inv-table thead th:nth-child(4) { text-align: right; }
+    .inv-table tbody td { padding: 12px 14px; font-size: 13.5px; border-bottom: 1px solid #e5e1db; }
+    .inv-table tbody td:last-child, .inv-table tbody td:nth-child(3), .inv-table tbody td:nth-child(4) { text-align: right; }
+    /* Totaux */
+    .inv-totals { display: flex; justify-content: flex-end; margin-bottom: 32px; }
+    .inv-totals-inner { width: 260px; }
+    .inv-totals-row { display: flex; justify-content: space-between; padding: 7px 0; font-size: 13.5px; color: #6b7280; }
+    .inv-totals-row.total { border-top: 2px solid #112250; margin-top: 6px; padding-top: 10px; font-size: 16px; font-weight: 600; color: #112250; }
+    /* Paiement */
+    .inv-payment { background: #F5F0E9; border-radius: 6px; padding: 16px 20px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+    .inv-payment-badge { background: #2e7d4f; color: #fff; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; white-space: nowrap; }
+    .inv-payment-text { font-size: 13px; color: #3C5070; }
+    /* Mentions légales */
+    .inv-legal { font-size: 11px; color: #6b7280; line-height: 1.7; border-top: 1px solid #e5e1db; padding-top: 16px; margin-bottom: 8px; }
+    .inv-legal a { color: #3C5070; }
+    /* Pied de page */
+    .inv-footer { background: #112250; color: rgba(255,255,255,0.7); text-align: center; padding: 14px 48px; font-size: 11px; line-height: 1.6; }
+    .inv-footer a { color: #E0C58F; text-decoration: none; }
+    /* Loading */
+    .inv-loading { text-align: center; padding: 80px 48px; color: #3C5070; }
+    .inv-loading .spinner { width: 36px; height: 36px; border: 3px solid #D9CBC2; border-top-color: #112250; border-radius: 50%; animation: inv-spin 0.8s linear infinite; margin: 0 auto 16px; }
+    @keyframes inv-spin { to { transform: rotate(360deg); } }
+    .inv-error { text-align: center; padding: 60px 48px; color: #b91c1c; }
+
+    @media (max-width: 600px) {
+      .inv-header, .inv-meta-bar, .inv-body { padding-left: 24px; padding-right: 24px; }
+      .inv-parties { flex-direction: column; gap: 20px; }
+      .inv-header { flex-direction: column; gap: 12px; text-align: center; }
+    }
   </style>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <div id="nav-placeholder"></div>
@@ -312,6 +408,95 @@
     </div>
   </div>
 
+  <!-- ─── MODALE FACTURE ─── -->
+  <div class="invoice-overlay" id="invoice-overlay">
+    <div class="invoice-modal">
+      <div class="invoice-modal-actions">
+        <button class="btn-invoice-print" id="btn-inv-print">🖨️ Imprimer / PDF</button>
+        <button class="btn-invoice-pdf" id="btn-inv-dl">⬇ Télécharger PDF</button>
+        <button class="btn-invoice-close" id="btn-inv-close">✕ Fermer</button>
+      </div>
+      <div class="invoice-frame" id="invoice-frame">
+        <div class="inv-loading" id="inv-loading">
+          <div class="spinner"></div>
+          <p>Chargement de la facture...</p>
+        </div>
+        <div class="inv-error" id="inv-error" style="display:none;">
+          <p>Impossible de charger la facture.</p>
+          <p style="font-size:13px;color:#6b7280;margin-top:8px;" id="inv-error-detail"></p>
+        </div>
+        <div id="inv-content" style="display:none;">
+          <div class="inv-header">
+            <div class="logo-block">
+              <img src="img/icon.jpeg" alt="C'Réussite" />
+              <span class="brand-name">C'Réussite</span>
+            </div>
+            <span class="inv-label">FACTURE</span>
+          </div>
+          <div class="inv-meta-bar">
+            <span><span class="meta-label">N° :</span> <span id="inv-number"></span></span>
+            <span><span class="meta-label">Date :</span> <span id="inv-date"></span></span>
+            <span><span class="meta-label">Réf. paiement :</span> <span id="inv-payref"></span></span>
+          </div>
+          <div class="inv-body">
+            <div class="inv-parties">
+              <div class="inv-party">
+                <div class="inv-party-label">Vendeur</div>
+                <div class="inv-party-name">Camille Reinhardt EI</div>
+                <div class="inv-party-details">
+                  C'Réussite<br>
+                  54A Rue des Écoles<br>
+                  57700 Neufchef<br>
+                  SIRET : 103 644 050 00017<br>
+                  APE : 4791B<br>
+                  c-reussite.fr
+                </div>
+              </div>
+              <div class="inv-party">
+                <div class="inv-party-label">Client</div>
+                <div class="inv-party-name" id="inv-client-name">—</div>
+                <div class="inv-party-details" id="inv-client-details"></div>
+              </div>
+            </div>
+            <table class="inv-table">
+              <thead>
+                <tr>
+                  <th>Désignation</th>
+                  <th>Qté</th>
+                  <th>Prix unitaire HT</th>
+                  <th>Total HT</th>
+                </tr>
+              </thead>
+              <tbody id="inv-items"></tbody>
+            </table>
+            <div class="inv-totals">
+              <div class="inv-totals-inner">
+                <div class="inv-totals-row"><span>Sous-total HT</span><span id="inv-subtotal">—</span></div>
+                <div class="inv-totals-row"><span>TVA</span><span>0,00 €</span></div>
+                <div class="inv-totals-row total"><span>Total TTC</span><span id="inv-total">—</span></div>
+              </div>
+            </div>
+            <div class="inv-payment">
+              <span class="inv-payment-badge">Payé</span>
+              <span class="inv-payment-text">Paiement reçu par carte bancaire via Stancer le <span id="inv-paydate">—</span>.</span>
+            </div>
+            <div class="inv-legal">
+              TVA non applicable, article 293 B du CGI.<br>
+              En cas de retard de paiement, indemnité forfaitaire pour frais de recouvrement : 40 €.
+              Pas d'escompte en cas de paiement anticipé.<br>
+              Livraison : immédiate (téléchargement numérique).<br>
+              Médiation de la consommation : CM2C — 49 rue de Ponthieu, 75 008 Paris — <a href="https://www.cm2c.net/declarer-un-litige.php" style="color:#3C5070;">cm2c.net</a> — litiges@cm2c.net
+            </div>
+          </div>
+          <div class="inv-footer">
+            Camille Reinhardt — Entrepreneur individuel — SIRET 103 644 050 00017 — APE 4791B<br>
+            54A Rue des Écoles, 57700 Neufchef — <a href="https://c-reussite.fr">c-reussite.fr</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="footer-placeholder"></div>
 
   <script src="js/nav.js"></script>
@@ -435,14 +620,24 @@
             '<td>' + (order.email_sent
               ? '<span class="badge-ok">Envoye</span>'
               : '<span class="badge-ko">En attente</span>') + '</td>' +
-            '<td><button class="btn-dl" data-inv="' + order.invoice_number + '">PDF</button></td>' +
+            '<td>' +
+              '<button class="btn-dl btn-view-invoice" data-inv="' + order.invoice_number + '">Voir</button> ' +
+              '<button class="btn-dl btn-dl-pdf" data-inv="' + order.invoice_number + '">PDF</button>' +
+            '</td>' +
             '</tr>';
         }).join('');
 
-        tbody.querySelectorAll('.btn-dl').forEach(function (btn) {
+        tbody.querySelectorAll('.btn-dl-pdf').forEach(function (btn) {
           btn.addEventListener('click', function () {
             const invoiceNumber = btn.getAttribute('data-inv');
             window.open(BACKEND + '/api/admin/invoice/' + encodeURIComponent(invoiceNumber) + '?key=' + encodeURIComponent(adminKey), '_blank');
+          });
+        });
+
+        tbody.querySelectorAll('.btn-view-invoice').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            const invoiceNumber = btn.getAttribute('data-inv');
+            openInvoiceModal(invoiceNumber);
           });
         });
       }
@@ -552,6 +747,140 @@
         localStorage.removeItem(KEY_STORAGE);
         location.reload();
       });
+
+      // ─── MODALE FACTURE ─────────────────────────────────────────────────────────
+      const invoiceOverlay = document.getElementById('invoice-overlay');
+      const invLoading     = document.getElementById('inv-loading');
+      const invError       = document.getElementById('inv-error');
+      const invContent     = document.getElementById('inv-content');
+      let currentInvoiceNumber = '';
+
+      function fmtInvoicePrice(amount) {
+        return amount.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+      }
+
+      function renderInvoiceModal(data) {
+        document.getElementById('inv-number').textContent = data.invoice_number;
+        document.getElementById('inv-date').textContent = data.date;
+        document.getElementById('inv-payref').textContent = data.payment_ref;
+        document.getElementById('inv-paydate').textContent = data.payment_date;
+
+        document.getElementById('inv-client-name').textContent = data.customer.name;
+        let details = data.customer.email;
+        if (data.customer.address) details += '<br>' + data.customer.address.replace(/\n/g, '<br>');
+        document.getElementById('inv-client-details').innerHTML = details;
+
+        const itemsTbody = document.getElementById('inv-items');
+        itemsTbody.innerHTML = '';
+        let subtotal = 0;
+
+        data.items.forEach(function (item) {
+          const lineTotal = item.quantity * item.unit_price;
+          subtotal += lineTotal;
+          const tr = document.createElement('tr');
+          tr.innerHTML =
+            '<td>' + item.description + '</td>' +
+            '<td>' + item.quantity + '</td>' +
+            '<td>' + fmtInvoicePrice(item.unit_price) + '</td>' +
+            '<td>' + fmtInvoicePrice(lineTotal) + '</td>';
+          itemsTbody.appendChild(tr);
+        });
+
+        document.getElementById('inv-subtotal').textContent = fmtInvoicePrice(subtotal);
+        document.getElementById('inv-total').textContent = fmtInvoicePrice(subtotal);
+      }
+
+      async function openInvoiceModal(invoiceNumber) {
+        currentInvoiceNumber = invoiceNumber;
+        invoiceOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        invLoading.style.display = 'block';
+        invError.style.display = 'none';
+        invContent.style.display = 'none';
+
+        try {
+          const res = await fetch(BACKEND + '/api/admin/invoice-data/' + encodeURIComponent(invoiceNumber) + '?key=' + encodeURIComponent(adminKey));
+          if (!res.ok) throw new Error('Erreur serveur (' + res.status + ')');
+          const data = await res.json();
+
+          invLoading.style.display = 'none';
+          invContent.style.display = 'block';
+          renderInvoiceModal(data);
+        } catch (err) {
+          invLoading.style.display = 'none';
+          invError.style.display = 'block';
+          document.getElementById('inv-error-detail').textContent = err.message;
+        }
+      }
+
+      function closeInvoiceModal() {
+        invoiceOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+        currentInvoiceNumber = '';
+      }
+
+      document.getElementById('btn-inv-close').addEventListener('click', closeInvoiceModal);
+
+      invoiceOverlay.addEventListener('click', function (e) {
+        if (e.target === invoiceOverlay) closeInvoiceModal();
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && invoiceOverlay.classList.contains('active')) closeInvoiceModal();
+      });
+
+      document.getElementById('btn-inv-print').addEventListener('click', function () {
+        const frame = document.getElementById('invoice-frame');
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write('<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Facture ' + currentInvoiceNumber + '</title>');
+        printWindow.document.write('<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">');
+        printWindow.document.write('<style>');
+        printWindow.document.write('*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }');
+        printWindow.document.write('body { font-family: "DM Sans", sans-serif; color: #1a1a2e; background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }');
+        // Reuse all inv- styles for print
+        printWindow.document.write('.inv-header { background: #112250; color: #fff; padding: 36px 48px; display: flex; justify-content: space-between; align-items: center; }');
+        printWindow.document.write('.inv-header .logo-block { display: flex; align-items: center; gap: 18px; }');
+        printWindow.document.write('.inv-header .logo-block img { width: 70px; height: 70px; border-radius: 8px; }');
+        printWindow.document.write('.inv-header .brand-name { font-family: "EB Garamond", serif; font-size: 26px; font-weight: 500; letter-spacing: 0.5px; }');
+        printWindow.document.write('.inv-header .inv-label { font-family: "EB Garamond", serif; font-size: 32px; font-weight: 600; letter-spacing: 1px; }');
+        printWindow.document.write('.inv-meta-bar { background: #F5F0E9; padding: 16px 48px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 13px; color: #3C5070; }');
+        printWindow.document.write('.inv-meta-bar .meta-label { font-weight: 600; }');
+        printWindow.document.write('.inv-body { padding: 36px 48px 24px; }');
+        printWindow.document.write('.inv-parties { display: flex; justify-content: space-between; gap: 32px; margin-bottom: 36px; }');
+        printWindow.document.write('.inv-party { flex: 1; }');
+        printWindow.document.write('.inv-party-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: #E0C58F; font-weight: 600; margin-bottom: 8px; border-bottom: 2px solid #E0C58F; padding-bottom: 4px; display: inline-block; }');
+        printWindow.document.write('.inv-party-name { font-family: "EB Garamond", serif; font-size: 17px; font-weight: 600; color: #112250; margin-bottom: 4px; }');
+        printWindow.document.write('.inv-party-details { font-size: 13px; color: #6b7280; line-height: 1.6; }');
+        printWindow.document.write('.inv-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }');
+        printWindow.document.write('.inv-table thead th { background: #3C5070; color: #fff; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; padding: 10px 14px; text-align: left; font-weight: 500; }');
+        printWindow.document.write('.inv-table thead th:last-child, .inv-table thead th:nth-child(3), .inv-table thead th:nth-child(4) { text-align: right; }');
+        printWindow.document.write('.inv-table tbody td { padding: 12px 14px; font-size: 13.5px; border-bottom: 1px solid #e5e1db; }');
+        printWindow.document.write('.inv-table tbody td:last-child, .inv-table tbody td:nth-child(3), .inv-table tbody td:nth-child(4) { text-align: right; }');
+        printWindow.document.write('.inv-totals { display: flex; justify-content: flex-end; margin-bottom: 32px; }');
+        printWindow.document.write('.inv-totals-inner { width: 260px; }');
+        printWindow.document.write('.inv-totals-row { display: flex; justify-content: space-between; padding: 7px 0; font-size: 13.5px; color: #6b7280; }');
+        printWindow.document.write('.inv-totals-row.total { border-top: 2px solid #112250; margin-top: 6px; padding-top: 10px; font-size: 16px; font-weight: 600; color: #112250; }');
+        printWindow.document.write('.inv-payment { background: #F5F0E9; border-radius: 6px; padding: 16px 20px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }');
+        printWindow.document.write('.inv-payment-badge { background: #2e7d4f; color: #fff; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }');
+        printWindow.document.write('.inv-payment-text { font-size: 13px; color: #3C5070; }');
+        printWindow.document.write('.inv-legal { font-size: 11px; color: #6b7280; line-height: 1.7; border-top: 1px solid #e5e1db; padding-top: 16px; margin-bottom: 8px; }');
+        printWindow.document.write('.inv-legal a { color: #3C5070; }');
+        printWindow.document.write('.inv-footer { background: #112250; color: rgba(255,255,255,0.7); text-align: center; padding: 14px 48px; font-size: 11px; line-height: 1.6; }');
+        printWindow.document.write('.inv-footer a { color: #E0C58F; text-decoration: none; }');
+        printWindow.document.write('</style></head><body>');
+        printWindow.document.write(frame.querySelector('#inv-content').innerHTML);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.onload = function () { printWindow.print(); };
+      });
+
+      document.getElementById('btn-inv-dl').addEventListener('click', function () {
+        if (currentInvoiceNumber) {
+          window.open(BACKEND + '/api/admin/invoice/' + encodeURIComponent(currentInvoiceNumber) + '?key=' + encodeURIComponent(adminKey), '_blank');
+        }
+      });
+
     })();
   </script>
 </body>

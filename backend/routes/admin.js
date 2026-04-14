@@ -126,4 +126,84 @@ router.get('/invoice/:invoiceNumber', requireAdminKey, async (req, res) => {
   }
 });
 
+// ── GET /api/admin/invoice-data/:invoiceNumber ────────────────────────────────
+// Retourne les données de facture en JSON pour la prévisualisation HTML.
+router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => {
+  try {
+    const { invoiceNumber } = req.params;
+    const orders = await getOrders({ limit: 1000 });
+    const order  = orders.find(o => o.invoice_number === invoiceNumber);
+
+    if (!order) return res.status(404).json({ error: 'Facture introuvable.' });
+
+    const path    = require('path');
+    const PRODUCTS = require(path.join(__dirname, '../../docs/content/products.json'));
+    const PRODUCT_MAP = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
+
+    const product = PRODUCT_MAP[order.product_id];
+    const amountEur = order.amount / 100;
+
+    // Construire les lignes de la facture
+    let items;
+    if (order.product_id === 'bundle' && product) {
+      // Le pack contient 2 ebooks — on détaille les lignes
+      const mathsProduct = PRODUCT_MAP['maths'];
+      const physiqueProduct = PRODUCT_MAP['physique'];
+      items = [
+        {
+          description: `Ebook — ${mathsProduct ? mathsProduct.name : 'Maths Terminale Spécialité'} (PDF)`,
+          quantity: 1,
+          unit_price: mathsProduct ? mathsProduct.price / 100 : 14.99,
+        },
+        {
+          description: `Ebook — ${physiqueProduct ? physiqueProduct.name : 'Physique-Chimie Terminale Spécialité'} (PDF)`,
+          quantity: 1,
+          unit_price: physiqueProduct ? physiqueProduct.price / 100 : 14.99,
+        },
+      ];
+      // Ajuster les prix unitaires pour que le total corresponde au prix du pack
+      const sumItems = items.reduce((s, i) => s + i.unit_price, 0);
+      if (Math.abs(sumItems - amountEur) > 0.01) {
+        // Répartir proportionnellement
+        items.forEach(item => {
+          item.unit_price = Math.round((item.unit_price / sumItems) * amountEur * 100) / 100;
+        });
+        // Corriger l'arrondi sur le dernier item
+        const diff = amountEur - items.reduce((s, i) => s + i.unit_price, 0);
+        items[items.length - 1].unit_price = Math.round((items[items.length - 1].unit_price + diff) * 100) / 100;
+      }
+    } else {
+      items = [
+        {
+          description: `Ebook — ${product ? product.name : order.product_id} (PDF)`,
+          quantity: 1,
+          unit_price: amountEur,
+        },
+      ];
+    }
+
+    const dateObj = new Date(order.created_at);
+    const dateStr = dateObj.toLocaleDateString('fr-FR', {
+      day: '2-digit', month: '2-digit', year: 'numeric',
+    });
+
+    res.json({
+      invoice_number: order.invoice_number,
+      date: dateStr,
+      payment_ref: order.stripe_session_id || '—',
+      payment_date: dateStr,
+      payment_method: 'Carte bancaire',
+      customer: {
+        name: order.email,
+        email: order.email,
+        address: '',
+      },
+      items,
+    });
+  } catch (err) {
+    console.error('[admin] invoice-data erreur :', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;
