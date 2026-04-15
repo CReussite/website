@@ -187,11 +187,15 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
       day: '2-digit', month: '2-digit', year: 'numeric',
     });
 
+    // Date d'émission = date de création de la commande
+    // Date de paiement = même date (paiement instantané par carte)
+    const paymentDateStr = dateStr;
+
     res.json({
       invoice_number: order.invoice_number,
       date: dateStr,
+      payment_date: paymentDateStr,
       payment_ref: order.stripe_session_id || '—',
-      payment_date: dateStr,
       payment_method: 'Carte bancaire',
       customer: {
         name: order.email,

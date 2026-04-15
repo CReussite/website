@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS orders (
   product_id        text        NOT NULL,
   amount            integer     NOT NULL,           -- en centimes (ex: 1499 = 14,99 €)
   stripe_session_id text        UNIQUE NOT NULL,    -- idempotence : empêche les doublons
-  invoice_number    text        NOT NULL,           -- ex: 2025-001
+  invoice_number    text        NOT NULL,           -- ex: CRE-2026-00001
   created_at        timestamptz DEFAULT now()
 );
 
