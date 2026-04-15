@@ -35,7 +35,6 @@ router.post('/', express.json(), async (req, res) => {
         description: product.name,
         return_url:  `${FRONTEND_URL}/success.html`,
         back_url:    `${FRONTEND_URL}/cancel.html`,
-        metadata:    { product_id },
       }),
     });
 
@@ -47,7 +46,7 @@ router.post('/', express.json(), async (req, res) => {
     const payment = await response.json();
     const paymentUrl = `https://payment.stancer.com/${process.env.STANCER_SECRET_KEY}/${payment.id}`;
 
-    res.json({ url: paymentUrl, paymentId: payment.id });
+    res.json({ url: paymentUrl, paymentId: payment.id, productId: product_id });
   } catch (err) {
     console.error('[checkout] Erreur création paiement Stancer :', err.message);
     res.status(500).json({ error: 'Impossible de créer la session de paiement.' });
