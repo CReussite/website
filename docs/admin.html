@@ -633,18 +633,10 @@
               ? '<span class="badge-ok">Envoye</span>'
               : '<span class="badge-ko">En attente</span>') + '</td>' +
             '<td>' +
-              '<button class="btn-dl btn-view-invoice" data-inv="' + order.invoice_number + '">Voir</button> ' +
-              '<button class="btn-dl btn-dl-pdf" data-inv="' + order.invoice_number + '">PDF</button>' +
+              '<button class="btn-dl btn-view-invoice" data-inv="' + order.invoice_number + '">Voir</button>' +
             '</td>' +
             '</tr>';
         }).join('');
-
-        tbody.querySelectorAll('.btn-dl-pdf').forEach(function (btn) {
-          btn.addEventListener('click', function () {
-            const invoiceNumber = btn.getAttribute('data-inv');
-            openInvoiceModal(invoiceNumber, true);
-          });
-        });
 
         tbody.querySelectorAll('.btn-view-invoice').forEach(function (btn) {
           btn.addEventListener('click', function () {
