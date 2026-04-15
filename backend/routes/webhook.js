@@ -50,7 +50,8 @@ router.post('/', express.json(), async (req, res) => {
     return res.status(400).send('Vérification paiement échouée');
   }
 
-  if (payment.status !== 'captured') {
+  const VALID_STATUSES = ['captured', 'to_capture', 'capture_sent'];
+  if (!VALID_STATUSES.includes(payment.status)) {
     // Paiement non finalisé — ignorer silencieusement
     return res.json({ received: true });
   }
