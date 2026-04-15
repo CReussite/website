@@ -10,22 +10,23 @@ async function initPayment() {
   let products;
   try {
     const res = await fetch('/content/products.json');
-    products  = await res.json();
+    products = await res.json();
   } catch (err) {
     console.error('[payment] Impossible de charger products.json :', err);
     return;
   }
 
-  const productMap = Object.fromEntries(products.map(p => [p.id, p]));
+  const productMap = Object.fromEntries(products.map((p) => [p.id, p]));
 
   // ── Éléments du modal ─────────────────────────────────
-  const modalOverlay  = document.getElementById('payment-modal-overlay');
-  const modalProduct  = document.getElementById('payment-modal-product');
-  const modalPrice    = document.getElementById('payment-modal-price');
-  const modalBtn      = document.getElementById('payment-modal-btn');
-  const modalClose    = document.getElementById('payment-modal-close');
-  const checkRetract  = document.getElementById('check-retractation');
-  const checkCgv      = document.getElementById('check-cgv');
+  const modalOverlay = document.getElementById('payment-modal-overlay');
+  const modalProduct = document.getElementById('payment-modal-product');
+  const modalPrice = document.getElementById('payment-modal-price');
+  const modalBtn = document.getElementById('payment-modal-btn');
+  const modalClose = document.getElementById('payment-modal-close');
+  const emailInput = document.getElementById('payment-email');
+  const checkRetract = document.getElementById('check-retractation');
+  const checkCgv = document.getElementById('check-cgv');
 
   let currentProductId = null;
 
@@ -34,7 +35,8 @@ async function initPayment() {
   }
 
   function updateModalBtn() {
-    modalBtn.disabled = !(checkRetract.checked && checkCgv.checked);
+    const emailValid = emailInput.value.trim() !== '' && emailInput.validity.valid;
+    modalBtn.disabled = !(checkRetract.checked && checkCgv.checked && emailValid);
   }
 
   function openModal(productId) {
@@ -43,12 +45,13 @@ async function initPayment() {
 
     currentProductId = productId;
     modalProduct.textContent = product.name;
-    modalPrice.textContent   = formatPrice(product.price);
+    modalPrice.textContent = formatPrice(product.price);
 
     // Réinitialiser les cases à chaque ouverture
     checkRetract.checked = false;
-    checkCgv.checked     = false;
-    modalBtn.disabled    = true;
+    checkCgv.checked = false;
+    emailInput.value = '';
+    modalBtn.disabled = true;
     modalBtn.textContent = 'Procéder au paiement';
 
     modalOverlay.hidden = false;
@@ -81,19 +84,20 @@ async function initPayment() {
   // ── Activer le bouton quand les deux cases sont cochées ─
   checkRetract.addEventListener('change', updateModalBtn);
   checkCgv.addEventListener('change', updateModalBtn);
+  emailInput.addEventListener('input', updateModalBtn);
 
   // ── Procéder au paiement ──────────────────────────────
   modalBtn.addEventListener('click', async function () {
     if (!currentProductId) return;
 
     modalBtn.textContent = 'Redirection…';
-    modalBtn.disabled    = true;
+    modalBtn.disabled = true;
 
     try {
       const res = await fetch(`${BACKEND_URL}/api/checkout`, {
-        method:  'POST',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ product_id: currentProductId }),
+        body: JSON.stringify({ product_id: currentProductId, email: emailInput.value.trim() }),
       });
 
       if (!res.ok) {
@@ -108,7 +112,7 @@ async function initPayment() {
     } catch (err) {
       console.error('[payment] Erreur :', err.message);
       modalBtn.textContent = 'Procéder au paiement';
-      modalBtn.disabled    = false;
+      modalBtn.disabled = false;
       alert('Une erreur est survenue. Réessaie dans quelques instants.');
     }
   });
