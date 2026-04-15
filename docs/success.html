@@ -157,7 +157,10 @@
           localStorage.removeItem('stancer_pending_product');
           show('state-success');
         } else {
-          document.getElementById('error-msg').textContent = data.error || 'Erreur inconnue.';
+          const msg = data.debug
+            ? data.error + ' [debug: ' + data.debug + ']'
+            : data.error || 'Erreur inconnue.';
+          document.getElementById('error-msg').textContent = msg;
           show('state-error');
         }
       } catch (err) {
