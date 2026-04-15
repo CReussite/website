@@ -45,19 +45,32 @@ router.get('/', express.json(), async (req, res) => {
     return res.status(402).json({ error: `Paiement non finalisé (statut : ${payment.status}).` });
   }
 
-  const customerEmail = payment.customer?.email || payment.metadata?.email;
-  const customerName  = payment.customer?.name  || customerEmail;
-  const productId     = payment.metadata?.product_id;
+  const customerEmail = payment.customer?.email;
+  const customerName  = payment.customer?.name || customerEmail;
   const amount        = payment.amount;
 
-  if (!customerEmail || !productId) {
-    console.error('[payment-confirm] Données manquantes :', { customerEmail, productId });
+  // product_id passé par le frontend via localStorage (Stancer n'a pas de champ metadata)
+  const productId = req.query.product_id;
+
+  if (!customerEmail) {
+    console.error('[payment-confirm] Email client manquant');
+    return res.status(422).json({ error: 'Email client introuvable dans le paiement Stancer.' });
+  }
+
+  if (!productId) {
+    console.error('[payment-confirm] product_id manquant');
     return res.status(422).json({ error: 'Données de commande incomplètes.' });
   }
 
   const product = PRODUCT_MAP[productId];
   if (!product) {
     return res.status(422).json({ error: `Produit inconnu : ${productId}` });
+  }
+
+  // Validation anti-fraude : le montant Stancer doit correspondre au prix catalogue
+  if (amount !== product.price) {
+    console.error('[payment-confirm] Montant incohérent :', { amount, expected: product.price });
+    return res.status(422).json({ error: 'Montant du paiement incohérent.' });
   }
 
   try {

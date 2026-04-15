@@ -136,8 +136,9 @@
     }
 
     async function confirmPayment() {
-      // Récupère le paymentId depuis localStorage (sauvegardé par payment.js)
+      // Récupère paymentId et productId depuis localStorage (sauvegardés par payment.js)
       const paymentId = localStorage.getItem('stancer_pending_payment');
+      const productId = localStorage.getItem('stancer_pending_product');
 
       if (!paymentId) {
         // Pas de paiement en attente — page visitée directement
@@ -146,11 +147,14 @@
       }
 
       try {
-        const res = await fetch(BACKEND_URL + '/api/payment/confirm?id=' + paymentId);
+        const params = new URLSearchParams({ id: paymentId });
+        if (productId) params.set('product_id', productId);
+        const res = await fetch(BACKEND_URL + '/api/payment/confirm?' + params.toString());
         const data = await res.json();
 
         if (res.ok && data.success) {
           localStorage.removeItem('stancer_pending_payment');
+          localStorage.removeItem('stancer_pending_product');
           show('state-success');
         } else {
           document.getElementById('error-msg').textContent = data.error || 'Erreur inconnue.';
