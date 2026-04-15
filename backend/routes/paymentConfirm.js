@@ -51,15 +51,36 @@ router.get('/', express.json(), async (req, res) => {
     return res.status(402).json({ error: `Paiement non finalisé (statut : ${payment.status}).` });
   }
 
-  const customerEmail = payment.customer?.email;
-  const customerName = payment.customer?.name || customerEmail;
+  console.log('[payment-confirm] Stancer payment.customer:', JSON.stringify(payment.customer));
+  console.log('[payment-confirm] Stancer payment status:', payment.status, '| amount:', payment.amount);
+
+  // Stancer peut retourner customer comme objet { email } ou string (ID)
+  let customerEmail = null;
+  if (typeof payment.customer === 'object' && payment.customer?.email) {
+    customerEmail = payment.customer.email;
+  } else if (typeof payment.customer === 'string') {
+    // customer est un ID — récupérer l'email via GET /v2/customers/{id}
+    try {
+      const custResp = await fetch(`${STANCER_API}/customers/${payment.customer}`, {
+        headers: { Authorization: stancerAuth() },
+      });
+      if (custResp.ok) {
+        const custData = await custResp.json();
+        customerEmail = custData.email;
+        console.log('[payment-confirm] Fetched customer email via API:', customerEmail);
+      }
+    } catch (e) {
+      console.error('[payment-confirm] Failed to fetch customer:', e.message);
+    }
+  }
+  const customerName = (typeof payment.customer === 'object' ? payment.customer?.name : null) || customerEmail;
   const amount = payment.amount;
 
   // product_id passé par le frontend via localStorage (Stancer n'a pas de champ metadata)
   const productId = req.query.product_id;
 
   if (!customerEmail) {
-    console.error('[payment-confirm] Email client manquant');
+    console.error('[payment-confirm] Email client manquant. payment.customer =', JSON.stringify(payment.customer));
     return res.status(422).json({ error: 'Email client introuvable dans le paiement Stancer.' });
   }
 
@@ -135,6 +156,7 @@ router.get('/', express.json(), async (req, res) => {
     } catch (_) {}
     res.status(500).json({
       error: 'Erreur lors du traitement de ta commande. Écris-nous à contact@c-reussite.fr.',
+      debug: err.message,
     });
   }
 });
