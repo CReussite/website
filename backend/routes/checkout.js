@@ -1,14 +1,14 @@
 const express = require('express');
-const path    = require('node:path');
+const path = require('node:path');
 
 const router = express.Router();
 
 // Chargement unique du catalogue depuis la source de vérité
 const PRODUCTS = require(path.join(__dirname, '../../docs/content/products.json'));
-const PRODUCT_MAP = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
+const PRODUCT_MAP = Object.fromEntries(PRODUCTS.map((p) => [p.id, p]));
 
-const FRONTEND_URL   = process.env.FRONTEND_URL || 'https://c-reussite.fr';
-const STANCER_API    = 'https://api.stancer.com/v1';
+const FRONTEND_URL = process.env.FRONTEND_URL || 'https://c-reussite.fr';
+const STANCER_API = 'https://api.stancer.com/v1';
 
 function stancerAuth() {
   return 'Basic ' + Buffer.from(process.env.STANCER_SECRET_KEY + ':').toString('base64');
@@ -23,28 +23,28 @@ router.post('/', express.json(), async (req, res) => {
   }
 
   try {
-    const response = await fetch(`${STANCER_API}/payment`, {
+    const response = await fetch(`${STANCER_API}/checkout/`, {
       method: 'POST',
       headers: {
-        'Authorization': stancerAuth(),
-        'Content-Type':  'application/json',
+        Authorization: stancerAuth(),
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        amount:      product.price,
-        currency:    'eur',
+        amount: product.price,
+        currency: 'eur',
         description: product.name,
-        return_url:  `${FRONTEND_URL}/success.html`,
-        back_url:    `${FRONTEND_URL}/cancel.html`,
+        return_url: `${FRONTEND_URL}/success.html`,
       }),
     });
 
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
+      console.error('[checkout] Stancer API error:', response.status, JSON.stringify(err));
       throw new Error(err.message || `Stancer ${response.status}`);
     }
 
     const payment = await response.json();
-    const paymentUrl = `https://payment.stancer.com/${process.env.STANCER_SECRET_KEY}/${payment.id}`;
+    const paymentUrl = `https://payment.stancer.com/${process.env.STANCER_PUBLIC_KEY}/${payment.id}`;
 
     res.json({ url: paymentUrl, paymentId: payment.id, productId: product_id });
   } catch (err) {

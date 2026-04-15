@@ -1,15 +1,20 @@
-const express  = require('express');
-const path     = require('node:path');
-const { insertOrderIdempotent, markEmailSent, uploadInvoicePdf, saveInvoicePath } = require('../services/db');
-const { generateInvoice }       = require('../services/invoice');
-const { sendOrderEmail }        = require('../services/mailer');
-const { sendOpsAlert }          = require('../services/alerts');
+const express = require('express');
+const path = require('node:path');
+const {
+  insertOrderIdempotent,
+  markEmailSent,
+  uploadInvoicePdf,
+  saveInvoicePath,
+} = require('../services/db');
+const { generateInvoice } = require('../services/invoice');
+const { sendOrderEmail } = require('../services/mailer');
+const { sendOpsAlert } = require('../services/alerts');
 
 const router = express.Router();
 
 // Source de vérité produits
 const PRODUCTS = require(path.join(__dirname, '../../docs/content/products.json'));
-const PRODUCT_MAP = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
+const PRODUCT_MAP = Object.fromEntries(PRODUCTS.map((p) => [p.id, p]));
 
 const STANCER_API = 'https://api.stancer.com/v1';
 
@@ -19,8 +24,8 @@ function stancerAuth() {
 
 /** Vérifie et récupère le paiement Stancer depuis l'API (source de vérité). */
 async function fetchStancerPayment(paymentId) {
-  const response = await fetch(`${STANCER_API}/payment/${paymentId}`, {
-    headers: { 'Authorization': stancerAuth() },
+  const response = await fetch(`${STANCER_API}/checkout/${paymentId}`, {
+    headers: { Authorization: stancerAuth() },
   });
   if (!response.ok) throw new Error(`Stancer API ${response.status}`);
   return response.json();
@@ -51,9 +56,9 @@ router.post('/', express.json(), async (req, res) => {
   }
 
   const customerEmail = payment.customer?.email || payment.metadata?.email;
-  const customerName  = payment.customer?.name || customerEmail;
-  const productId     = payment.metadata?.product_id;
-  const amount        = payment.amount; // en centimes
+  const customerName = payment.customer?.name || customerEmail;
+  const productId = payment.metadata?.product_id;
+  const amount = payment.amount; // en centimes
 
   if (!customerEmail || !productId) {
     console.error('[webhook] Données manquantes — email:', customerEmail, 'product_id:', productId);
@@ -95,7 +100,7 @@ router.post('/', express.json(), async (req, res) => {
 
     // 3. Envoyer email (PDF produit(s) + facture)
     await sendOrderEmail({
-      toEmail:       customerEmail,
+      toEmail: customerEmail,
       customerName,
       product,
       invoicePdf,

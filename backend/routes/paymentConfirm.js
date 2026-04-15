@@ -1,14 +1,19 @@
 const express = require('express');
-const path    = require('node:path');
-const { insertOrderIdempotent, markEmailSent, uploadInvoicePdf, saveInvoicePath } = require('../services/db');
+const path = require('node:path');
+const {
+  insertOrderIdempotent,
+  markEmailSent,
+  uploadInvoicePdf,
+  saveInvoicePath,
+} = require('../services/db');
 const { generateInvoice } = require('../services/invoice');
-const { sendOrderEmail }  = require('../services/mailer');
-const { sendOpsAlert }    = require('../services/alerts');
+const { sendOrderEmail } = require('../services/mailer');
+const { sendOpsAlert } = require('../services/alerts');
 
 const router = express.Router();
 
-const PRODUCTS    = require(path.join(__dirname, '../../docs/content/products.json'));
-const PRODUCT_MAP = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
+const PRODUCTS = require(path.join(__dirname, '../../docs/content/products.json'));
+const PRODUCT_MAP = Object.fromEntries(PRODUCTS.map((p) => [p.id, p]));
 
 const STANCER_API = 'https://api.stancer.com/v1';
 
@@ -31,7 +36,7 @@ router.get('/', express.json(), async (req, res) => {
   // Vérifier le paiement auprès de Stancer
   let payment;
   try {
-    const response = await fetch(`${STANCER_API}/payment/${paymentId}`, {
+    const response = await fetch(`${STANCER_API}/checkout/${paymentId}`, {
       headers: { Authorization: stancerAuth() },
     });
     if (!response.ok) throw new Error(`Stancer API ${response.status}`);
@@ -46,8 +51,8 @@ router.get('/', express.json(), async (req, res) => {
   }
 
   const customerEmail = payment.customer?.email;
-  const customerName  = payment.customer?.name || customerEmail;
-  const amount        = payment.amount;
+  const customerName = payment.customer?.name || customerEmail;
+  const amount = payment.amount;
 
   // product_id passé par le frontend via localStorage (Stancer n'a pas de champ metadata)
   const productId = req.query.product_id;
@@ -96,7 +101,7 @@ router.get('/', express.json(), async (req, res) => {
     });
 
     await sendOrderEmail({
-      toEmail:      customerEmail,
+      toEmail: customerEmail,
       customerName,
       product,
       invoicePdf,
@@ -112,17 +117,24 @@ router.get('/', express.json(), async (req, res) => {
 
     console.log(`[payment-confirm] Commande ${invoiceNumber} traitée — ${customerEmail}`);
     res.json({ success: true, invoiceNumber });
-
   } catch (err) {
     console.error('[payment-confirm] Erreur traitement :', err.message);
     try {
       await sendOpsAlert({
         subject: 'Echec traitement commande Stancer',
         message: "Le traitement d'une commande a echoue dans payment-confirm.",
-        details: { error: err.message, payment_session_id: paymentId, customer_email: customerEmail, product_id: productId, amount },
+        details: {
+          error: err.message,
+          payment_session_id: paymentId,
+          customer_email: customerEmail,
+          product_id: productId,
+          amount,
+        },
       });
     } catch (_) {}
-    res.status(500).json({ error: 'Erreur lors du traitement de ta commande. Écris-nous à contact@c-reussite.fr.' });
+    res.status(500).json({
+      error: 'Erreur lors du traitement de ta commande. Écris-nous à contact@c-reussite.fr.',
+    });
   }
 });
 
