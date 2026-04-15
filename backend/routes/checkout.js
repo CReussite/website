@@ -15,11 +15,15 @@ function stancerAuth() {
 }
 
 router.post('/', express.json(), async (req, res) => {
-  const { product_id } = req.body;
+  const { product_id, email } = req.body;
 
   const product = PRODUCT_MAP[product_id];
   if (!product) {
     return res.status(400).json({ error: `Produit inconnu : ${product_id}` });
+  }
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ error: 'Adresse email invalide.' });
   }
 
   try {
@@ -34,6 +38,7 @@ router.post('/', express.json(), async (req, res) => {
         currency: 'eur',
         description: product.name,
         capture: true,
+        customer: { email },
         return_url: `${FRONTEND_URL}/success.html`,
       }),
     });
