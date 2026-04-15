@@ -6,8 +6,7 @@ const path    = require('path');
 const app  = express();
 const PORT = process.env.PORT || 3000;
 const REQUIRED_ENV_VARS = [
-  'STRIPE_SECRET_KEY',
-  'STRIPE_WEBHOOK_SECRET',
+  'STANCER_SECRET_KEY',
   'SUPABASE_URL',
   'SUPABASE_SERVICE_ROLE_KEY',
   'BREVO_API_KEY',
@@ -27,14 +26,14 @@ const allowedOrigins = [
 ];
 app.use(cors({
   origin: (origin, cb) => {
-    // Autoriser les requêtes sans origin (Stripe webhook, curl, etc.)
+    // Autoriser les requêtes sans origin (webhook Stancer, curl, etc.)
     if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
     cb(new Error('Not allowed by CORS'));
   },
 }));
 
 // ── Routes ────────────────────────────────────────────
-// /!\ Le webhook Stripe doit recevoir le body RAW → monté en premier
+// /!\ Le webhook Stancer doit recevoir le body JSON → monté en premier
 app.use('/webhook', require('./routes/webhook'));
 
 // Checkout session (body JSON)

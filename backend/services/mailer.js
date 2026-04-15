@@ -1,6 +1,6 @@
 const SibApiV3Sdk = require('sib-api-v3-sdk');
-const fs   = require('fs');
-const path = require('path');
+const fs   = require('node:fs');
+const path = require('node:path');
 const { PDFDocument, rgb } = require('pdf-lib');
 
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
@@ -11,15 +11,15 @@ const CONTACT_EMAIL = 'contact@c-reussite.fr';
 
 /**
  * Ajoute les métadonnées de traçabilité + un filigrane invisible dans chaque page du PDF.
- * Le nom de l'acheteur est inscrit dans les métadonnées Author et Keywords.
+ * Seul l'email de l'acheteur est inscrit (pas le nom).
  */
-async function stampPdf(pdfBuffer, customerEmail, customerName) {
+async function stampPdf(pdfBuffer, customerEmail) {
   const pdfDoc = await PDFDocument.load(pdfBuffer);
 
   // Métadonnées de traçabilité (supprimables, mais première ligne de défense)
-  pdfDoc.setAuthor(`Acheté par : ${customerName} <${customerEmail}>`);
-  pdfDoc.setKeywords([`acheteur:${customerEmail}`, `client:${customerName}`, 'C\'Réussite']);
-  pdfDoc.setSubject(`Document personnel — ${customerName}`);
+  pdfDoc.setAuthor(`Acheté par : ${customerEmail}`);
+  pdfDoc.setKeywords([`acheteur:${customerEmail}`, "C'Réussite"]);
+  pdfDoc.setSubject(`Document personnel — ${customerEmail}`);
   pdfDoc.setCreator('C\'Réussite');
 
   // Stéganographie : texte invisible intégré dans le flux de contenu de chaque page.
@@ -30,7 +30,7 @@ async function stampPdf(pdfBuffer, customerEmail, customerName) {
   for (const page of pages) {
     const { width, height } = page.getSize();
 
-    const stamp = `${customerName} <${customerEmail}>`;
+    const stamp = customerEmail;
 
     const positions = [
       { x: 50,              y: height - 30 },
@@ -58,7 +58,7 @@ async function stampPdf(pdfBuffer, customerEmail, customerName) {
  * Envoie le(s) PDF(s) produit + la facture à l'acheteur.
  * @param {object} opts
  * @param {string}   opts.toEmail       - email de l'acheteur
- * @param {string}   opts.customerName  - nom de l'acheteur (depuis Stripe)
+ * @param {string}   opts.customerName  - nom de l'acheteur (depuis Stancer)
  * @param {object}   opts.product       - objet produit depuis products.json
  * @param {Buffer}   opts.invoicePdf    - facture générée en mémoire
  * @param {string}   opts.invoiceNumber - numéro de facture (ex: 2026-001)
@@ -74,7 +74,7 @@ async function sendOrderEmail({ toEmail, customerName, product, invoicePdf, invo
   const attachments = await Promise.all(product.pdf_files.map(async filename => {
     const filePath = path.join(__dirname, '..', 'assets', filename);
     const rawBuffer = fs.readFileSync(filePath);
-    const stamped = await stampPdf(rawBuffer, toEmail, name);
+    const stamped = await stampPdf(rawBuffer, toEmail);
     return { name: filename, content: stamped.toString('base64') };
   }));
 

@@ -1,6 +1,6 @@
 /**
- * Test: route /api/checkout (création de session Stripe)
- * Nécessite STRIPE_SECRET_KEY pour le test live.
+ * Test: route /api/checkout (création de paiement Stancer)
+ * Nécessite STANCER_SECRET_KEY pour le test live.
  * Le test "produit inconnu" fonctionne sans credential.
  */
 const { test, describe } = require('node:test');
@@ -69,14 +69,17 @@ describe(`Checkout live (${BACKEND})`, () => {
     assert.ok(r.body.error);
   });
 
-  test('product_id valide → URL Stripe retournée', {
-    skip: !process.env.STRIPE_SECRET_KEY
-      ? 'STRIPE_SECRET_KEY non défini — test live skippé'
-      : (process.env.SKIP_LIVE ? 'SKIP_LIVE défini' : false),
-  }, async () => {
+  let skipLive;
+  if (process.env.STANCER_SECRET_KEY) {
+    skipLive = process.env.SKIP_LIVE ? 'SKIP_LIVE défini' : false;
+  } else {
+    skipLive = 'STANCER_SECRET_KEY non défini — test live skippé';
+  }
+
+  test('product_id valide → URL Stancer retournée', { skip: skipLive }, async () => {
     const r = await postJSON(`${BACKEND}/api/checkout`, { product_id: 'maths' });
     assert.equal(r.status, 200, `réponse inattendue : ${JSON.stringify(r.body)}`);
-    assert.ok(r.body.url, 'doit retourner une URL Stripe');
-    assert.ok(r.body.url.startsWith('https://checkout.stripe.com'), 'URL doit être Stripe Checkout');
+    assert.ok(r.body.url, 'doit retourner une URL Stancer');
+    assert.ok(r.body.url.startsWith('https://payment.stancer.com'), 'URL doit être Stancer');
   });
 });
