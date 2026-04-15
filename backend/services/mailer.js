@@ -1,5 +1,5 @@
 const SibApiV3Sdk = require('sib-api-v3-sdk');
-const fs   = require('node:fs');
+const fs = require('node:fs');
 const path = require('node:path');
 const { PDFDocument, rgb } = require('pdf-lib');
 
@@ -20,7 +20,7 @@ async function stampPdf(pdfBuffer, customerEmail) {
   pdfDoc.setAuthor(`Acheté par : ${customerEmail}`);
   pdfDoc.setKeywords([`acheteur:${customerEmail}`, "C'Réussite"]);
   pdfDoc.setSubject(`Document personnel — ${customerEmail}`);
-  pdfDoc.setCreator('C\'Réussite');
+  pdfDoc.setCreator("C'Réussite");
 
   // Stéganographie : texte invisible intégré dans le flux de contenu de chaque page.
   // Opacité 0, blanc sur blanc, taille 4pt — visuellement absent mais physiquement présent
@@ -33,11 +33,11 @@ async function stampPdf(pdfBuffer, customerEmail) {
     const stamp = customerEmail;
 
     const positions = [
-      { x: 50,              y: height - 30 },
-      { x: width / 2 - 60, y: height / 2  },
-      { x: 50,              y: 30          },
-      { x: width - 160,     y: height - 30 },
-      { x: width - 160,     y: 30          },
+      { x: 50, y: height - 30 },
+      { x: width / 2 - 60, y: height / 2 },
+      { x: 50, y: 30 },
+      { x: width - 160, y: height - 30 },
+      { x: width - 160, y: 30 },
     ];
 
     for (const { x, y } of positions) {
@@ -63,33 +63,50 @@ async function stampPdf(pdfBuffer, customerEmail) {
  * @param {Buffer}   opts.invoicePdf    - facture générée en mémoire
  * @param {string}   opts.invoiceNumber - numéro de facture (ex: 2026-001)
  */
-async function sendOrderEmail({ toEmail, customerName, product, invoicePdf, invoiceNumber, amount, orderDate }) {
-  const name      = customerName || toEmail;
+async function sendOrderEmail({
+  toEmail,
+  customerName,
+  product,
+  invoicePdf,
+  invoiceNumber,
+  amount,
+  orderDate,
+}) {
+  const name = customerName || toEmail;
   const amountStr = amount ? (amount / 100).toFixed(2).replace('.', ',') + ' €' : '';
-  const dateStr   = orderDate
-    ? new Date(orderDate).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })
+  const dateStr = orderDate
+    ? new Date(orderDate).toLocaleDateString('fr-FR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
     : new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
 
   // Pièces jointes : PDF(s) produit avec watermark stéganographique
-  const attachments = await Promise.all(product.pdf_files.map(async filename => {
-    const filePath = path.join(__dirname, '..', 'assets', filename);
-    const rawBuffer = fs.readFileSync(filePath);
-    const stamped = await stampPdf(rawBuffer, toEmail);
-    return { name: filename, content: stamped.toString('base64') };
-  }));
+  const attachments = await Promise.all(
+    product.pdf_files.map(async (filename) => {
+      const filePath = path.join(__dirname, '..', 'assets', filename);
+      const rawBuffer = fs.readFileSync(filePath);
+      const stamped = await stampPdf(rawBuffer, toEmail);
+      return { name: filename, content: stamped.toString('base64') };
+    }),
+  );
 
   // Ajouter la facture
   attachments.push({
-    name:    `facture-${invoiceNumber}.pdf`,
+    name: `facture-${invoiceNumber}.pdf`,
     content: invoicePdf.toString('base64'),
   });
 
   const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
-  sendSmtpEmail.sender     = { name: process.env.FROM_NAME || "C'Réussite", email: process.env.FROM_EMAIL };
-  sendSmtpEmail.replyTo    = { email: CONTACT_EMAIL, name: process.env.FROM_NAME || "C'Réussite" };
-  sendSmtpEmail.to         = [{ email: toEmail, name }];
-  sendSmtpEmail.bcc        = [{ email: process.env.BCC_EMAIL || 'creussite2026@gmail.com' }];
-  sendSmtpEmail.subject    = `Tes fiches sont là — ${product.name}`;
+  sendSmtpEmail.sender = {
+    name: process.env.FROM_NAME || "C'Réussite",
+    email: process.env.FROM_EMAIL,
+  };
+  sendSmtpEmail.replyTo = { email: CONTACT_EMAIL, name: process.env.FROM_NAME || "C'Réussite" };
+  sendSmtpEmail.to = [{ email: toEmail, name }];
+  sendSmtpEmail.bcc = [{ email: process.env.BCC_EMAIL || 'creussite2026@gmail.com' }];
+  sendSmtpEmail.subject = `Tes fiches sont là — ${product.name}`;
   sendSmtpEmail.attachment = attachments;
   sendSmtpEmail.htmlContent = `
     <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1A1A2E;">
@@ -97,7 +114,7 @@ async function sendOrderEmail({ toEmail, customerName, product, invoicePdf, invo
         <img src="https://c-reussite.fr/img/logo.jpeg" alt="C'Réussite" style="height:72px;width:auto;">
       </div>
       <h2 style="color:#112250;">Merci pour ta commande !</h2>
-      <p>Bonjour ${name},</p>
+      <p>Bonjour,</p>
       <p>Tu trouveras tes fiches en pièce jointe à cet email.</p>
 
       <table style="width:100%;border-collapse:collapse;margin:20px 0;font-size:0.9rem;">
@@ -146,7 +163,9 @@ async function sendOrderEmail({ toEmail, customerName, product, invoicePdf, invo
   `;
 
   const result = await apiInstance.sendTransacEmail(sendSmtpEmail);
-  console.log(`[mailer] Email envoyé à ${toEmail} — facture ${invoiceNumber} — messageId: ${result.messageId}`);
+  console.log(
+    `[mailer] Email envoyé à ${toEmail} — facture ${invoiceNumber} — messageId: ${result.messageId}`,
+  );
   return result;
 }
 
