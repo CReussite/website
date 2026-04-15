@@ -33,6 +33,7 @@ router.post('/', express.json(), async (req, res) => {
         amount: product.price,
         currency: 'eur',
         description: product.name,
+        capture: true,
         return_url: `${FRONTEND_URL}/success.html`,
       }),
     });

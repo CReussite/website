@@ -46,7 +46,8 @@ router.get('/', express.json(), async (req, res) => {
     return res.status(502).json({ error: 'Impossible de vérifier le paiement.' });
   }
 
-  if (payment.status !== 'captured') {
+  const VALID_STATUSES = ['captured', 'to_capture', 'capture_sent'];
+  if (!VALID_STATUSES.includes(payment.status)) {
     return res.status(402).json({ error: `Paiement non finalisé (statut : ${payment.status}).` });
   }
 
