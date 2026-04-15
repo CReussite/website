@@ -13,7 +13,7 @@ const TEXT_MID   = '#3C4A5C';
  * Génère un PDF de facture en mémoire.
  * Retourne une Promise<Buffer>.
  */
-function generateInvoice({ invoiceNumber, email, productName, amount, date }) {
+function generateInvoice({ invoiceNumber, email, productName, amount, date, paymentRef }) {
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({ size: 'A4', margin: 0 });
     const chunks = [];
@@ -59,15 +59,24 @@ function generateInvoice({ invoiceNumber, email, productName, amount, date }) {
       .fillColor(QUICKSAND)
       .text('FACTURE', pageWidth - margin - 150, 30, { width: 150, align: 'right' });
 
-    // ── Barre meta (fond swan-wing) ──────────────────────
-    doc.rect(0, 90, pageWidth, 36).fill(SWAN_WING);
+    // ── Barre meta (fond swan-wing) — 2 lignes ─────────
+    doc.rect(0, 90, pageWidth, 52).fill(SWAN_WING);
+    // Ligne bleu royal séparant l'en-tête de la barre
+    doc.rect(0, 90, pageWidth, 2).fill(QUICKSAND);
+
     doc.fontSize(9).font('Helvetica').fillColor(SAPPHIRE);
-    doc.font('Helvetica-Bold').text('N° :', margin, 102, { continued: true }).font('Helvetica').text(' ' + invoiceNumber);
-    doc.font('Helvetica-Bold').text("Date d'émission :", margin + 180, 102, { continued: true }).font('Helvetica').text(' ' + dateStr);
-    doc.font('Helvetica-Bold').text('Date de paiement :', margin + 370, 102, { continued: true }).font('Helvetica').text(' ' + dateStr);
+    // Ligne 1 : facture
+    const metaLine1Y = 98;
+    doc.font('Helvetica-Bold').text('N° facture :', margin, metaLine1Y, { continued: true }).font('Helvetica').text(' ' + invoiceNumber);
+    doc.font('Helvetica-Bold').text("Date d'émission :", margin + 250, metaLine1Y, { continued: true }).font('Helvetica').text(' ' + dateStr);
+    // Ligne 2 : paiement
+    const metaLine2Y = 114;
+    const refText = paymentRef || '—';
+    doc.font('Helvetica-Bold').text('Réf. paiement :', margin, metaLine2Y, { continued: true }).font('Helvetica').text(' ' + refText);
+    doc.font('Helvetica-Bold').text('Date de paiement :', margin + 250, metaLine2Y, { continued: true }).font('Helvetica').text(' ' + dateStr);
 
     // ── Vendeur / Client ─────────────────────────────────
-    const partiesY = 150;
+    const partiesY = 164;
 
     // Vendeur
     doc.fontSize(8).font('Helvetica-Bold').fillColor(QUICKSAND).text('VENDEUR', margin, partiesY);

@@ -231,8 +231,10 @@
     .inv-header .logo-block img { width: 70px; height: 70px; border-radius: 8px; }
     .inv-header .brand-name { font-size: 26px; font-weight: 600; letter-spacing: 0.5px; }
     .inv-header .inv-label { font-size: 32px; font-weight: 700; letter-spacing: 1px; color: var(--quicksand, #E0C58F); }
-    /* Barre meta */
-    .inv-meta-bar { background: var(--swan-wing, #F5F0E9); padding: 16px 48px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 13px; color: var(--sapphire, #3C5070); }
+    /* Barre meta — 2 lignes */
+    .inv-meta-bar { background: var(--swan-wing, #F5F0E9); padding: 14px 48px; font-size: 13px; color: var(--sapphire, #3C5070); border-top: 2px solid var(--quicksand, #E0C58F); }
+    .inv-meta-row { display: flex; gap: 32px; flex-wrap: wrap; }
+    .inv-meta-row + .inv-meta-row { margin-top: 6px; }
     .inv-meta-bar .meta-label { font-weight: 600; }
     /* Corps */
     .inv-body { padding: 36px 48px 24px; font-family: var(--font-sans, 'Segoe UI', system-ui, sans-serif); }
@@ -272,6 +274,7 @@
       .inv-header, .inv-meta-bar, .inv-body { padding-left: 24px; padding-right: 24px; }
       .inv-parties { flex-direction: column; gap: 20px; }
       .inv-header { flex-direction: column; gap: 12px; text-align: center; }
+      .inv-meta-row { flex-direction: column; gap: 4px; }
     }
   </style>
 </head>
@@ -433,10 +436,14 @@
             <span class="inv-label">FACTURE</span>
           </div>
           <div class="inv-meta-bar">
-            <span><span class="meta-label">N° :</span> <span id="inv-number"></span></span>
-            <span><span class="meta-label">Date d'émission :</span> <span id="inv-date"></span></span>
-            <span><span class="meta-label">Date de paiement :</span> <span id="inv-paydate">—</span></span>
-            <span><span class="meta-label">Réf. paiement :</span> <span id="inv-payref"></span></span>
+            <div class="inv-meta-row">
+              <span><span class="meta-label">N° facture :</span> <span id="inv-number"></span></span>
+              <span><span class="meta-label">Date d'émission :</span> <span id="inv-date"></span></span>
+            </div>
+            <div class="inv-meta-row">
+              <span><span class="meta-label">Réf. paiement :</span> <span id="inv-payref"></span></span>
+              <span><span class="meta-label">Date de paiement :</span> <span id="inv-paydate">—</span></span>
+            </div>
           </div>
           <div class="inv-body">
             <div class="inv-parties">
@@ -849,7 +856,9 @@
         printWindow.document.write('.inv-header .logo-block img { width: 70px; height: 70px; border-radius: 8px; }');
         printWindow.document.write('.inv-header .brand-name { font-size: 26px; font-weight: 600; letter-spacing: 0.5px; }');
         printWindow.document.write('.inv-header .inv-label { font-size: 32px; font-weight: 700; letter-spacing: 1px; color: var(--quicksand); }');
-        printWindow.document.write('.inv-meta-bar { background: var(--swan-wing); padding: 16px 48px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 13px; color: var(--sapphire); }');
+        printWindow.document.write('.inv-meta-bar { background: var(--swan-wing); padding: 14px 48px; font-size: 13px; color: var(--sapphire); border-top: 2px solid var(--quicksand); }');
+        printWindow.document.write('.inv-meta-row { display: flex; gap: 32px; flex-wrap: wrap; }');
+        printWindow.document.write('.inv-meta-row + .inv-meta-row { margin-top: 6px; }');
         printWindow.document.write('.inv-meta-bar .meta-label { font-weight: 600; }');
         printWindow.document.write('.inv-body { padding: 36px 48px 24px; }');
         printWindow.document.write('.inv-parties { display: flex; justify-content: space-between; gap: 32px; margin-bottom: 36px; }');
