@@ -414,8 +414,8 @@
   <div class="invoice-overlay" id="invoice-overlay">
     <div class="invoice-modal">
       <div class="invoice-modal-actions">
-        <button class="btn-invoice-print" id="btn-inv-print">🖨️ Imprimer / PDF</button>
-        <button class="btn-invoice-pdf" id="btn-inv-dl">⬇ Télécharger PDF</button>
+        <button class="btn-invoice-print" id="btn-inv-print">🖨️ Imprimer</button>
+        <button class="btn-invoice-pdf" id="btn-inv-dl">⬇ Enregistrer en PDF</button>
         <button class="btn-invoice-close" id="btn-inv-close">✕ Fermer</button>
       </div>
       <div class="invoice-frame" id="invoice-frame">
@@ -642,14 +642,14 @@
         tbody.querySelectorAll('.btn-dl-pdf').forEach(function (btn) {
           btn.addEventListener('click', function () {
             const invoiceNumber = btn.getAttribute('data-inv');
-            window.open(BACKEND + '/api/admin/invoice/' + encodeURIComponent(invoiceNumber) + '?key=' + encodeURIComponent(adminKey), '_blank');
+            openInvoiceModal(invoiceNumber, true);
           });
         });
 
         tbody.querySelectorAll('.btn-view-invoice').forEach(function (btn) {
           btn.addEventListener('click', function () {
             const invoiceNumber = btn.getAttribute('data-inv');
-            openInvoiceModal(invoiceNumber);
+            openInvoiceModal(invoiceNumber, false);
           });
         });
       }
@@ -803,7 +803,7 @@
         document.getElementById('inv-total').textContent = fmtInvoicePrice(subtotal);
       }
 
-      async function openInvoiceModal(invoiceNumber) {
+      async function openInvoiceModal(invoiceNumber, autoPrint) {
         currentInvoiceNumber = invoiceNumber;
         invoiceOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
@@ -820,6 +820,10 @@
           invLoading.style.display = 'none';
           invContent.style.display = 'block';
           renderInvoiceModal(data);
+
+          if (autoPrint) {
+            setTimeout(function () { openInvoicePrintWindow(); }, 150);
+          }
         } catch (err) {
           invLoading.style.display = 'none';
           invError.style.display = 'block';
@@ -843,57 +847,57 @@
         if (e.key === 'Escape' && invoiceOverlay.classList.contains('active')) closeInvoiceModal();
       });
 
-      document.getElementById('btn-inv-print').addEventListener('click', function () {
-        const frame = document.getElementById('invoice-frame');
-        const printWindow = window.open('', '_blank');
-        printWindow.document.write('<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Facture ' + currentInvoiceNumber + '</title>');
-        printWindow.document.write('<style>');
-        printWindow.document.write(':root { --sapphire: #3C5070; --royal-blue: #112250; --quicksand: #E0C58F; --swan-wing: #F5F0E9; --shellstone: #D9CBC2; --text-dark: #1A1A2E; --text-mid: #3C4A5C; --font-sans: "Segoe UI", system-ui, -apple-system, sans-serif; --radius: 8px; }');
-        printWindow.document.write('*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }');
-        printWindow.document.write('body { font-family: var(--font-sans); color: var(--text-dark); background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }');
-        printWindow.document.write('.inv-header { background: var(--royal-blue); color: #fff; padding: 36px 48px; display: flex; justify-content: space-between; align-items: center; }');
-        printWindow.document.write('.inv-header .logo-block { display: flex; align-items: center; gap: 18px; }');
-        printWindow.document.write('.inv-header .logo-block img { width: 70px; height: 70px; border-radius: 8px; }');
-        printWindow.document.write('.inv-header .brand-name { font-size: 26px; font-weight: 600; letter-spacing: 0.5px; }');
-        printWindow.document.write('.inv-header .inv-label { font-size: 32px; font-weight: 700; letter-spacing: 1px; color: var(--quicksand); }');
-        printWindow.document.write('.inv-meta-bar { background: var(--swan-wing); padding: 14px 48px; font-size: 13px; color: var(--sapphire); border-top: 2px solid var(--quicksand); }');
-        printWindow.document.write('.inv-meta-row { display: flex; gap: 32px; flex-wrap: wrap; }');
-        printWindow.document.write('.inv-meta-row + .inv-meta-row { margin-top: 6px; }');
-        printWindow.document.write('.inv-meta-bar .meta-label { font-weight: 600; }');
-        printWindow.document.write('.inv-body { padding: 36px 48px 24px; }');
-        printWindow.document.write('.inv-parties { display: flex; justify-content: space-between; gap: 32px; margin-bottom: 36px; }');
-        printWindow.document.write('.inv-party { flex: 1; }');
-        printWindow.document.write('.inv-party-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--quicksand); font-weight: 600; margin-bottom: 8px; border-bottom: 2px solid var(--quicksand); padding-bottom: 4px; display: inline-block; }');
-        printWindow.document.write('.inv-party-name { font-size: 17px; font-weight: 600; color: var(--royal-blue); margin-bottom: 4px; }');
-        printWindow.document.write('.inv-party-details { font-size: 13px; color: var(--text-mid); line-height: 1.6; }');
-        printWindow.document.write('.inv-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }');
-        printWindow.document.write('.inv-table thead th { background: var(--sapphire); color: #fff; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; padding: 10px 14px; text-align: left; font-weight: 600; }');
-        printWindow.document.write('.inv-table thead th:last-child, .inv-table thead th:nth-child(3), .inv-table thead th:nth-child(4) { text-align: right; }');
-        printWindow.document.write('.inv-table tbody td { padding: 12px 14px; font-size: 13.5px; border-bottom: 1px solid var(--shellstone); color: var(--text-dark); }');
-        printWindow.document.write('.inv-table tbody td:last-child, .inv-table tbody td:nth-child(3), .inv-table tbody td:nth-child(4) { text-align: right; }');
-        printWindow.document.write('.inv-totals { display: flex; justify-content: flex-end; margin-bottom: 32px; }');
-        printWindow.document.write('.inv-totals-inner { width: 260px; }');
-        printWindow.document.write('.inv-totals-row { display: flex; justify-content: space-between; padding: 7px 0; font-size: 13.5px; color: var(--text-mid); }');
-        printWindow.document.write('.inv-totals-row.total { border-top: 2px solid var(--royal-blue); margin-top: 6px; padding-top: 10px; font-size: 16px; font-weight: 700; color: var(--royal-blue); }');
-        printWindow.document.write('.inv-payment { background: var(--swan-wing); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }');
-        printWindow.document.write('.inv-payment-badge { background: #2e7d4f; color: #fff; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }');
-        printWindow.document.write('.inv-payment-text { font-size: 13px; color: var(--sapphire); }');
-        printWindow.document.write('.inv-legal { font-size: 11px; color: var(--text-mid); line-height: 1.7; border-top: 1px solid var(--shellstone); padding-top: 16px; margin-bottom: 8px; }');
-        printWindow.document.write('.inv-legal a { color: var(--sapphire); }');
-        printWindow.document.write('.inv-footer { background: var(--royal-blue); color: rgba(255,255,255,0.7); text-align: center; padding: 14px 48px; font-size: 11px; line-height: 1.6; }');
-        printWindow.document.write('.inv-footer a { color: var(--quicksand); text-decoration: none; }');
-        printWindow.document.write('</style></head><body>');
-        printWindow.document.write(frame.querySelector('#inv-content').innerHTML);
-        printWindow.document.write('</body></html>');
-        printWindow.document.close();
-        printWindow.onload = function () { printWindow.print(); };
-      });
+      function openInvoicePrintWindow() {
+        var frame = document.getElementById('invoice-frame');
+        var content = frame.querySelector('#inv-content');
+        if (!content) return;
+        var pw = window.open('', '_blank');
+        pw.document.write('<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Facture ' + currentInvoiceNumber + '</title>');
+        pw.document.write('<style>');
+        pw.document.write(':root { --sapphire: #3C5070; --royal-blue: #112250; --quicksand: #E0C58F; --swan-wing: #F5F0E9; --shellstone: #D9CBC2; --text-dark: #1A1A2E; --text-mid: #3C4A5C; --font-sans: "Segoe UI", system-ui, -apple-system, sans-serif; --radius: 8px; }');
+        pw.document.write('*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }');
+        pw.document.write('body { font-family: var(--font-sans); color: var(--text-dark); background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }');
+        pw.document.write('.inv-header { background: var(--royal-blue); color: #fff; padding: 36px 48px; display: flex; justify-content: space-between; align-items: center; }');
+        pw.document.write('.inv-header .logo-block { display: flex; align-items: center; gap: 18px; }');
+        pw.document.write('.inv-header .logo-block img { width: 70px; height: 70px; border-radius: 8px; }');
+        pw.document.write('.inv-header .brand-name { font-size: 26px; font-weight: 600; letter-spacing: 0.5px; }');
+        pw.document.write('.inv-header .inv-label { font-size: 32px; font-weight: 700; letter-spacing: 1px; color: var(--quicksand); }');
+        pw.document.write('.inv-meta-bar { background: var(--swan-wing); padding: 14px 48px; font-size: 13px; color: var(--sapphire); border-top: 2px solid var(--quicksand); }');
+        pw.document.write('.inv-meta-row { display: flex; gap: 32px; flex-wrap: wrap; }');
+        pw.document.write('.inv-meta-row + .inv-meta-row { margin-top: 6px; }');
+        pw.document.write('.inv-meta-bar .meta-label { font-weight: 600; }');
+        pw.document.write('.inv-body { padding: 36px 48px 24px; }');
+        pw.document.write('.inv-parties { display: flex; justify-content: space-between; gap: 32px; margin-bottom: 36px; }');
+        pw.document.write('.inv-party { flex: 1; }');
+        pw.document.write('.inv-party-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--quicksand); font-weight: 600; margin-bottom: 8px; border-bottom: 2px solid var(--quicksand); padding-bottom: 4px; display: inline-block; }');
+        pw.document.write('.inv-party-name { font-size: 17px; font-weight: 600; color: var(--royal-blue); margin-bottom: 4px; }');
+        pw.document.write('.inv-party-details { font-size: 13px; color: var(--text-mid); line-height: 1.6; }');
+        pw.document.write('.inv-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }');
+        pw.document.write('.inv-table thead th { background: var(--sapphire); color: #fff; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; padding: 10px 14px; text-align: left; font-weight: 600; }');
+        pw.document.write('.inv-table thead th:last-child, .inv-table thead th:nth-child(3), .inv-table thead th:nth-child(4) { text-align: right; }');
+        pw.document.write('.inv-table tbody td { padding: 12px 14px; font-size: 13.5px; border-bottom: 1px solid var(--shellstone); color: var(--text-dark); }');
+        pw.document.write('.inv-table tbody td:last-child, .inv-table tbody td:nth-child(3), .inv-table tbody td:nth-child(4) { text-align: right; }');
+        pw.document.write('.inv-totals { display: flex; justify-content: flex-end; margin-bottom: 32px; }');
+        pw.document.write('.inv-totals-inner { width: 260px; }');
+        pw.document.write('.inv-totals-row { display: flex; justify-content: space-between; padding: 7px 0; font-size: 13.5px; color: var(--text-mid); }');
+        pw.document.write('.inv-totals-row.total { border-top: 2px solid var(--royal-blue); margin-top: 6px; padding-top: 10px; font-size: 16px; font-weight: 700; color: var(--royal-blue); }');
+        pw.document.write('.inv-payment { background: var(--swan-wing); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }');
+        pw.document.write('.inv-payment-badge { background: #2e7d4f; color: #fff; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }');
+        pw.document.write('.inv-payment-text { font-size: 13px; color: var(--sapphire); }');
+        pw.document.write('.inv-legal { font-size: 11px; color: var(--text-mid); line-height: 1.7; border-top: 1px solid var(--shellstone); padding-top: 16px; margin-bottom: 8px; }');
+        pw.document.write('.inv-legal a { color: var(--sapphire); }');
+        pw.document.write('.inv-footer { background: var(--royal-blue); color: rgba(255,255,255,0.7); text-align: center; padding: 14px 48px; font-size: 11px; line-height: 1.6; }');
+        pw.document.write('.inv-footer a { color: var(--quicksand); text-decoration: none; }');
+        pw.document.write('</style></head><body>');
+        pw.document.write(content.innerHTML);
+        pw.document.write('</body></html>');
+        pw.document.close();
+        pw.onload = function () { pw.print(); };
+      }
 
-      document.getElementById('btn-inv-dl').addEventListener('click', function () {
-        if (currentInvoiceNumber) {
-          window.open(BACKEND + '/api/admin/invoice/' + encodeURIComponent(currentInvoiceNumber) + '?key=' + encodeURIComponent(adminKey), '_blank');
-        }
-      });
+      document.getElementById('btn-inv-print').addEventListener('click', openInvoicePrintWindow);
+
+      document.getElementById('btn-inv-dl').addEventListener('click', openInvoicePrintWindow);
 
     })();
   </script>
