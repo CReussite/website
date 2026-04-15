@@ -3,11 +3,11 @@ const path = require('path');
 
 // Couleurs du site
 const ROYAL_BLUE = '#112250';
-const SAPPHIRE   = '#3C5070';
-const QUICKSAND  = '#E0C58F';
-const SWAN_WING  = '#F5F0E9';
+const SAPPHIRE = '#3C5070';
+const QUICKSAND = '#E0C58F';
+const SWAN_WING = '#F5F0E9';
 const SHELLSTONE = '#D9CBC2';
-const TEXT_MID   = '#3C4A5C';
+const TEXT_MID = '#3C4A5C';
 
 /**
  * Génère un PDF de facture en mémoire.
@@ -18,14 +18,16 @@ function generateInvoice({ invoiceNumber, email, productName, amount, date, paym
     const doc = new PDFDocument({ size: 'A4', margin: 0 });
     const chunks = [];
 
-    doc.on('data', chunk => chunks.push(chunk));
+    doc.on('data', (chunk) => chunks.push(chunk));
     doc.on('end', () => resolve(Buffer.concat(chunks)));
     doc.on('error', reject);
 
     const amountEur = (amount / 100).toFixed(2).replace('.', ',');
     const dateObj = new Date(date);
     const dateStr = dateObj.toLocaleDateString('fr-FR', {
-      day: '2-digit', month: '2-digit', year: 'numeric',
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
     });
 
     const pageWidth = 595.28;
@@ -67,22 +69,50 @@ function generateInvoice({ invoiceNumber, email, productName, amount, date, paym
     doc.fontSize(9).font('Helvetica').fillColor(SAPPHIRE);
     // Ligne 1 : facture
     const metaLine1Y = 98;
-    doc.font('Helvetica-Bold').text('N° facture :', margin, metaLine1Y, { continued: true }).font('Helvetica').text(' ' + invoiceNumber);
-    doc.font('Helvetica-Bold').text("Date d'émission :", margin + 250, metaLine1Y, { continued: true }).font('Helvetica').text(' ' + dateStr);
+    doc
+      .font('Helvetica-Bold')
+      .text('N° facture :', margin, metaLine1Y, { continued: true })
+      .font('Helvetica')
+      .text(' ' + invoiceNumber);
+    doc
+      .font('Helvetica-Bold')
+      .text("Date d'émission :", margin + 250, metaLine1Y, { continued: true })
+      .font('Helvetica')
+      .text(' ' + dateStr);
     // Ligne 2 : paiement
     const metaLine2Y = 114;
     const refText = paymentRef || '—';
-    doc.font('Helvetica-Bold').text('Réf. paiement :', margin, metaLine2Y, { continued: true }).font('Helvetica').text(' ' + refText);
-    doc.font('Helvetica-Bold').text('Date de paiement :', margin + 250, metaLine2Y, { continued: true }).font('Helvetica').text(' ' + dateStr);
+    doc
+      .font('Helvetica-Bold')
+      .text('Réf. paiement :', margin, metaLine2Y, { continued: true })
+      .font('Helvetica')
+      .text(' ' + refText);
+    doc
+      .font('Helvetica-Bold')
+      .text('Date de paiement :', margin + 250, metaLine2Y, { continued: true })
+      .font('Helvetica')
+      .text(' ' + dateStr);
 
     // ── Vendeur / Client ─────────────────────────────────
     const partiesY = 164;
 
     // Vendeur
     doc.fontSize(8).font('Helvetica-Bold').fillColor(QUICKSAND).text('VENDEUR', margin, partiesY);
-    doc.moveTo(margin, partiesY + 12).lineTo(margin + 60, partiesY + 12).lineWidth(1.5).strokeColor(QUICKSAND).stroke();
-    doc.fontSize(12).font('Helvetica-Bold').fillColor(ROYAL_BLUE).text('Camille Reinhardt EI', margin, partiesY + 20);
-    doc.fontSize(9).font('Helvetica').fillColor(TEXT_MID)
+    doc
+      .moveTo(margin, partiesY + 12)
+      .lineTo(margin + 60, partiesY + 12)
+      .lineWidth(1.5)
+      .strokeColor(QUICKSAND)
+      .stroke();
+    doc
+      .fontSize(12)
+      .font('Helvetica-Bold')
+      .fillColor(ROYAL_BLUE)
+      .text('Camille Reinhardt EI', margin, partiesY + 20);
+    doc
+      .fontSize(9)
+      .font('Helvetica')
+      .fillColor(TEXT_MID)
       .text("C'Réussite", margin, partiesY + 36)
       .text('54A Rue des Écoles', margin, partiesY + 48)
       .text('57700 Neufchef', margin, partiesY + 60)
@@ -93,8 +123,17 @@ function generateInvoice({ invoiceNumber, email, productName, amount, date, paym
     // Client
     const clientX = pageWidth / 2 + 20;
     doc.fontSize(8).font('Helvetica-Bold').fillColor(QUICKSAND).text('CLIENT', clientX, partiesY);
-    doc.moveTo(clientX, partiesY + 12).lineTo(clientX + 50, partiesY + 12).lineWidth(1.5).strokeColor(QUICKSAND).stroke();
-    doc.fontSize(9).font('Helvetica').fillColor(TEXT_MID).text(email, clientX, partiesY + 20);
+    doc
+      .moveTo(clientX, partiesY + 12)
+      .lineTo(clientX + 50, partiesY + 12)
+      .lineWidth(1.5)
+      .strokeColor(QUICKSAND)
+      .stroke();
+    doc
+      .fontSize(9)
+      .font('Helvetica')
+      .fillColor(TEXT_MID)
+      .text(email, clientX, partiesY + 20);
 
     // ── Tableau produit ──────────────────────────────────
     const tableTop = partiesY + 110;
@@ -118,7 +157,12 @@ function generateInvoice({ invoiceNumber, email, productName, amount, date, paym
     doc.text('1', colQty, rowY + 8, { width: 40, align: 'right' });
     doc.text(amountEur + ' €', colPU, rowY + 8, { width: 70, align: 'right' });
     doc.text(amountEur + ' €', colTotal, rowY + 8, { width: 70, align: 'right' });
-    doc.moveTo(margin, rowY + 26).lineTo(margin + contentWidth, rowY + 26).lineWidth(0.5).strokeColor(SHELLSTONE).stroke();
+    doc
+      .moveTo(margin, rowY + 26)
+      .lineTo(margin + contentWidth, rowY + 26)
+      .lineWidth(0.5)
+      .strokeColor(SHELLSTONE)
+      .stroke();
 
     // ── Totaux ───────────────────────────────────────────
     const totalsX = margin + contentWidth - 200;
@@ -131,7 +175,12 @@ function generateInvoice({ invoiceNumber, email, productName, amount, date, paym
     doc.text('TVA', totalsX, totalsY + 18);
     doc.text('0,00 €', totalsX + 100, totalsY + 18, { width: 100, align: 'right' });
 
-    doc.moveTo(totalsX, totalsY + 36).lineTo(totalsX + 200, totalsY + 36).lineWidth(1.5).strokeColor(ROYAL_BLUE).stroke();
+    doc
+      .moveTo(totalsX, totalsY + 36)
+      .lineTo(totalsX + 200, totalsY + 36)
+      .lineWidth(1.5)
+      .strokeColor(ROYAL_BLUE)
+      .stroke();
 
     doc.fontSize(12).font('Helvetica-Bold').fillColor(ROYAL_BLUE);
     doc.text('Total TTC', totalsX, totalsY + 44);
@@ -142,20 +191,38 @@ function generateInvoice({ invoiceNumber, email, productName, amount, date, paym
     doc.roundedRect(margin, payY, contentWidth, 34, 4).fill(SWAN_WING);
     // Badge "Payé"
     doc.roundedRect(margin + 12, payY + 8, 42, 18, 10).fill('#2e7d4f');
-    doc.fontSize(8).font('Helvetica-Bold').fillColor('#FFFFFF').text('Payé', margin + 17, payY + 12);
-    doc.fontSize(9).font('Helvetica').fillColor(SAPPHIRE)
-      .text('Paiement reçu par carte bancaire via Stancer le ' + dateStr + '.', margin + 62, payY + 11);
+    doc
+      .fontSize(8)
+      .font('Helvetica-Bold')
+      .fillColor('#FFFFFF')
+      .text('Payé', margin + 17, payY + 12);
+    doc
+      .fontSize(9)
+      .font('Helvetica')
+      .fillColor(SAPPHIRE)
+      .text(
+        'Paiement reçu par carte bancaire via Stancer le ' + dateStr + '.',
+        margin + 62,
+        payY + 11,
+      );
 
     // ── Mentions légales ─────────────────────────────────
     const legalY = payY + 50;
-    doc.moveTo(margin, legalY).lineTo(margin + contentWidth, legalY).lineWidth(0.5).strokeColor(SHELLSTONE).stroke();
+    doc
+      .moveTo(margin, legalY)
+      .lineTo(margin + contentWidth, legalY)
+      .lineWidth(0.5)
+      .strokeColor(SHELLSTONE)
+      .stroke();
     doc.fontSize(7.5).font('Helvetica').fillColor(TEXT_MID);
     doc.text(
       'TVA non applicable, article 293 B du CGI.\n' +
-      "Le droit de rétractation ne s'applique pas aux produits numériques dont l'exécution a commencé après accord préalable exprès du consommateur (article L. 221-28 du Code de la consommation).\n" +
-      'Livraison : immédiate (téléchargement numérique).\n' +
-      'Médiation de la consommation : CM2C — 49 rue de Ponthieu, 75 008 Paris — cm2c.net — litiges@cm2c.net',
-      margin, legalY + 8, { width: contentWidth, lineGap: 2 }
+        "Le droit de rétractation ne s'applique pas aux produits numériques dont l'exécution a commencé après accord préalable exprès du consommateur (article L. 221-28 du Code de la consommation).\n" +
+        'Livraison : immédiate (téléchargement numérique).\n' +
+        'Médiation de la consommation : CM2C — 49 rue de Ponthieu, 75 008 Paris — cm2c.net — litiges@cm2c.net',
+      margin,
+      legalY + 8,
+      { width: contentWidth, lineGap: 2 },
     );
 
     // ── Pied de page (fond bleu royal) ───────────────────
@@ -163,12 +230,14 @@ function generateInvoice({ invoiceNumber, email, productName, amount, date, paym
     doc.fontSize(7.5).font('Helvetica').fillColor('rgba(255,255,255,0.7)');
     doc.text(
       'Camille Reinhardt — Entrepreneur individuel — SIRET 103 644 050 00017 — APE 4791B',
-      0, 794, { width: pageWidth, align: 'center' }
+      0,
+      794,
+      { width: pageWidth, align: 'center' },
     );
-    doc.text(
-      '54A Rue des Écoles, 57700 Neufchef — c-reussite.fr',
-      0, 808, { width: pageWidth, align: 'center' }
-    );
+    doc.text('54A Rue des Écoles, 57700 Neufchef — c-reussite.fr', 0, 808, {
+      width: pageWidth,
+      align: 'center',
+    });
 
     doc.end();
   });
