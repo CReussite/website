@@ -1,12 +1,13 @@
 require('dotenv').config();
 const express = require('express');
-const cors    = require('cors');
-const path    = require('path');
+const cors = require('cors');
+const path = require('path');
 
-const app  = express();
+const app = express();
 const PORT = process.env.PORT || 3000;
 const REQUIRED_ENV_VARS = [
   'STANCER_SECRET_KEY',
+  'STANCER_PUBLIC_KEY',
   'SUPABASE_URL',
   'SUPABASE_SERVICE_ROLE_KEY',
   'BREVO_API_KEY',
@@ -24,13 +25,15 @@ const allowedOrigins = [
   'http://localhost:5500',
   'http://127.0.0.1:5500',
 ];
-app.use(cors({
-  origin: (origin, cb) => {
-    // Autoriser les requêtes sans origin (webhook Stancer, curl, etc.)
-    if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
-    cb(new Error('Not allowed by CORS'));
-  },
-}));
+app.use(
+  cors({
+    origin: (origin, cb) => {
+      // Autoriser les requêtes sans origin (webhook Stancer, curl, etc.)
+      if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+      cb(new Error('Not allowed by CORS'));
+    },
+  }),
+);
 
 // ── Routes ────────────────────────────────────────────
 // /!\ Le webhook Stancer doit recevoir le body JSON → monté en premier
@@ -58,9 +61,12 @@ app.get('/api/healthz', async (req, res) => {
   const missingEnv = REQUIRED_ENV_VARS.filter((key) => !process.env[key]);
   const isOk = missingEnv.length === 0;
   const uptime = process.uptime();
-  const uptimeStr = uptime < 60 ? `${Math.floor(uptime)}s`
-    : uptime < 3600 ? `${Math.floor(uptime / 60)}min`
-    : `${Math.floor(uptime / 3600)}h ${Math.floor((uptime % 3600) / 60)}min`;
+  const uptimeStr =
+    uptime < 60
+      ? `${Math.floor(uptime)}s`
+      : uptime < 3600
+        ? `${Math.floor(uptime / 60)}min`
+        : `${Math.floor(uptime / 3600)}h ${Math.floor((uptime % 3600) / 60)}min`;
 
   // Check commandes non livrées (email_sent = false depuis > 10 min)
   let stuckOrders = 0;
@@ -87,16 +93,28 @@ app.get('/api/healthz', async (req, res) => {
     return res.status(allOk ? 200 : 503).json({
       status: allOk ? 'ok' : 'degraded',
       service: "C'Reussite backend",
-      checks: { env: isOk ? 'ok' : 'missing', db: dbOk ? 'ok' : 'unreachable', stuck_orders: stuckOrders },
+      checks: {
+        env: isOk ? 'ok' : 'missing',
+        db: dbOk ? 'ok' : 'unreachable',
+        stuck_orders: stuckOrders,
+      },
       missing_env: missingEnv,
     });
   }
 
   // HTML pour le navigateur
   const checks = [
-    { label: 'Variables d\'env', ok: isOk, detail: isOk ? 'OK' : `${missingEnv.length} manquante(s)` },
+    {
+      label: "Variables d'env",
+      ok: isOk,
+      detail: isOk ? 'OK' : `${missingEnv.length} manquante(s)`,
+    },
     { label: 'Base de données', ok: dbOk, detail: dbOk ? 'Connectée' : 'Injoignable' },
-    { label: 'Livraison emails', ok: stuckOrders === 0, detail: stuckOrders === 0 ? 'Aucune en attente' : `${stuckOrders} bloquée(s)` },
+    {
+      label: 'Livraison emails',
+      ok: stuckOrders === 0,
+      detail: stuckOrders === 0 ? 'Aucune en attente' : `${stuckOrders} bloquée(s)`,
+    },
     { label: 'Uptime', ok: true, detail: uptimeStr, neutral: true },
   ];
 
@@ -104,11 +122,15 @@ app.get('/api/healthz', async (req, res) => {
   const statusColor = allOk ? '#27ae60' : hasAlert ? '#c0392b' : '#e67e22';
   const statusDot = `<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${statusColor};margin-right:10px;vertical-align:middle;box-shadow:0 0 8px ${statusColor}60"></span>`;
 
-  const checksHtml = checks.map(c => {
-    const color = c.neutral ? '#888' : c.ok ? '#27ae60' : '#c0392b';
-    const dot = c.neutral ? '' : `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:8px"></span>`;
-    return `<div class="row"><span class="label">${c.label}</span><span class="value">${dot}${c.detail}</span></div>`;
-  }).join('\n      ');
+  const checksHtml = checks
+    .map((c) => {
+      const color = c.neutral ? '#888' : c.ok ? '#27ae60' : '#c0392b';
+      const dot = c.neutral
+        ? ''
+        : `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:8px"></span>`;
+      return `<div class="row"><span class="label">${c.label}</span><span class="value">${dot}${c.detail}</span></div>`;
+    })
+    .join('\n      ');
 
   res.status(allOk ? 200 : 503).send(`<!DOCTYPE html>
 <html lang="fr">
@@ -165,4 +187,3 @@ app.get('/api/products', (req, res) => {
 app.listen(PORT, () => {
   console.log(`[server] C'Réussite démarré sur le port ${PORT}`);
 });
-
