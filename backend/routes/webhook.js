@@ -16,7 +16,7 @@ const router = express.Router();
 const PRODUCTS = require(path.join(__dirname, '../../docs/content/products.json'));
 const PRODUCT_MAP = Object.fromEntries(PRODUCTS.map((p) => [p.id, p]));
 
-const STANCER_API = 'https://api.stancer.com/v1';
+const STANCER_API = 'https://api.stancer.com/v2';
 
 function stancerAuth() {
   return 'Basic ' + Buffer.from(process.env.STANCER_SECRET_KEY + ':').toString('base64');
@@ -24,7 +24,7 @@ function stancerAuth() {
 
 /** Vérifie et récupère le paiement Stancer depuis l'API (source de vérité). */
 async function fetchStancerPayment(paymentId) {
-  const response = await fetch(`${STANCER_API}/checkout/${paymentId}`, {
+  const response = await fetch(`${STANCER_API}/payments/${paymentId}`, {
     headers: { Authorization: stancerAuth() },
   });
   if (!response.ok) throw new Error(`Stancer API ${response.status}`);

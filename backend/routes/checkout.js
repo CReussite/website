@@ -8,7 +8,7 @@ const PRODUCTS = require(path.join(__dirname, '../../docs/content/products.json'
 const PRODUCT_MAP = Object.fromEntries(PRODUCTS.map((p) => [p.id, p]));
 
 const FRONTEND_URL = process.env.FRONTEND_URL || 'https://c-reussite.fr';
-const STANCER_API = 'https://api.stancer.com/v1';
+const STANCER_API = 'https://api.stancer.com/v2';
 
 function stancerAuth() {
   return 'Basic ' + Buffer.from(process.env.STANCER_SECRET_KEY + ':').toString('base64');
@@ -23,7 +23,7 @@ router.post('/', express.json(), async (req, res) => {
   }
 
   try {
-    const response = await fetch(`${STANCER_API}/checkout/`, {
+    const response = await fetch(`${STANCER_API}/payments/`, {
       method: 'POST',
       headers: {
         Authorization: stancerAuth(),
