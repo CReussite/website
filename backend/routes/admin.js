@@ -115,6 +115,7 @@ router.get('/invoice/:invoiceNumber', requireAdminKey, async (req, res) => {
       productName:   order.product_id,
       amount:        order.amount,
       date:          new Date(order.created_at),
+      paymentRef:    order.stripe_session_id || '—',
     });
 
     res.setHeader('Content-Type', 'application/pdf');

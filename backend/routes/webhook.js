@@ -69,6 +69,7 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
         productName: product.name,
         amount,
         date: new Date(order?.created_at || Date.now()),
+        paymentRef: session.id,
       });
 
       // 3. Envoyer email (PDF produit(s) + facture)
