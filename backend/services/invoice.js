@@ -87,13 +87,14 @@ function generateInvoice({ invoiceNumber, email, productName, amount, date, paym
       .text('54A Rue des Écoles', margin, partiesY + 48)
       .text('57700 Neufchef', margin, partiesY + 60)
       .text('SIRET : 103 644 050 00017', margin, partiesY + 72)
-      .text('APE : 4791B', margin, partiesY + 84);
+      .text('APE : 4791B', margin, partiesY + 84)
+      .text('c-reussite.fr', margin, partiesY + 96);
 
     // Client
     const clientX = pageWidth / 2 + 20;
     doc.fontSize(8).font('Helvetica-Bold').fillColor(QUICKSAND).text('CLIENT', clientX, partiesY);
     doc.moveTo(clientX, partiesY + 12).lineTo(clientX + 50, partiesY + 12).lineWidth(1.5).strokeColor(QUICKSAND).stroke();
-    doc.fontSize(12).font('Helvetica-Bold').fillColor(ROYAL_BLUE).text(email, clientX, partiesY + 20);
+    doc.fontSize(9).font('Helvetica').fillColor(TEXT_MID).text(email, clientX, partiesY + 20);
 
     // ── Tableau produit ──────────────────────────────────
     const tableTop = partiesY + 110;
