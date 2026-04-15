@@ -43,16 +43,21 @@ router.get('/', express.json(), async (req, res) => {
     payment = await response.json();
   } catch (err) {
     console.error('[payment-confirm] Erreur vérification Stancer :', err.message);
-    return res.status(502).json({ error: 'Impossible de vérifier le paiement.' });
+    return res.status(502).json({ error: 'Impossible de vérifier le paiement.', debug: err.message });
   }
 
   const VALID_STATUSES = ['captured', 'to_capture', 'capture_sent'];
   if (!VALID_STATUSES.includes(payment.status)) {
-    return res.status(402).json({ error: `Paiement non finalisé (statut : ${payment.status}).` });
+    return res.status(402).json({ error: `Paiement non finalisé (statut : ${payment.status}).`, debug: `status=${payment.status}` });
   }
 
   console.log('[payment-confirm] Stancer payment.customer:', JSON.stringify(payment.customer));
-  console.log('[payment-confirm] Stancer payment status:', payment.status, '| amount:', payment.amount);
+  console.log(
+    '[payment-confirm] Stancer payment status:',
+    payment.status,
+    '| amount:',
+    payment.amount,
+  );
 
   // Stancer peut retourner customer comme objet { email } ou string (ID)
   let customerEmail = null;
@@ -73,15 +78,19 @@ router.get('/', express.json(), async (req, res) => {
       console.error('[payment-confirm] Failed to fetch customer:', e.message);
     }
   }
-  const customerName = (typeof payment.customer === 'object' ? payment.customer?.name : null) || customerEmail;
+  const customerName =
+    (typeof payment.customer === 'object' ? payment.customer?.name : null) || customerEmail;
   const amount = payment.amount;
 
   // product_id passé par le frontend via localStorage (Stancer n'a pas de champ metadata)
   const productId = req.query.product_id;
 
   if (!customerEmail) {
-    console.error('[payment-confirm] Email client manquant. payment.customer =', JSON.stringify(payment.customer));
-    return res.status(422).json({ error: 'Email client introuvable dans le paiement Stancer.' });
+    console.error(
+      '[payment-confirm] Email client manquant. payment.customer =',
+      JSON.stringify(payment.customer),
+    );
+    return res.status(422).json({ error: 'Email client introuvable dans le paiement Stancer.', debug: `customer=${JSON.stringify(payment.customer)}` });
   }
 
   if (!productId) {
@@ -97,7 +106,7 @@ router.get('/', express.json(), async (req, res) => {
   // Validation anti-fraude : le montant Stancer doit correspondre au prix catalogue
   if (amount !== product.price) {
     console.error('[payment-confirm] Montant incohérent :', { amount, expected: product.price });
-    return res.status(422).json({ error: 'Montant du paiement incohérent.' });
+    return res.status(422).json({ error: 'Montant du paiement incohérent.', debug: `got=${amount} expected=${product.price}` });
   }
 
   try {
