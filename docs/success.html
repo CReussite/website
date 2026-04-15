@@ -1,177 +1,204 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
-  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
-  <link rel="shortcut icon" href="img/favicon.ico">
-  <title>Paiement confirmé | C'Réussite</title>
-  <meta name="robots" content="noindex">
-  <link rel="stylesheet" href="css/style.css">
-  <style>
-    .confirm-page {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--swan-wing);
-      padding: 40px 24px;
-    }
-    .confirm-card {
-      background: var(--white);
-      border-radius: 16px;
-      padding: 56px 48px;
-      max-width: 560px;
-      width: 100%;
-      text-align: center;
-      box-shadow: var(--shadow-md);
-    }
-    .confirm-icon {
-      width: 72px;
-      height: 72px;
-      background: var(--royal-blue);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 28px;
-      font-size: 2rem;
-    }
-    .confirm-card h1 {
-      font-size: 1.6rem;
-      margin-bottom: 16px;
-    }
-    .confirm-card p {
-      margin-bottom: 12px;
-    }
-    .confirm-steps {
-      background: var(--swan-wing);
-      border-radius: 12px;
-      padding: 24px;
-      margin: 28px 0;
-      text-align: left;
-    }
-    .confirm-steps p {
-      margin-bottom: 8px;
-      font-size: 0.9rem;
-      display: flex;
-      gap: 10px;
-    }
-    .confirm-steps p:last-child { margin-bottom: 0; }
-    .step-num {
-      background: var(--royal-blue);
-      color: var(--quicksand);
-      border-radius: 50%;
-      width: 22px;
-      height: 22px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-    @media (max-width: 600px) {
-      .confirm-card { padding: 36px 24px; }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="confirm-page">
-    <div class="confirm-card" id="confirm-card">
-
-      <!-- État : traitement en cours -->
-      <div id="state-loading">
-        <div class="confirm-icon" style="background:var(--royal-blue)">⏳</div>
-        <h1>Traitement en cours…</h1>
-        <p>Nous finalisons ta commande, ne ferme pas cette page.</p>
-      </div>
-
-      <!-- État : succès -->
-      <div id="state-success" hidden>
-        <div class="confirm-icon">✓</div>
-        <h1>Paiement confirmé !</h1>
-        <p>Merci pour ta commande. Tes fiches sont en route.</p>
-        <div class="confirm-steps">
-          <p>
-            <span class="step-num">1</span>
-            <span>Tu vas recevoir un email avec le PDF en pièce jointe dans quelques instants.</span>
-          </p>
-          <p>
-            <span class="step-num">2</span>
-            <span>L'email est envoyé depuis <strong>contact@c-reussite.fr</strong> — vérifie tes spams si tu ne le reçois pas.</span>
-          </p>
-          <p>
-            <span class="step-num">3</span>
-            <span>Un problème ? Écris à <a href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@c-reussite.fr" target="_blank" rel="noopener">contact@c-reussite.fr</a>.</span>
-          </p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="img/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Paiement confirmé | C'Réussite</title>
+    <meta name="robots" content="noindex" />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .confirm-page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--swan-wing);
+        padding: 40px 24px;
+      }
+      .confirm-card {
+        background: var(--white);
+        border-radius: 16px;
+        padding: 56px 48px;
+        max-width: 560px;
+        width: 100%;
+        text-align: center;
+        box-shadow: var(--shadow-md);
+      }
+      .confirm-icon {
+        width: 72px;
+        height: 72px;
+        background: var(--royal-blue);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 28px;
+        font-size: 2rem;
+      }
+      .confirm-card h1 {
+        font-size: 1.6rem;
+        margin-bottom: 16px;
+      }
+      .confirm-card p {
+        margin-bottom: 12px;
+      }
+      .confirm-steps {
+        background: var(--swan-wing);
+        border-radius: 12px;
+        padding: 24px;
+        margin: 28px 0;
+        text-align: left;
+      }
+      .confirm-steps p {
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+        display: flex;
+        gap: 10px;
+      }
+      .confirm-steps p:last-child {
+        margin-bottom: 0;
+      }
+      .step-num {
+        background: var(--royal-blue);
+        color: var(--quicksand);
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+      @media (max-width: 600px) {
+        .confirm-card {
+          padding: 36px 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="confirm-page">
+      <div class="confirm-card" id="confirm-card">
+        <!-- État : traitement en cours -->
+        <div id="state-loading">
+          <div class="confirm-icon" style="background: var(--royal-blue)">⏳</div>
+          <h1>Traitement en cours…</h1>
+          <p>Nous finalisons ta commande, ne ferme pas cette page.</p>
         </div>
-        <a href="index.html" class="btn btn-primary">Retour à l'accueil</a>
-      </div>
 
-      <!-- État : erreur -->
-      <div id="state-error" hidden>
-        <div class="confirm-icon" style="background:#c0392b">✗</div>
-        <h1>Un problème est survenu</h1>
-        <p id="error-msg">Nous n'avons pas pu finaliser ta commande.</p>
-        <p>Si tu as été débité, écris-nous immédiatement à <a href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@c-reussite.fr" target="_blank" rel="noopener">contact@c-reussite.fr</a> avec ton email d'achat.</p>
-        <a href="index.html" class="btn btn-primary" style="margin-top:24px;display:inline-block">Retour à l'accueil</a>
-      </div>
+        <!-- État : succès -->
+        <div id="state-success" hidden>
+          <div class="confirm-icon">✓</div>
+          <h1>Paiement confirmé !</h1>
+          <p>Merci pour ta commande. Tes fiches sont en route.</p>
+          <div class="confirm-steps">
+            <p>
+              <span class="step-num">1</span>
+              <span
+                >Tu vas recevoir un email avec le PDF en pièce jointe dans quelques instants.</span
+              >
+            </p>
+            <p>
+              <span class="step-num">2</span>
+              <span
+                >L'email est envoyé depuis <strong>contact@c-reussite.fr</strong> — vérifie tes
+                spams si tu ne le reçois pas.</span
+              >
+            </p>
+            <p>
+              <span class="step-num">3</span>
+              <span
+                >Un problème ? Écris à
+                <a
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@c-reussite.fr"
+                  target="_blank"
+                  rel="noopener"
+                  >contact@c-reussite.fr</a
+                >.</span
+              >
+            </p>
+          </div>
+          <a href="index.html" class="btn btn-primary">Retour à l'accueil</a>
+        </div>
 
+        <!-- État : erreur -->
+        <div id="state-error" hidden>
+          <div class="confirm-icon" style="background: #c0392b">✗</div>
+          <h1>Un problème est survenu</h1>
+          <p id="error-msg">Nous n'avons pas pu finaliser ta commande.</p>
+          <p>
+            Si tu as été débité, écris-nous immédiatement à
+            <a
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@c-reussite.fr"
+              target="_blank"
+              rel="noopener"
+              >contact@c-reussite.fr</a
+            >
+            avec ton email d'achat.
+          </p>
+          <a
+            href="index.html"
+            class="btn btn-primary"
+            style="margin-top: 24px; display: inline-block"
+            >Retour à l'accueil</a
+          >
+        </div>
+      </div>
     </div>
-  </div>
 
-  <script>
-    const BACKEND_URL = 'https://creussite-backend.onrender.com';
+    <script>
+      const BACKEND_URL = 'https://creussite-backend.onrender.com';
 
-    function show(id) {
-      ['state-loading', 'state-success', 'state-error'].forEach(function(s) {
-        document.getElementById(s).hidden = s !== id;
-      });
-    }
-
-    async function confirmPayment() {
-      // Récupère paymentId et productId depuis localStorage (sauvegardés par payment.js)
-      const paymentId = localStorage.getItem('stancer_pending_payment');
-      const productId = localStorage.getItem('stancer_pending_product');
-
-      if (!paymentId) {
-        // Pas de paiement en attente — page visitée directement
-        show('state-success');
-        return;
+      function show(id) {
+        ['state-loading', 'state-success', 'state-error'].forEach(function (s) {
+          document.getElementById(s).hidden = s !== id;
+        });
       }
 
-      try {
-        const params = new URLSearchParams({ id: paymentId });
-        if (productId) params.set('product_id', productId);
-        const res = await fetch(BACKEND_URL + '/api/payment/confirm?' + params.toString());
-        const data = await res.json();
+      async function confirmPayment() {
+        // Récupère paymentId et productId depuis localStorage (sauvegardés par payment.js)
+        const paymentId = localStorage.getItem('stancer_pending_payment');
+        const productId = localStorage.getItem('stancer_pending_product');
 
-        if (res.ok && data.success) {
-          localStorage.removeItem('stancer_pending_payment');
-          localStorage.removeItem('stancer_pending_product');
+        if (!paymentId) {
+          // Pas de paiement en attente — page visitée directement
           show('state-success');
-        } else {
-          const msg = data.debug
-            ? data.error + ' [debug: ' + data.debug + ']'
-            : data.error || 'Erreur inconnue.';
-          document.getElementById('error-msg').textContent = msg;
+          return;
+        }
+
+        try {
+          const params = new URLSearchParams({ id: paymentId });
+          if (productId) params.set('product_id', productId);
+          const res = await fetch(BACKEND_URL + '/api/payment/confirm?' + params.toString());
+          const data = await res.json();
+
+          if (res.ok && data.success) {
+            localStorage.removeItem('stancer_pending_payment');
+            localStorage.removeItem('stancer_pending_product');
+            show('state-success');
+          } else {
+            const msg = data.debug
+              ? data.error + ' [debug: ' + data.debug + ']'
+              : data.error || 'Erreur inconnue.';
+            document.getElementById('error-msg').textContent = msg;
+            show('state-error');
+          }
+        } catch (err) {
+          console.error('[success] Erreur confirmation paiement :', err);
+          document.getElementById('error-msg').textContent = 'Impossible de contacter le serveur.';
           show('state-error');
         }
-      } catch (err) {
-        console.error('[success] Erreur confirmation paiement :', err);
-        document.getElementById('error-msg').textContent = 'Impossible de contacter le serveur.';
-        show('state-error');
       }
-    }
 
-    confirmPayment();
-  </script>
-
-</body>
+      confirmPayment();
+    </script>
+  </body>
 </html>
