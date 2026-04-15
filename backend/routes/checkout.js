@@ -47,7 +47,7 @@ router.post('/', express.json(), async (req, res) => {
     const payment = await response.json();
     const paymentUrl = `https://payment.stancer.com/${process.env.STANCER_SECRET_KEY}/${payment.id}`;
 
-    res.json({ url: paymentUrl });
+    res.json({ url: paymentUrl, paymentId: payment.id });
   } catch (err) {
     console.error('[checkout] Erreur création paiement Stancer :', err.message);
     res.status(500).json({ error: 'Impossible de créer la session de paiement.' });

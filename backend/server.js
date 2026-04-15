@@ -39,6 +39,9 @@ app.use('/webhook', require('./routes/webhook'));
 // Checkout session (body JSON)
 app.use('/api/checkout', require('./routes/checkout'));
 
+// Confirmation de paiement Stancer (appelée depuis success.html)
+app.use('/api/payment/confirm', require('./routes/paymentConfirm'));
+
 // Envoi d'extrait gratuit
 app.use('/api/extract', require('./routes/extract'));
 

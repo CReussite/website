@@ -83,32 +83,88 @@
 <body>
 
   <div class="confirm-page">
-    <div class="confirm-card">
+    <div class="confirm-card" id="confirm-card">
 
-      <div class="confirm-icon">✓</div>
-
-      <h1>Paiement confirmé !</h1>
-      <p>Merci pour ta commande. Tes fiches sont en route.</p>
-
-      <div class="confirm-steps">
-        <p>
-          <span class="step-num">1</span>
-          <span>Tu vas recevoir un email de confirmation de ta commande dans quelques secondes.</span>
-        </p>
-        <p>
-          <span class="step-num">2</span>
-          <span>Un deuxième email avec le PDF en pièce jointe sera envoyé automatiquement par <strong>contact@c-reussite.fr</strong>.</span>
-        </p>
-        <p>
-          <span class="step-num">3</span>
-          <span>Pas de mail reçu après 10 minutes ? Vérifie tes spams ou écris à <a href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@c-reussite.fr" target="_blank" rel="noopener">contact@c-reussite.fr</a>.</span>
-        </p>
+      <!-- État : traitement en cours -->
+      <div id="state-loading">
+        <div class="confirm-icon" style="background:var(--royal-blue)">⏳</div>
+        <h1>Traitement en cours…</h1>
+        <p>Nous finalisons ta commande, ne ferme pas cette page.</p>
       </div>
 
-      <a href="index.html" class="btn btn-primary">Retour à l'accueil</a>
+      <!-- État : succès -->
+      <div id="state-success" hidden>
+        <div class="confirm-icon">✓</div>
+        <h1>Paiement confirmé !</h1>
+        <p>Merci pour ta commande. Tes fiches sont en route.</p>
+        <div class="confirm-steps">
+          <p>
+            <span class="step-num">1</span>
+            <span>Tu vas recevoir un email avec le PDF en pièce jointe dans quelques instants.</span>
+          </p>
+          <p>
+            <span class="step-num">2</span>
+            <span>L'email est envoyé depuis <strong>contact@c-reussite.fr</strong> — vérifie tes spams si tu ne le reçois pas.</span>
+          </p>
+          <p>
+            <span class="step-num">3</span>
+            <span>Un problème ? Écris à <a href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@c-reussite.fr" target="_blank" rel="noopener">contact@c-reussite.fr</a>.</span>
+          </p>
+        </div>
+        <a href="index.html" class="btn btn-primary">Retour à l'accueil</a>
+      </div>
+
+      <!-- État : erreur -->
+      <div id="state-error" hidden>
+        <div class="confirm-icon" style="background:#c0392b">✗</div>
+        <h1>Un problème est survenu</h1>
+        <p id="error-msg">Nous n'avons pas pu finaliser ta commande.</p>
+        <p>Si tu as été débité, écris-nous immédiatement à <a href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@c-reussite.fr" target="_blank" rel="noopener">contact@c-reussite.fr</a> avec ton email d'achat.</p>
+        <a href="index.html" class="btn btn-primary" style="margin-top:24px;display:inline-block">Retour à l'accueil</a>
+      </div>
 
     </div>
   </div>
+
+  <script>
+    const BACKEND_URL = 'https://creussite-backend.onrender.com';
+
+    function show(id) {
+      ['state-loading', 'state-success', 'state-error'].forEach(function(s) {
+        document.getElementById(s).hidden = s !== id;
+      });
+    }
+
+    async function confirmPayment() {
+      // Récupère le paymentId depuis localStorage (sauvegardé par payment.js)
+      const paymentId = localStorage.getItem('stancer_pending_payment');
+
+      if (!paymentId) {
+        // Pas de paiement en attente — page visitée directement
+        show('state-success');
+        return;
+      }
+
+      try {
+        const res = await fetch(BACKEND_URL + '/api/payment/confirm?id=' + paymentId);
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          localStorage.removeItem('stancer_pending_payment');
+          show('state-success');
+        } else {
+          document.getElementById('error-msg').textContent = data.error || 'Erreur inconnue.';
+          show('state-error');
+        }
+      } catch (err) {
+        console.error('[success] Erreur confirmation paiement :', err);
+        document.getElementById('error-msg').textContent = 'Impossible de contacter le serveur.';
+        show('state-error');
+      }
+    }
+
+    confirmPayment();
+  </script>
 
 </body>
 </html>

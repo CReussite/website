@@ -101,7 +101,8 @@ async function initPayment() {
         throw new Error(err.error || 'Erreur serveur');
       }
 
-      const { url } = await res.json();
+      const { url, paymentId } = await res.json();
+      if (paymentId) localStorage.setItem('stancer_pending_payment', paymentId);
       window.location.href = url;
     } catch (err) {
       console.error('[payment] Erreur :', err.message);
