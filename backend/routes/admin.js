@@ -13,10 +13,10 @@ function requireAdminKey(req, res, next) {
 }
 
 // ── GET /api/admin/config ─────────────────────────────────────────────────────
-// Retourne la configuration de l'environnement (mode Stripe).
+// Retourne la configuration de l'environnement (mode Stancer).
 router.get('/config', requireAdminKey, (req, res) => {
-  const key = process.env.STRIPE_SECRET_KEY || '';
-  res.json({ stripe_mode: key.startsWith('sk_live_') ? 'live' : 'test' });
+  const key = process.env.STANCER_SECRET_KEY || '';
+  res.json({ stripe_mode: key.startsWith('sprod_') ? 'live' : 'test' });
 });
 
 // ── GET /api/admin/orders ─────────────────────────────────────────────────────
@@ -115,7 +115,7 @@ router.get('/invoice/:invoiceNumber', requireAdminKey, async (req, res) => {
       productName:   order.product_id,
       amount:        order.amount,
       date:          new Date(order.created_at),
-      paymentRef:    order.stripe_session_id || '—',
+      paymentRef:    order.payment_session_id || '—',
     });
 
     res.setHeader('Content-Type', 'application/pdf');
@@ -196,7 +196,7 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
       invoice_number: order.invoice_number,
       date: dateStr,
       payment_date: paymentDateStr,
-      payment_ref: order.stripe_session_id || '—',
+      payment_ref: order.payment_session_id || '—',
       payment_method: 'Carte bancaire',
       customer: {
         name: order.email,

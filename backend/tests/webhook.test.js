@@ -1,9 +1,6 @@
 /**
  * Test: logique du webhook (avec mocks des services externes)
- * Simule un événement Stripe checkout.session.completed complet.
- *
- * Ce test nécessite STRIPE_SECRET_KEY pour générer une signature valide.
- * Sans credential, les tests de signature sont skippés automatiquement.
+ * Simule un événement Stancer payment.captured complet.
  */
 const { test, mock, beforeEach, describe } = require('node:test');
 const assert = require('node:assert/strict');
@@ -38,7 +35,7 @@ describe('Pipeline invoice + email (mocks)', () => {
 
     // Mock DB
     const fakeDb = {
-      insertOrderIdempotent: async ({ stripeSessionId }) => ({
+      insertOrderIdempotent: async ({ paymentSessionId }) => ({
         order:         { id: 'uuid-fake' },
         invoiceNumber: '2025-001',
         isNew:         true,
@@ -52,9 +49,9 @@ describe('Pipeline invoice + email (mocks)', () => {
     // Simulate webhook business logic (extracted from route)
     const { invoiceNumber, isNew } = await fakeDb.insertOrderIdempotent({
       email,
-      productId:       session.metadata.product_id,
-      amount:          session.amount_total,
-      stripeSessionId: session.id,
+      productId:        session.metadata.product_id,
+      amount:           session.amount_total,
+      paymentSessionId: session.id,
     });
 
     assert.ok(isNew, 'la commande doit être nouvelle');
@@ -95,14 +92,14 @@ describe('Pipeline invoice + email (mocks)', () => {
     const session = makeSession();
 
     // Premier appel
-    const r1 = await fakeDb.insertOrderIdempotent({ stripeSessionId: session.id });
+    const r1 = await fakeDb.insertOrderIdempotent({ paymentSessionId: session.id });
     if (r1.isNew) {
       const pdf = await generateInvoice({ invoiceNumber: r1.invoiceNumber, email: 'x@x.com', productName: 'X', amount: 1499, date: new Date() });
       await fakeMailer.sendOrderEmail({ toEmail: 'x@x.com', product: {}, invoicePdf: pdf, invoiceNumber: r1.invoiceNumber });
     }
 
-    // Second appel (retry Stripe)
-    const r2 = await fakeDb.insertOrderIdempotent({ stripeSessionId: session.id });
+    // Second appel (retry Stancer)
+    const r2 = await fakeDb.insertOrderIdempotent({ paymentSessionId: session.id });
     if (r2.isNew) {
       await fakeMailer.sendOrderEmail({});
     }
@@ -112,26 +109,20 @@ describe('Pipeline invoice + email (mocks)', () => {
   });
 });
 
-// ── Test: signature Stripe (nécessite STRIPE_SECRET_KEY) ──
+// ── Test: vérification paiement Stancer (nécessite STANCER_SECRET_KEY) ──
 
-describe('Stripe webhook signature', () => {
-  test('signature valide acceptée, invalide rejetée', { skip: !process.env.STRIPE_SECRET_KEY ? 'STRIPE_SECRET_KEY non défini' : false }, async () => {
-    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-    const secret = 'whsec_test_secret_for_tests_only';
-
-    const payload = JSON.stringify({ type: 'checkout.session.completed', data: { object: makeSession() } });
-    const header  = stripe.webhooks.generateTestHeaderString({ payload, secret });
-
-    // Signature valide
-    let event;
-    assert.doesNotThrow(() => {
-      event = stripe.webhooks.constructEvent(payload, header, secret);
-    }, 'signature valide doit être acceptée');
-    assert.equal(event.type, 'checkout.session.completed');
-
-    // Signature invalide
-    assert.throws(() => {
-      stripe.webhooks.constructEvent(payload, 'bad-header', secret);
-    }, 'signature invalide doit lever une erreur');
+describe('Stancer payment verification', () => {
+  test('vérification via API Stancer skippée sans credential', {
+    skip: process.env.STANCER_SECRET_KEY ? false : 'STANCER_SECRET_KEY non défini',
+  }, async () => {
+    // La vérification Stancer se fait en re-fetchant le paiement via l'API.
+    // Ce test valide que l'appel API retourne bien un objet payment avec un status.
+    const auth = 'Basic ' + Buffer.from(process.env.STANCER_SECRET_KEY + ':').toString('base64');
+    // On ne peut pas créer un vrai paiement en test ici sans montant réel,
+    // on valide simplement que l'endpoint répond avec une 404 pour un id inexistant.
+    const res = await fetch('https://api.stancer.com/v1/payment/pay_fake_test_id', {
+      headers: { Authorization: auth },
+    });
+    assert.ok([404, 401].includes(res.status), `Stancer API doit répondre 404 ou 401, got ${res.status}`);
   });
 });

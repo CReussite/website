@@ -12,18 +12,18 @@ function getClient() {
 }
 
 /**
- * Insère une commande si elle n'existe pas déjà (idempotence via stripe_session_id).
+ * Insère une commande si elle n'existe pas déjà (idempotence via payment_session_id).
  * Retourne { order, invoiceNumber, isNew }
- *   - isNew = false si la session était déjà en base (retry Stripe)
+ *   - isNew = false si la session était déjà en base (retry Stancer)
  */
-async function insertOrderIdempotent({ email, productId, amount, stripeSessionId }) {
+async function insertOrderIdempotent({ email, productId, amount, paymentSessionId }) {
   const supabase = getClient();
 
   // Vérifier si la session existe déjà
   const { data: existing } = await supabase
     .from('orders')
     .select('*')
-    .eq('stripe_session_id', stripeSessionId)
+    .eq('payment_session_id', paymentSessionId)
     .maybeSingle();
 
   if (existing) {
@@ -46,7 +46,7 @@ async function insertOrderIdempotent({ email, productId, amount, stripeSessionId
       email,
       product_id: productId,
       amount,
-      stripe_session_id: stripeSessionId,
+      payment_session_id: paymentSessionId,
       invoice_number: invoiceNumber,
     })
     .select()
@@ -60,12 +60,12 @@ async function insertOrderIdempotent({ email, productId, amount, stripeSessionId
 /**
  * Marque l'email comme envoyé pour une commande donnée.
  */
-async function markEmailSent(stripeSessionId) {
+async function markEmailSent(paymentSessionId) {
   const supabase = getClient();
   const { error } = await supabase
     .from('orders')
     .update({ email_sent: true })
-    .eq('stripe_session_id', stripeSessionId);
+    .eq('payment_session_id', paymentSessionId);
   if (error) throw new Error(`DB markEmailSent failed: ${error.message}`);
 }
 
@@ -207,12 +207,12 @@ async function uploadInvoicePdf(invoiceNumber, pdfBuffer) {
 /**
  * Sauvegarde le chemin du PDF facture dans la commande.
  */
-async function saveInvoicePath(stripeSessionId, invoicePath) {
+async function saveInvoicePath(paymentSessionId, invoicePath) {
   const supabase = getClient();
   const { error } = await supabase
     .from('orders')
     .update({ invoice_path: invoicePath })
-    .eq('stripe_session_id', stripeSessionId);
+    .eq('payment_session_id', paymentSessionId);
   if (error) console.warn(`[storage] saveInvoicePath échoué : ${error.message}`);
 }
 

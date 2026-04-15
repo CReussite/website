@@ -2,7 +2,6 @@ const express = require('express');
 const fs      = require('fs');
 const path    = require('path');
 const SibApiV3Sdk = require('sib-api-v3-sdk');
-const { PDFDocument, rgb } = require('pdf-lib');
 const { insertExtractRequest } = require('../services/db');
 
 const router = express.Router();
@@ -15,38 +14,6 @@ defaultClient.authentications['api-key'].apiKey = process.env.BREVO_API_KEY;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
 const CONTACT_EMAIL = 'contact@c-reussite.fr';
-
-/** Stéganographie : inscrit l'email du destinataire en texte invisible dans chaque page */
-async function stampExtractPdf(pdfBuffer, recipientEmail) {
-  const pdfDoc = await PDFDocument.load(pdfBuffer);
-
-  pdfDoc.setAuthor(`Extrait envoyé à : ${recipientEmail}`);
-  pdfDoc.setKeywords([`destinataire:${recipientEmail}`, "C'Réussite"]);
-  pdfDoc.setSubject(`Extrait gratuit — ${recipientEmail}`);
-  pdfDoc.setCreator("C'Réussite");
-
-  const pages = pdfDoc.getPages();
-  for (const page of pages) {
-    const { width, height } = page.getSize();
-    const stamp = recipientEmail;
-    const positions = [
-      { x: 50,              y: height - 30 },
-      { x: width / 2 - 60, y: height / 2  },
-      { x: 50,              y: 30          },
-      { x: width - 160,     y: height - 30 },
-      { x: width - 160,     y: 30          },
-    ];
-    for (const { x, y } of positions) {
-      page.drawText(stamp, {
-        x, y, size: 4,
-        color: rgb(1, 1, 1),
-        opacity: 0.004,
-      });
-    }
-  }
-
-  return Buffer.from(await pdfDoc.save());
-}
 
 router.post('/', express.json(), async (req, res) => {
   const { email, product_id } = req.body;
@@ -64,7 +31,7 @@ router.post('/', express.json(), async (req, res) => {
     return res.status(404).json({ error: 'Aucun extrait disponible pour ce produit.' });
   }
 
-  // Vérifier que les fichiers extraits existent et appliquer la stéganographie
+  // Vérifier que les fichiers extraits existent
   const attachments = [];
   for (const filename of product.extract_files) {
     const filePath = path.join(__dirname, '..', 'assets', filename);
@@ -72,8 +39,7 @@ router.post('/', express.json(), async (req, res) => {
       return res.status(404).json({ error: 'Extrait non disponible pour le moment.' });
     }
     const rawBuffer = fs.readFileSync(filePath);
-    const stamped = await stampExtractPdf(rawBuffer, email);
-    attachments.push({ name: filename, content: stamped.toString('base64') });
+    attachments.push({ name: filename, content: rawBuffer.toString('base64') });
   }
 
   try {
@@ -101,7 +67,7 @@ router.post('/', express.json(), async (req, res) => {
     `;
 
     await apiInstance.sendTransacEmail(sendSmtpEmail);
-    await insertExtractRequest({ email, productId: product_id });
+    await insertExtractRequest({ email: 'anonyme', productId: product_id });
     console.log(`[extract] Extrait envoyé à ${email} — ${product.name}`);
     res.json({ success: true });
   } catch (err) {

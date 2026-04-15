@@ -7,13 +7,13 @@ test('buildAlertPayload prefixe le sujet et serialize les details', () => {
     subject: 'Webhook en erreur',
     message: 'Le traitement a echoue.',
     details: {
-      stripe_session_id: 'cs_test_123',
+      payment_session_id: 'pay_test_123',
       product_id: 'maths',
     },
   });
 
   assert.equal(payload.subject, '[ALERTE] Webhook en erreur');
-  assert.match(payload.text, /stripe_session_id: cs_test_123/);
+  assert.match(payload.text, /payment_session_id: pay_test_123/);
   assert.match(payload.html, /product_id/);
 });
 
