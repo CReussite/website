@@ -30,15 +30,15 @@ async function insertOrderIdempotent({ email, productId, amount, stripeSessionId
     return { order: existing, invoiceNumber: existing.invoice_number, isNew: false };
   }
 
-  // Calculer le prochain numéro de facture (YYYY-XXX)
+  // Calculer le prochain numéro de facture (CRE-YYYY-XXXXX)
   const year = new Date().getFullYear();
   const { count } = await supabase
     .from('orders')
     .select('*', { count: 'exact', head: true })
-    .like('invoice_number', `${year}-%`);
+    .like('invoice_number', `CRE-${year}-%`);
 
-  const seq = String((count || 0) + 1).padStart(3, '0');
-  const invoiceNumber = `${year}-${seq}`;
+  const seq = String((count || 0) + 1).padStart(5, '0');
+  const invoiceNumber = `CRE-${year}-${seq}`;
 
   const { data: order, error } = await supabase
     .from('orders')
@@ -83,7 +83,7 @@ async function getOrders({ year, limit = 1000 } = {}) {
     .order('created_at', { ascending: false })
     .limit(limit);
 
-  if (year) query = query.like('invoice_number', `${year}-%`);
+  if (year) query = query.or(`invoice_number.like.${year}-%,invoice_number.like.CRE-${year}-%`);
 
   const { data, error } = await query;
   if (error) throw new Error(`DB getOrders failed: ${error.message}`);
@@ -101,7 +101,7 @@ async function getAdminStats({ year } = {}) {
     .from('orders')
     .select('email, amount, email_sent, invoice_number');
 
-  if (year) query = query.like('invoice_number', `${year}-%`);
+  if (year) query = query.or(`invoice_number.like.${year}-%,invoice_number.like.CRE-${year}-%`);
 
   const { data, error } = await query;
   if (error) throw new Error(`DB getAdminStats failed: ${error.message}`);
@@ -188,8 +188,10 @@ async function getExtractRequests({ year, limit = 200 } = {}) {
  */
 async function uploadInvoicePdf(invoiceNumber, pdfBuffer) {
   const supabase = getClient();
-  const year     = invoiceNumber.split('-')[0];
-  const filePath = `${year}/${invoiceNumber}.pdf`;
+  // Extraire l'année du numéro de facture (CRE-2026-00001 → 2026, ou 2026-001 → 2026)
+  const yearMatch = invoiceNumber.match(/(\d{4})/);
+  const year      = yearMatch ? yearMatch[1] : new Date().getFullYear();
+  const filePath  = `${year}/${invoiceNumber}.pdf`;
 
   const { error } = await supabase.storage
     .from('invoices')

@@ -125,7 +125,7 @@ CREATE TABLE orders (
   product_id        text        NOT NULL,
   amount            integer     NOT NULL,           -- centimes
   stripe_session_id text        UNIQUE NOT NULL,    -- idempotence
-  invoice_number    text        NOT NULL,           -- ex: 2026-001
+  invoice_number    text        NOT NULL,           -- ex: CRE-2026-00001
   email_sent        boolean     DEFAULT false,      -- anti double livraison
   invoice_path      text,                           -- Supabase Storage, nullable
   created_at        timestamptz DEFAULT now()
