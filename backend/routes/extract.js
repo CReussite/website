@@ -1,4 +1,5 @@
 const express = require('express');
+const path    = require('path');
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 const { insertExtractRequest, getClient } = require('../services/db');
 
