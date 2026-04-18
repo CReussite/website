@@ -1,8 +1,6 @@
 const express = require('express');
-const fs      = require('fs');
-const path    = require('path');
 const SibApiV3Sdk = require('sib-api-v3-sdk');
-const { insertExtractRequest } = require('../services/db');
+const { insertExtractRequest, getClient } = require('../services/db');
 
 const router = express.Router();
 
@@ -31,14 +29,17 @@ router.post('/', express.json(), async (req, res) => {
     return res.status(404).json({ error: 'Aucun extrait disponible pour ce produit.' });
   }
 
-  // Vérifier que les fichiers extraits existent
+  // Télécharger les extraits depuis Supabase Storage
   const attachments = [];
   for (const filename of product.extract_files) {
-    const filePath = path.join(__dirname, '..', 'assets', filename);
-    if (!fs.existsSync(filePath)) {
+    const { data, error } = await getClient().storage
+      .from('product-assets')
+      .download(filename);
+    if (error) {
+      console.error(`[extract] Supabase download failed (${filename}):`, error.message);
       return res.status(404).json({ error: 'Extrait non disponible pour le moment.' });
     }
-    const rawBuffer = fs.readFileSync(filePath);
+    const rawBuffer = Buffer.from(await data.arrayBuffer());
     attachments.push({ name: filename, content: rawBuffer.toString('base64') });
   }
 

@@ -10,9 +10,11 @@ backend/**/.env
 node_modules/
 backend/node_modules/
 
-# PDFs réels (remplacent les placeholders — à ne pas commiter si volumineux)
-# Désactivé : les placeholders de test sont commitables
-# backend/assets/*.pdf
+# PDFs produit — stockés dans Supabase Storage, ne pas commiter
+backend/assets/*.pdf
+
+# Dossier source des PDFs
+pdf/
 
 # Documentation opérationnelle locale (contient des infos sensibles)
 CLAUDE.md

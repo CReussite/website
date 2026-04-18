@@ -1,7 +1,6 @@
 const SibApiV3Sdk = require('sib-api-v3-sdk');
-const fs = require('node:fs');
-const path = require('node:path');
 const { PDFDocument, rgb } = require('pdf-lib');
+const { getClient } = require('./db');
 
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 defaultClient.authentications['api-key'].apiKey = process.env.BREVO_API_KEY;
@@ -82,11 +81,14 @@ async function sendOrderEmail({
       })
     : new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
 
-  // Pièces jointes : PDF(s) produit avec watermark stéganographique
+  // Pièces jointes : PDF(s) produit avec watermark stéganographique (lus depuis Supabase)
   const attachments = await Promise.all(
     product.pdf_files.map(async (filename) => {
-      const filePath = path.join(__dirname, '..', 'assets', filename);
-      const rawBuffer = fs.readFileSync(filePath);
+      const { data, error } = await getClient().storage
+        .from('product-assets')
+        .download(filename);
+      if (error) throw new Error(`Supabase download failed (${filename}): ${error.message}`);
+      const rawBuffer = Buffer.from(await data.arrayBuffer());
       const stamped = await stampPdf(rawBuffer, toEmail);
       return { name: filename, content: stamped.toString('base64') };
     }),
