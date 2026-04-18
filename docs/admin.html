@@ -844,8 +844,10 @@
         var content = frame.querySelector('#inv-content');
         if (!content) return;
         var pw = window.open('', '_blank');
-        pw.document.write('<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Facture ' + currentInvoiceNumber + '</title>');
+        pw.document.write('<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Facture ' + currentInvoiceNumber + '</title>');
         pw.document.write('<style>');
+        pw.document.write('@page { size: A4 portrait; margin: 0; }');
+        pw.document.write('html { zoom: 1 !important; }');
         pw.document.write(':root { --sapphire: #3C5070; --royal-blue: #112250; --quicksand: #E0C58F; --swan-wing: #F5F0E9; --shellstone: #D9CBC2; --text-dark: #1A1A2E; --text-mid: #3C4A5C; --font-sans: "Segoe UI", system-ui, -apple-system, sans-serif; --radius: 8px; }');
         pw.document.write('*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }');
         pw.document.write('body { font-family: var(--font-sans); color: var(--text-dark); background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }');
@@ -889,7 +891,11 @@
 
       document.getElementById('btn-inv-print').addEventListener('click', openInvoicePrintWindow);
 
-      document.getElementById('btn-inv-dl').addEventListener('click', openInvoicePrintWindow);
+      document.getElementById('btn-inv-dl').addEventListener('click', function () {
+        if (!currentInvoiceNumber) return;
+        var url = BACKEND + '/api/admin/invoice/' + encodeURIComponent(currentInvoiceNumber) + '?key=' + encodeURIComponent(adminKey);
+        window.open(url, '_blank');
+      });
 
     })();
   </script>
