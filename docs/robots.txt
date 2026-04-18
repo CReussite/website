@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /success.html
+Disallow: /cancel.html
+Disallow: /viewer-maths.html
+Disallow: /viewer-physique.html
+
+Sitemap: https://c-reussite.fr/sitemap.xml

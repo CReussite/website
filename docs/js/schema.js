@@ -1,81 +1,90 @@
 (function () {
-  const schema = {
+  var schema = {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "Organization",
-        "@id": "https://creussite.github.io/website/#organization",
+        "@type": "WebSite",
+        "@id": "https://c-reussite.fr/#website",
+        "url": "https://c-reussite.fr/",
         "name": "C'Réussite",
-        "url": "https://creussite.github.io/website/",
+        "description": "Fiches de révision PDF pour la Terminale Spécialité — Maths et Physique-Chimie",
+        "publisher": { "@id": "https://c-reussite.fr/#organization" },
+        "inLanguage": "fr-FR"
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://c-reussite.fr/#organization",
+        "name": "C'Réussite",
+        "url": "https://c-reussite.fr/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://c-reussite.fr/img/logo.jpeg"
+        },
         "contactPoint": {
           "@type": "ContactPoint",
           "email": "contact@c-reussite.fr",
-          "contactType": "customer service",
-          "availableLanguage": "French"
+          "contactType": "customer service"
         }
       },
       {
-        "@type": "Person",
-        "@id": "https://creussite.github.io/website/#camille-reinhardt",
-        "name": "Camille Reinhardt",
-        "jobTitle": "Enseignante, Polytechnicienne, Docteure en sciences de la vie",
-        "alumniOf": [
-          { "@type": "CollegeOrUniversity", "name": "École Polytechnique" },
-          { "@type": "CollegeOrUniversity", "name": "Doctorat en sciences de la vie" }
-        ],
-        "knowsAbout": ["Mathématiques", "Physique-Chimie", "Pédagogie", "Terminale spécialité"]
-      },
-      {
-        "@type": "Product",
-        "name": "Fiches Maths Terminale Spécialité – Bac 2026",
-        "description": "20 fiches synthétiques couvrant tout le programme de Mathématiques Terminale Spécialité. Une page par chapitre. Format PDF.",
-        "author": { "@id": "https://creussite.github.io/website/#camille-reinhardt" },
-        "brand":  { "@id": "https://creussite.github.io/website/#organization" },
-        "offers": {
-          "@type": "Offer",
-          "price": "14.99",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        }
-      },
-      {
-        "@type": "Product",
-        "name": "Fiches Physique-Chimie Terminale Spécialité – Bac 2026",
-        "description": "32 fiches synthétiques couvrant tout le programme de Physique-Chimie Terminale Spécialité. Une page par chapitre. Format PDF.",
-        "author": { "@id": "https://creussite.github.io/website/#camille-reinhardt" },
-        "brand":  { "@id": "https://creussite.github.io/website/#organization" },
-        "offers": {
-          "@type": "Offer",
-          "price": "14.99",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        }
-      },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
+        "@type": "ItemList",
+        "name": "Fiches de révision Terminale Spécialité",
+        "itemListElement": [
           {
-            "@type": "Question",
-            "name": "Ces fiches remplacent-elles le cours ?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Non. Elles sont conçues pour la révision, pas pour l'apprentissage initial."
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@type": "Product",
+              "name": "Fiches Maths Terminale Spécialité",
+              "description": "20 fiches de révision Maths Terminale Spécialité — une fiche par chapitre, cours, formules et méthodes. Programme officiel 2026. PDF, téléchargement immédiat.",
+              "image": "https://c-reussite.fr/img/couverture-maths.jpg",
+              "url": "https://c-reussite.fr/#fiches",
+              "brand": { "@type": "Brand", "name": "C'Réussite" },
+              "offers": {
+                "@type": "Offer",
+                "price": "14.99",
+                "priceCurrency": "EUR",
+                "availability": "https://schema.org/InStock",
+                "seller": { "@id": "https://c-reussite.fr/#organization" }
+              }
             }
           },
           {
-            "@type": "Question",
-            "name": "Ces fiches sont-elles adaptées aux élèves en difficulté ?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Elles fonctionnent pour tout élève prêt à travailler. Elles structurent le programme de façon claire et logique."
+            "@type": "ListItem",
+            "position": 2,
+            "item": {
+              "@type": "Product",
+              "name": "Fiches Physique-Chimie Terminale Spécialité",
+              "description": "32 fiches de révision Physique-Chimie Terminale Spécialité — une fiche par chapitre, cours, formules et méthodes. Programme officiel 2026. PDF, téléchargement immédiat.",
+              "image": "https://c-reussite.fr/img/couverture-physique.jpg",
+              "url": "https://c-reussite.fr/#fiches",
+              "brand": { "@type": "Brand", "name": "C'Réussite" },
+              "offers": {
+                "@type": "Offer",
+                "price": "14.99",
+                "priceCurrency": "EUR",
+                "availability": "https://schema.org/InStock",
+                "seller": { "@id": "https://c-reussite.fr/#organization" }
+              }
             }
           },
           {
-            "@type": "Question",
-            "name": "Comment reçoit-on les fiches ?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Par email instantanément après la commande, au format PDF téléchargeable."
+            "@type": "ListItem",
+            "position": 3,
+            "item": {
+              "@type": "Product",
+              "name": "Pack Maths + Physique-Chimie Terminale Spécialité",
+              "description": "52 fiches de révision Maths et Physique-Chimie Terminale Spécialité — programme officiel 2026. PDF, téléchargement immédiat.",
+              "image": "https://c-reussite.fr/img/couverture-maths.jpg",
+              "url": "https://c-reussite.fr/#fiches",
+              "brand": { "@type": "Brand", "name": "C'Réussite" },
+              "offers": {
+                "@type": "Offer",
+                "price": "24.99",
+                "priceCurrency": "EUR",
+                "availability": "https://schema.org/InStock",
+                "seller": { "@id": "https://c-reussite.fr/#organization" }
+              }
             }
           }
         ]
@@ -83,8 +92,8 @@
     ]
   };
 
-  const tag = document.createElement('script');
-  tag.type = 'application/ld+json';
-  tag.textContent = JSON.stringify(schema);
-  document.head.appendChild(tag);
+  var script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.textContent = JSON.stringify(schema);
+  document.head.appendChild(script);
 })();
