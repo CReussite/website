@@ -16,7 +16,7 @@ function requireAdminKey(req, res, next) {
 // Retourne la configuration de l'environnement (mode Stancer).
 router.get('/config', requireAdminKey, (req, res) => {
   const key = process.env.STANCER_SECRET_KEY || '';
-  res.json({ stripe_mode: key.startsWith('sprod_') ? 'live' : 'test' });
+  res.json({ stancer_mode: key.startsWith('sprod_') ? 'live' : 'test' });
 });
 
 // ── GET /api/admin/orders ─────────────────────────────────────────────────────

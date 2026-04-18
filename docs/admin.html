@@ -282,7 +282,7 @@
   <div id="nav-placeholder"></div>
   <div id="test-banner" class="test-banner">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-    Mode TEST — les paiements Stripe sont fictifs. Aucune transaction reelle n'est enregistree.
+    Mode TEST — les paiements Stancer sont fictifs. Aucune transaction reelle n'est enregistree.
   </div>
   <div id="login-screen">
     <div class="login-card">
@@ -339,9 +339,9 @@
             <span>https://dashboard.render.com/web/srv-d7chdpa8qa3s73bjljs0</span>
             <em>Consulter les logs et l'etat du backend.</em>
           </a>
-          <a class="service-link" href="https://dashboard.stripe.com" target="_blank" rel="noopener noreferrer">
-            <strong>Stripe</strong>
-            <span>https://dashboard.stripe.com</span>
+          <a class="service-link" href="https://manage.stancer.com" target="_blank" rel="noopener noreferrer">
+            <strong>Stancer</strong>
+            <span>https://manage.stancer.com</span>
             <em>Suivre les paiements et les transactions carte bancaire.</em>
           </a>
           <a class="service-link" href="https://supabase.com/dashboard/project/llomqecxvbefakyysskn" target="_blank" rel="noopener noreferrer">
@@ -719,7 +719,7 @@
             const configRes = await fetch(BACKEND + '/api/admin/config?key=' + encodeURIComponent(key));
             if (configRes.ok) {
               const config = await configRes.json();
-              if (config.stripe_mode === 'test') testBanner.style.display = 'block';
+              if (config.stancer_mode === 'test') testBanner.style.display = 'block';
             }
           } catch (_) {}
 
