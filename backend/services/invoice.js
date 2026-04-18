@@ -227,7 +227,7 @@ function generateInvoice({ invoiceNumber, email, productName, amount, date, paym
 
     // ── Pied de page (fond bleu royal) ───────────────────
     doc.rect(0, 780, pageWidth, 62).fill(ROYAL_BLUE);
-    doc.fontSize(7.5).font('Helvetica').fillColor('rgba(255,255,255,0.7)');
+    doc.fontSize(7.5).font('Helvetica').fillColor('#FFFFFF').opacity(0.7);
     doc.text(
       'Camille Reinhardt — Entrepreneur individuel — SIRET 103 644 050 00017 — APE 4791B',
       0,
