@@ -47,13 +47,7 @@ function generateInvoice({ invoiceNumber, email, productName, amount, date, paym
       .fontSize(20)
       .font('Helvetica-Bold')
       .fillColor('#FFFFFF')
-      .text("C'Réussite", margin + 72, 30);
-
-    doc
-      .fontSize(10)
-      .font('Helvetica')
-      .fillColor('rgba(255,255,255,0.7)')
-      .text('c-reussite.fr', margin + 72, 52);
+      .text("C'Réussite", margin + 72, 38);
 
     doc
       .fontSize(24)
@@ -130,10 +124,15 @@ function generateInvoice({ invoiceNumber, email, productName, amount, date, paym
       .strokeColor(QUICKSAND)
       .stroke();
     doc
+      .fontSize(12)
+      .font('Helvetica-Bold')
+      .fillColor(ROYAL_BLUE)
+      .text(email, clientX, partiesY + 20);
+    doc
       .fontSize(9)
       .font('Helvetica')
       .fillColor(TEXT_MID)
-      .text(email, clientX, partiesY + 20);
+      .text(email, clientX, partiesY + 36);
 
     // ── Tableau produit ──────────────────────────────────
     const tableTop = partiesY + 110;
@@ -147,13 +146,14 @@ function generateInvoice({ invoiceNumber, email, productName, amount, date, paym
     doc.fontSize(8).font('Helvetica-Bold').fillColor('#FFFFFF');
     doc.text('DÉSIGNATION', colDesignation + 8, tableTop + 7);
     doc.text('QTÉ', colQty, tableTop + 7, { width: 40, align: 'right' });
-    doc.text('PRIX UNIT. HT', colPU, tableTop + 7, { width: 70, align: 'right' });
+    doc.text('PRIX UNITAIRE HT', colPU, tableTop + 7, { width: 70, align: 'right' });
     doc.text('TOTAL HT', colTotal, tableTop + 7, { width: 70, align: 'right' });
 
     // Ligne produit
     const rowY = tableTop + 24;
+    const designation = `Ebook — ${productName} (PDF)`;
     doc.fontSize(9).font('Helvetica').fillColor('#1A1A2E');
-    doc.text(productName, colDesignation + 8, rowY + 8);
+    doc.text(designation, colDesignation + 8, rowY + 8);
     doc.text('1', colQty, rowY + 8, { width: 40, align: 'right' });
     doc.text(amountEur + ' €', colPU, rowY + 8, { width: 70, align: 'right' });
     doc.text(amountEur + ' €', colTotal, rowY + 8, { width: 70, align: 'right' });
