@@ -1,7 +1,7 @@
 /* =====================================================
-   PAIEMENT — Stripe Checkout Sessions
+   PAIEMENT — Stancer
    Flux : clic Commander → modal récapitulatif + consentements
-          → POST /api/checkout → redirect Stripe
+          → POST /api/checkout → redirect Stancer
    ===================================================== */
 
 const BACKEND_URL = 'https://creussite-backend.onrender.com';
