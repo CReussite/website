@@ -66,6 +66,7 @@
       form.reset();
       form.hidden = false;
       submitBtn.disabled = false;
+      submitBtn.textContent = 'Recevoir mon extrait';
       hideMessage();
       overlay.hidden = false;
       document.body.style.overflow = 'hidden';
