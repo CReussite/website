@@ -111,7 +111,7 @@ CReussite/
 | GET | `/api/admin/extracts` | ADMIN_KEY | Historique des extraits envoyés |
 | GET | `/api/admin/export` | ADMIN_KEY | Export CSV (BOM UTF-8) |
 | GET | `/api/admin/invoice/:num` | ADMIN_KEY | Re-génère et télécharge une facture PDF |
-| GET | `/api/admin/config` | ADMIN_KEY | Retourne `{ stripe_mode: 'live' \| 'test' }` |
+| GET | `/api/admin/config` | ADMIN_KEY | Retourne `{ stancer_mode: 'live' \| 'test' }` |
 | GET | `/api/health` | — | `{"status":"ok"}` |
 | GET | `/api/healthz` | — | Health check détaillé, `503` si variable manquante |
 
@@ -175,6 +175,7 @@ cp backend/.env.example backend/.env  # en local
 | Variable | Source / valeur |
 | -------- | -------------- |
 | `STANCER_SECRET_KEY` | manage.stancer.com → Développeurs → Clés d'API → Privée (`stest_...` ou `sprod_...`) |
+| `STANCER_PUBLIC_KEY` | manage.stancer.com → Développeurs → Clés d'API → Publique (`ptest_...` ou `pprod_...`) |
 | `SUPABASE_URL` | Supabase → Settings → API |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Settings → API (`sb_secret_...`) |
 | `BREVO_API_KEY` | brevo.com → Paramètres → Clés API (`xkeysib-...`) — PAS la clé SMTP |
@@ -199,6 +200,19 @@ curl https://creussite-backend.onrender.com/api/healthz
 ```
 
 Build Render : `npm ci --omit=dev` / Start : `node server.js`
+
+### Mettre à jour les PDFs produit
+
+Les PDFs sont stockés dans Supabase Storage (pas dans git). Pour les remplacer :
+
+1. Copier les nouveaux fichiers dans `backend/assets/` (en respectant les noms existants)
+2. Lancer le script d'upload :
+
+```bash
+cd backend && node scripts/upload-assets.js
+```
+
+Aucun commit ni redéploiement nécessaire — la mise à jour est immédiate.
 
 ---
 
