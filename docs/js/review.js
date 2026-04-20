@@ -1,14 +1,14 @@
 (function () {
-  var overlay = document.getElementById('review-overlay');
-  var btn = document.getElementById('review-btn');
-  var closeBtn = overlay.querySelector('.extract-close');
-  var stars = document.querySelectorAll('#review-stars span');
-  var ratingInput = document.getElementById('review-rating');
-  var rating = 5;
+  var BACKEND = 'https://creussite-backend.onrender.com';
+
+  var overlay    = document.getElementById('review-overlay');
+  var btn        = document.getElementById('review-btn');
+  var closeBtn   = overlay.querySelector('.extract-close');
+  var stars      = document.querySelectorAll('#review-stars span');
+  var rating     = 5;
 
   function setStars(n) {
     rating = n;
-    ratingInput.value = 'Avis ' + n + '★';
     stars.forEach(function (s) {
       s.classList.toggle('active', parseInt(s.dataset.star) <= n);
     });
@@ -51,11 +51,34 @@
 
   document.getElementById('review-form').addEventListener('submit', function (e) {
     e.preventDefault();
-    var name    = encodeURIComponent(document.getElementById('review-name').value);
-    var message = encodeURIComponent(document.getElementById('review-message').value);
-    var subject = encodeURIComponent(ratingInput.value);
-    var body    = encodeURIComponent('Prénom : ') + name + '%0A' + encodeURIComponent('Avis : ') + message;
-    window.open('https://mail.google.com/mail/?view=cm&fs=1&to=contact@c-reussite.fr&su=' + subject + '&body=' + body, '_blank');
-    close();
+
+    var submitBtn = this.querySelector('button[type="submit"]');
+    var prenom  = document.getElementById('review-name').value.trim();
+    var message = document.getElementById('review-message').value.trim();
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Envoi…';
+
+    fetch(BACKEND + '/api/avis', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prenom: prenom, note: rating, message: message }),
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data.ok) {
+          submitBtn.textContent = 'Avis envoyé, merci !';
+          setTimeout(close, 1500);
+        } else {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Envoyer mon avis';
+          alert(data.error || "Erreur lors de l'envoi.");
+        }
+      })
+      .catch(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Envoyer mon avis';
+        alert("Erreur réseau. Réessaie dans quelques instants.");
+      });
   });
 })();
