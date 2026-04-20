@@ -68,7 +68,13 @@
       .then(function (data) {
         if (data.ok) {
           submitBtn.textContent = 'Avis envoyé, merci !';
-          setTimeout(close, 1500);
+          setTimeout(function () {
+            document.getElementById('review-form').reset();
+            setStars(5);
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Envoyer mon avis';
+            close();
+          }, 1500);
         } else {
           submitBtn.disabled = false;
           submitBtn.textContent = 'Envoyer mon avis';
