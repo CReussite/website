@@ -15,6 +15,7 @@
         "@type": "Organization",
         "@id": "https://c-reussite.fr/#organization",
         "name": "C'Réussite",
+        "alternateName": ["C Réussite", "CReussite", "C-Réussite", "c reussite", "creussite"],
         "url": "https://c-reussite.fr/",
         "logo": {
           "@type": "ImageObject",
