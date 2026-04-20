@@ -16,19 +16,4 @@ CREATE TABLE IF NOT EXISTS avis (
 CREATE INDEX IF NOT EXISTS idx_avis_matiere  ON avis (matiere);
 CREATE INDEX IF NOT EXISTS idx_avis_visible  ON avis (visible);
 
--- Avis de Neyla (Terminale)
-INSERT INTO avis (auteur, niveau, matiere, note, commentaire) VALUES
-(
-  'Neyla',
-  'Élève de Terminale',
-  'Maths',
-  5,
-  'Les fiches sont géniales, le cours est très bien expliqué et il y a des méthodes qui s''appliquent à tous les exercices. Il y a aussi des explications sur quand et comment il faut utiliser certaines formules lorsqu''il y en a plusieurs dans un seul chapitre et je trouve ça vraiment utile.'
-),
-(
-  'Neyla',
-  'Élève de Terminale',
-  'Physique-chimie',
-  5,
-  'Les fiches sont très complètes. On retrouve le cours entier en une seule page avec des méthodes qui s''appliquent pour tous les exercices. Je les recommande.'
-);
+-- Les avis sont insérés manuellement via l'API Supabase (pas via migration).
