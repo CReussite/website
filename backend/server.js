@@ -51,6 +51,9 @@ app.use('/api/extract', require('./routes/extract'));
 // Admin (commandes, export CSV, téléchargement factures)
 app.use('/api/admin', require('./routes/admin'));
 
+// Avis clients
+app.use('/api/avis', require('./routes/avis'));
+
 // Beta feedback
 app.use('/api/beta-feedback', require('./routes/beta'));
 
