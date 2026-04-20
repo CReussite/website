@@ -8,6 +8,7 @@
         "url": "https://c-reussite.fr/",
         "name": "C'Réussite",
         "description": "Fiches de révision PDF pour la Terminale Spécialité — Maths et Physique-Chimie",
+        "keywords": "fiches de révision maths, fiches de révision physique chimie, fiches revision terminale, fiches bac maths, fiches bac physique chimie, révision terminale spécialité 2026",
         "publisher": { "@id": "https://c-reussite.fr/#organization" },
         "inLanguage": "fr-FR"
       },
@@ -15,7 +16,7 @@
         "@type": "Organization",
         "@id": "https://c-reussite.fr/#organization",
         "name": "C'Réussite",
-        "alternateName": ["C Réussite", "CReussite", "C-Réussite", "c reussite", "creussite"],
+        "alternateName": ["C Réussite", "CReussite", "C-Réussite", "c reussite", "creussite", "c'reussite", "C'Reussite"],
         "url": "https://c-reussite.fr/",
         "logo": {
           "@type": "ImageObject",
