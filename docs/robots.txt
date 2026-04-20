@@ -5,5 +5,9 @@ Disallow: /success.html
 Disallow: /cancel.html
 Disallow: /viewer-maths.html
 Disallow: /viewer-physique.html
+Disallow: /cgv.html
+Disallow: /cgu.html
+Disallow: /mentions-legales.html
+Disallow: /confidentialite.html
 
 Sitemap: https://c-reussite.fr/sitemap.xml
