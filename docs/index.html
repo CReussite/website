@@ -12,12 +12,10 @@
     <link rel="shortcut icon" href="img/favicon.ico" />
 
     <!-- SEO -->
-    <title>
-      C'Réussite — Fiches de révision Terminale Spécialité 2026 — Maths et Physique-Chimie
-    </title>
+    <title>Fiches révision Bac 2026 Maths &amp; Physique-Chimie | C'Réussite</title>
     <meta
       name="description"
-      content="52 fiches de révision maths et physique-chimie — Terminale spécialité, programme officiel 2026. Une fiche par chapitre, cours, formules et méthodes de résolution. Conçu par une polytechnicienne. PDF, téléchargement immédiat."
+      content="52 fiches de révision Bac 2026 en maths et physique-chimie. 1 page par chapitre, méthodes du bac incluses. Par une polytechnicienne. PDF immédiat."
     />
     <meta name="author" content="Camille Reinhardt" />
     <link rel="canonical" href="https://c-reussite.fr/" />
@@ -45,6 +43,18 @@
       name="twitter:description"
       content="20 fiches Maths + 32 fiches PC Terminale Spécialité. L'essentiel du programme, une page par chapitre."
     />
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FX3Q1WNZ03"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-FX3Q1WNZ03');
+    </script>
+
+    <!-- Preload LCP image -->
+    <link rel="preload" as="image" href="img/cover-maths.jpg" />
 
     <link rel="stylesheet" href="css/style.css" />
     <script src="js/schema.js" defer></script>
@@ -198,21 +208,21 @@
         </p>
 
         <div class="hero-cards">
-          <a href="#maths-card" class="hero-card">
+          <a href="maths.html" class="hero-card">
             <div class="hero-card-title">Maths</div>
             <div class="hero-card-count">20 fiches</div>
             <div class="hero-card-media" aria-hidden="true">
-              <img src="img/cover-maths.jpg" alt="" class="hero-card-img" loading="lazy" />
+              <img src="img/cover-maths.jpg" alt="" class="hero-card-img" fetchpriority="high" />
             </div>
           </a>
-          <a href="#physique-card" class="hero-card">
+          <a href="physique-chimie.html" class="hero-card">
             <div class="hero-card-title">Physique-Chimie</div>
             <div class="hero-card-count">32 fiches</div>
             <div class="hero-card-media" aria-hidden="true">
-              <img src="img/cover-physique.jpg" alt="" class="hero-card-img" loading="lazy" />
+              <img src="img/cover-physique.jpg" alt="" class="hero-card-img" />
             </div>
           </a>
-          <a href="#bundle-card" class="hero-card hero-card-pack">
+          <a href="pack.html" class="hero-card hero-card-pack">
             <div class="hero-card-title">Le Pack</div>
             <div class="hero-card-count">52 fiches</div>
             <div class="hero-card-media hero-card-media-pack" aria-hidden="true">
@@ -260,182 +270,6 @@
           <button class="btn btn-outline btn-extract" data-extract="bundle">
             Tu veux voir à quoi ressemblent les fiches ? Reçois un extrait gratuit →
           </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== PRODUITS ===== -->
-    <section id="fiches" aria-labelledby="fiches-title">
-      <div class="container">
-        <div class="products-grid">
-          <!-- MATHS -->
-          <article
-            id="maths-card"
-            class="product-card"
-            aria-label="Ebook Maths Terminale Spécialité"
-          >
-            <div class="product-body">
-              <div class="product-info">
-                <h3>
-                  Maths<br /><span class="product-subtitle-inline">(Terminale Spécialité)</span>
-                </h3>
-                <div class="product-mini-cover">
-                  <img
-                    src="img/cover-maths.jpg"
-                    alt="Couverture fiches Maths Terminale Spécialité"
-                    loading="lazy"
-                    width="180"
-                    height="255"
-                  />
-                </div>
-                <div class="product-meta">
-                  <span class="product-tag">20 fiches</span>
-                  <span class="product-tag">6 thèmes</span>
-                </div>
-                <p class="product-benefit">
-                  Chaque chapitre condensé en une fiche. Cours, formules, méthodes de résolution :
-                  tout ce qu'il faut pour réviser le bac, le tout sur une seule page.
-                </p>
-                <ul class="product-toc" aria-label="Sommaire">
-                  <li><strong>Les types de raisonnement</strong></li>
-                  <li><strong>Algèbre</strong> : combinatoire et dénombrement</li>
-                  <li>
-                    <strong>Probabilités</strong> : loi binomiale ; somme de variables aléatoires ;
-                    loi des grands nombres
-                  </li>
-                  <li>
-                    <strong>Espace et géométrie</strong> : vecteurs, droites, plans de l'espace ;
-                    orthogonalité et distances
-                  </li>
-                  <li><strong>Suites</strong> : limites ; opérations sur les limites</li>
-                  <li>
-                    <strong>Analyse</strong> : limites ; dérivation ; continuité ; fonctions ln,
-                    cos, sin ; primitives ; calcul intégral ; équations différentielles
-                  </li>
-                </ul>
-                <div class="product-price">14,99 €</div>
-                <p class="product-price-sub">
-                  <span class="product-tag">Livraison instantanée</span
-                  ><span class="product-tag">PDF</span>
-                </p>
-                <div class="product-buttons">
-                  <button data-product="maths" class="btn btn-primary">Commander</button>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <!-- PHYSIQUE-CHIMIE -->
-          <article
-            id="physique-card"
-            class="product-card"
-            aria-label="Ebook Physique-Chimie Terminale Spécialité"
-          >
-            <div class="product-body">
-              <div class="product-info">
-                <h3>
-                  Physique-Chimie<br /><span class="product-subtitle-inline"
-                    >(Terminale Spécialité)</span
-                  >
-                </h3>
-                <div class="product-mini-cover">
-                  <img
-                    src="img/cover-physique.jpg"
-                    alt="Couverture fiches Physique-Chimie Terminale Spécialité"
-                    loading="lazy"
-                    width="180"
-                    height="255"
-                  />
-                </div>
-                <div class="product-meta">
-                  <span class="product-tag">32 fiches</span>
-                  <span class="product-tag">6 thèmes</span>
-                </div>
-                <p class="product-benefit">
-                  Chaque fiche couvre un chapitre entier en une seule page : définitions, concepts,
-                  formules et unités, méthodes. Tout ce qu'il faut pour réviser le bac sans
-                  replonger dans des dizaines de pages de cours.
-                </p>
-                <ul class="product-toc" aria-label="Sommaire">
-                  <li>
-                    <strong>Chimie</strong> : évolution spontanée ; piles ; évolution forcée ;
-                    acides et bases ; dosages ; cinétique ; synthèse organique ; radioactivité
-                  </li>
-                  <li>
-                    <strong>Mécanique</strong> : forces ; cinématique ; mouvements rectilignes et
-                    circulaires ; lois de Newton ; mouvements dans des champs
-                  </li>
-                  <li><strong>Mécanique des fluides</strong></li>
-                  <li><strong>Thermodynamique</strong></li>
-                  <li><strong>Électricité</strong> : condensateur et dipôle RC</li>
-                  <li>
-                    <strong>Ondes</strong> : interactions lumière - matière ; lunette astronomique ;
-                    son ; effet Doppler ; interférences ; diffraction
-                  </li>
-                </ul>
-                <div class="product-price">14,99 €</div>
-                <p class="product-price-sub">
-                  <span class="product-tag">Livraison instantanée</span
-                  ><span class="product-tag">PDF</span>
-                </p>
-                <div class="product-buttons">
-                  <button data-product="physique" class="btn btn-primary">Commander</button>
-                </div>
-              </div>
-            </div>
-          </article>
-        </div>
-
-        <!-- BUNDLE -->
-        <div
-          id="bundle-card"
-          class="bundle-card"
-          role="region"
-          aria-label="Pack complet Maths + Physique-Chimie"
-        >
-          <div class="bundle-body">
-            <div class="bundle-info">
-              <h3>
-                <span class="bundle-pack-title">Pack</span><br />Maths + Physique-Chimie<br /><span
-                  class="product-subtitle-inline"
-                  >(Terminale Spécialité)</span
-                >
-              </h3>
-              <div class="bundle-mini-covers" aria-hidden="true">
-                <img
-                  src="img/cover-maths.jpg"
-                  alt="Couverture Maths"
-                  loading="lazy"
-                  width="190"
-                  height="269"
-                />
-                <span class="bundle-plus">+</span>
-                <img
-                  src="img/cover-physique.jpg"
-                  alt="Couverture Physique-Chimie"
-                  loading="lazy"
-                  width="190"
-                  height="269"
-                />
-              </div>
-              <p class="bundle-desc">
-                Le pack regroupe les deux ebooks : 20 fiches Maths + 32 fiches Physique-Chimie. Les
-                deux matières se révisent avec le même outil, la même structure, la même logique.
-              </p>
-              <p class="bundle-desc-detail">
-                52 fiches couvrant 100 % du programme de Terminale Spé. Le pack le plus complet pour
-                réviser efficacement.
-              </p>
-              <div class="bundle-pricing">
-                <div class="bundle-price-old">29,98 €</div>
-                <div class="bundle-price-new">24,99 €</div>
-                <div class="bundle-economy">−17 % sur le pack</div>
-              </div>
-              <div class="product-buttons">
-                <button data-product="bundle" class="btn btn-primary">Commander le pack</button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

@@ -1,21 +1,22 @@
-// Detect if we're on the homepage or a subpage
 (function () {
-  var isHome = /index\.html$/.test(location.pathname) || location.pathname.endsWith('/');
-  var base = isHome ? '' : 'index.html';
+  const isBlog = location.pathname.includes('/blog');
+  const root   = isBlog ? '../' : '';
 
   document.getElementById('nav-placeholder').outerHTML = `
     <nav aria-label="Navigation principale">
       <div class="nav-inner">
-        <a href="${base || '#'}${isHome ? '' : '#'}" class="nav-logo"><img src="${isHome ? '' : ''}img/logo.jpeg" alt="C'R\u00e9ussite" class="nav-logo-img"></a>
+        <a href="${root}index.html" class="nav-logo">
+          <img src="${root}img/logo.jpeg" alt="C'Réussite" class="nav-logo-img">
+        </a>
         <div class="nav-tools">
           <ul class="nav-links">
-            <li><a href="${base}#fiches">Les fiches</a></li>
-            <li><a href="${base}#avis">Avis</a></li>
-            <li><a href="${base}#camille">&Agrave; propos</a></li>
-            <li><a href="${base}#faq">FAQ</a></li>
-            <li><a href="${base}#contact">Contact</a></li>
+            <li><a href="${root}index.html">Accueil</a></li>
+            <li><a href="${root}maths.html">Maths</a></li>
+            <li><a href="${root}physique-chimie.html">Physique-Chimie</a></li>
+            <li><a href="${root}pack.html">Le Pack</a></li>
+            <li><a href="${root}blog/">Blog</a></li>
           </ul>
-<button class="nav-burger" aria-label="Ouvrir le menu" aria-expanded="false">
+          <button class="nav-burger" aria-label="Ouvrir le menu" aria-expanded="false">
             <span></span><span></span><span></span>
           </button>
         </div>
