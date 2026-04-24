@@ -87,15 +87,6 @@
     if (e.key === 'ArrowRight') lbGoTo(lbCurrent + 1);
   });
 
-  // Swipe lightbox
-  let lbStartX = 0;
-  overlay.addEventListener('touchstart', function (e) {
-    lbStartX = e.touches[0].clientX;
-  }, { passive: true });
-  overlay.addEventListener('touchend', function (e) {
-    const dx = e.changedTouches[0].clientX - lbStartX;
-    if (Math.abs(dx) > 40) lbGoTo(dx < 0 ? lbCurrent + 1 : lbCurrent - 1);
-  }, { passive: true });
 
   // ── Carousels produit ───────────────────────────────
   document.querySelectorAll('.product-carousel').forEach(function (carousel) {
@@ -135,26 +126,9 @@
     prevBtn.addEventListener('click', function () { goTo(current - 1); });
     nextBtn.addEventListener('click', function () { goTo(current + 1); });
 
-    // Swipe produit + tap → lightbox
-    let startX = 0, startY = 0, wasSwiped = false;
-    carousel.addEventListener('touchstart', function (e) {
-      startX    = e.touches[0].clientX;
-      startY    = e.touches[0].clientY;
-      wasSwiped = false;
-    }, { passive: true });
-    carousel.addEventListener('touchend', function (e) {
-      const dx = e.changedTouches[0].clientX - startX;
-      const dy = e.changedTouches[0].clientY - startY;
-      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
-        wasSwiped = true;
-        goTo(dx < 0 ? current + 1 : current - 1);
-      }
-    }, { passive: true });
-
-    // Clic → ouvre lightbox (ignoré si c'était un swipe)
+    // Clic → ouvre lightbox
     slides.forEach(function (slide) {
       slide.querySelector('img').addEventListener('click', function () {
-        if (wasSwiped) { wasSwiped = false; return; }
         openLightbox(lbData, current);
       });
     });
