@@ -200,6 +200,23 @@ nav {
   font-size: 0.85rem;
   color: rgba(255,255,255,0.6);
 }
+.hero-card-price {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-top: 8px;
+}
+.hero-card-badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  background: rgba(255,255,255,0.15);
+  border-radius: 3px;
+  padding: 1px 5px;
+  margin-left: 4px;
+  vertical-align: middle;
+  color: rgba(255,255,255,0.85);
+}
 .hero-card-media {
   position: absolute;
   right: 12px;
@@ -440,11 +457,39 @@ nav {
   box-shadow: 0 4px 14px rgba(0,0,0,0.16);
 }
 
+/* ── Fil d'Ariane bande dorée ──────────────────────── */
+.breadcrumb-band {
+  position: sticky;
+  top: 56px;
+  z-index: 90;
+  background: var(--quicksand);
+  width: 100%;
+  box-shadow: 0 1px 4px rgba(17,34,80,0.10);
+}
+.breadcrumb-band-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 9px 24px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  color: var(--royal-blue);
+}
+.breadcrumb-band-inner a {
+  color: var(--royal-blue);
+  opacity: 0.65;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.breadcrumb-band-inner a:hover { opacity: 1; text-decoration: underline; }
+.breadcrumb-band-inner .bc-sep { margin: 0 8px; opacity: 0.4; }
+
 /* ── Carousel produit ───────────────────────────────── */
 .product-carousel {
   margin: 8px 0 14px;
   width: 100%;
-  max-width: 450px;
+  max-width: 480px;
   border-radius: 8px;
   box-shadow: 0 4px 14px rgba(0,0,0,0.16);
   user-select: none;
@@ -960,29 +1005,60 @@ textarea.form-control { min-height: 120px; resize: vertical; }
 /* ===== FOOTER ===== */
 footer {
   background: var(--royal-blue);
-  padding: 40px 0;
-  text-align: center;
+  padding: 52px 0 0;
 }
-footer p { color: rgba(255,255,255,0.5); font-size: 0.82rem; margin-bottom: 6px; }
-footer a { color: rgba(255,255,255,0.85); text-decoration: underline; cursor: pointer; }
+footer a { color: rgba(255,255,255,0.65); text-decoration: none; cursor: pointer; transition: color 0.15s; }
 footer a:hover { color: var(--quicksand); }
-.footer-logo {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--quicksand);
-  margin-bottom: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* center logo and any inline text */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 48px;
 }
-.footer-logo span { color: var(--white); }
-
-/* Footer logo image sizing & centering */
+.footer-col h4 {
+  color: var(--quicksand);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  margin-bottom: 16px;
+}
+.footer-col ul { list-style: none; padding: 0; }
+.footer-col ul li { margin-bottom: 10px; }
+.footer-col ul li a { font-size: 0.88rem; }
+.footer-logo {
+  margin-bottom: 12px;
+}
 .footer-logo-img {
-  height: 100px;
+  height: 56px;
   width: auto;
   display: block;
-  margin: 0 auto 12px;
+}
+.footer-brand-text {
+  color: rgba(255,255,255,0.45);
+  font-size: 0.84rem;
+  line-height: 1.55;
+  margin-bottom: 10px;
+}
+.footer-brand-email {
+  font-size: 0.85rem;
+  text-decoration: underline !important;
+}
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 16px 0;
+  text-align: center;
+}
+.footer-bottom p {
+  color: rgba(255,255,255,0.3);
+  font-size: 0.78rem;
+  margin: 0;
+}
+@media (max-width: 720px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+@media (max-width: 440px) {
+  .footer-grid { grid-template-columns: 1fr; }
 }
 
 /* ===== UTILITIES ===== */
@@ -1150,6 +1226,24 @@ footer a:hover { color: var(--quicksand); }
   .beta-card { padding: 28px 20px; }
 }
 
+/* ── Bouton nav extract ─────────────────────────────── */
+.nav-extract-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 15px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--royal-blue);
+  background: var(--quicksand);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s, transform 0.15s;
+  flex-shrink: 0;
+}
+.nav-extract-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
 /* ===== BURGER ===== */
 .nav-burger {
   display: none;
@@ -1218,6 +1312,7 @@ footer a:hover { color: var(--quicksand); }
   /* Nav */
   .nav-burger { display: flex; }
   .nav-tools { gap: 10px; }
+  .nav-extract-btn { display: none; }
 
   .nav-links {
     display: none;
