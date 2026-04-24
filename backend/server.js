@@ -48,6 +48,9 @@ app.use('/api/payment/confirm', require('./routes/paymentConfirm'));
 // Envoi d'extrait gratuit
 app.use('/api/extract', require('./routes/extract'));
 
+// Formulaire de contact
+app.use('/api/contact', require('./routes/contact'));
+
 // Admin (commandes, export CSV, téléchargement factures)
 app.use('/api/admin', require('./routes/admin'));
 

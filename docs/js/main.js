@@ -29,6 +29,28 @@ window.addEventListener('scroll', () => {
     : '0 2px 12px rgba(14,27,61,0.18)';
 }, { passive: true });
 
+/* ---- Pré-chauffage backend (évite les cold starts Render) ---- */
+(function () {
+  const BACKEND = 'https://creussite-backend.onrender.com';
+  let warmed = false;
+
+  function prewarm() {
+    if (warmed) return;
+    warmed = true;
+    fetch(BACKEND + '/api/healthz').catch(function () {}); // silencieux
+  }
+
+  // Hover sur tous les boutons critiques (desktop)
+  const critiques = '[data-extract], [data-product], #contact-placeholder, #avis';
+  document.querySelectorAll(critiques).forEach(function (el) {
+    el.addEventListener('mouseenter', prewarm, { once: true });
+    el.addEventListener('touchstart', prewarm, { once: true, passive: true });
+  });
+
+  // Fallback mobile : pré-chauffe 3s après le chargement de la page
+  setTimeout(prewarm, 3000);
+})();
+
 /* ---- FAQ Accordion ---- */
 document.querySelectorAll('.faq__question').forEach(btn => {
   btn.addEventListener('click', () => {
