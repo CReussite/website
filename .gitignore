@@ -24,6 +24,9 @@ CLAUDE.md
 .claude/
 modif/
 recommandation/
+pub/
+todo/
+caroussel/
 
 # MCP config (contient potentiellement des tokens — ne pas commiter)
 .mcp.json
