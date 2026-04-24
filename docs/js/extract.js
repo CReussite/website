@@ -112,6 +112,22 @@
   }
 
   // ── Soumission ──────────────────────────────────────────
+  async function doFetch(email, product_id) {
+    var controller = new AbortController();
+    var timer = setTimeout(function () { controller.abort(); }, 25000);
+    try {
+      var res = await fetch(BACKEND_URL + '/api/extract', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ email: email, product_id: product_id }),
+        signal:  controller.signal,
+      });
+      return res;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -138,11 +154,18 @@
     hideMessage();
 
     try {
-      var res = await fetch(BACKEND_URL + '/api/extract', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ email, product_id }),
-      });
+      var res;
+      try {
+        res = await doFetch(email, product_id);
+      } catch (networkErr) {
+        // Première tentative échouée (serveur en veille) → spinner + retry après 8s
+        submitBtn.innerHTML = '<span class="btn-spinner"></span>';
+        await new Promise(function (resolve) { setTimeout(resolve, 8000); });
+        submitBtn.innerHTML = '';
+        submitBtn.textContent = 'Envoi en cours…';
+        hideMessage();
+        res = await doFetch(email, product_id);
+      }
 
       var data = await res.json();
 
@@ -153,7 +176,10 @@
       form.hidden = true;
       showMessage('C\'est envoyé ! Vérifie ta boîte mail (et tes spams).', false);
     } catch (err) {
-      showMessage(err.message || 'Une erreur est survenue. Réessaie.', true);
+      var msg = (err.name === 'AbortError' || !err.message || err.message === 'Load failed' || err.message === 'Failed to fetch')
+        ? 'Connexion impossible. Vérifie ta connexion et réessaie.'
+        : err.message;
+      showMessage(msg, true);
       submitBtn.disabled    = false;
       submitBtn.textContent = 'Recevoir mon extrait';
     }
