@@ -1,0 +1,20 @@
+# C'Réussite
+> Fiches de révision Terminale Spécialité Maths et Physique-Chimie.
+> Conçues par une diplômée de l'École polytechnique.
+> Couvrent 100 % du programme officiel du Bac 2026.
+
+## Contenu disponible
+- 20 fiches Mathématiques Terminale Spécialité
+- 32 fiches Physique-Chimie Terminale Spécialité
+- Chaque chapitre condensé en une page A4
+- Cours, formules, méthodes de résolution incluses
+
+## Pages de référence
+- /maths/calcul-integral : Calcul intégral - cours et méthodes
+- /maths/limites-fonctions : Limites de fonctions
+- /physique/lois-de-newton : Lois de Newton
+- /physique/acides-bases : Acides et bases, pH
+[à ajouter au fur et à mesure des pages créées]
+
+## À propos de l'auteure
+Diplômée de l'École polytechnique. Expérience pédagogique auprès d'élèves de la 6e au Master.
