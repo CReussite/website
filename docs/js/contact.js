@@ -1,3 +1,5 @@
+const BACKEND_URL = 'https://creussite-backend.onrender.com';
+
 document.getElementById('contact-placeholder').outerHTML = `
   <section id="contact" aria-labelledby="contact-title">
     <div class="container">
@@ -5,7 +7,7 @@ document.getElementById('contact-placeholder').outerHTML = `
         <h2 id="contact-title">Une question ?</h2>
       </div>
 
-      <form class="contact-form" id="contact-form" aria-label="Formulaire de contact">
+      <form class="contact-form" id="contact-form" aria-label="Formulaire de contact" novalidate>
         <div class="form-group">
           <label class="form-label" for="contact-name">Nom</label>
           <input class="form-control" type="text" id="contact-name" name="name" placeholder="Ton nom" required>
@@ -20,27 +22,66 @@ document.getElementById('contact-placeholder').outerHTML = `
         </div>
         <div class="form-group">
           <label class="form-label" for="contact-message">Message</label>
-          <textarea class="form-control" id="contact-message" name="body" placeholder="Écris ta question ici..."></textarea>
+          <textarea class="form-control" id="contact-message" name="body" placeholder="Écris ta question ici..." required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary btn-block">Envoyer</button>
+        <button type="submit" class="btn btn-primary btn-block" id="contact-submit">Envoyer</button>
+        <p id="contact-feedback" style="display:none;margin-top:12px;font-weight:600;"></p>
       </form>
 
       <p class="text-center mt-16 contact-alt">
-        Ou directement par email : <a href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@c-reussite.fr" target="_blank" rel="noopener">contact@c-reussite.fr</a>
+        Ou directement par email : <a href="mailto:contact@c-reussite.fr">contact@c-reussite.fr</a>
       </p>
     </div>
   </section>
 `;
 
-// Gestionnaire submit : ouvre le client email sans passer par un form action
-document.getElementById('contact-form').addEventListener('submit', function (e) {
-  e.preventDefault();
-  var name    = document.getElementById('contact-name').value;
-  var email   = document.getElementById('contact-email').value;
-  var subject = document.getElementById('contact-subject').value || 'Message depuis c-reussite.fr';
-  var body    = 'Nom : ' + name + '\nEmail : ' + email + '\n\n' + document.getElementById('contact-message').value;
-  window.open('https://mail.google.com/mail/?view=cm&fs=1'
-    + '&to=contact@c-reussite.fr'
-    + '&su=' + encodeURIComponent(subject)
-    + '&body=' + encodeURIComponent(body), '_blank');
-});
+(function () {
+  const form      = document.getElementById('contact-form');
+  const submitBtn = document.getElementById('contact-submit');
+  const feedback  = document.getElementById('contact-feedback');
+
+  function showFeedback(text, isError) {
+    feedback.textContent = text;
+    feedback.style.color = isError ? '#c0392b' : '#27ae60';
+    feedback.style.display = 'block';
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const email   = document.getElementById('contact-email').value.trim();
+    const body    = document.getElementById('contact-message').value.trim();
+    const name    = document.getElementById('contact-name').value.trim();
+    const subject = document.getElementById('contact-subject').value.trim();
+
+    if (!email) { showFeedback('Merci d\'indiquer ton adresse email.', true); return; }
+    if (!body)  { showFeedback('Merci d\'écrire un message.', true); return; }
+
+    submitBtn.disabled    = true;
+    submitBtn.textContent = 'Envoi en cours…';
+    feedback.style.display = 'none';
+
+    try {
+      const res = await fetch(BACKEND_URL + '/api/contact', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ name, email, subject, body }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erreur serveur');
+
+      form.reset();
+      submitBtn.textContent = 'Envoyer';
+      submitBtn.disabled    = false;
+      showFeedback('Message envoyé ! On te répondra rapidement.', false);
+    } catch (err) {
+      const msg = (!err.message || err.message === 'Load failed' || err.message === 'Failed to fetch')
+        ? 'Connexion impossible. Tu peux aussi nous écrire directement à contact@c-reussite.fr'
+        : err.message;
+      showFeedback(msg, true);
+      submitBtn.disabled    = false;
+      submitBtn.textContent = 'Envoyer';
+    }
+  });
+})();
