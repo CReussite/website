@@ -3,6 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <!-- End Google Tag Manager -->
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
@@ -24,14 +31,6 @@
   <meta property="og:description" content="52 fiches de révision Maths et Physique-Chimie Terminale Spécialité. Le pack complet pour le Bac 2026, −17 % sur le prix séparé.">
   <meta property="og:image" content="https://c-reussite.fr/img/cover-maths.jpg">
   <meta property="og:site_name" content="C'Réussite">
-
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
-  <!-- End Google Tag Manager -->
 
   <!-- Preload LCP -->
   <link rel="preload" as="image" href="img/cover-maths.jpg">
@@ -163,7 +162,7 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
       <div class="price-note">2 PDFs — livraison immédiate par email</div>
     </div>
 
-    <button data-product="bundle" class="btn btn-primary">Commander le pack</button>
+    <button data-product="bundle" data-price="24.99" class="btn btn-primary btn-commander">Commander le pack</button>
 
     <p style="margin-top: 32px; font-size: 0.9rem; color: var(--shellstone, #888);">
       Tu veux une seule matière ?
@@ -218,6 +217,24 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
   <script src="js/nav.js"></script>
   <script src="js/footer.js"></script>
   <script src="js/payment.js"></script>
+  <script>
+  document.querySelectorAll('.btn-commander').forEach(btn => {
+    btn.addEventListener('click', function() {
+      dataLayer.push({
+        event: 'begin_checkout',
+        ecommerce: {
+          currency: 'EUR',
+          value: parseFloat(this.dataset.price),
+          items: [{
+            item_name: this.dataset.product,
+            price: parseFloat(this.dataset.price),
+            quantity: 1
+          }]
+        }
+      });
+    });
+  });
+  </script>
 
 </body>
 </html>

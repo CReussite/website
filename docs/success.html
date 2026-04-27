@@ -3,6 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+    <!-- End Google Tag Manager -->
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="img/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png" />
@@ -11,13 +18,6 @@
     <link rel="shortcut icon" href="img/favicon.ico" />
     <title>Paiement confirmé | C'Réussite</title>
     <meta name="robots" content="noindex" />
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
-    <!-- End Google Tag Manager -->
     <link rel="stylesheet" href="css/style.css" />
     <style>
       .confirm-page {
@@ -194,6 +194,25 @@
           if (res.ok && data.success) {
             localStorage.removeItem('stancer_pending_payment');
             localStorage.removeItem('stancer_pending_product');
+
+            const productMap = {
+              maths:    { name: 'Fiches Maths Terminale Spécialité',          price: 14.99 },
+              physique: { name: 'Fiches Physique-Chimie Terminale Spécialité', price: 14.99 },
+              bundle:   { name: 'Pack Maths + Physique-Chimie',                price: 24.99 },
+            };
+            const product = productMap[productId];
+            if (product) {
+              dataLayer.push({
+                event: 'purchase',
+                ecommerce: {
+                  transaction_id: paymentId,
+                  currency: 'EUR',
+                  value: product.price,
+                  items: [{ item_name: product.name, price: product.price, quantity: 1 }],
+                },
+              });
+            }
+
             show('state-success');
           } else {
             const msg = data.debug
