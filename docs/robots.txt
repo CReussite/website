@@ -11,3 +11,95 @@ Disallow: /mentions-legales.html
 Disallow: /confidentialite.html
 
 Sitemap: https://c-reussite.fr/sitemap.xml
+# ============================================================
+# robots.txt — c-reussite.fr
+# Règle générale : pages publiques indexables, pages privées bloquées
+# ============================================================
+
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /success.html
+Disallow: /cancel.html
+Disallow: /viewer-maths.html
+Disallow: /viewer-physique.html
+Disallow: /cgv.html
+Disallow: /cgu.html
+Disallow: /mentions-legales.html
+Disallow: /confidentialite.html
+
+# ============================================================
+# Crawlers de CITATION (IA qui citent les sources) — AUTORISÉS
+# ============================================================
+
+# Perplexity AI — réponses avec citations
+User-agent: PerplexityBot
+Allow: /
+
+# OpenAI ChatGPT — navigation/browsing (citations, pas entraînement)
+User-agent: ChatGPT-User
+Allow: /
+
+# Microsoft Copilot / Bing
+User-agent: Bingbot
+Allow: /
+
+# You.com
+User-agent: YouBot
+Allow: /
+
+# Anthropic Claude — browsing et citations
+User-agent: ClaudeBot
+Allow: /
+
+# ============================================================
+# Crawlers d'ENTRAÎNEMENT (datasets IA) — BLOQUÉS
+# ============================================================
+
+# OpenAI — entraînement GPT
+User-agent: GPTBot
+Disallow: /
+
+# Google — Google-Extended autorisé pour les AI Overviews et citations Gemini
+# (entraînement accepté en contrepartie de la visibilité)
+
+# Anthropic — entraînement Claude (bloqué) mais ClaudeBot autorisé pour les citations
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+# Common Crawl — dataset open source massivement utilisé pour l'entraînement
+User-agent: CCBot
+Disallow: /
+
+# Meta AI — citations Instagram, Facebook, WhatsApp
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot-Extended
+Allow: /
+
+# ByteDance / TikTok
+User-agent: Bytespider
+Disallow: /
+
+# Diffbot — extraction de données
+User-agent: Diffbot
+Disallow: /
+
+# Omgili / Webz.io — datasets
+User-agent: omgilibot
+Disallow: /
+
+User-agent: omgili
+Disallow: /
+
+# ============================================================
+
+Sitemap: https://c-reussite.fr/sitemap.xml
