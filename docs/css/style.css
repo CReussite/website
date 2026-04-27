@@ -758,6 +758,9 @@ nav {
   gap: 48px;
   align-items: start;
 }
+.about-inner p {
+  text-align: justify;
+}
 @media (max-width: 640px) { .about-inner { grid-template-columns: 1fr; } }
 
 /* Tablette */
