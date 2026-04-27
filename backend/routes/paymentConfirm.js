@@ -158,7 +158,7 @@ router.get('/', express.json(), async (req, res) => {
     if (invoicePath) await saveInvoicePath(paymentId, invoicePath);
 
     console.log(`[payment-confirm] Commande ${invoiceNumber} traitée — ${customerEmail}`);
-    res.json({ success: true, invoiceNumber });
+    res.json({ success: true, invoiceNumber, amount, product_name: product.name });
   } catch (err) {
     console.error('[payment-confirm] Erreur traitement :', err.message);
     try {

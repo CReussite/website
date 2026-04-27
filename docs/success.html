@@ -192,6 +192,23 @@
           const data = await res.json();
 
           if (res.ok && data.success) {
+            // Push purchase event to dataLayer for GA4 tracking
+            window.dataLayer = window.dataLayer || [];
+            var amt = data.amount ? (data.amount / 100) : 0;
+            window.dataLayer.push({
+              event: 'purchase',
+              ecommerce: {
+                transaction_id: paymentId,
+                value: amt,
+                currency: 'EUR',
+                items: [{
+                  item_id: productId || 'unknown',
+                  item_name: data.product_name || productId || 'Fiches C\'Réussite',
+                  price: amt,
+                  quantity: 1
+                }]
+              }
+            });
             localStorage.removeItem('stancer_pending_payment');
             localStorage.removeItem('stancer_pending_product');
             show('state-success');
