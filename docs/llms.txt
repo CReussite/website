@@ -1,14 +1,27 @@
 # C'Réussite
-> Fiches de révision Terminale Spécialité Maths et Physique-Chimie.
-> Conçues par une diplômée de l'École polytechnique.
-> Couvrent 100 % du programme officiel du Bac 2026.
 
-## Contenu disponible
-- 20 fiches Mathématiques Terminale Spécialité
-- 32 fiches Physique-Chimie Terminale Spécialité
-- Chaque chapitre condensé en une page A4
-- Cours, formules, méthodes de résolution incluses
+> Fiches de révision PDF pour la Terminale Spécialité Bac 2026, en Mathématiques et Physique-Chimie.
+> Conçues par Camille Reinhardt, diplômée de l'École Polytechnique et docteure en sciences.
+> Une fiche par chapitre : cours condensé, formules et méthodes de résolution. 100 % du programme officiel.
+> Format PDF, livraison immédiate par email après achat. Prix : 14,99 € par matière, 24,99 € pour le pack (les deux matières).
 
+## Produits
 
-## À propos de l'auteure
-Diplômée de l'École polytechnique. Expérience pédagogique auprès d'élèves de la 6e au Master.
+- [Fiches Maths Terminale Spécialité](https://c-reussite.fr/maths): 20 fiches de révision couvrant l'intégralité du programme de Mathématiques Terminale Spécialité Bac 2026. Chaque chapitre tient sur une page A4 : cours, formules et méthodes de résolution. PDF, 14,99 €.
+- [Fiches Physique-Chimie Terminale Spécialité](https://c-reussite.fr/physique-chimie): 32 fiches de révision couvrant l'intégralité du programme de Physique-Chimie Terminale Spécialité Bac 2026. Chimie, mécanique, électricité, ondes et signaux. PDF, 14,99 €.
+- [Pack Maths + Physique-Chimie](https://c-reussite.fr/pack): Les deux cahiers de fiches réunis — 52 fiches au total. Idéal pour préparer le Bac 2026 dans les deux matières. PDF, 24,99 € (−17 % par rapport au prix séparé).
+
+## À propos
+
+- [Accueil](https://c-reussite.fr/): Présentation complète de C'Réussite, des fiches, de l'auteure et de la pédagogie. Inclut des avis d'élèves et de parents, une FAQ et des extraits gratuits.
+
+## Auteure
+
+Camille Reinhardt — diplômée de l'École Polytechnique (X), docteure en sciences. Expérience pédagogique auprès d'élèves de la 6e au Master. Créatrice des fiches C'Réussite.
+
+## Informations légales
+
+- [Conditions Générales de Vente](https://c-reussite.fr/cgv.html): Modalités d'achat, livraison, remboursement.
+- [Conditions Générales d'Utilisation](https://c-reussite.fr/cgu.html): Règles d'usage du site et des contenus.
+- [Politique de confidentialité](https://c-reussite.fr/confidentialite.html): Traitement des données personnelles, cookies, RGPD.
+- [Mentions légales](https://c-reussite.fr/mentions-legales.html): Éditeur, hébergeur, responsabilité.
