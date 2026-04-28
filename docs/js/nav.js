@@ -1,20 +1,20 @@
 (function () {
-  const isBlog = location.pathname.includes('/blog');
-  const root   = isBlog ? '../' : '';
+  const depth = location.pathname.split('/').filter(s => s && !s.includes('.')).length;
+  const root  = depth >= 1 ? '../' : '';
 
   document.getElementById('nav-placeholder').outerHTML = `
     <nav aria-label="Navigation principale">
       <div class="nav-inner">
-        <a href="${root}index.html" class="nav-logo" aria-label="C'Réussite — Accueil">
+        <a href="/" class="nav-logo" aria-label="C'Réussite — Accueil">
           <img src="${root}img/logo.jpeg" alt="C'Réussite" class="nav-logo-img">
         </a>
         <div class="nav-tools">
           <ul class="nav-links">
-            <li><a href="${root}maths.html">Maths</a></li>
-            <li><a href="${root}physique-chimie.html">Physique-Chimie</a></li>
-            <li><a href="${root}pack.html">Le Pack</a></li>
-            <li><a href="${root}index.html#avis">Avis</a></li>
-            <li><a href="${root}blog/">Blog</a></li>
+            <li><a href="/maths-terminale/">Maths</a></li>
+            <li><a href="/physique-chimie-terminale/">Physique-Chimie</a></li>
+            <li><a href="/pack-maths-physique-chimie/">Le Pack</a></li>
+            <li><a href="/#avis">Avis</a></li>
+            <li><a href="/blog/">Blog</a></li>
           </ul>
           <button class="nav-extract-btn" aria-label="Recevoir un extrait gratuit">Extrait gratuit →</button>
           <button class="nav-burger" aria-label="Ouvrir le menu" aria-expanded="false">
@@ -53,7 +53,7 @@
       const trigger = document.querySelector('.btn-extract[data-extract="bundle"]');
       if (trigger) trigger.click();
     } else {
-      window.location.href = root + 'index.html#fiche-gratuite';
+      window.location.href = '/#fiche-gratuite';
     }
   });
 })();
