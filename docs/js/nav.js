@@ -13,6 +13,7 @@
             <li><a href="/maths-terminale/">Maths</a></li>
             <li><a href="/physique-chimie-terminale/">Physique-Chimie</a></li>
             <li><a href="/pack-maths-physique-chimie/">Le Pack</a></li>
+            <li><a href="/cours-particuliers/">Cours particuliers</a></li>
             <li><a href="/#avis">Avis</a></li>
             <li><a href="/blog/">Blog</a></li>
           </ul>
