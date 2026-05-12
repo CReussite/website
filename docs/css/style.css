@@ -1264,6 +1264,175 @@ footer a:hover { color: var(--quicksand); }
   transition: transform 0.25s, opacity 0.25s;
 }
 
+/* ===== NAV DROPDOWN RESSOURCES ===== */
+.nav-dropdown-wrap {
+  position: relative;
+}
+.nav-dropdown-btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.875rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  font-family: inherit;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+.nav-dropdown-btn:hover { color: var(--quicksand); }
+.nav-dropdown-arrow {
+  font-size: 0.6em;
+  display: inline-block;
+  transition: transform 0.2s;
+  line-height: 1;
+}
+.nav-dropdown-wrap.open .nav-dropdown-arrow { transform: rotate(180deg); }
+.nav-dropdown-menu {
+  position: absolute;
+  top: 100%;           /* colle au bas du wrap — pas de gap qui casse le :hover */
+  left: 0;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(17,34,80,0.18);
+  min-width: 230px;
+  padding: 14px 0 6px; /* padding-top crée l'espacement visuel sans vide */
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity 0.15s, transform 0.15s;
+}
+/* Hover CSS natif (fonctionne avec les enfants en position absolue) */
+.nav-dropdown-wrap:hover .nav-dropdown-menu,
+.nav-dropdown-wrap.open .nav-dropdown-menu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+/* Rotation flèche au hover */
+.nav-dropdown-wrap:hover .nav-dropdown-arrow {
+  transform: rotate(180deg);
+}
+.nav-dropdown-menu a {
+  display: block;
+  padding: 11px 20px;
+  color: var(--royal-blue);
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: background 0.1s;
+}
+.nav-dropdown-menu a:hover { background: var(--swan-wing); }
+
+/* ===== ARTICLE LAYOUT (2 colonnes avec TOC) ===== */
+.article-layout {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 32px 20px 80px;
+  display: flex;
+  gap: 56px;
+  align-items: flex-start;
+}
+.article-layout .article-page {
+  flex: 1;
+  min-width: 0;
+  max-width: 720px;
+  padding: 0;
+  margin: 0;
+}
+
+/* ===== TOC SIDEBAR ===== */
+.toc-sidebar {
+  width: 196px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 120px;
+  padding-top: 4px;
+  order: -1;
+}
+.toc-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--shellstone);
+  margin: 0 0 10px 12px;
+}
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-left: 2px solid #e5e7eb;
+}
+.toc-link {
+  display: block;
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  color: var(--text-mid);
+  text-decoration: none;
+  line-height: 1.4;
+  border-left: 2px solid transparent;
+  margin-left: -2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.toc-link:hover { color: var(--royal-blue); }
+.toc-link.toc-active {
+  color: var(--royal-blue);
+  font-weight: 600;
+  border-left-color: var(--sapphire);
+}
+.toc-h3 .toc-link { padding-left: 20px; font-size: 0.73rem; opacity: 0.85; }
+
+/* ===== CTA STRIP (nouvelle bande CTA dorée) ===== */
+.cta-strip {
+  background: var(--quicksand);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin: 44px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.cta-strip-text { flex: 1; min-width: 0; }
+.cta-strip-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--royal-blue);
+  opacity: 0.6;
+  margin: 0 0 3px;
+}
+.cta-strip-heading {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--royal-blue);
+  margin: 0;
+  line-height: 1.35;
+}
+.cta-strip .btn {
+  background: var(--royal-blue);
+  color: var(--quicksand);
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 11px 22px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 960px) {
+  .toc-sidebar { display: none; }
+  .article-layout { flex-direction: column; }
+  .article-layout .article-page { max-width: 100%; }
+}
+
+@media (max-width: 600px) {
+  .cta-strip { flex-direction: column; align-items: flex-start; }
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
   section { padding: 40px 0; }

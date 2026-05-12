@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Équilibre chimique Terminale : quotient de réaction Qr et constante K | C'Réussite</title>
+  <meta name="description" content="Équilibre chimique en Terminale Spécialité : quotient de réaction Qr, constante K, sens d'évolution et réactions totales. Méthode complète avec exemple chiffré.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-physique-chimie-terminale/equilibre-chimique/">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-physique-chimie-terminale/equilibre-chimique/">
+  <meta property="og:title" content="Équilibre chimique Terminale : Qr, K et sens d'évolution | C'Réussite">
+  <meta property="og:site_name" content="C'Réussite">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"Article","headline":"Équilibre chimique Terminale : quotient de réaction Qr et constante K","datePublished":"2026-05-08","author":{"@type":"Person","name":"Camille Reinhardt"},"publisher":{"@type":"Organization","name":"C'Réussite"},"mainEntityOfPage":"https://c-reussite.fr/fiches-physique-chimie-terminale/equilibre-chimique/"},
+    {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://c-reussite.fr/"},{"@type":"ListItem","position":2,"name":"Physique-Chimie Terminale","item":"https://c-reussite.fr/fiches-physique-chimie-terminale/"},{"@type":"ListItem","position":3,"name":"Équilibre chimique","item":"https://c-reussite.fr/fiches-physique-chimie-terminale/equilibre-chimique/"}]},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"Comment savoir si une réaction est totale ou à l'équilibre ?","acceptedAnswer":{"@type":"Answer","text":"Si K > 10⁴, on considère la réaction comme totale. Si K est proche de 1 ou inférieur à 10⁴, il faut traiter l'équilibre avec le tableau d'avancement."}},
+      {"@type":"Question","name":"La constante K dépend-elle des concentrations initiales ?","acceptedAnswer":{"@type":"Answer","text":"Non. K ne dépend que de la température. Ce qui change selon les conditions initiales, c'est Qr,i — et donc le chemin pour atteindre l'équilibre, pas la destination."}},
+      {"@type":"Question","name":"Peut-on appliquer le critère Qr/K à n'importe quel moment ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Si on perturbe un système à l'équilibre (ajout de réactif, dilution), le nouveau Qr indique dans quel sens le système va évoluer pour revenir à l'équilibre."}}
+    ]}
+  ]}
+  </script>
+  <style>
+    .article-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px;background:var(--swan-wing);color:var(--sapphire);margin-bottom:12px}
+    .article-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+    .article-header h1{font-size:clamp(1.45rem,3.5vw,1.95rem);line-height:1.25;margin-bottom:10px;color:var(--royal-blue)}
+    .article-meta{font-size:.85rem;color:#888}
+    .article-intro{font-size:1.02rem;color:var(--text-mid);line-height:1.75;margin:20px 0 28px}
+    .article-body h2{font-size:1.2rem;margin-top:36px;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body h3{font-size:1.02rem;font-weight:700;margin-top:24px;margin-bottom:9px;color:var(--royal-blue)}
+    .article-body p{margin-bottom:14px;line-height:1.7;color:var(--text-mid)}
+    .article-body ul,.article-body ol{margin:0 0 14px 22px}
+    .article-body li{margin-bottom:6px;color:var(--text-mid);line-height:1.65}
+    .article-body table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.88rem}
+    .article-body th{background:var(--swan-wing);font-weight:600;text-align:left;padding:9px 12px;border:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body td{padding:9px 12px;border:1px solid #e5e7eb;vertical-align:top;color:var(--text-mid)}
+    .article-body tr:nth-child(even) td{background:#fafafa}
+    .article-body strong{color:var(--royal-blue);font-weight:700}
+    .callout{background:var(--swan-wing);border-left:3px solid var(--sapphire);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .callout p{margin:0;color:var(--text-mid)}
+    .faq-section{margin-top:40px;padding-top:28px;border-top:2px solid #e5e7eb}
+    .faq-section>h2{font-size:1.15rem;margin-bottom:20px;padding-bottom:0;border-bottom:none}
+    .faq-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-item h3{font-size:.97rem;margin-top:0;margin-bottom:7px}
+    .faq-item p{margin:0}
+    .read-next{margin-top:36px;padding-top:24px;border-top:1px solid #e5e7eb}
+    .read-next h2{font-size:1rem;margin-bottom:12px;color:var(--royal-blue);border:none;padding:0}
+    .read-next ul{list-style:none;padding:0;margin:0}
+    .read-next li{padding:6px 0;border-bottom:1px solid #f5f5f5}
+    .read-next li:last-child{border-bottom:none}
+    .read-next a{color:var(--sapphire);text-decoration:underline;font-size:.9rem}
+    .author-box{background:var(--swan-wing);border-radius:10px;padding:16px 20px;margin-top:28px;font-size:.86rem;color:var(--text-mid)}
+    .author-box strong{display:block;margin-bottom:5px;color:var(--royal-blue);font-size:.9rem}
+    .katex-display{overflow-x:auto}
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-physique-chimie-terminale/">Physique-Chimie Terminale</a><span class="bc-sep">›</span>
+      <span>Équilibre chimique</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Physique-Chimie · Terminale</span>
+        <h1>Équilibre chimique en Terminale Spécialité</h1>
+        <div class="article-meta">Publié le 8 mai 2026 · Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">Le quotient de réaction $Q_r$ et la constante d'équilibre $K$ tombent régulièrement dans les exercices sur les équilibres, les titrages et le calcul de pH. La difficulté n'est pas de calculer $Q_r$ — c'est de comprendre ce que la comparaison $Q_r$ / $K$ dit sur le sens d'évolution du système.</p>
+
+      <div class="article-body">
+
+        <h2>Qr vs K : la règle d'évolution</h2>
+        <p>$K$ est la valeur que prend $Q_r$ à l'équilibre — c'est la valeur cible. $Q_r$ mesure l'état instantané du système.</p>
+        <table>
+          <thead><tr><th>Situation</th><th>Signification</th><th>Sens d'évolution</th></tr></thead>
+          <tbody>
+            <tr><td>$Q_{r,i} &lt; K$</td><td>Pas assez de produits</td><td>Sens direct (→)</td></tr>
+            <tr><td>$Q_{r,i} &gt; K$</td><td>Trop de produits</td><td>Sens indirect (←)</td></tr>
+            <tr><td>$Q_{r,i} = K$</td><td>Système à l'équilibre</td><td>Aucune évolution macroscopique</td></tr>
+          </tbody>
+        </table>
+        <div class="callout">
+          <p>À retenir : le système cherche toujours à rejoindre $K$. Si $Q_r$ est en dessous, il monte (sens direct). S'il est au-dessus, il descend (sens indirect).</p>
+        </div>
+
+        <h2>Calculer Qr à l'état initial</h2>
+        <p>Pour $m\,A + n\,B \rightleftharpoons x\,C + y\,D$ :</p>
+        $$Q_r = \frac{[C]^x \cdot [D]^y}{[A]^m \cdot [B]^n}$$
+        <p>Deux règles : (1) les concentrations sont sans unité (divisées par $C^0 = 1\ \text{mol/L}$) ; (2) les solides purs et l'eau en solution aqueuse ont une activité égale à 1 et n'apparaissent pas dans l'expression.</p>
+
+        <h3>Exemple chiffré</h3>
+        <p>Solution de $[\text{CH}_3\text{COOH}]_i = 0{,}50\ \text{mol/L}$ et $[\text{CH}_3\text{COO}^-]_i = 0{,}10\ \text{mol/L}$, $[\text{H}_3\text{O}^+]_i \approx 10^{-7}\ \text{mol/L}$.</p>
+        $$Q_{r,i} = \frac{0{,}10 \times 10^{-7}}{0{,}50} = 2{,}0 \times 10^{-8}$$
+        <p>Avec $K_a = 1{,}8 \times 10^{-5}$ : $Q_{r,i} \ll K_a$ → évolution dans le <strong>sens direct</strong>.</p>
+
+        <h2>Trouver l'état d'équilibre</h2>
+        <p>On exprime les concentrations finales en fonction de $x_{eq}$, puis on pose $Q_{r,f} = K$ :</p>
+        $$\frac{(0{,}10 + x_{eq}) \cdot x_{eq}}{0{,}50 - x_{eq}} = 1{,}8 \times 10^{-5}$$
+        <p>Hypothèse $x_{eq} \ll 0{,}10$ (justifiée car $K_a$ petit) :</p>
+        $$x_{eq} \approx \frac{1{,}8 \times 10^{-5} \times 0{,}50}{0{,}10} = 9{,}0 \times 10^{-5}\ \text{mol/L}$$
+
+        <h2>Réactions totales : quand K &gt;&gt; 1</h2>
+        <table>
+          <thead><tr><th>Valeur de K</th><th>Interprétation</th><th>Exemple</th></tr></thead>
+          <tbody>
+            <tr><td>$K &gt; 10^4$</td><td>Réaction quasi-totale</td><td>Combustion, neutralisation acide fort/base forte</td></tr>
+            <tr><td>$10^{-4} &lt; K &lt; 10^4$</td><td>Équilibre bien établi, calcul nécessaire</td><td>Acide faible, couples redox proches</td></tr>
+            <tr><td>$K &lt; 10^{-4}$</td><td>Réaction quasi-nulle dans le sens direct</td><td>Réaction très défavorisée</td></tr>
+          </tbody>
+        </table>
+        <p>Au bac, l'énoncé donne $K$ et demande souvent de justifier si la réaction peut être considérée comme totale. La réponse : $K > 10^4$ suffit à conclure.</p>
+
+      </div><!-- /article-body -->
+
+      <!-- CTA avant FAQ -->
+      <div class="cta-strip">
+        <div class="cta-strip-text">
+          <p class="cta-strip-eyebrow">Ebook Physique-Chimie</p>
+          <p class="cta-strip-heading">Équilibres, Qr, K, dosages — sur une fiche, en PDF</p>
+        </div>
+        <a href="/physique-chimie-terminale/" class="btn">Voir l'ebook →</a>
+      </div>
+
+      <div class="faq-section">
+        <h2>FAQ — Équilibre chimique</h2>
+        <div class="faq-item">
+          <h3>Comment savoir si une réaction est totale ou à l'équilibre ?</h3>
+          <p>L'indicateur est $K$. Si $K > 10^4$, on considère la réaction comme totale. Si $K$ est proche de 1 ou inférieur à $10^4$, il faut traiter l'équilibre correctement avec le tableau d'avancement.</p>
+        </div>
+        <div class="faq-item">
+          <h3>La constante K dépend-elle des concentrations initiales ?</h3>
+          <p>Non. $K$ ne dépend que de la température. Ce qui change selon les conditions initiales, c'est $Q_{r,i}$ — et donc le chemin pour atteindre l'équilibre, pas la destination.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Peut-on appliquer le critère Qr/K à n'importe quel moment de la réaction ?</h3>
+          <p>Oui. Si l'on perturbe un système à l'équilibre (ajout d'un réactif, dilution, changement de température), le nouveau $Q_r$ calculé juste après la perturbation indique dans quel sens le système va évoluer.</p>
+        </div>
+      </div>
+
+      <!-- CTA fin -->
+      <div class="cta-strip">
+        <div class="cta-strip-text">
+          <p class="cta-strip-eyebrow">C'Réussite · Terminale Spé</p>
+          <p class="cta-strip-heading">32 fiches PDF — tout le programme physique-chimie sur une page par chapitre</p>
+        </div>
+        <a href="/physique-chimie-terminale/" class="btn">Découvrir l'ebook →</a>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/fiches-physique-chimie-terminale/tableau-avancement/">Tableau d'avancement : méthode et réactif limitant</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/calculer-ph/">Calculer un pH : acide fort, base forte, solution tampon</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/cinetique-chimique/">Cinétique chimique : ordre 1, k et temps de demi-réaction</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/synthese-organique/">Synthèse organique : rendement, CCM et chimie verte</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt — diplômée de l'École polytechnique, docteure en sciences, fondatrice de C'Réussite. <a href="/a-propos/">En savoir plus</a>.
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>

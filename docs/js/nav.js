@@ -14,7 +14,15 @@
             <li><a href="/physique-chimie-terminale/">Physique-Chimie</a></li>
             <li><a href="/pack-maths-physique-chimie/">Le Pack</a></li>
             <li><a href="/cours-particuliers/">Cours particuliers</a></li>
-            <li><a href="/#avis">Avis</a></li>
+            <li class="nav-dropdown-wrap">
+              <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">
+                Ressources <span class="nav-dropdown-arrow" aria-hidden="true">▾</span>
+              </button>
+              <ul class="nav-dropdown-menu" role="menu">
+                <li><a href="/fiches-maths-terminale/" role="menuitem">Réviser les maths</a></li>
+                <li><a href="/fiches-physique-chimie-terminale/" role="menuitem">Réviser la physique-chimie</a></li>
+              </ul>
+            </li>
             <li><a href="/blog/">Blog</a></li>
           </ul>
           <button class="nav-extract-btn" aria-label="Recevoir un extrait gratuit">Extrait gratuit →</button>
@@ -27,6 +35,7 @@
   `;
 })();
 
+// Burger menu (mobile)
 (function () {
   const burger = document.querySelector('.nav-burger');
   const links  = document.querySelector('.nav-links');
@@ -42,10 +51,36 @@
   });
 })();
 
+// Dropdown Ressources — clic (mobile) + Escape
 (function () {
-  const isBlog = location.pathname.includes('/blog');
-  const root   = isBlog ? '../' : '';
+  const wrap = document.querySelector('.nav-dropdown-wrap');
+  if (!wrap) return;
+  const btn = wrap.querySelector('.nav-dropdown-btn');
 
+  function setOpen(state) {
+    wrap.classList.toggle('open', state);
+    btn.setAttribute('aria-expanded', state);
+  }
+
+  // Clic : toggle (utile sur mobile et pour l'accessibilité clavier)
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    setOpen(!wrap.classList.contains('open'));
+  });
+
+  // Fermer au clic hors du dropdown
+  document.addEventListener('click', function (e) {
+    if (!wrap.contains(e.target)) setOpen(false);
+  });
+
+  // Fermer avec Escape
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') setOpen(false);
+  });
+})();
+
+// Bouton "Extrait gratuit"
+(function () {
   const btn = document.querySelector('.nav-extract-btn');
   if (!btn) return;
   btn.addEventListener('click', function () {

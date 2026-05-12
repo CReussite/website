@@ -181,6 +181,45 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
     </p>
   </div>
 
+  <!-- Avis clients -->
+  <section id="avis" style="max-width:760px;margin:0 auto;padding:48px 20px 0;border-top:1px solid #e5e7eb;" hidden aria-labelledby="avis-title-pc">
+    <h2 id="avis-title-pc" style="font-size:1.4rem;margin-bottom:12px;">Ce qu'en disent les élèves</h2>
+    <div class="reviews-summary" aria-label="Note moyenne">
+      <span class="reviews-stars">⭐⭐⭐⭐⭐</span>
+      <span class="reviews-score">5,0 / 5</span>
+      <span class="reviews-count"></span>
+    </div>
+    <div class="testimonials-track-wrapper" id="testimonials-swipe">
+      <div class="testimonials-track"></div>
+    </div>
+    <div class="testimonials-cta">
+      <button id="review-btn" class="btn-link">Donner son avis →</button>
+    </div>
+  </section>
+
+  <!-- Overlay avis -->
+  <div id="review-overlay" class="extract-overlay" hidden>
+    <div class="extract-popup review-popup">
+      <button class="extract-close" aria-label="Fermer">&times;</button>
+      <h3>Ton avis compte</h3>
+      <div class="review-stars" id="review-stars">
+        <span data-star="1">★</span><span data-star="2">★</span><span data-star="3">★</span><span data-star="4">★</span><span data-star="5">★</span>
+      </div>
+      <form id="review-form" class="contact-form">
+        <input type="hidden" id="review-rating" name="subject" value="Avis 5★">
+        <div class="form-group">
+          <label class="form-label" for="review-name">Prénom</label>
+          <input type="text" id="review-name" class="form-input" placeholder="Ton prénom" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="review-message">Ton avis</label>
+          <textarea id="review-message" class="form-input" rows="4" placeholder="Qu'est-ce qui t'a le plus aidé ?" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Envoyer mon avis</button>
+      </form>
+    </div>
+  </div>
+
   <!-- Modal paiement -->
   <div
     id="payment-modal-overlay"
@@ -225,6 +264,8 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
   <div id="footer-placeholder"></div>
   <script src="../js/carousel.js"></script>
   <script src="../js/nav.js"></script>
+  <script src="../js/avis.js"></script>
+  <script src="../js/review.js"></script>
   <script src="../js/footer.js"></script>
   <script src="../js/payment.js"></script>
   <script>

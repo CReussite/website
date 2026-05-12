@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Calculer un pH Terminale : acide fort, base forte, solution tampon | C'Réussite</title>
+  <meta name="description" content="Comment calculer un pH en Terminale Spécialité : les 3 cas du bac (acide fort, base forte, solution tampon) avec formules, exemples chiffrés et pièges à éviter.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-physique-chimie-terminale/calculer-ph/">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-physique-chimie-terminale/calculer-ph/">
+  <meta property="og:title" content="Calculer un pH Terminale : les 3 cas du bac | C'Réussite">
+  <meta property="og:site_name" content="C'Réussite">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"Article","headline":"Calculer un pH Terminale : acide fort, base forte, solution tampon","datePublished":"2026-05-05","author":{"@type":"Person","name":"Camille Reinhardt"},"publisher":{"@type":"Organization","name":"C'Réussite"},"mainEntityOfPage":"https://c-reussite.fr/fiches-physique-chimie-terminale/calculer-ph/"},
+    {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://c-reussite.fr/"},{"@type":"ListItem","position":2,"name":"Physique-Chimie Terminale","item":"https://c-reussite.fr/fiches-physique-chimie-terminale/"},{"@type":"ListItem","position":3,"name":"Calculer un pH","item":"https://c-reussite.fr/fiches-physique-chimie-terminale/calculer-ph/"}]},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"Peut-on avoir un pH supérieur à 14 ?","acceptedAnswer":{"@type":"Answer","text":"Oui en théorie, mais au bac les énoncés restent dans la plage 0–14. Un résultat hors de cette plage indique une erreur de cas ou de calcul."}},
+      {"@type":"Question","name":"Quelle est la différence entre pH et pKa ?","acceptedAnswer":{"@type":"Answer","text":"Le pH mesure l'état actuel d'une solution. Le pKa est une constante du couple acide/base, indépendante de la concentration. Ils sont reliés par Henderson-Hasselbalch."}},
+      {"@type":"Question","name":"Comment vérifier la cohérence d'un pH calculé ?","acceptedAnswer":{"@type":"Answer","text":"Trois vérifications : un acide donne pH < 7, une base pH > 7 ; un acide faible a un pH plus élevé qu'un acide fort de même concentration ; si C < 10⁻⁶ mol/L, les formules classiques ne suffisent plus."}}
+    ]}
+  ]}
+  </script>
+  <style>
+    .article-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px;background:var(--swan-wing);color:var(--sapphire);margin-bottom:12px}
+    .article-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+    .article-header h1{font-size:clamp(1.45rem,3.5vw,1.95rem);line-height:1.25;margin-bottom:10px;color:var(--royal-blue)}
+    .article-meta{font-size:.85rem;color:#888}
+    .article-intro{font-size:1.02rem;color:var(--text-mid);line-height:1.75;margin:20px 0 28px}
+    .article-body h2{font-size:1.2rem;margin-top:36px;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body h3{font-size:1.02rem;font-weight:700;margin-top:24px;margin-bottom:9px;color:var(--royal-blue)}
+    .article-body p{margin-bottom:14px;line-height:1.7;color:var(--text-mid)}
+    .article-body ul,.article-body ol{margin:0 0 14px 22px}
+    .article-body li{margin-bottom:6px;color:var(--text-mid);line-height:1.65}
+    .article-body table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.88rem}
+    .article-body th{background:var(--swan-wing);font-weight:600;text-align:left;padding:9px 12px;border:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body td{padding:9px 12px;border:1px solid #e5e7eb;vertical-align:top;color:var(--text-mid)}
+    .article-body tr:nth-child(even) td{background:#fafafa}
+    .article-body strong{color:var(--royal-blue);font-weight:700}
+    .callout{background:var(--swan-wing);border-left:3px solid var(--sapphire);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .callout p{margin:0;color:var(--text-mid)}
+    .formula-box{background:#f0f5ff;border:1px solid #c7d7f5;border-radius:8px;padding:14px 18px;margin:14px 0;text-align:center}
+    .formula-box p{margin:0}
+    .faq-section{margin-top:40px;padding-top:28px;border-top:2px solid #e5e7eb}
+    .faq-section>h2{font-size:1.15rem;margin-bottom:20px;padding-bottom:0;border-bottom:none}
+    .faq-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-item h3{font-size:.97rem;margin-top:0;margin-bottom:7px}
+    .faq-item p{margin:0}
+    .read-next{margin-top:36px;padding-top:24px;border-top:1px solid #e5e7eb}
+    .read-next h2{font-size:1rem;margin-bottom:12px;color:var(--royal-blue);border:none;padding:0}
+    .read-next ul{list-style:none;padding:0;margin:0}
+    .read-next li{padding:6px 0;border-bottom:1px solid #f5f5f5}
+    .read-next li:last-child{border-bottom:none}
+    .read-next a{color:var(--sapphire);text-decoration:underline;font-size:.9rem}
+    .author-box{background:var(--swan-wing);border-radius:10px;padding:16px 20px;margin-top:28px;font-size:.86rem;color:var(--text-mid)}
+    .author-box strong{display:block;margin-bottom:5px;color:var(--royal-blue);font-size:.9rem}
+    .katex-display{overflow-x:auto}
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-physique-chimie-terminale/">Physique-Chimie Terminale</a><span class="bc-sep">›</span>
+      <span>Calculer un pH</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Physique-Chimie · Terminale</span>
+        <h1>Calculer un pH en Terminale Spécialité</h1>
+        <div class="article-meta">Publié le 5 mai 2026 · Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">Le calcul de pH tombe dans environ 1 exercice sur 3 au bac entre 2024 et 2025. Il y a toujours les mêmes trois situations. La première chose à faire sur un énoncé : identifier dans lequel des trois cas on se trouve, avant de sortir la moindre formule.</p>
+
+      <div class="article-body">
+
+        <h2>Identifier le cas avant de calculer</h2>
+        <table>
+          <thead><tr><th>Situation</th><th>Réaction avec l'eau</th><th>Formule</th></tr></thead>
+          <tbody>
+            <tr><td>Acide fort (HCl, HNO₃, H₂SO₄…)</td><td>Totale</td><td>$\text{pH} = -\log(C)$</td></tr>
+            <tr><td>Base forte (NaOH, KOH…)</td><td>Totale</td><td>$\text{pH} = 14 + \log(C)$</td></tr>
+            <tr><td>Solution tampon (AH + A⁻)</td><td>Partielle</td><td>$\text{pH} = \text{p}K_a + \log\!\left(\dfrac{[\text{A}^-]}{[\text{AH}]}\right)$</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Cas 1 — Acide fort</h2>
+        <p>Un acide fort se dissocie totalement. La concentration en H₃O⁺ est égale à C.</p>
+        <div class="formula-box"><p>$$\text{pH} = -\log(C)$$</p></div>
+        <p><strong>Exemple :</strong> HCl à $C = 5{,}0 \times 10^{-3}$ mol/L → pH $= -\log(5{,}0 \times 10^{-3}) = 2{,}3$</p>
+        <div class="callout">
+          <p><strong>Piège :</strong> formule valide seulement si $C > 10^{-6}$ mol/L. Un acide, même fort, ne peut jamais donner pH > 7.</p>
+        </div>
+
+        <h2>Cas 2 — Base forte</h2>
+        <p>Démarche à rédiger sur la copie :</p>
+        <ol>
+          <li>Réaction totale → $[\text{OH}^-] = C$</li>
+          <li>$[\text{H}_3\text{O}^+] = K_e / C = 10^{-14} / C$</li>
+          <li>pH $= 14 + \log(C)$</li>
+        </ol>
+        <div class="formula-box"><p>$$\text{pH} = 14 + \log(C)$$</p></div>
+        <p><strong>Exemple :</strong> NaOH à $C = 2{,}00 \times 10^{-2}$ mol/L → pH $= 14 + \log(2{,}0 \times 10^{-2}) = 12{,}3$</p>
+        <div class="callout">
+          <p><strong>Piège :</strong> ne pas sauter les trois étapes de démarche. Le correcteur enlève des points si la formule finale apparaît sans justification.</p>
+        </div>
+
+        <h2>Cas 3 — Solution tampon (Henderson-Hasselbalch)</h2>
+        <p>La solution contient à la fois la forme acide AH et sa base conjuguée A⁻.</p>
+        <div class="formula-box"><p>$$\text{pH} = \text{p}K_a + \log\!\left(\frac{[\text{A}^-]}{[\text{AH}]}\right)$$</p></div>
+        <p><strong>Exemple :</strong> mélange acide éthanoïque / éthanoate avec [A⁻] = 0,0500 mol/L, [AH] = 0,0200 mol/L, pKa = 4,75 :</p>
+        $$\text{pH} = 4{,}75 + \log\!\left(\frac{0{,}0500}{0{,}0200}\right) = 4{,}75 + 0{,}40 = 5{,}15$$
+        <div class="callout">
+          <p><strong>À la demi-équivalence</strong> d'un titrage acide faible / base forte : [AH] = [A⁻], donc log(1) = 0 et <strong>pH = pKa</strong> directement.</p>
+        </div>
+
+        <h2>Règle des chiffres significatifs</h2>
+        <p>Le nombre de chiffres significatifs dans C détermine le nombre de décimales dans le pH :</p>
+        <table>
+          <thead><tr><th>Concentration</th><th>Chiffres significatifs</th><th>pH à écrire</th></tr></thead>
+          <tbody>
+            <tr><td>2,3 × 10⁻⁵ mol/L</td><td>2</td><td>4,6</td></tr>
+            <tr><td>2,30 × 10⁻⁵ mol/L</td><td>3</td><td>4,64</td></tr>
+            <tr><td>5,0 × 10⁻³ mol/L</td><td>2</td><td>2,3</td></tr>
+          </tbody>
+        </table>
+
+      </div><!-- /article-body -->
+
+      <!-- CTA avant FAQ -->
+      <div class="cta-strip">
+        <div class="cta-strip-text">
+          <p class="cta-strip-eyebrow">Ebook Physique-Chimie</p>
+          <p class="cta-strip-heading">Acide-base, dosages, équilibres — sur une fiche, en PDF</p>
+        </div>
+        <a href="/physique-chimie-terminale/" class="btn">Voir l'ebook →</a>
+      </div>
+
+      <div class="faq-section">
+        <h2>FAQ — Calculer un pH</h2>
+        <div class="faq-item">
+          <h3>Peut-on avoir un pH supérieur à 14 ou inférieur à 0 ?</h3>
+          <p>Oui en théorie, mais au bac les énoncés restent dans la plage 0–14. Un résultat hors de cette plage indique une erreur de cas ou de calcul.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Quelle est la différence entre pH et pKa ?</h3>
+          <p>Le pH mesure l'état actuel d'une solution (plus bas = plus acide). Le pKa est une constante propre au couple acide/base, indépendante de la concentration, seulement dépendante de la température. Ils sont reliés par Henderson-Hasselbalch.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Comment vérifier la cohérence d'un pH calculé ?</h3>
+          <p>Trois vérifications rapides : (1) acide → pH &lt; 7, base → pH &gt; 7 ; (2) acide faible a un pH plus élevé qu'acide fort de même concentration ; (3) si $C &lt; 10^{-6}$ mol/L, les formules classiques ne suffisent plus.</p>
+        </div>
+      </div>
+
+      <!-- CTA fin -->
+      <div class="cta-strip">
+        <div class="cta-strip-text">
+          <p class="cta-strip-eyebrow">C'Réussite · Terminale Spé</p>
+          <p class="cta-strip-heading">32 fiches PDF — tout le programme physique-chimie sur une page par chapitre</p>
+        </div>
+        <a href="/physique-chimie-terminale/" class="btn">Découvrir l'ebook →</a>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/fiches-physique-chimie-terminale/tableau-avancement/">Tableau d'avancement : méthode et réactif limitant</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/equilibre-chimique/">Équilibre chimique : quotient de réaction Qr et constante K</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/cinetique-chimique/">Cinétique chimique : ordre 1, k et temps de demi-réaction</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/synthese-organique/">Synthèse organique : rendement, CCM et chimie verte</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt — diplômée de l'École polytechnique, docteure en sciences, fondatrice de C'Réussite. <a href="/a-propos/">En savoir plus</a>.
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>

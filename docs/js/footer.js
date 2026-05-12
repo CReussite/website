@@ -18,17 +18,18 @@
         <div class="footer-col">
           <h4>Produits</h4>
           <ul>
-            <li><a href="/maths-terminale/">Fiches Maths</a></li>
-            <li><a href="/physique-chimie-terminale/">Fiches Physique-Chimie</a></li>
+            <li><a href="/maths-terminale/">Ebook Maths</a></li>
+            <li><a href="/physique-chimie-terminale/">Ebook Physique-Chimie</a></li>
             <li><a href="/pack-maths-physique-chimie/">Le Pack</a></li>
+            <li><a href="/cours-particuliers/">Cours particuliers</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
           <h4>Ressources</h4>
           <ul>
-            <li><a href="/fiches-maths-terminale/">Fiches Maths — cours gratuits</a></li>
-            <li><a href="/fiches-physique-chimie-terminale/">Fiches PC — cours gratuits</a></li>
+            <li><a href="/fiches-maths-terminale/">Réviser les maths</a></li>
+            <li><a href="/fiches-physique-chimie-terminale/">Réviser la physique-chimie</a></li>
             <li><a href="/blog/">Blog</a></li>
             <li><a href="/faq/">FAQ</a></li>
             <li><a href="/a-propos/">À propos</a></li>
