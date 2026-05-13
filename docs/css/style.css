@@ -1268,7 +1268,8 @@ footer a:hover { color: var(--quicksand); }
 .nav-dropdown-wrap {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
+  padding-bottom: 1px;
 }
 .nav-dropdown-btn {
   background: none;
