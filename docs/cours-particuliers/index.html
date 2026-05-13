@@ -250,26 +250,8 @@
     .cp-cta-section h2 { font-size: 1.35rem; color: var(--royal-blue); margin-bottom: 8px; }
     .cp-cta-section .cp-cta-sub { font-size: 0.95rem; color: var(--text-mid); margin-bottom: 28px; }
 
-    .cp-form { max-width: 520px; }
-    .cp-form label { display: block; font-size: 0.88rem; font-weight: 600; color: var(--royal-blue); margin-bottom: 5px; margin-top: 14px; }
-    .cp-form label:first-of-type { margin-top: 0; }
-    .cp-form input, .cp-form select, .cp-form textarea {
-      width: 100%;
-      padding: 11px 14px;
-      border: 1px solid #d1d5db;
-      border-radius: 7px;
-      font-size: 0.93rem;
-      font-family: inherit;
-      color: var(--text-dark);
-      background: #fff;
-      box-sizing: border-box;
-      transition: border-color .15s;
-    }
-    .cp-form input:focus, .cp-form select:focus, .cp-form textarea:focus { outline: none; border-color: var(--sapphire); }
-    .cp-form textarea { height: 100px; resize: vertical; }
-    .cp-form-submit { margin-top: 20px; }
-    .cp-form-submit button { width: 100%; }
-    .cp-form-footer { font-size: 0.8rem; color: var(--sapphire); text-align: center; margin-top: 10px; }
+    /* formulaire — utilise .contact-form / .form-group / .form-label / .form-control du CSS global */
+    .cp-cta-section .contact-form { margin: 0; }
 
     /* ── Cross-sell ── */
     .cp-crosssell {
@@ -436,45 +418,55 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
       <h2>Prendre contact</h2>
       <p class="cp-cta-sub">Décrivez le besoin et laissez votre numéro. Je vous rappelle sous 24 h pour faire le point et définir un programme adapté.</p>
 
-      <form class="cp-form" name="cours-contact" method="POST" action="/success/" data-netlify="true" netlify-honeypot="bot-field">
+      <form class="contact-form" name="cours-contact" method="POST" action="/success/" data-netlify="true" netlify-honeypot="bot-field">
         <input type="hidden" name="form-name" value="cours-contact">
         <p style="display:none"><label>Ne pas remplir : <input name="bot-field"></label></p>
 
-        <label for="cp-prenom">Prénom de l'élève</label>
-        <input type="text" id="cp-prenom" name="prenom" placeholder="ex. Marie" required>
-
-        <label for="cp-niveau">Niveau scolaire</label>
-        <select id="cp-niveau" name="niveau" required>
-          <option value="" disabled selected>Choisir…</option>
-          <option value="college-6e-5e">Collège — 6e ou 5e</option>
-          <option value="college-4e-3e">Collège — 4e ou 3e (brevet)</option>
-          <option value="seconde">Seconde</option>
-          <option value="premiere">Première</option>
-          <option value="terminale">Terminale</option>
-        </select>
-
-        <label for="cp-matiere">Matière(s)</label>
-        <select id="cp-matiere" name="matiere" required>
-          <option value="" disabled selected>Choisir…</option>
-          <option value="maths">Maths</option>
-          <option value="physique-chimie">Physique-Chimie</option>
-          <option value="maths-physique">Maths + Physique-Chimie</option>
-          <option value="grand-oral">Grand Oral (Terminale)</option>
-        </select>
-
-        <label for="cp-tel">Votre numéro de téléphone</label>
-        <input type="tel" id="cp-tel" name="telephone" placeholder="06 XX XX XX XX" required>
-
-        <label for="cp-email">Votre email</label>
-        <input type="email" id="cp-email" name="email" placeholder="votre@email.com" required>
-
-        <label for="cp-besoin">Décrivez votre besoin</label>
-        <textarea id="cp-besoin" name="besoin" placeholder="ex. Mon fils est en Terminale, il a des difficultés en cinétique chimique et en mécanique. On cherche 1 cours par semaine pour préparer le bac…"></textarea>
-
-        <div class="cp-form-submit">
-          <button type="submit" class="btn btn-primary">Envoyer ma demande →</button>
-          <p class="cp-form-footer">Sans engagement · Réponse sous 24 h</p>
+        <div class="form-group">
+          <label class="form-label" for="cp-prenom">Prénom de l'élève</label>
+          <input class="form-control" type="text" id="cp-prenom" name="prenom" placeholder="ex. Marie" required>
         </div>
+
+        <div class="form-group">
+          <label class="form-label" for="cp-niveau">Niveau scolaire</label>
+          <select class="form-control" id="cp-niveau" name="niveau" required>
+            <option value="" disabled selected>Choisir…</option>
+            <option value="college-6e-5e">Collège — 6e ou 5e</option>
+            <option value="college-4e-3e">Collège — 4e ou 3e (brevet)</option>
+            <option value="seconde">Seconde</option>
+            <option value="premiere">Première</option>
+            <option value="terminale">Terminale</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="cp-matiere">Matière(s)</label>
+          <select class="form-control" id="cp-matiere" name="matiere" required>
+            <option value="" disabled selected>Choisir…</option>
+            <option value="maths">Maths</option>
+            <option value="physique-chimie">Physique-Chimie</option>
+            <option value="maths-physique">Maths + Physique-Chimie</option>
+            <option value="grand-oral">Grand Oral (Terminale)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="cp-tel">Votre numéro de téléphone</label>
+          <input class="form-control" type="tel" id="cp-tel" name="telephone" placeholder="06 XX XX XX XX" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="cp-email">Votre email</label>
+          <input class="form-control" type="email" id="cp-email" name="email" placeholder="votre@email.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="cp-besoin">Décrivez votre besoin</label>
+          <textarea class="form-control" id="cp-besoin" name="besoin" placeholder="ex. Mon fils est en Terminale, il a des difficultés en cinétique chimique et en mécanique. On cherche 1 cours par semaine pour préparer le bac…"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Envoyer ma demande →</button>
+        <p style="font-size:0.8rem;color:var(--sapphire);text-align:center;margin-top:10px;">Sans engagement · Réponse sous 24 h</p>
       </form>
     </section>
 
