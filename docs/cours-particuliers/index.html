@@ -46,26 +46,68 @@
         ]
       },
       {
+        "@type": "Person",
+        "@id": "https://c-reussite.fr/a-propos/#camille",
+        "name": "Camille Reinhardt",
+        "jobTitle": "Professeure de maths et physique-chimie, Polytechnicienne",
+        "description": "Diplômée de l'École polytechnique et docteure de l'Université Paris-Saclay, Camille Reinhardt donne des cours particuliers de maths et physique-chimie en ligne depuis plus de cinq ans.",
+        "url": "https://c-reussite.fr/a-propos/",
+        "alumniOf": [
+          { "@type": "CollegeOrUniversity", "name": "École Polytechnique" },
+          { "@type": "CollegeOrUniversity", "name": "Université Paris-Saclay" }
+        ],
+        "hasCredential": [
+          {
+            "@type": "EducationalOccupationalCredential",
+            "credentialCategory": "Doctorat en sciences",
+            "recognizedBy": { "@type": "Organization", "name": "Université Paris-Saclay" }
+          }
+        ],
+        "knowsAbout": ["Mathématiques", "Physique-Chimie", "Grand Oral bac", "Préparation bac Terminale"]
+      },
+      {
         "@type": "Service",
         "name": "Cours particuliers maths et physique-chimie en ligne",
         "url": "https://c-reussite.fr/cours-particuliers/",
-        "description": "Cours particuliers en ligne en maths et physique-chimie du collège à la Terminale, et préparation au Grand Oral du bac. Dispensés par Camille Reinhardt, polytechnicienne et docteure en sciences. 30 €/h, sans frais d'inscription.",
+        "description": "Cours particuliers en ligne en maths et physique-chimie du collège à la Terminale, et préparation au Grand Oral du bac. Par Camille Reinhardt, polytechnicienne et docteure en sciences. 30 €/h, sans frais d'inscription.",
+        "serviceType": "Cours particuliers en ligne",
+        "areaServed": { "@type": "Country", "name": "France" },
+        "availableChannel": { "@type": "ServiceChannel", "serviceType": "En ligne", "availableLanguage": "fr" },
+        "provider": { "@id": "https://c-reussite.fr/a-propos/#camille" },
         "offers": {
           "@type": "Offer",
           "price": "30",
           "priceCurrency": "EUR",
+          "availability": "https://schema.org/InStock",
           "priceSpecification": { "@type": "UnitPriceSpecification", "price": "30", "priceCurrency": "EUR", "unitText": "heure" }
         },
-        "provider": {
-          "@type": "Person",
-          "name": "Camille Reinhardt",
-          "jobTitle": "Polytechnicienne, Docteure en sciences",
-          "url": "https://c-reussite.fr/a-propos/",
-          "alumniOf": { "@type": "CollegeOrUniversity", "name": "École Polytechnique" }
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "5",
+          "reviewCount": "3",
+          "bestRating": "5",
+          "worstRating": "1"
         },
-        "serviceType": "Cours particuliers en ligne",
-        "areaServed": { "@type": "Country", "name": "France" },
-        "availableChannel": { "@type": "ServiceChannel", "serviceType": "En ligne", "availableLanguage": "fr" }
+        "review": [
+          {
+            "@type": "Review",
+            "author": { "@type": "Person", "name": "Lucie" },
+            "reviewBody": "Merci pour cette après-midi, on a super bien avancé. Et on arrive toujours à travailler dans la bonne humeur. Je ne sais pas comment je ferais sans toi.",
+            "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
+          },
+          {
+            "@type": "Review",
+            "author": { "@type": "Person", "name": "Lola" },
+            "reviewBody": "Si j'ai réussi mon bac de mathématiques et de physique-chimie, c'est pleinement grâce à Camille. Elle s'est adaptée à mes objectifs et a tout mis en œuvre pour que j'y parvienne. Je recommande à 2000 %.",
+            "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
+          },
+          {
+            "@type": "Review",
+            "author": { "@type": "Person", "name": "Fleur" },
+            "reviewBody": "Merci à Camille pour son implication, son écoute et son aide. Je recommande grandement.",
+            "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
+          }
+        ]
       },
       {
         "@type": "FAQPage",
