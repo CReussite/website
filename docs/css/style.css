@@ -83,6 +83,7 @@ nav {
   display: flex;
   gap: 18px;
   list-style: none;
+  align-items: center;
 }
 .nav-links a {
   color: rgba(255,255,255,0.75);
@@ -1267,8 +1268,6 @@ footer a:hover { color: var(--quicksand); }
 /* ===== NAV DROPDOWN RESSOURCES ===== */
 .nav-dropdown-wrap {
   position: relative;
-  display: flex;
-  align-items: baseline;
 }
 .nav-dropdown-btn {
   background: none;
