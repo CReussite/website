@@ -47,24 +47,30 @@
       },
       {
         "@type": "Person",
+        "@id": "https://c-reussite.fr/a-propos/#camille",
         "name": "Camille Reinhardt",
-        "jobTitle": "Polytechnicienne, Docteure en sciences",
+        "jobTitle": "Polytechnicienne, Professeure de maths et physique-chimie",
         "url": "https://c-reussite.fr/a-propos/",
-        "worksFor": {
-          "@type": "Organization",
-          "name": "C'Réussite",
-          "url": "https://c-reussite.fr/"
-        },
+        "worksFor": { "@type": "Organization", "name": "C'Réussite", "url": "https://c-reussite.fr/" },
         "alumniOf": [
-          { "@type": "CollegeOrUniversity", "name": "École Polytechnique" }
+          { "@type": "CollegeOrUniversity", "name": "École Polytechnique" },
+          { "@type": "CollegeOrUniversity", "name": "Université Paris-Saclay" }
         ],
-        "knowsAbout": ["Mathématiques", "Physique", "Chimie", "Pédagogie"]
+        "hasCredential": [
+          {
+            "@type": "EducationalOccupationalCredential",
+            "credentialCategory": "Doctorat en sciences",
+            "recognizedBy": { "@type": "Organization", "name": "Université Paris-Saclay" }
+          }
+        ],
+        "knowsAbout": ["Mathématiques", "Physique-Chimie", "Grand Oral bac", "Préparation bac Terminale"]
       },
       {
         "@type": "Organization",
+        "@id": "https://c-reussite.fr/#organization",
         "name": "C'Réussite",
         "url": "https://c-reussite.fr/",
-        "founder": { "@type": "Person", "name": "Camille Reinhardt" },
+        "founder": { "@id": "https://c-reussite.fr/a-propos/#camille" },
         "description": "Fiches de révision synthétiques pour le Bac Terminale Spécialité, conçues par une polytechnicienne."
       }
     ]
