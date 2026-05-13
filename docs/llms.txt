@@ -1,27 +1,54 @@
 # C'Réussite
 
-> Fiches de révision PDF pour la Terminale Spécialité Bac 2026, en Mathématiques et Physique-Chimie.
-> Conçues par Camille Reinhardt, diplômée de l'École Polytechnique et docteure en sciences.
-> Une fiche par chapitre : cours condensé, formules et méthodes de résolution. 100 % du programme officiel.
-> Format PDF, livraison immédiate par email après achat. Prix : 14,99 € par matière, 24,99 € pour le pack (les deux matières).
+> Ressources pédagogiques et accompagnement pour les lycéens (et leurs parents), du collège à la Terminale.
+> Créé par Camille Reinhardt, diplômée de l'École Polytechnique (X) et docteure en sciences (Université Paris-Saclay).
+> Spécialité : mathématiques et physique-chimie Bac 2026. Préparation ECE, Grand Oral.
 
-## Produits
+## Produits — ebooks PDF
 
-- [Fiches Maths Terminale Spécialité](https://c-reussite.fr/maths): 20 fiches de révision couvrant l'intégralité du programme de Mathématiques Terminale Spécialité Bac 2026. Chaque chapitre tient sur une page A4 : cours, formules et méthodes de résolution. PDF, 14,99 €.
-- [Fiches Physique-Chimie Terminale Spécialité](https://c-reussite.fr/physique-chimie): 32 fiches de révision couvrant l'intégralité du programme de Physique-Chimie Terminale Spécialité Bac 2026. Chimie, mécanique, électricité, ondes et signaux. PDF, 14,99 €.
-- [Pack Maths + Physique-Chimie](https://c-reussite.fr/pack): Les deux cahiers de fiches réunis — 52 fiches au total. Idéal pour préparer le Bac 2026 dans les deux matières. PDF, 24,99 € (−17 % par rapport au prix séparé).
+- [Ebook Maths Terminale Spécialité](https://c-reussite.fr/maths-terminale/): 20 fiches de révision couvrant 100 % du programme officiel de Maths Terminale Spé Bac 2026. Une page par chapitre : cours condensé, formules et méthodes de résolution. PDF, livraison immédiate, 14,99 €.
+- [Ebook Physique-Chimie Terminale Spécialité](https://c-reussite.fr/physique-chimie-terminale/): 32 fiches de révision couvrant 100 % du programme de Physique-Chimie Terminale Spé Bac 2026 — chimie, mécanique, ondes, électricité, thermodynamique. Inclut les capacités expérimentales ECE. PDF, livraison immédiate, 14,99 €.
+- [Pack Maths + Physique-Chimie](https://c-reussite.fr/pack-maths-physique-chimie/): Les deux ebooks réunis — 52 fiches au total. PDF, 24,99 € (−17 % par rapport à l'achat séparé).
+- [Extrait gratuit](https://c-reussite.fr/extrait-gratuit/): Aperçu des fiches de révision, téléchargement immédiat, sans engagement.
 
-## À propos
+## Service — Cours particuliers en ligne
 
-- [Accueil](https://c-reussite.fr/): Présentation complète de C'Réussite, des fiches, de l'auteure et de la pédagogie. Inclut des avis d'élèves et de parents, une FAQ et des extraits gratuits.
+- [Cours particuliers maths et physique-chimie en ligne](https://c-reussite.fr/cours-particuliers/): Cours particuliers dispensés par Camille Reinhardt, polytechnicienne et docteure en sciences. Matières : mathématiques (6e à Terminale), physique-chimie (6e à Terminale), préparation Grand Oral bac (Terminale). En ligne, 30 €/h, sans frais d'inscription. Pack 10 h disponible.
+
+## Ressources gratuites — Guides par chapitre
+
+### Réviser la physique-chimie en Terminale Spécialité
+
+- [Hub physique-chimie](https://c-reussite.fr/fiches-physique-chimie-terminale/): Index des guides gratuits par chapitre.
+- [Cinétique chimique](https://c-reussite.fr/fiches-physique-chimie-terminale/cinetique-chimique/): Vitesse de réaction, loi d'ordre 1, constante k, temps de demi-réaction t½. Méthode en 4 étapes avec exemple chiffré.
+- [Calculer un pH](https://c-reussite.fr/fiches-physique-chimie-terminale/calculer-ph/): Les 3 cas du bac — acide fort, base forte, solution tampon (Henderson-Hasselbalch). Formules, exemples chiffrés, pièges.
+- [Équilibre chimique](https://c-reussite.fr/fiches-physique-chimie-terminale/equilibre-chimique/): Quotient de réaction Qr, constante K, sens d'évolution, réactions totales.
+- [Tableau d'avancement](https://c-reussite.fr/fiches-physique-chimie-terminale/tableau-avancement/): Méthode en 4 étapes, réactif limitant, x_max — exemple complet sur la combustion du méthane.
+- [Synthèse organique](https://c-reussite.fr/fiches-physique-chimie-terminale/synthese-organique/): Les 6 types de questions du bac — groupes fonctionnels, IR, rendement, reflux, CCM, chimie verte.
+
+### Réviser les maths en Terminale Spécialité
+
+- [Hub maths](https://c-reussite.fr/fiches-maths-terminale/): Index des guides gratuits par chapitre (en cours de publication).
+
+## Blog — Méthode, révisions, orientation
+
+- [Blog C'Réussite](https://c-reussite.fr/blog/): Articles sur la méthode de révision, les examens, l'orientation post-bac et la vie lycéenne.
+- [Stress du bac : ce que la science dit vraiment](https://c-reussite.fr/blog/stress-bac-anxiete-scolaire/): Mécanismes cognitifs, impact sur les performances en maths et physique-chimie, stratégies documentées (testing effect, déchargement cognitif, sommeil). Catégorie : Méthode & organisation.
+- [ECE physique-chimie 2026 : quels chapitres tombent vraiment](https://c-reussite.fr/blog/chapitres-ece-physique-chimie-2026/): Analyse exhaustive des 90 sujets de la banque ECE 2026 — top 5 chapitres, compétences dominantes, outils numériques, chapitres absents. Catégorie : Maths & Physique-Chimie.
+- [Comment se préparer aux ECE physique-chimie 2026](https://c-reussite.fr/blog/comment-se-preparer-aux-ece-physique-chimie/): Déroulé officiel, 8 gestes qui rapportent des points, plan de révision en 4 semaines, 5 erreurs à éviter. Catégorie : Maths & Physique-Chimie.
 
 ## Auteure
 
-Camille Reinhardt — diplômée de l'École Polytechnique (X), docteure en sciences. Expérience pédagogique auprès d'élèves de la 6e au Master. Créatrice des fiches C'Réussite.
+Camille Reinhardt — diplômée de l'École Polytechnique (X, prépa PCSI/PC), docteure en sciences de l'Université Paris-Saclay (Institut Gustave Roussy). Enseigne les maths et la physique-chimie depuis plus de 5 ans, du collège au Master. Fondatrice de C'Réussite.
+
+## Pages institutionnelles
+
+- [À propos](https://c-reussite.fr/a-propos/): Parcours académique et pédagogique de Camille Reinhardt, histoire de C'Réussite.
+- [FAQ](https://c-reussite.fr/faq/): Questions fréquentes sur les fiches, la livraison, les paiements.
 
 ## Informations légales
 
-- [Conditions Générales de Vente](https://c-reussite.fr/cgv.html): Modalités d'achat, livraison, remboursement.
-- [Conditions Générales d'Utilisation](https://c-reussite.fr/cgu.html): Règles d'usage du site et des contenus.
-- [Politique de confidentialité](https://c-reussite.fr/confidentialite.html): Traitement des données personnelles, cookies, RGPD.
-- [Mentions légales](https://c-reussite.fr/mentions-legales.html): Éditeur, hébergeur, responsabilité.
+- [Conditions Générales de Vente](https://c-reussite.fr/cgv/): Modalités d'achat, livraison, remboursement.
+- [Conditions Générales d'Utilisation](https://c-reussite.fr/cgu/): Règles d'usage du site et des contenus.
+- [Politique de confidentialité](https://c-reussite.fr/confidentialite/): Traitement des données personnelles, cookies, RGPD.
+- [Mentions légales](https://c-reussite.fr/mentions-legales/): Éditeur, hébergeur, responsabilité.
