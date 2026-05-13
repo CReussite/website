@@ -189,24 +189,26 @@
     .cp-step h3 { font-size: 0.97rem; color: var(--royal-blue); margin-bottom: 5px; }
     .cp-step p { font-size: 0.9rem; color: var(--text-mid); margin: 0; line-height: 1.6; }
 
-    /* ── Modalités cards ── */
-    .cp-modalities { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 28px; }
-    .cp-modality { background: var(--swan-wing); border-radius: 10px; padding: 18px 20px; }
-    .cp-modality-label {
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      color: var(--sapphire);
-      margin-bottom: 6px;
-      display: block;
+    /* ── Tableau modalités ── */
+    .cp-modalities-table { width: 100%; border-collapse: collapse; margin-top: 28px; font-size: 0.93rem; }
+    .cp-modalities-table th {
+      background: var(--swan-wing);
+      color: var(--royal-blue);
+      font-weight: 600;
+      text-align: left;
+      padding: 12px 16px;
+      border: 1px solid #e5e7eb;
+      width: 30%;
     }
-    .cp-modality-value { font-size: 0.9rem; color: var(--text-mid); line-height: 1.6; margin: 0; }
-    .cp-modality-value strong { color: var(--royal-blue); }
-    .cp-modality-price { font-size: 1.1rem; font-weight: 700; color: var(--royal-blue); margin: 0; }
-    .cp-modality-price small { display: block; font-size: 0.8rem; font-weight: 400; color: var(--sapphire); margin-top: 3px; }
-    .cp-modality-wide { grid-column: 1 / -1; }
-    @media (max-width: 520px) { .cp-modalities { grid-template-columns: 1fr; } }
+    .cp-modalities-table td {
+      padding: 12px 16px;
+      border: 1px solid #e5e7eb;
+      color: var(--text-mid);
+      vertical-align: top;
+      line-height: 1.6;
+    }
+    .cp-modalities-table tr:nth-child(even) td { background: #fafafa; }
+    .cp-modalities-table .price-cell { font-weight: 700; color: var(--royal-blue); font-size: 1rem; }
 
     /* ── Process ── */
     .cp-process { display: grid; gap: 0; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; margin-top: 24px; }
@@ -327,11 +329,11 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
     <section class="cp-hero">
       <span class="cp-surtitle">Cours particuliers en ligne</span>
       <h1>Cours particuliers de maths et physique-chimie en ligne</h1>
-      <p class="cp-hero-hook">Votre enfant bloque en maths ou en physique-chimie ? Il peut rattraper son retard et aborder le bac 2026 sereinement, avec la bonne méthode.</p>
-      <p class="cp-hero-sub">Du collège à la Terminale. Préparation Grand Oral. Par une polytechnicienne et docteure en sciences.</p>
+      <p class="cp-hero-hook">Votre enfant bloque en maths ou en physique-chimie ? Il veut rattraper son retard, progresser ou approfondir des notions pour aller plus loin ? Il peut y arriver avec la bonne méthode et les bons outils ! </p>
+      <p class="cp-hero-sub">Du collège à la Terminale, en passant par les ECE et la préparation Grand Oral. Par une polytechnicienne et docteure en sciences.</p>
       <div class="cp-hero-price">
         <strong>30 €/h</strong>
-        <span>Sans frais d'inscription, sans intermédiaire</span>
+        <span>Une séance offerte pour tout pack de 10h réservé.</span>
       </div>
       <br>
       <a href="#contact" class="btn btn-primary">Prendre contact →</a>
@@ -340,21 +342,19 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
 
     <!-- ══ 2. MATIÈRES ══ -->
     <section class="cp-section">
-      <h2>Cours de maths, physique-chimie et Grand Oral</h2>
+      <h2>Cours de maths et physique-chimie. Préparation au Grand Oral.</h2>
       <div class="cp-subjects">
 
         <div class="cp-subject-card">
           <span class="levels">6e à Terminale</span>
           <h3>Maths</h3>
-          <p>Reprendre les bases et préparer l'épreuve du bac avec confiance. Brevet 2026, bac 2026 : programme complet couvert.</p>
-          <a href="/fiches-maths-terminale/">Réviser les maths en Terminale →</a>
+          <p>Reprendre les fondamentaux. Lever les points de blocage. Travailler les automatismes. Approfondir. Se préparer aux examens avec confiance.</p>
         </div>
 
         <div class="cp-subject-card">
           <span class="levels">6e à Terminale</span>
           <h3>Physique-Chimie</h3>
-          <p>Comprendre la démarche scientifique, pas seulement les formules. Préparation à l'écrit et aux ECE du bac 2026.</p>
-          <a href="/fiches-physique-chimie-terminale/">Réviser la physique-chimie en Terminale →</a>
+          <p>Comprendre la démarche scientifique et les formules. Savoir les appliquer et apprendre à raisonner. Préparation aux examens et aux ECE 2026.</p>
         </div>
 
         <div class="cp-subject-card">
@@ -389,33 +389,30 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
       </div>
 
       <!-- Modalités -->
-      <div class="cp-modalities">
-        <div class="cp-modality">
-          <span class="cp-modality-label">Format</span>
-          <p class="cp-modality-value">En ligne — visioconférence, écran partagé, tablette pour les calculs en direct</p>
-        </div>
-        <div class="cp-modality">
-          <span class="cp-modality-label">Durée</span>
-          <p class="cp-modality-value">1 h minimum, plus si besoin</p>
-        </div>
-        <div class="cp-modality cp-modality-wide">
-          <span class="cp-modality-label">Fréquence</span>
-          <p class="cp-modality-value">
-            <strong>1 séance</strong> pour débloquer un point difficile ·
-            <strong>1 séance par semaine</strong> pour un travail de fond ·
-            <strong>Plusieurs séances par semaine</strong> pour des révisions intensives avant un examen
-            <br><em style="font-size:.85rem;color:var(--sapphire)">Rythme défini ensemble lors de la prise de contact.</em>
-          </p>
-        </div>
-        <div class="cp-modality">
-          <span class="cp-modality-label">Tarif</span>
-          <p class="cp-modality-price">30 €/h<small>Pack 10 h : 270 € (1 séance offerte)</small></p>
-        </div>
-        <div class="cp-modality">
-          <span class="cp-modality-label">Paiement</span>
-          <p class="cp-modality-value">Lien par email avant la séance. Prélevé uniquement après la séance réalisée.</p>
-        </div>
-      </div>
+      <table class="cp-modalities-table">
+        <tbody>
+          <tr>
+            <th scope="row">Format</th>
+            <td>En ligne — visioconférence, écran partagé, tablette pour les calculs et démonstrations en direct</td>
+          </tr>
+          <tr>
+            <th scope="row">Durée</th>
+            <td>1 h minimum, plus si besoin selon la séance</td>
+          </tr>
+          <tr>
+            <th scope="row">Fréquence</th>
+            <td>À définir en fonction des besoins. Plusieurs cas possibles : 1 seule séance pour un besoin ponctuel, 1 séance par semaine pour un suivi régulier, plusieurs séances par semaine pour des révisions intensives en période d'examens (bac, brevet).</td>
+          </tr>
+          <tr>
+            <th scope="row">Tarif</th>
+            <td class="price-cell">30 €/h &nbsp;·&nbsp; Pack 10 h : 270 € (1 séance offerte)</td>
+          </tr>
+          <tr>
+            <th scope="row">Paiement</th>
+            <td>Lien envoyé par email avant la séance. Prélevé uniquement après la séance réalisée.</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <!-- ══ 4. FORMULAIRE (remonté) ══ -->
@@ -505,8 +502,9 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
     <section class="cp-section">
       <h2>Votre professeure : Camille Reinhardt, polytechnicienne</h2>
       <div class="cp-bio">
-        <p>Diplômée de l'École polytechnique et docteure de l'Université Paris-Saclay, je donne des cours de maths et de physique-chimie depuis plus de cinq ans. J'ai accompagné des élèves de la 6e à la Terminale, des étudiants en BTS et des adultes en reconversion.</p>
-        <p>Je suis passée par les concours les plus exigeants (prépa PCSI/PC, Polytechnique). Je connais les attentes de chaque niveau sur le bout des doigts. Et j'identifie précisément ce qui bloque avant de commencer à expliquer : le problème, ce n'est presque jamais l'intelligence, c'est la méthode. <a href="/a-propos/" style="color:var(--sapphire);text-decoration:underline;">En savoir plus →</a></p>
+        <p>Diplômée de l'École polytechnique et docteure de l'Université Paris-Saclay, je donne des cours de maths et de physique-chimie depuis plus de cinq ans. J'ai accompagné des élèves de la 6e à la Terminale, depuis plusieurs années.</p>
+        <p>Je suis passée par les concours les plus exigeants (prépa PCSI/PC, Polytechnique). Je connais les attentes de chaque niveau sur le bout des doigts.
+        <a href="/a-propos/" style="color:var(--sapphire);text-decoration:underline;">En savoir plus →</a></p>
       </div>
       <div class="cp-testimonials">
         <div class="cp-testi">
