@@ -1388,6 +1388,21 @@ footer a:hover { color: var(--quicksand); }
 }
 .toc-h3 .toc-link { padding-left: 20px; font-size: 0.73rem; opacity: 0.85; }
 
+/* ===== CTA PAIR (deux CTAs côte à côte) ===== */
+.cta-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 44px 0;
+}
+@media (max-width: 640px) { .cta-pair { grid-template-columns: 1fr; } }
+
+/* Version sombre (cours particuliers) — double classe pour surpasser .cta-strip */
+.cta-strip.cta-strip-dark { background: var(--royal-blue); }
+.cta-strip.cta-strip-dark .cta-strip-eyebrow { color: rgba(255,255,255,0.6); opacity: 1; }
+.cta-strip.cta-strip-dark .cta-strip-heading { color: #fff; }
+.cta-strip.cta-strip-dark .btn { background: var(--quicksand); color: var(--royal-blue); }
+
 /* ===== CTA STRIP (nouvelle bande CTA dorée) ===== */
 .cta-strip {
   background: var(--quicksand);
