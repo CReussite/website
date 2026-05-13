@@ -1268,8 +1268,7 @@ footer a:hover { color: var(--quicksand); }
 .nav-dropdown-wrap {
   position: relative;
   display: flex;
-  align-items: flex-end;
-  padding-bottom: 1px;
+  align-items: baseline;
 }
 .nav-dropdown-btn {
   background: none;
@@ -1290,10 +1289,11 @@ footer a:hover { color: var(--quicksand); }
   color: var(--quicksand);
 }
 .nav-dropdown-arrow {
-  font-size: 0.65em;
+  font-size: 0.8em;
   display: inline-block;
   transition: transform 0.2s;
   line-height: 1;
+  opacity: 0.9;
 }
 .nav-dropdown-wrap.open .nav-dropdown-arrow { transform: rotate(180deg); }
 .nav-dropdown-menu {
