@@ -1267,6 +1267,8 @@ footer a:hover { color: var(--quicksand); }
 /* ===== NAV DROPDOWN RESSOURCES ===== */
 .nav-dropdown-wrap {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 .nav-dropdown-btn {
   background: none;
