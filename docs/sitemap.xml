@@ -4,79 +4,115 @@
   <!-- Homepage -->
   <url>
     <loc>https://c-reussite.fr/</loc>
-    <lastmod>2026-04-28</lastmod>
+    <lastmod>2026-05-13</lastmod>
     <priority>1.0</priority>
   </url>
 
   <!-- Pages produit -->
   <url>
     <loc>https://c-reussite.fr/maths-terminale/</loc>
-    <lastmod>2026-04-28</lastmod>
+    <lastmod>2026-05-13</lastmod>
     <priority>0.9</priority>
   </url>
 
   <url>
     <loc>https://c-reussite.fr/physique-chimie-terminale/</loc>
-    <lastmod>2026-04-28</lastmod>
+    <lastmod>2026-05-13</lastmod>
     <priority>0.9</priority>
   </url>
 
   <url>
     <loc>https://c-reussite.fr/pack-maths-physique-chimie/</loc>
-    <lastmod>2026-04-28</lastmod>
+    <lastmod>2026-05-13</lastmod>
     <priority>0.9</priority>
   </url>
 
   <!-- Page service -->
   <url>
     <loc>https://c-reussite.fr/cours-particuliers/</loc>
-    <lastmod>2026-05-04</lastmod>
+    <lastmod>2026-05-13</lastmod>
     <priority>0.9</priority>
   </url>
 
-  <!-- Pages hub contenu (longue traîne) -->
+  <!-- Pages hub contenu -->
   <url>
     <loc>https://c-reussite.fr/fiches-maths-terminale/</loc>
-    <lastmod>2026-04-28</lastmod>
+    <lastmod>2026-05-13</lastmod>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://c-reussite.fr/fiches-physique-chimie-terminale/</loc>
-    <lastmod>2026-04-28</lastmod>
+    <lastmod>2026-05-13</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Guides chapitres physique-chimie -->
+  <url>
+    <loc>https://c-reussite.fr/fiches-physique-chimie-terminale/cinetique-chimique/</loc>
+    <lastmod>2026-05-13</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://c-reussite.fr/fiches-physique-chimie-terminale/synthese-organique/</loc>
+    <lastmod>2026-05-13</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://c-reussite.fr/fiches-physique-chimie-terminale/equilibre-chimique/</loc>
+    <lastmod>2026-05-13</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://c-reussite.fr/fiches-physique-chimie-terminale/tableau-avancement/</loc>
+    <lastmod>2026-05-13</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://c-reussite.fr/fiches-physique-chimie-terminale/calculer-ph/</loc>
+    <lastmod>2026-05-13</lastmod>
     <priority>0.8</priority>
   </url>
 
   <!-- Blog -->
   <url>
     <loc>https://c-reussite.fr/blog/</loc>
-    <lastmod>2026-04-28</lastmod>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Articles de blog -->
-  <url>
-    <loc>https://c-reussite.fr/blog/chapitres-ece-physique-chimie-2026/</loc>
-    <lastmod>2026-04-30</lastmod>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://c-reussite.fr/blog/comment-se-preparer-aux-ece-physique-chimie/</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-05-13</lastmod>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://c-reussite.fr/blog/stress-bac-anxiete-scolaire/</loc>
-    <lastmod>2026-05-12</lastmod>
+    <lastmod>2026-05-13</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://c-reussite.fr/blog/chapitres-ece-physique-chimie-2026/</loc>
+    <lastmod>2026-05-13</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://c-reussite.fr/blog/comment-se-preparer-aux-ece-physique-chimie/</loc>
+    <lastmod>2026-05-13</lastmod>
     <priority>0.7</priority>
   </url>
 
   <!-- Pages statiques -->
   <url>
     <loc>https://c-reussite.fr/a-propos/</loc>
-    <lastmod>2026-04-28</lastmod>
+    <lastmod>2026-05-13</lastmod>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://c-reussite.fr/extrait-gratuit/</loc>
+    <lastmod>2026-05-13</lastmod>
     <priority>0.6</priority>
   </url>
 
@@ -84,43 +120,6 @@
     <loc>https://c-reussite.fr/faq/</loc>
     <lastmod>2026-04-28</lastmod>
     <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://c-reussite.fr/extrait-gratuit/</loc>
-    <lastmod>2026-04-28</lastmod>
-    <priority>0.6</priority>
-  </url>
-
-  <!-- Guides chapitres physique-chimie (URLs courtes) -->
-  <url>
-    <loc>https://c-reussite.fr/fiches-physique-chimie-terminale/cinetique-chimique/</loc>
-    <lastmod>2026-05-12</lastmod>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://c-reussite.fr/fiches-physique-chimie-terminale/synthese-organique/</loc>
-    <lastmod>2026-05-12</lastmod>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://c-reussite.fr/fiches-physique-chimie-terminale/equilibre-chimique/</loc>
-    <lastmod>2026-05-12</lastmod>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://c-reussite.fr/fiches-physique-chimie-terminale/tableau-avancement/</loc>
-    <lastmod>2026-05-12</lastmod>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://c-reussite.fr/fiches-physique-chimie-terminale/calculer-ph/</loc>
-    <lastmod>2026-05-12</lastmod>
-    <priority>0.8</priority>
   </url>
 
 </urlset>
