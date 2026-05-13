@@ -90,7 +90,8 @@
     .blog-header .blog-lead { font-size: 1rem; color: var(--text-mid); line-height: 1.65; }
 
     /* ── Filtres ── */
-    .blog-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 36px; }
+    .blog-filters { display: flex; flex-direction: column; gap: 10px; margin-bottom: 36px; }
+    .blog-filters-row { display: flex; gap: 8px; flex-wrap: wrap; }
     .filter-btn {
       padding: 7px 16px;
       border-radius: 20px;
@@ -232,11 +233,15 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
 
     <!-- ── Filtres catégories ── -->
     <div class="blog-filters" role="group" aria-label="Filtrer par catégorie">
-      <button class="filter-btn active" data-filter="all">Tous les articles</button>
-      <button class="filter-btn" data-filter="methode">Méthode &amp; organisation</button>
-      <button class="filter-btn" data-filter="maths-pc">Maths &amp; Physique-Chimie</button>
-      <button class="filter-btn" data-filter="orientation">Orientation &amp; post-bac</button>
-      <button class="filter-btn" data-filter="vie">Vie lycéenne</button>
+      <div class="blog-filters-row">
+        <button class="filter-btn active" data-filter="all">Tous les articles</button>
+      </div>
+      <div class="blog-filters-row">
+        <button class="filter-btn" data-filter="methode">Méthode &amp; organisation</button>
+        <button class="filter-btn" data-filter="maths-pc">Maths &amp; Physique-Chimie</button>
+        <button class="filter-btn" data-filter="orientation">Orientation &amp; post-bac</button>
+        <button class="filter-btn" data-filter="vie">Vie lycéenne</button>
+      </div>
     </div>
 
     <!-- ── Article à la une (le plus récent) ── -->
@@ -291,26 +296,32 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
   <script>
   // Filtres catégories
   (function () {
-    var btns    = document.querySelectorAll('.filter-btn');
-    var cards   = document.querySelectorAll('[data-category]');   // featured + grid cards
+    var btns         = document.querySelectorAll('.filter-btn');
+    var cards        = document.querySelectorAll('[data-category]');
     var placeholders = document.querySelectorAll('[data-placeholder]');
+
+    function show(el) { el.style.display = ''; }
+    function hide(el) { el.style.display = 'none'; }
+
+    // Masquer les placeholders au départ
+    placeholders.forEach(hide);
 
     btns.forEach(function (btn) {
       btn.addEventListener('click', function () {
         var filter = this.dataset.filter;
 
-        // Boutons actifs
+        // Bouton actif
         btns.forEach(function (b) { b.classList.remove('active'); });
         this.classList.add('active');
 
-        // Afficher / masquer articles
+        // Articles
         cards.forEach(function (c) {
-          c.hidden = filter !== 'all' && c.dataset.category !== filter;
+          (filter === 'all' || c.dataset.category === filter) ? show(c) : hide(c);
         });
 
-        // Afficher placeholder si catégorie vide
+        // Placeholders (s'affichent seulement pour leur catégorie)
         placeholders.forEach(function (p) {
-          p.hidden = filter !== p.dataset.placeholder;
+          (filter === p.dataset.placeholder) ? show(p) : hide(p);
         });
       });
     });
