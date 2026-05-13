@@ -192,13 +192,44 @@
     .cp-step h3 { font-size: 1rem; color: var(--royal-blue); margin-bottom: 6px; }
     .cp-step p { font-size: 0.93rem; color: var(--text-mid); margin: 0; line-height: 1.65; }
 
-    /* ── Tableau format ── */
-    .cp-table-wrap { overflow-x: auto; margin-top: 8px; }
-    .cp-table { width: 100%; border-collapse: collapse; font-size: 0.93rem; }
-    .cp-table th, .cp-table td { padding: 12px 16px; border-bottom: 1px solid #e5e7eb; text-align: left; }
-    .cp-table th { font-weight: 600; color: var(--royal-blue); background: var(--swan-wing); white-space: nowrap; }
-    .cp-table td { color: var(--text-mid); }
-    .cp-table .price-cell { font-weight: 700; color: var(--royal-blue); font-size: 1rem; }
+    /* ── Modalités cards ── */
+    .cp-modalities { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 28px; }
+    .cp-modality {
+      background: var(--swan-wing);
+      border-radius: 10px;
+      padding: 18px 20px;
+    }
+    .cp-modality-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--sapphire);
+      margin-bottom: 6px;
+      display: block;
+    }
+    .cp-modality-value {
+      font-size: 0.93rem;
+      color: var(--text-mid);
+      line-height: 1.6;
+      margin: 0;
+    }
+    .cp-modality-value strong { color: var(--royal-blue); }
+    .cp-modality-price {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--royal-blue);
+      margin: 0;
+    }
+    .cp-modality-price small {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: var(--sapphire);
+      margin-top: 3px;
+    }
+    .cp-modality-wide { grid-column: 1 / -1; }
+    @media (max-width: 520px) { .cp-modalities { grid-template-columns: 1fr; } }
 
     /* ── Preuves ── */
     .cp-bio { line-height: 1.75; margin-bottom: 32px; }
@@ -306,7 +337,7 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
         </div>
 
         <div class="cp-subject-card">
-          <span class="levels">6e → Terminale</span>
+          <span class="levels">Terminale uniquement</span>
           <h3>Grand Oral</h3>
           <p>Questions maths et physique-chimie, construction de l'exposé, préparation aux questions du jury, simulation complète en conditions réelles. Coefficient 10, ça se prépare.</p>
         </div>
@@ -336,18 +367,32 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
         </div>
       </div>
 
-      <div class="cp-table-wrap">
-        <table class="cp-table">
-          <thead>
-            <tr><th>Modalités</th><th>Détail</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Format</td><td>En ligne — visioconférence + écran partagé + tablette pour les démonstrations en direct</td></tr>
-            <tr><td>Durée</td><td>1&nbsp;h minimum, plus si besoin selon la séance</td></tr>
-            <tr><td>Fréquence</td><td>1 séance pour débloquer un point difficile &nbsp;·&nbsp; 1 séance par semaine pour un travail de fond &nbsp;·&nbsp; Plusieurs séances par semaine pour des révisions intensives avant un examen — à définir ensemble lors de la prise de contact</td></tr>
-            <tr><td>Tarif</td><td class="price-cell">30&nbsp;€/h &nbsp;—&nbsp; Pack 10&nbsp;h&nbsp;: 270&nbsp;€ (1 séance offerte)</td></tr>
-          </tbody>
-        </table>
+      <div class="cp-modalities">
+        <div class="cp-modality">
+          <span class="cp-modality-label">Format</span>
+          <p class="cp-modality-value">En ligne — visioconférence, écran partagé, tablette pour les calculs et démonstrations en direct</p>
+        </div>
+        <div class="cp-modality">
+          <span class="cp-modality-label">Durée</span>
+          <p class="cp-modality-value">1&nbsp;h minimum, plus si besoin selon la séance</p>
+        </div>
+        <div class="cp-modality cp-modality-wide">
+          <span class="cp-modality-label">Fréquence</span>
+          <p class="cp-modality-value">
+            <strong>1 séance</strong> pour débloquer un point difficile &nbsp;·&nbsp;
+            <strong>1 séance / semaine</strong> pour un travail de fond régulier &nbsp;·&nbsp;
+            <strong>Plusieurs séances / semaine</strong> pour des révisions intensives avant un examen
+            <br><em style="font-size:.88rem;color:var(--sapphire);">Rythme défini ensemble lors de la prise de contact.</em>
+          </p>
+        </div>
+        <div class="cp-modality">
+          <span class="cp-modality-label">Tarif</span>
+          <p class="cp-modality-price">30&nbsp;€ / heure<small>Pack 10&nbsp;h : 270&nbsp;€ — 1 séance offerte</small></p>
+        </div>
+        <div class="cp-modality">
+          <span class="cp-modality-label">Paiement</span>
+          <p class="cp-modality-value">Lien envoyé par email avant la séance. Prélevé uniquement après la séance réalisée.</p>
+        </div>
       </div>
     </section>
 
@@ -380,7 +425,7 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
       <div class="cp-bio">
         <p>Je suis <strong>Camille Reinhardt</strong>. Diplômée de l'École polytechnique et docteure de l'Université Paris-Saclay, je donne des cours de maths et de physique-chimie depuis plus de cinq ans. J'ai accompagné des élèves de la 6e à la Terminale, mais aussi des étudiants en BTS et des adultes en reconversion.</p>
         <p>Mon parcours scientifique m'a appris une chose essentielle. Les maths et la physique-chimie ne sont pas des questions de « don ». Elles reposent sur de la méthode, de la pratique et un enseignement clair. C'est exactement ce que je propose dans mes cours particuliers.</p>
-        <p>Je suis passée par les concours les plus exigeants (prépa MPSI/MP, Polytechnique). Je connais les attentes de chaque niveau scolaire sur le bout des doigts. Et j'identifie précisément ce qui bloque avant de commencer à expliquer. <a href="/a-propos/" style="color:var(--sapphire);text-decoration:underline;">En savoir plus →</a></p>
+        <p>Je suis passée par les concours les plus exigeants (prépa PCSI/PC, Polytechnique). Je connais les attentes de chaque niveau scolaire sur le bout des doigts. Et j'identifie précisément ce qui bloque avant de commencer à expliquer. <a href="/a-propos/" style="color:var(--sapphire);text-decoration:underline;">En savoir plus →</a></p>
       </div>
 
       <div class="cp-testimonials">
@@ -489,7 +534,7 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
 
       <div class="cp-crosssell">
         <div class="cp-crosssell-text">
-          <strong>Votre enfant préfère réviser en autonomie&nbsp;?</strong>
+          <strong>Votre enfant est en Terminale et préfère réviser en autonomie&nbsp;?</strong>
           <p>Découvrez les fiches C'Réussite&nbsp;: <a href="/maths-terminale/">20 fiches Maths</a>, <a href="/physique-chimie-terminale/">32 fiches Physique-Chimie</a>, ou <a href="/pack-maths-physique-chimie/">le pack complet (−17&nbsp;%)</a>.</p>
         </div>
       </div>
