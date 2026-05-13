@@ -1,6 +1,6 @@
 (function () {
   const depth = location.pathname.split('/').filter(s => s && !s.includes('.')).length;
-  const root  = depth >= 1 ? '../' : '';
+  const root  = '../'.repeat(depth);
 
   document.getElementById('nav-placeholder').outerHTML = `
     <nav aria-label="Navigation principale">
