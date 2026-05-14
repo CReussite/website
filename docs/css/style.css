@@ -1026,7 +1026,7 @@ footer a:hover { color: var(--quicksand); }
 }
 .footer-col ul { list-style: none; padding: 0; }
 .footer-col ul li { margin-bottom: 10px; }
-.footer-col ul li a { font-size: 0.88rem; }
+.footer-col ul li a { font-size: 0.88rem; white-space: nowrap; }
 .footer-logo {
   margin-bottom: 12px;
 }
