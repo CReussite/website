@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <!-- End Google Tag Manager -->
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Cinétique chimique Terminale : ordre 1, constante k, temps de demi-réaction | C'Réussite</title>
+  <meta name="description" content="Cinétique chimique en Terminale Spécialité : vitesse volumique, loi d'ordre 1, constante de vitesse k et temps de demi-réaction t½. Méthode en 4 étapes avec exemple chiffré.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-physique-chimie-terminale/cinetique-chimique/">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-physique-chimie-terminale/cinetique-chimique/">
+  <meta property="og:title" content="Cinétique chimique Terminale : ordre 1, constante k, t½ | C'Réussite">
+  <meta property="og:description" content="Vitesse volumique, loi d'ordre 1, temps de demi-réaction : méthode complète en 4 étapes pour le bac physique-chimie.">
+  <meta property="og:site_name" content="C'Réussite">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"Article","headline":"Cinétique chimique Terminale : ordre 1, constante k, temps de demi-réaction","datePublished":"2026-05-08","dateModified":"2026-05-12","author":{"@type":"Person","name":"Camille Reinhardt","url":"https://c-reussite.fr/a-propos/"},"publisher":{"@type":"Organization","name":"C'Réussite","url":"https://c-reussite.fr"},"mainEntityOfPage":"https://c-reussite.fr/fiches-physique-chimie-terminale/cinetique-chimique/"},
+    {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://c-reussite.fr/"},{"@type":"ListItem","position":2,"name":"Physique-Chimie Terminale","item":"https://c-reussite.fr/fiches-physique-chimie-terminale/"},{"@type":"ListItem","position":3,"name":"Cinétique chimique","item":"https://c-reussite.fr/fiches-physique-chimie-terminale/cinetique-chimique/"}]},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"Comment reconnaître un ordre 1 sur un graphique ?","acceptedAnswer":{"@type":"Answer","text":"Tracer ln([A]) = f(t). Si la courbe est une droite, la réaction est d'ordre 1. On peut aussi vérifier que t½ reste constant lorsqu'on change [A]₀."}},
+      {"@type":"Question","name":"Le temps de demi-réaction dépend-il de la concentration initiale ?","acceptedAnswer":{"@type":"Answer","text":"Non, pour une réaction d'ordre 1. t½ = ln(2)/k — seule la constante k intervient, pas [A]₀."}},
+      {"@type":"Question","name":"Comment calculer k à partir d'un graphique ?","acceptedAnswer":{"@type":"Answer","text":"Si ln([A]) = f(t) est une droite, son coefficient directeur vaut −k. On lit Δln([A])/Δt sur deux points éloignés de la droite."}}
+    ]}
+  ]}
+  </script>
+  <style>
+    .article-tag { display:inline-block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:3px 10px; border-radius:20px; background:var(--swan-wing); color:var(--sapphire); margin-bottom:12px; }
+    .article-header { margin-bottom:32px; padding-bottom:24px; border-bottom:1px solid #e5e7eb; }
+    .article-header h1 { font-size:clamp(1.45rem,3.5vw,1.95rem); line-height:1.25; margin-bottom:10px; color:var(--royal-blue); }
+    .article-meta { font-size:.85rem; color:#5C6475; }
+    .article-intro { font-size:1.02rem; color:var(--text-mid); line-height:1.75; margin:20px 0 28px; }
+    .article-body h2 { font-size:1.2rem; margin-top:36px; margin-bottom:12px; padding-bottom:7px; border-bottom:1px solid #e5e7eb; color:var(--royal-blue); }
+    .article-body h3 { font-size:1.02rem; font-weight:700; margin-top:24px; margin-bottom:9px; color:var(--royal-blue); }
+    .article-body p { margin-bottom:14px; line-height:1.7; color:var(--text-mid); }
+    .article-body ul,.article-body ol { margin:0 0 14px 22px; }
+    .article-body li { margin-bottom:6px; color:var(--text-mid); line-height:1.65; }
+    .article-body table { width:100%; border-collapse:collapse; margin:18px 0; font-size:.88rem; }
+    .article-body th { background:var(--swan-wing); font-weight:600; text-align:left; padding:9px 12px; border:1px solid #e5e7eb; color:var(--royal-blue); }
+    .article-body td { padding:9px 12px; border:1px solid #e5e7eb; vertical-align:top; color:var(--text-mid); }
+    .article-body tr:nth-child(even) td { background:#fafafa; }
+    .article-body strong { color:var(--royal-blue); font-weight:700; }
+    .callout { background:var(--swan-wing); border-left:3px solid var(--sapphire); border-radius:0 8px 8px 0; padding:14px 18px; margin:18px 0; }
+    .callout p { margin:0; color:var(--text-mid); }
+    .faq-section { margin-top:40px; padding-top:28px; border-top:2px solid #e5e7eb; }
+    .faq-section>h2 { font-size:1.15rem; margin-bottom:20px; padding-bottom:0; border-bottom:none; }
+    .faq-item { margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid #f0f0f0; }
+    .faq-item:last-child { border-bottom:none; }
+    .faq-item h3 { font-size:.97rem; margin-top:0; margin-bottom:7px; }
+    .faq-item p { margin:0; }
+    .read-next { margin-top:36px; padding-top:24px; border-top:1px solid #e5e7eb; }
+    .read-next h2 { font-size:1rem; margin-bottom:12px; color:var(--royal-blue); border:none; padding:0; }
+    .read-next ul { list-style:none; padding:0; margin:0; }
+    .read-next li { padding:6px 0; border-bottom:1px solid #f5f5f5; }
+    .read-next li:last-child { border-bottom:none; }
+    .read-next a { color:var(--sapphire); text-decoration:underline; font-size:.9rem; }
+    .author-box { background:var(--swan-wing); border-radius:10px; padding:16px 20px; margin-top:28px; font-size:.86rem; color:var(--text-mid); }
+    .author-box strong { display:block; margin-bottom:5px; color:var(--royal-blue); font-size:.9rem; }
+    .katex-display { overflow-x:auto; }
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-physique-chimie-terminale/">Physique-Chimie Terminale</a><span class="bc-sep">›</span>
+      <span>Cinétique chimique</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Physique-Chimie · Terminale</span>
+        <h1>Cinétique chimique en Terminale Spécialité</h1>
+        <div class="article-meta">Mis à jour le 12 mai 2026 · Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">La cinétique chimique est présente dans 10 à 16 % des exercices de bac. Ce qui bloque, ce n'est pas la formule — c'est la démarche : que faire concrètement avec un tableau de données ou un graphique pour en déduire la loi de vitesse ? Cette page répond à cette question dans l'ordre.</p>
+
+      <div class="article-body">
+
+        <h2>Ce qu'il faut savoir avant de calculer</h2>
+        <p>La <strong>vitesse volumique de réaction</strong> mesure la rapidité avec laquelle une espèce apparaît ou disparaît. Elle est toujours positive.</p>
+        <ul>
+          <li>Pour un réactif A qui se consomme : $v = -\dfrac{d[A]}{dt}$</li>
+          <li>Pour un produit P qui se forme : $v = +\dfrac{d[P]}{dt}$</li>
+        </ul>
+        <p>La vitesse est maximale à $t = 0$, puis diminue à mesure que les réactifs sont consommés. Les facteurs cinétiques qui accélèrent une réaction :</p>
+        <table>
+          <thead><tr><th>Facteur</th><th>Effet</th></tr></thead>
+          <tbody>
+            <tr><td>Température</td><td>Plus T augmente → réaction plus rapide</td></tr>
+            <tr><td>Concentration des réactifs</td><td>Plus [réactif] est élevée → réaction plus rapide</td></tr>
+            <tr><td>Catalyseur</td><td>Accélère la réaction sans être consommé</td></tr>
+          </tbody>
+        </table>
+        <p><strong>Loi de vitesse d'ordre 1.</strong> Au programme de Terminale, on travaille exclusivement avec des réactions d'ordre 1 :</p>
+        $$v = k \cdot [A]$$
+        <p>La solution de l'équation différentielle est une décroissance exponentielle :</p>
+        $$[A](t) = [A]_0 \cdot e^{-kt}$$
+
+        <h2>La démarche en 4 étapes</h2>
+
+        <h3>Étape 1 — Calculer la vitesse à un instant donné</h3>
+        <p>À partir d'un graphique de concentration :</p>
+        <ol>
+          <li>Tracer la tangente à la courbe au point $t$ concerné.</li>
+          <li>Choisir deux points <strong>éloignés sur la tangente</strong> (pas sur la courbe).</li>
+          <li>Calculer la pente : $\text{pente} = \dfrac{\Delta[A]}{\Delta t}$.</li>
+          <li>Pour un réactif : $v = -\text{pente}$.</li>
+        </ol>
+
+        <h3>Étape 2 — Vérifier l'ordre 1</h3>
+        <table>
+          <thead><tr><th>Méthode</th><th>Ce qu'on trace</th><th>Ce qu'on attend</th></tr></thead>
+          <tbody>
+            <tr><td>Graphique ln([A]) = f(t)</td><td>ln([A]) vs temps</td><td>Droite de coefficient directeur −k</td></tr>
+            <tr><td>Graphique v = f([A])</td><td>Vitesse vs concentration</td><td>Droite passant par l'origine</td></tr>
+            <tr><td>Calcul de k</td><td>Rapport v/[A] pour chaque mesure</td><td>Valeurs sensiblement constantes</td></tr>
+            <tr><td>Indépendance de t½</td><td>t½ à différentes [A]₀</td><td>t½ constant</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Étape 3 — Calculer la constante de vitesse k</h3>
+        $$k = -\frac{\Delta \ln([A])}{\Delta t}$$
+        <p>On lit le coefficient directeur de la droite ln([A]) = f(t) et on prend sa valeur absolue.</p>
+
+        <h3>Étape 4 — Exploiter le temps de demi-réaction</h3>
+        <p>Le <strong>temps de demi-réaction</strong> $t_{1/2}$ est la durée au bout de laquelle la moitié du réactif a été consommée :</p>
+        $$t_{1/2} = \frac{\ln 2}{k} \approx \frac{0{,}693}{k}$$
+        <div class="callout">
+          <p><strong>Propriété clé :</strong> $t_{1/2}$ est <strong>indépendant de la concentration initiale</strong> pour une réaction d'ordre 1. Si $t_{1/2}$ reste constant quand on change $[A]_0$, la réaction est bien d'ordre 1.</p>
+        </div>
+
+        <h2>Exemple résolu : décomposition de N₂O₅</h2>
+        <p>Réaction : $\text{N}_2\text{O}_5 \rightarrow 2\,\text{NO}_2 + \frac{1}{2}\,\text{O}_2$</p>
+        <table>
+          <thead><tr><th>t (s)</th><th>[N₂O₅] (mol/L)</th><th>ln([N₂O₅])</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>2,00 × 10⁻²</td><td>−3,91</td></tr>
+            <tr><td>200</td><td>1,41 × 10⁻²</td><td>−4,26</td></tr>
+            <tr><td>400</td><td>1,00 × 10⁻²</td><td>−4,61</td></tr>
+            <tr><td>600</td><td>7,07 × 10⁻³</td><td>−4,95</td></tr>
+            <tr><td>800</td><td>5,00 × 10⁻³</td><td>−5,30</td></tr>
+          </tbody>
+        </table>
+        <p>Les valeurs de ln([N₂O₅]) diminuent de façon régulière (−0,35 tous les 200 s) → droite → <strong>ordre 1 confirmé</strong>.</p>
+        <p><strong>Calcul de k :</strong></p>
+        $$k = -\frac{-5{,}30 - (-3{,}91)}{800 - 0} = \frac{1{,}39}{800} = 1{,}74 \times 10^{-3}\ \text{s}^{-1}$$
+        <p><strong>Calcul de $t_{1/2}$ :</strong></p>
+        $$t_{1/2} = \frac{0{,}693}{1{,}74 \times 10^{-3}} \approx 400\ \text{s}$$
+        <p>Vérification : entre 0 et 400 s, [N₂O₅] passe de 2,00 × 10⁻² à 1,00 × 10⁻² — divisée par 2. ✓</p>
+
+        <h2>Les 3 pièges classiques</h2>
+        <p><strong>Piège 1 — Confondre ordre 0 et ordre 1.</strong> En ordre 0, c'est [A] = f(t) qui est une droite. En ordre 1, c'est ln([A]) = f(t).</p>
+        <p><strong>Piège 2 — Oublier le coefficient stœchiométrique.</strong> Si l'équation est $2A \rightarrow P$, la vitesse s'écrit $v = -\frac{1}{2}\frac{d[A]}{dt}$, pas $-\frac{d[A]}{dt}$.</p>
+        <p><strong>Piège 3 — Mal lire un graphique semi-logarithmique.</strong> Les unités de ln([A]) sont sans dimension. Le coefficient directeur a pour unité s⁻¹.</p>
+
+      </div><!-- /article-body -->
+
+      <!-- CTA avant FAQ -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Physique-Chimie</p>
+            <p class="cta-strip-heading">Tout le programme sur une fiche par chapitre — PDF immédiat</p>
+          </div>
+          <a href="/physique-chimie-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Physique-chimie en ligne — 30 €/h</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="faq-section">
+        <h2>FAQ — Cinétique chimique</h2>
+        <div class="faq-item">
+          <h3>Comment reconnaître un ordre 1 sur un graphique ?</h3>
+          <p>Tracer ln([A]) = f(t). Si la courbe est une droite, la réaction est d'ordre 1. On peut aussi vérifier que $t_{1/2}$ reste constant lorsqu'on double $[A]_0$.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Le temps de demi-réaction dépend-il de la concentration initiale ?</h3>
+          <p>Non, pour une réaction d'ordre 1. $t_{1/2} = \ln(2)/k$ — seule la constante $k$ intervient, pas $[A]_0$. C'est le critère qui distingue l'ordre 1 de l'ordre 0 (où $t_{1/2} = [A]_0/2k$).</p>
+        </div>
+        <div class="faq-item">
+          <h3>Comment calculer k à partir d'un graphique ?</h3>
+          <p>Si ln([A]) = f(t) est une droite, son coefficient directeur vaut $-k$. On lit $\Delta\ln([A]) / \Delta t$ sur deux points éloignés de la droite (pas sur la courbe expérimentale).</p>
+        </div>
+      </div>
+
+      <!-- CTA fin -->
+      <div class="cta-strip">
+        <div class="cta-strip-text">
+          <p class="cta-strip-eyebrow">C'Réussite · Terminale Spé</p>
+          <p class="cta-strip-heading">32 fiches PDF — cours, formules et méthodes sur une page par chapitre</p>
+        </div>
+        <a href="/physique-chimie-terminale/" class="btn">Découvrir l'ebook →</a>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/fiches-physique-chimie-terminale/tableau-avancement/">Tableau d'avancement : méthode et réactif limitant</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/equilibre-chimique/">Équilibre chimique : quotient de réaction Qr et constante K</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/calculer-ph/">Calculer un pH : acide fort, base forte, solution tampon</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/synthese-organique/">Synthèse organique : rendement, CCM et chimie verte</a></li>
+          <li><a href="/blog/chapitres-ece-physique-chimie-2026/">ECE 2026 : quels chapitres tombent vraiment</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt — diplômée de l'École polytechnique, docteure en sciences, fondatrice de C'Réussite. Elle accompagne des élèves de la 6e au Master depuis plus de dix ans. <a href="/a-propos/">En savoir plus</a>.
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>

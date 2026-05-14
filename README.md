@@ -55,18 +55,47 @@ CReussite/
 ├── docs/                              ← GitHub Pages (site statique)
 │   ├── CNAME                          ← c-reussite.fr
 │   ├── content/products.json          ← SOURCE DE VÉRITÉ produits (lu par frontend + backend)
+│   ├── sitemap.xml
+│   ├── llms.txt                       ← Index lisible par LLM
 │   ├── index.html                     ← Page d'accueil
 │   ├── admin.html                     ← Tableau de bord (protégé ADMIN_KEY)
-│   ├── beta.html                      ← Formulaire beta-testeurs (noindex)
 │   ├── success.html                   ← Retour Stancer : vérifie paiement, affiche confirmation
 │   ├── cancel.html                    ← Retour Stancer si annulation
-│   ├── cgv.html / cgu.html / mentions-legales.html / confidentialite.html
-│   ├── css/style.css
+│   ├── maths-terminale/index.html     ← Page produit Maths (layout empilé, FAQPage schema)
+│   ├── physique-chimie-terminale/index.html ← Page produit Physique-Chimie
+│   ├── pack-maths-physique-chimie/index.html ← Page produit Pack (prix barré, 2 tableaux)
+│   ├── cours-particuliers/index.html  ← Page service cours particuliers
+│   ├── extrait-gratuit/index.html     ← Landing capture email, choix Maths/PC/?matiere=
+│   ├── a-propos/index.html
+│   ├── faq/index.html
+│   ├── fiches-maths-terminale/index.html       ← Hub maths (guides gratuits)
+│   ├── fiches-physique-chimie-terminale/
+│   │   ├── index.html                 ← Hub physique-chimie
+│   │   ├── cinetique-chimique/index.html
+│   │   ├── calculer-ph/index.html
+│   │   ├── equilibre-chimique/index.html
+│   │   ├── synthese-organique/index.html
+│   │   └── tableau-avancement/index.html
+│   ├── blog/
+│   │   ├── index.html                 ← Hub blog (4 catégories, filtre JS)
+│   │   ├── stress-bac-anxiete-scolaire/index.html
+│   │   ├── chapitres-ece-physique-chimie-2026/index.html
+│   │   └── comment-se-preparer-aux-ece-physique-chimie/index.html
+│   ├── cgv/ cgu/ mentions-legales/ confidentialite/
+│   ├── css/style.css                  ← Styles globaux (incl. payment modal CSS)
 │   ├── js/
-│   │   ├── payment.js                 ← POST /api/checkout, gestion modal paiement, sauvegarde paymentId
-│   │   ├── nav.js                     ← Injection header (logo + liens + cadenas admin)
-│   │   └── footer.js                  ← Injection footer
-│   └── img/                           ← Couvertures, logo
+│   │   ├── payment.js                 ← POST /api/checkout, modal paiement
+│   │   ├── nav.js                     ← Injection header (dropdown Ressources, burger mobile)
+│   │   ├── footer.js                  ← Injection footer
+│   │   ├── toc.js                     ← TOC auto-générée (articles blog + guides chapitre)
+│   │   ├── carousel.js                ← Carousel images produit
+│   │   ├── extract.js                 ← Formulaire extrait gratuit
+│   │   ├── avis.js / review.js        ← Témoignages et formulaire avis
+│   │   └── schema.js                  ← JSON-LD homepage
+│   └── img/
+│       ├── carousel/maths/            ← Images carousel ebook maths (webp + png)
+│       ├── carousel/physique/         ← Images carousel ebook physique-chimie
+│       └── carousel/bundle/           ← Images carousel pack
 │
 ├── backend/
 │   ├── server.js                      ← Express, CORS, montage des routes
