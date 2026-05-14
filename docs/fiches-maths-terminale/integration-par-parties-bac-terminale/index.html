@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <!-- End Google Tag Manager -->
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Intégration par parties au bac de maths : formule, règle ALPES, méthode | C'Réussite</title>
+  <meta name="description" content="Maîtriser l'intégration par parties en Terminale spé maths : formule, règle ALPES, méthode en 4 étapes, trois types d'exercices classiques et pièges à éviter au bac.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-maths-terminale/integration-par-parties-bac-terminale/">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-maths-terminale/integration-par-parties-bac-terminale/">
+  <meta property="og:title" content="Intégration par parties au bac : formule, ALPES, méthode | C'Réussite">
+  <meta property="og:description" content="Formule, règle ALPES, méthode en 4 étapes et trois types d'exercices pour maîtriser l'intégration par parties au bac maths Terminale Spé.">
+  <meta property="og:site_name" content="C'Réussite">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"Article","headline":"Calculer une intégrale par parties au bac de maths : méthode complète","datePublished":"2026-05-09","dateModified":"2026-05-14","author":{"@type":"Person","name":"Camille Reinhardt","url":"https://c-reussite.fr/a-propos/"},"publisher":{"@type":"Organization","name":"C'Réussite","url":"https://c-reussite.fr"},"mainEntityOfPage":"https://c-reussite.fr/fiches-maths-terminale/integration-par-parties-bac-terminale/"},
+    {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://c-reussite.fr/"},{"@type":"ListItem","position":2,"name":"Maths Terminale","item":"https://c-reussite.fr/fiches-maths-terminale/"},{"@type":"ListItem","position":3,"name":"Intégration par parties","item":"https://c-reussite.fr/fiches-maths-terminale/integration-par-parties-bac-terminale/"}]},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"Faut-il connaître la formule d'intégration par parties par cœur ?","acceptedAnswer":{"@type":"Answer","text":"Oui, elle n'est pas fournie dans le formulaire officiel du bac. La meilleure façon de la retenir est de partir de (uv)' = u'v + uv', ce qui donne ∫u'v = [uv] − ∫uv'."}},
+      {"@type":"Question","name":"Comment savoir si on doit utiliser l'IPP ou un changement de variable ?","acceptedAnswer":{"@type":"Answer","text":"L'IPP s'applique quand l'intégrale est un produit de deux fonctions de familles différentes (polynôme × exponentielle, logarithme × polynôme, etc.). Le changement de variable convient mieux quand une fonction composée apparaît et que sa dérivée est visible dans l'expression."}},
+      {"@type":"Question","name":"Que faire si après deux IPP on retombe sur l'intégrale de départ ?","acceptedAnswer":{"@type":"Answer","text":"C'est une IPP circulaire. On obtient une égalité du type I = A − I, ce qui donne 2I = A, donc I = A/2. On résout une équation plutôt que d'intégrer directement."}}
+    ]}
+  ]}
+  </script>
+  <style>
+    .article-tag { display:inline-block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:3px 10px; border-radius:20px; background:var(--swan-wing); color:var(--sapphire); margin-bottom:12px; }
+    .article-header { margin-bottom:32px; padding-bottom:24px; border-bottom:1px solid #e5e7eb; }
+    .article-header h1 { font-size:clamp(1.45rem,3.5vw,1.95rem); line-height:1.25; margin-bottom:10px; color:var(--royal-blue); }
+    .article-meta { font-size:.85rem; color:#5C6475; }
+    .article-intro { font-size:1.02rem; color:var(--text-mid); line-height:1.75; margin:20px 0 28px; }
+    .article-body h2 { font-size:1.2rem; margin-top:36px; margin-bottom:12px; padding-bottom:7px; border-bottom:1px solid #e5e7eb; color:var(--royal-blue); }
+    .article-body h3 { font-size:1.02rem; font-weight:700; margin-top:24px; margin-bottom:9px; color:var(--royal-blue); }
+    .article-body p { margin-bottom:14px; line-height:1.7; color:var(--text-mid); }
+    .article-body ul,.article-body ol { margin:0 0 14px 22px; }
+    .article-body li { margin-bottom:6px; color:var(--text-mid); line-height:1.65; }
+    .article-body table { width:100%; border-collapse:collapse; margin:18px 0; font-size:.88rem; }
+    .article-body th { background:var(--swan-wing); font-weight:600; text-align:left; padding:9px 12px; border:1px solid #e5e7eb; color:var(--royal-blue); }
+    .article-body td { padding:9px 12px; border:1px solid #e5e7eb; vertical-align:top; color:var(--text-mid); }
+    .article-body tr:nth-child(even) td { background:#fafafa; }
+    .article-body strong { color:var(--royal-blue); font-weight:700; }
+    .callout { background:var(--swan-wing); border-left:3px solid var(--sapphire); border-radius:0 8px 8px 0; padding:14px 18px; margin:18px 0; }
+    .callout p { margin:0; color:var(--text-mid); }
+    .faq-section { margin-top:40px; padding-top:28px; border-top:2px solid #e5e7eb; }
+    .faq-section>h2 { font-size:1.15rem; margin-bottom:20px; padding-bottom:0; border-bottom:none; }
+    .faq-item { margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid #f0f0f0; }
+    .faq-item:last-child { border-bottom:none; }
+    .faq-item h3 { font-size:.97rem; margin-top:0; margin-bottom:7px; }
+    .faq-item p { margin:0; }
+    .read-next { margin-top:36px; padding-top:24px; border-top:1px solid #e5e7eb; }
+    .read-next h2 { font-size:1rem; margin-bottom:12px; color:var(--royal-blue); border:none; padding:0; }
+    .read-next ul { list-style:none; padding:0; margin:0; }
+    .read-next li { padding:6px 0; border-bottom:1px solid #f5f5f5; }
+    .read-next li:last-child { border-bottom:none; }
+    .read-next a { color:var(--sapphire); text-decoration:underline; font-size:.9rem; }
+    .author-box { background:var(--swan-wing); border-radius:10px; padding:16px 20px; margin-top:28px; font-size:.86rem; color:var(--text-mid); }
+    .author-box strong { display:block; margin-bottom:5px; color:var(--royal-blue); font-size:.9rem; }
+    .katex-display { overflow-x:auto; }
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-maths-terminale/">Maths Terminale</a><span class="bc-sep">›</span>
+      <span>Intégration par parties</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Maths · Terminale</span>
+        <h1>Calculer une intégrale par parties au bac de maths : méthode complète</h1>
+        <div class="article-meta">Publié le 9 mai 2026 · Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">L'intégration par parties (IPP) s'utilise quand l'intégrale d'un produit résiste à toutes les méthodes classiques. Elle ne repose pas sur une formule difficile à retenir — elle découle directement de la règle de dérivation d'un produit, que vous connaissez déjà. La seule vraie difficulté est de savoir dans quel sens la poser. C'est précisément ce que cette page explique, pas à pas.</p>
+
+      <div class="article-body">
+
+        <h2>1. La formule et ce qu'elle signifie</h2>
+        <p>La formule de l'intégration par parties est :</p>
+        $$\boxed{\int_a^b u'(x)\,v(x)\,dx = \bigl[u(x)\,v(x)\bigr]_a^b - \int_a^b u(x)\,v'(x)\,dx}$$
+        <p><strong>Deux conditions à citer dans la copie au bac :</strong></p>
+        <ul>
+          <li>$u$ et $v$ sont dérivables sur $[a\,;\,b]$.</li>
+          <li>Leurs dérivées $u'$ et $v'$ sont continues sur $[a\,;\,b]$.</li>
+        </ul>
+        <p><strong>Ce que fait la formule :</strong> elle transforme $\int u'v$ en un crochet calculable plus une nouvelle intégrale $\int uv'$. L'IPP n'est utile que si cette seconde intégrale est plus simple que la première. C'est le critère à vérifier après avoir posé les fonctions.</p>
+        <div class="callout">
+          <p>La formule vient de $(uv)' = u'v + uv'$, donc $\int u'v = [uv] - \int uv'$. Partir de cette identité est la meilleure façon de ne jamais l'oublier.</p>
+        </div>
+
+        <h2>2. Comment poser $u'$ et $v$ : la règle ALPES</h2>
+        <p>C'est l'étape décisive. Un mauvais choix rend le calcul impossible ou plus compliqué qu'au départ. La règle <strong>ALPES</strong> donne l'ordre de priorité pour choisir la fonction à placer en $v$ — celle qu'on va dériver.</p>
+        <table>
+          <thead><tr><th style="text-align:center;">Lettre</th><th>Famille de fonctions</th><th>Priorité pour $v$ (on dérive en premier)</th></tr></thead>
+          <tbody>
+            <tr><td style="text-align:center;font-weight:700;">A</td><td>Arctangente</td><td>Maximale</td></tr>
+            <tr><td style="text-align:center;font-weight:700;">L</td><td>Logarithme (ln)</td><td>Haute</td></tr>
+            <tr><td style="text-align:center;font-weight:700;">P</td><td>Polynôme ($x$, $x^2$, …)</td><td>Moyenne</td></tr>
+            <tr><td style="text-align:center;font-weight:700;">E</td><td>Exponentielle</td><td>Basse</td></tr>
+            <tr><td style="text-align:center;font-weight:700;">S</td><td>Sinus / Cosinus</td><td>Basse</td></tr>
+          </tbody>
+        </table>
+        <p><strong>Principe :</strong> dans le produit, on pose en $v$ la fonction dont la lettre est la plus à gauche dans ALPES. L'autre devient $u'$ — c'est elle qu'on intègre pour trouver $u$.</p>
+        <p><strong>Exemple de lecture :</strong> dans $\int x\,e^x\,dx$, le polynôme $x$ est <strong>P</strong>, l'exponentielle est <strong>E</strong>. P est avant E dans ALPES — on pose $v = x$ et $u' = e^x$.</p>
+
+        <h2>3. La méthode en 4 étapes</h2>
+        <p><strong>Étape 1</strong> — Identifier les deux facteurs et appliquer ALPES pour poser $v$ et $u'$.</p>
+        <p><strong>Étape 2</strong> — Remplir le "squelette" (à écrire sur le côté de la copie) :</p>
+        $$v(x) = \dots \implies v'(x) = \dots$$
+        $$u'(x) = \dots \implies u(x) = \dots \quad \text{(une primitive de }u'\text{)}$$
+        <p><strong>Étape 3</strong> — Substituer dans la formule :</p>
+        $$\int_a^b u'(x)\,v(x)\,dx = \bigl[u(x)\,v(x)\bigr]_a^b - \int_a^b u(x)\,v'(x)\,dx$$
+        <p><strong>Étape 4</strong> — Calculer le crochet (haut moins bas) et la nouvelle intégrale, qui doit être plus simple que la première.</p>
+
+        <h2>4. Les trois types d'exercices classiques au bac</h2>
+
+        <h3>Type 1 — Polynôme × exponentielle ou trigonométrique</h3>
+        <p><strong>Exemple :</strong> $\displaystyle\int_0^1 x\,e^x\,dx$</p>
+        <p>Squelette : $v(x) = x \implies v'(x) = 1$ et $u'(x) = e^x \implies u(x) = e^x$.</p>
+        $$\int_0^1 x\,e^x\,dx = \bigl[x\,e^x\bigr]_0^1 - \int_0^1 e^x\,dx = e - \bigl[e^x\bigr]_0^1 = e - (e - 1) = 1$$
+        <p>La nouvelle intégrale $\int e^x\,dx$ est immédiate : le choix était bon.</p>
+
+        <h3>Type 2 — L'astuce du $\times\,1$ : intégrer $\ln(x)$ ou $\arctan(x)$ seuls</h3>
+        <p>Ces fonctions n'ont pas de primitive usuelle. On force l'IPP en multipliant par $1$.</p>
+        <p><strong>Exemple :</strong> $\displaystyle\int_1^e \ln(x)\,dx = \int_1^e 1 \cdot \ln(x)\,dx$</p>
+        <p>Dans ALPES, <strong>L</strong> (logarithme) est avant <strong>P</strong> (polynôme — ici le $1$). On dérive donc le logarithme : $v(x) = \ln(x) \implies v'(x) = 1/x$ et $u'(x) = 1 \implies u(x) = x$.</p>
+        $$\int_1^e \ln(x)\,dx = \bigl[x\ln(x)\bigr]_1^e - \int_1^e x \cdot \frac{1}{x}\,dx = e - \bigl[x\bigr]_1^e = e - (e-1) = 1$$
+        <div class="callout">
+          <p>La même astuce fonctionne pour $\arctan(x)$ : on pose $u' = 1$ et $v = \arctan(x)$, car <strong>A</strong> est avant <strong>P</strong> dans ALPES.</p>
+        </div>
+
+        <h3>Type 3 — La double IPP : polynôme de degré 2</h3>
+        <p>Quand le polynôme est de degré 2, une seule IPP abaisse le degré de 2 à 1, et il faut recommencer.</p>
+        <p><strong>Exemple :</strong> $\displaystyle\int_0^{\pi/2} x^2\cos(x)\,dx$</p>
+        <p><strong>Première IPP :</strong> $v = x^2$, $u' = \cos(x)$, donc $u = \sin(x)$.</p>
+        $$\int_0^{\pi/2} x^2\cos(x)\,dx = \bigl[x^2\sin(x)\bigr]_0^{\pi/2} - 2\int_0^{\pi/2} x\sin(x)\,dx = \frac{\pi^2}{4} - 2\int_0^{\pi/2} x\sin(x)\,dx$$
+        <p><strong>Deuxième IPP</strong> sur $\int_0^{\pi/2} x\sin(x)\,dx$ : $v = x$, $u' = \sin(x)$, donc $u = -\cos(x)$.</p>
+        $$\int_0^{\pi/2} x\sin(x)\,dx = \bigl[-x\cos(x)\bigr]_0^{\pi/2} + \int_0^{\pi/2} \cos(x)\,dx = 0 + \bigl[\sin(x)\bigr]_0^{\pi/2} = 1$$
+        <p><strong>Résultat final :</strong></p>
+        $$\int_0^{\pi/2} x^2\cos(x)\,dx = \frac{\pi^2}{4} - 2$$
+        <div class="callout">
+          <p><strong>Règle à retenir :</strong> lors d'une double IPP, on conserve le même type de choix à chaque étape — on continue à dériver le polynôme et à intégrer la même famille de fonction. Inverser les choix à la deuxième étape annule le travail de la première.</p>
+        </div>
+
+        <h2>5. Les 3 pièges qui coûtent des points au bac</h2>
+        <p><strong>Piège 1 — Oublier le signe moins.</strong> La formule est $[uv]\ \mathbf{-}\ \int uv'$. Le signe moins disparaît régulièrement entre le brouillon et la copie au propre. Vérifiez-le systématiquement.</p>
+        <p><strong>Piège 2 — Inverser $u'$ et $v$.</strong> Un mauvais choix rend la nouvelle intégrale plus complexe que l'originale — signe certain que ALPES n'a pas été respecté. Si le calcul se complique après la première IPP, vérifiez l'ordre de départ.</p>
+        <p><strong>Piège 3 — Omettre la justification de validité.</strong> Au bac, l'IPP sans mention de la dérivabilité de $u$ et $v$ et de la continuité de $u'$ et $v'$ sur l'intervalle perd des points de rédaction. Cette ligne prend 10 secondes à écrire.</p>
+
+      </div><!-- /article-body -->
+
+      <!-- CTA avant FAQ -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Maths Terminale</p>
+            <p class="cta-strip-heading">Tout le programme sur une fiche par chapitre — PDF immédiat</p>
+          </div>
+          <a href="/maths-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Maths en ligne — 30 €/h, avec une polytechnicienne</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="faq-section">
+        <h2>FAQ — Intégration par parties</h2>
+        <div class="faq-item">
+          <h3>Faut-il connaître la formule par cœur ou est-elle donnée au bac ?</h3>
+          <p>La formule n'est pas fournie dans le formulaire officiel. Il faut la connaître par cœur. La meilleure façon de ne jamais l'oublier est de retenir sa logique : elle vient de $(uv)' = u'v + uv'$, donc $\int u'v = [uv] - \int uv'$.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Comment savoir si on doit utiliser l'IPP ou un changement de variable ?</h3>
+          <p>L'IPP s'applique quand l'intégrale est un produit de deux fonctions de familles différentes (polynôme × exponentielle, logarithme × polynôme, etc.). Le changement de variable convient mieux quand une fonction composée apparaît et que sa dérivée est visible dans l'expression. Au bac, les exercices d'IPP sont souvent identifiables car l'énoncé précise la méthode à utiliser.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Que faire si après deux IPP on retombe sur l'intégrale de départ ?</h3>
+          <p>C'est une IPP circulaire — cas typique de $\int e^x\cos(x)\,dx$. Après deux IPP, on obtient une égalité $I = A - I$, ce qui donne $2I = A$, donc $I = A/2$. On résout une équation plutôt que d'intégrer directement. Ce type est rare au bac de terminale mais peut apparaître en début de sujet comme question guidée.</p>
+        </div>
+      </div>
+
+      <!-- CTA fin -->
+      <div class="cta-strip">
+        <div class="cta-strip-text">
+          <p class="cta-strip-eyebrow">C'Réussite · Terminale Spé</p>
+          <p class="cta-strip-heading">20 fiches Maths PDF — cours, formules et méthodes sur une page par chapitre</p>
+        </div>
+        <a href="/maths-terminale/" class="btn">Découvrir l'ebook →</a>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/fiches-maths-terminale/geometrie-espace-bac-terminale/">Géométrie dans l'espace : représentation paramétrique, plans et distances</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/cinetique-chimique/">Cinétique chimique : ordre 1, constante k, temps de demi-réaction</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/calculer-ph/">Calculer un pH : acide fort, base forte, solution tampon</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt — diplômée de l'École polytechnique, docteure en sciences, fondatrice de C'Réussite. Elle accompagne des élèves de la 6e au Master depuis plus de cinq ans. <a href="/a-propos/">En savoir plus</a>.
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>

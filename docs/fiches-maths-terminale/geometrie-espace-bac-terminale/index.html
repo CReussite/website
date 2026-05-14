@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <!-- End Google Tag Manager -->
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Géométrie dans l'espace au bac de maths : droites, plans, distances | C'Réussite</title>
+  <meta name="description" content="Représentation paramétrique, équation de plan, positions relatives, projeté orthogonal et distances : la méthode complète pour maîtriser la géométrie dans l'espace au bac de maths Terminale Spé.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-maths-terminale/geometrie-espace-bac-terminale/">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-maths-terminale/geometrie-espace-bac-terminale/">
+  <meta property="og:title" content="Géométrie dans l'espace au bac : droites, plans, distances | C'Réussite">
+  <meta property="og:description" content="Représentation paramétrique, équation cartésienne de plan, projeté orthogonal et distances : méthode complète pour le bac maths Terminale Spé.">
+  <meta property="og:site_name" content="C'Réussite">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"Article","headline":"Géométrie dans l'espace au bac de maths : droites, plans, distances","datePublished":"2026-05-09","dateModified":"2026-05-14","author":{"@type":"Person","name":"Camille Reinhardt","url":"https://c-reussite.fr/a-propos/"},"publisher":{"@type":"Organization","name":"C'Réussite","url":"https://c-reussite.fr"},"mainEntityOfPage":"https://c-reussite.fr/fiches-maths-terminale/geometrie-espace-bac-terminale/"},
+    {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://c-reussite.fr/"},{"@type":"ListItem","position":2,"name":"Maths Terminale","item":"https://c-reussite.fr/fiches-maths-terminale/"},{"@type":"ListItem","position":3,"name":"Géométrie dans l'espace","item":"https://c-reussite.fr/fiches-maths-terminale/geometrie-espace-bac-terminale/"}]},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"Comment savoir si deux droites sont sécantes ou non coplanaires ?","acceptedAnswer":{"@type":"Answer","text":"Si leurs vecteurs directeurs ne sont pas colinéaires, chercher s'il existe des valeurs des deux paramètres qui donnent le même point. Si le système n'a pas de solution, elles sont non coplanaires."}},
+      {"@type":"Question","name":"Peut-on avoir plusieurs vecteurs normaux pour le même plan ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Tous les vecteurs colinéaires à n(a ; b ; c) sont également normaux au plan. Au bac, on fixe souvent une coordonnée à 1 pour trouver un vecteur normal sans fractions."}},
+      {"@type":"Question","name":"Pourquoi la représentation paramétrique d'une droite n'est pas unique ?","acceptedAnswer":{"@type":"Answer","text":"Parce qu'on peut choisir n'importe quel point de la droite comme point de départ, et n'importe quel multiple non nul du vecteur directeur. Le lieu de points décrit reste identique."}}
+    ]}
+  ]}
+  </script>
+  <style>
+    .article-tag { display:inline-block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:3px 10px; border-radius:20px; background:var(--swan-wing); color:var(--sapphire); margin-bottom:12px; }
+    .article-header { margin-bottom:32px; padding-bottom:24px; border-bottom:1px solid #e5e7eb; }
+    .article-header h1 { font-size:clamp(1.45rem,3.5vw,1.95rem); line-height:1.25; margin-bottom:10px; color:var(--royal-blue); }
+    .article-meta { font-size:.85rem; color:#5C6475; }
+    .article-intro { font-size:1.02rem; color:var(--text-mid); line-height:1.75; margin:20px 0 28px; }
+    .article-body h2 { font-size:1.2rem; margin-top:36px; margin-bottom:12px; padding-bottom:7px; border-bottom:1px solid #e5e7eb; color:var(--royal-blue); }
+    .article-body h3 { font-size:1.02rem; font-weight:700; margin-top:24px; margin-bottom:9px; color:var(--royal-blue); }
+    .article-body p { margin-bottom:14px; line-height:1.7; color:var(--text-mid); }
+    .article-body ul,.article-body ol { margin:0 0 14px 22px; }
+    .article-body li { margin-bottom:6px; color:var(--text-mid); line-height:1.65; }
+    .article-body table { width:100%; border-collapse:collapse; margin:18px 0; font-size:.88rem; }
+    .article-body th { background:var(--swan-wing); font-weight:600; text-align:left; padding:9px 12px; border:1px solid #e5e7eb; color:var(--royal-blue); }
+    .article-body td { padding:9px 12px; border:1px solid #e5e7eb; vertical-align:top; color:var(--text-mid); }
+    .article-body tr:nth-child(even) td { background:#fafafa; }
+    .article-body strong { color:var(--royal-blue); font-weight:700; }
+    .callout { background:var(--swan-wing); border-left:3px solid var(--sapphire); border-radius:0 8px 8px 0; padding:14px 18px; margin:18px 0; }
+    .callout p { margin:0; color:var(--text-mid); }
+    .faq-section { margin-top:40px; padding-top:28px; border-top:2px solid #e5e7eb; }
+    .faq-section>h2 { font-size:1.15rem; margin-bottom:20px; padding-bottom:0; border-bottom:none; }
+    .faq-item { margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid #f0f0f0; }
+    .faq-item:last-child { border-bottom:none; }
+    .faq-item h3 { font-size:.97rem; margin-top:0; margin-bottom:7px; }
+    .faq-item p { margin:0; }
+    .read-next { margin-top:36px; padding-top:24px; border-top:1px solid #e5e7eb; }
+    .read-next h2 { font-size:1rem; margin-bottom:12px; color:var(--royal-blue); border:none; padding:0; }
+    .read-next ul { list-style:none; padding:0; margin:0; }
+    .read-next li { padding:6px 0; border-bottom:1px solid #f5f5f5; }
+    .read-next li:last-child { border-bottom:none; }
+    .read-next a { color:var(--sapphire); text-decoration:underline; font-size:.9rem; }
+    .author-box { background:var(--swan-wing); border-radius:10px; padding:16px 20px; margin-top:28px; font-size:.86rem; color:var(--text-mid); }
+    .author-box strong { display:block; margin-bottom:5px; color:var(--royal-blue); font-size:.9rem; }
+    .katex-display { overflow-x:auto; }
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-maths-terminale/">Maths Terminale</a><span class="bc-sep">›</span>
+      <span>Géométrie dans l'espace</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Maths · Terminale</span>
+        <h1>Géométrie dans l'espace au bac de maths : droites, plans et distances</h1>
+        <div class="article-meta">Publié le 9 mai 2026 · Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">La géométrie dans l'espace est présente dans 99 % des sessions de bac entre 2022 et 2025. C'est le chapitre le plus régulier de toute l'épreuve, devant les probabilités. Ce qui coûte des points n'est pas sa difficulté intrinsèque, mais la confusion entre les deux outils de base : la <strong>représentation paramétrique</strong> pour les droites, et l'<strong>équation cartésienne</strong> pour les plans. Le reste découle de ces deux briques.</p>
+
+      <div class="article-body">
+
+        <h2>1. Modéliser une droite : la représentation paramétrique</h2>
+        <p>Une droite dans l'espace ne peut pas s'écrire comme une seule équation — il en faut trois, liées par un paramètre $t$. Il faut deux éléments : <strong>un point</strong> $A(x_A ; y_A ; z_A)$ sur la droite, et <strong>un vecteur directeur</strong> $\vec{u}(a ; b ; c)$.</p>
+        $$\begin{cases} x = x_A + at \\ y = y_A + bt \\ z = z_A + ct \end{cases} \quad (t \in \mathbb{R})$$
+        <p><strong>Deux situations au bac :</strong></p>
+        <ul>
+          <li>La droite passe par deux points $A$ et $B$ : le vecteur directeur est $\vec{AB}$, dont les coordonnées sont $(x_B - x_A \; ; \; y_B - y_A \; ; \; z_B - z_A)$.</li>
+          <li>La droite est orthogonale à un plan : son vecteur directeur est le <strong>vecteur normal</strong> de ce plan.</li>
+        </ul>
+        <p><strong>Exemple :</strong> La droite $D$ passe par $A(2 ; 3 ; -1)$ et a pour vecteur directeur $\vec{u}(-1 ; -6 ; 3)$.</p>
+        $$\begin{cases} x = 2 - t \\ y = 3 - 6t \\ z = -1 + 3t \end{cases}$$
+        <div class="callout">
+          <p>Il existe une infinité de représentations paramétriques pour une même droite (selon le point de départ choisi). Toutes sont équivalentes.</p>
+        </div>
+
+        <h2>2. Modéliser un plan : l'équation cartésienne</h2>
+        <p>Un plan s'écrit toujours sous la forme $ax + by + cz + d = 0$, où $(a ; b ; c)$ sont les coordonnées du <strong>vecteur normal</strong> $\vec{n}$ au plan. Connaître $\vec{n}$, c'est connaître la direction perpendiculaire au plan.</p>
+        <p><strong>Comment trouver l'équation d'un plan défini par trois points $A$, $B$, $C$ :</strong></p>
+        <ol>
+          <li>Calculer deux vecteurs du plan : $\vec{AB}$ et $\vec{AC}$.</li>
+          <li>Trouver $\vec{n}(a ; b ; c)$ tel que $\vec{n} \cdot \vec{AB} = 0$ et $\vec{n} \cdot \vec{AC} = 0$ (système à deux équations ; fixer arbitrairement une valeur, par exemple $a = 1$, pour résoudre).</li>
+          <li>Écrire $ax + by + cz + d = 0$, puis injecter les coordonnées d'un point connu du plan pour trouver $d$.</li>
+        </ol>
+        <p><strong>Exemple :</strong> $\vec{n}(2 ; 3 ; -1)$, plan passant par $B(0 ; 2 ; 2)$.</p>
+        $$2(0) + 3(2) - (2) + d = 0 \implies d = -4$$
+        <p>Équation finale : $2x + 3y - z - 4 = 0$.</p>
+
+        <h2>3. Positions relatives : le tableau de référence</h2>
+        <p>C'est la question la plus fréquente en début d'exercice. Le raisonnement repose entièrement sur les produits scalaires entre les vecteurs caractéristiques.</p>
+        <table>
+          <thead><tr><th>Objets</th><th>Condition</th><th>Conclusion</th></tr></thead>
+          <tbody>
+            <tr><td>Droite et plan</td><td>$\vec{u} \cdot \vec{n} = 0$</td><td>Droite parallèle au plan (ou incluse dedans)</td></tr>
+            <tr><td>Droite et plan</td><td>$\vec{u} \cdot \vec{n} \neq 0$</td><td>Droite sécante au plan (un point d'intersection unique)</td></tr>
+            <tr><td>Droite et plan</td><td>$\vec{u}$ et $\vec{n}$ colinéaires</td><td>Droite perpendiculaire au plan</td></tr>
+            <tr><td>Deux droites</td><td>Vecteurs directeurs colinéaires</td><td>Droites parallèles (ou confondues)</td></tr>
+            <tr><td>Deux droites</td><td>$\vec{u}_1 \cdot \vec{u}_2 = 0$</td><td>Droites orthogonales (pas forcément sécantes)</td></tr>
+            <tr><td>Deux plans</td><td>Vecteurs normaux colinéaires</td><td>Plans parallèles</td></tr>
+            <tr><td>Deux plans</td><td>$\vec{n}_1 \cdot \vec{n}_2 = 0$</td><td>Plans orthogonaux</td></tr>
+            <tr><td>Deux plans</td><td>Vecteurs normaux non colinéaires</td><td>Plans sécants (intersection = une droite)</td></tr>
+          </tbody>
+        </table>
+        <p><strong>Rappel produit scalaire</strong> dans un repère orthonormé : pour $\vec{u}(x ; y ; z)$ et $\vec{v}(x' ; y' ; z')$,</p>
+        $$\vec{u} \cdot \vec{v} = xx' + yy' + zz'$$
+
+        <h2>4. Trouver un point d'intersection (droite à plan)</h2>
+        <p>C'est la compétence mécanique par excellence. Elle vaut 2 à 3 points dans la majorité des exercices.</p>
+        <p><strong>Méthode en 3 étapes :</strong></p>
+        <ol>
+          <li>Remplacer $x$, $y$ et $z$ dans l'équation du plan par leurs expressions paramétriques issues de la droite.</li>
+          <li>Résoudre l'équation en $t$ obtenue.</li>
+          <li>Réinjecter la valeur de $t$ dans la représentation paramétrique pour obtenir les coordonnées du point.</li>
+        </ol>
+        <p><strong>Exemple :</strong> Droite $D : x = 1+t,\ y = 2-t,\ z = 3t$ ; plan $P : 2x + y - z + 1 = 0$.</p>
+        $$2(1+t) + (2-t) - 3t + 1 = 0 \implies 5 - 2t = 0 \implies t = 2{,}5$$
+        <p>Point d'intersection : $(3{,}5 \; ; \; -0{,}5 \; ; \; 7{,}5)$.</p>
+        <div class="callout">
+          <p><strong>Vérifier qu'un point appartient à une droite :</strong> substituer ses coordonnées dans le système paramétrique et vérifier qu'on obtient la même valeur de $t$ sur les trois lignes.<br>
+          <strong>Vérifier qu'un point appartient à un plan :</strong> remplacer $x, y, z$ dans l'équation cartésienne. Le résultat doit être égal à zéro.</p>
+        </div>
+
+        <h2>5. Projeté orthogonal et distances</h2>
+        <p>C'est la partie qui différencie les copies à 14 de celles à 18. Elle apparaît dans la dernière question de l'exercice.</p>
+        <p><strong>Principe :</strong> le projeté orthogonal de $A$ sur un objet (droite ou plan) est le point $H$ de cet objet le plus proche de $A$. La distance cherchée est $AH$.</p>
+        $$AH = \sqrt{(x_H - x_A)^2 + (y_H - y_A)^2 + (z_H - z_A)^2}$$
+
+        <h3>Distance d'un point à un plan (formule directe)</h3>
+        <p>Si le plan a pour équation $ax + by + cz + d = 0$ et que le point est $M(x_M ; y_M ; z_M)$ :</p>
+        $$d(M, P) = \frac{|ax_M + by_M + cz_M + d|}{\sqrt{a^2 + b^2 + c^2}}$$
+        <p>La valeur absolue au numérateur garantit un résultat positif. Le dénominateur est la norme du vecteur normal.</p>
+        <p><strong>Exemple :</strong> $M(1 ; 1 ; 1)$ et plan $3x - 4y + 12z + 2 = 0$.</p>
+        $$d = \frac{|3(1) - 4(1) + 12(1) + 2|}{\sqrt{9 + 16 + 144}} = \frac{13}{13} = 1$$
+
+        <h3>Distance d'un point à une droite (projeté orthogonal à construire)</h3>
+        <p>Pas de formule directe au bac : il faut construire $H$.</p>
+        <ol>
+          <li>Écrire la droite sous forme paramétrique.</li>
+          <li>Exprimer $\vec{AH}$ en fonction de $t$.</li>
+          <li>Poser $\vec{AH} \cdot \vec{u} = 0$ (orthogonalité) pour trouver $t$, puis les coordonnées de $H$.</li>
+          <li>Calculer $AH$ avec la formule des distances.</li>
+        </ol>
+
+        <h2>6. Les 3 pièges classiques</h2>
+        <p><strong>Piège 1 — Confondre vecteur directeur et vecteur normal.</strong> Le vecteur directeur est parallèle à la droite. Le vecteur normal est perpendiculaire au plan. Quand une droite est perpendiculaire à un plan, son vecteur directeur est le vecteur normal du plan. C'est là que se fait la confusion.</p>
+        <p><strong>Piège 2 — Vecteur directeur des droites "parallèles".</strong> Deux droites à vecteurs directeurs colinéaires sont parallèles <em>ou confondues</em>. Si l'énoncé demande de justifier qu'elles sont strictement parallèles, il faut vérifier qu'un point de l'une n'appartient pas à l'autre.</p>
+        <p><strong>Piège 3 — Oublier la valeur absolue dans la formule de distance.</strong> La formule $d(M, P) = |ax_M + by_M + cz_M + d| / \sqrt{a^2 + b^2 + c^2}$ exige la valeur absolue au numérateur. Sans elle, le résultat peut être négatif, ce qui n'a aucun sens pour une distance.</p>
+
+      </div><!-- /article-body -->
+
+      <!-- CTA avant FAQ -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Maths Terminale</p>
+            <p class="cta-strip-heading">Tout le programme sur une fiche par chapitre — PDF immédiat</p>
+          </div>
+          <a href="/maths-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Maths en ligne — 30 €/h, avec une polytechnicienne</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="faq-section">
+        <h2>FAQ — Géométrie dans l'espace</h2>
+        <div class="faq-item">
+          <h3>Comment savoir si deux droites sont sécantes ou non coplanaires ?</h3>
+          <p>Deux droites qui ne sont pas parallèles peuvent être sécantes (elles se croisent en un point) ou non coplanaires (elles ne sont dans aucun plan commun). Pour trancher : si leurs vecteurs directeurs ne sont pas colinéaires, chercher s'il existe des valeurs des deux paramètres qui donnent le même point. Si le système n'a pas de solution, elles sont non coplanaires.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Peut-on avoir plusieurs vecteurs normaux pour le même plan ?</h3>
+          <p>Oui. Tous les vecteurs colinéaires à $\vec{n}(a ; b ; c)$ sont également normaux au plan. Au bac, on fixe souvent une coordonnée à 1 (ou à une valeur simple) pour trouver un vecteur normal sans fractions. Le choix n'influe pas sur l'équation finale du plan.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Pourquoi la représentation paramétrique d'une droite n'est pas unique ?</h3>
+          <p>Parce qu'on peut choisir n'importe quel point de la droite comme point de départ, et n'importe quel multiple non nul du vecteur directeur. Le lieu de points décrit reste identique. Lors d'une vérification, il faut tester l'appartenance (même valeur de $t$ sur les trois équations), et non comparer les représentations terme à terme.</p>
+        </div>
+      </div>
+
+      <!-- CTA fin -->
+      <div class="cta-strip">
+        <div class="cta-strip-text">
+          <p class="cta-strip-eyebrow">C'Réussite · Terminale Spé</p>
+          <p class="cta-strip-heading">20 fiches Maths PDF — cours, formules et méthodes sur une page par chapitre</p>
+        </div>
+        <a href="/maths-terminale/" class="btn">Découvrir l'ebook →</a>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/fiches-maths-terminale/integration-par-parties-bac-terminale/">Calculer une intégrale par parties : formule, règle ALPES, méthode</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/cinetique-chimique/">Cinétique chimique : ordre 1, constante k, temps de demi-réaction</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/calculer-ph/">Calculer un pH : acide fort, base forte, solution tampon</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt — diplômée de l'École polytechnique, docteure en sciences, fondatrice de C'Réussite. Elle accompagne des élèves de la 6e au Master depuis plus de cinq ans. <a href="/a-propos/">En savoir plus</a>.
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>
