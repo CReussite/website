@@ -1159,6 +1159,22 @@ footer a:hover { color: var(--quicksand); }
 .extract-popup--pack .form-control:focus { border-color: var(--quicksand); }
 .extract-popup .form-note { font-size: 0.8rem; color: var(--shellstone); margin-top: 12px; margin-bottom: 0; }
 
+/* ===== CTA INLINE (cours particuliers, extrait, ebook) ===== */
+.cours-cta-inline {
+  background: #f0f5ff;
+  border: 1px solid #c7d7f5;
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: 1fr 270px;
+  gap: 24px;
+  align-items: center;
+}
+.cours-cta-inline .cours-cta-title { font-weight: 700; color: var(--royal-blue); margin: 0 0 4px; }
+.cours-cta-inline .cours-cta-sub { color: var(--text-mid); font-size: 0.88rem; margin: 0; }
+.cours-cta-inline .btn { width: 100%; text-align: center; white-space: nowrap; }
+
 /* ===== MODAL PAIEMENT ===== */
 .payment-modal { max-width: 480px; max-height: 90vh; overflow-y: auto; }
 .payment-modal-summary {
@@ -1600,15 +1616,15 @@ footer a:hover { color: var(--quicksand); }
     padding: 0;
     display: none;
   }
-  .nav-dropdown-wrap.open .nav-dropdown-menu { display: block; }
   .nav-dropdown-menu a {
     color: rgba(255,255,255,0.65);
     font-size: 0.95rem;
     padding: 10px 24px 10px 36px;
   }
   .nav-dropdown-menu a:hover { background: rgba(255,255,255,0.08); }
-  /* Désactiver le hover CSS sur mobile (pas de hover réel) */
+  /* Désactiver le hover CSS sur mobile, activer uniquement via .open */
   .nav-dropdown-wrap:hover .nav-dropdown-menu { display: none; }
+  .nav-links .nav-dropdown-wrap.open .nav-dropdown-menu { display: block; }
   .nav-admin-link {
     padding: 8px;
     border-color: rgba(255,255,255,0.4);
@@ -1637,4 +1653,7 @@ footer a:hover { color: var(--quicksand); }
   .bundle-mini-covers img { flex: 1; width: auto; min-width: 0; }
   .bundle-plus { display: none; }
   .bundle-card .product-buttons { max-width: 100%; }
+  /* CTA inline : passer en colonne, bouton centré */
+  .cours-cta-inline { grid-template-columns: 1fr; }
+  .cours-cta-inline .btn { display: block; text-align: center; margin: 0 auto; }
 }
