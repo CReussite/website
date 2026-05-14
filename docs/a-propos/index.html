@@ -87,6 +87,26 @@
     .about-cta { background: var(--swan-wing, #f8f5ee); border-radius: 10px; padding: 24px 28px; margin-top: 48px; text-align: center; }
     .about-cta h2 { font-size: 1.2rem; margin-bottom: 8px; }
     .about-cta p { font-size: 0.95rem; color: var(--shellstone, #666); margin-bottom: 16px; }
+
+    /* CTA fiches après storytelling */
+    .about-cta-fiches { background: var(--swan-wing); border-radius: 10px; padding: 20px 24px; margin: 32px 0; }
+    .about-cta-fiches-title { font-weight: 700; color: var(--royal-blue); font-size: 1rem; margin: 0 0 14px; }
+    .about-fiches-links { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    /* Rubriques et listes dans "Ce que tu trouveras" */
+    .about-rubrique { font-size: 1rem; color: var(--royal-blue); margin: 28px 0 8px; border-bottom: 1px solid #e5e7eb; padding-bottom: 6px; }
+    .about-section h2 + .about-rubrique { margin-top: 8px; }
+    .about-resource-list { list-style: none; padding: 0; margin: 0 0 8px; }
+    .about-resource-list li { padding: 5px 0 5px 14px; position: relative; font-size: 0.92rem; color: var(--text-mid); border-bottom: 1px solid #f3f4f6; }
+    .about-resource-list li:last-child { border-bottom: none; }
+    .about-resource-list li::before { content: "·"; position: absolute; left: 2px; color: var(--royal-blue); font-weight: 700; }
+    .about-resource-list a { color: var(--sapphire); text-decoration: none; font-weight: 600; }
+    .about-resource-list a:hover { text-decoration: underline; }
+    .about-link-arrow { color: var(--sapphire); font-weight: 600; text-decoration: none; }
+    .about-link-arrow:hover { text-decoration: underline; }
+    .about-extrait-line { text-align: center; margin-top: 40px; font-size: 0.9rem; color: var(--text-mid); }
+    .about-extrait-line a { color: var(--sapphire); font-weight: 600; text-decoration: underline; }
+    .about-section p { line-height: 1.7; margin-bottom: 10px; font-size: 0.92rem; color: var(--text-mid); }
   </style>
 </head>
 <body>
@@ -114,8 +134,8 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
 
     <div class="about-section">
       <h2>Qui suis-je ?</h2>
-      <p>Camille Reinhardt. Bac S mention Très bien, classe préparatoire PC, puis École Polytechnique (X2011). J'ai ensuite fait une thèse en sciences de la vie et de la santé à l'Université Paris-Saclay, à l'Institut Gustave Roussy, un des premiers centres de cancérologie d'Europe. Mon sujet : comment améliorer la réponse des cellules tumorales aux traitements. Thèse soutenue en 2019.</p>
-      <p>J'ai aussi été cette élève qui galérait en maths et qui a dû trouver sa propre méthode pour s'en sortir. La réussite n'était pas évidente pour moi non plus.</p>
+      <p>Camille Reinhardt. Bac mention Très bien, classe préparatoire PCSI/PC, puis École Polytechnique. J’ai ensuite obtenu un doctorat en sciences à l’Université Paris-Saclay.</p>
+      <p>J'ai aussi été cette élève qui galérait et qui a dû trouver sa propre méthode pour s'en sortir. La réussite n'était pas évidente pour moi non plus.</p>
     </div>
 
     <div class="about-section">
@@ -126,28 +146,37 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
 
     <div class="about-section">
       <h2>Pourquoi C'Réussite ?</h2>
-      <p>C'Réussite est né en 2025, pendant une longue convalescence après une opération. Contrainte de rester chez moi, j'ai observé de plus près ce que les lycéens utilisaient pour réviser : des dizaines de ressources éparpillées, des fiches souvent incomplètes, des cours trop longs pour être vraiment utiles en période de révision.</p>
-      <p>Je me suis rendu compte qu'il manquait quelque chose de simple. Un chapitre, une page, les formules et les méthodes qui comptent vraiment pour le bac. J'ai commencé à créer ces fiches pour m'occuper. Et j'ai réalisé assez vite que c'était exactement ce dont les élèves avaient besoin.</p>
+      <p>C'Réussite est née en 2025, pendant une longue convalescence après une opération. Contrainte de rester chez moi, j'ai observé de plus près ce que les lycéens utilisaient pour réviser : des dizaines de ressources éparpillées, des fiches souvent incomplètes, des cours trop longs pour être vraiment utiles en période de révision.</p>
+      <p>Je me suis rendue compte qu'il manquait quelque chose de simple. Un chapitre, une page, les formules et les méthodes qui comptent vraiment pour le bac. J'ai commencé à créer ces fiches pour m'occuper. Et j'ai réalisé assez vite que c'était exactement ce dont les élèves avaient besoin.</p>
     </div>
 
     <div class="about-section">
-      <h2>Ce que vous trouverez ici</h2>
-      <ul style="margin-left: 20px; line-height: 1.8;">
-        <li><a href="/maths-terminale/">20 fiches Maths Terminale Spécialité</a>, programme officiel Bac 2026</li>
-        <li><a href="/physique-chimie-terminale/">32 fiches Physique-Chimie Terminale Spécialité</a>, programme officiel Bac 2026</li>
-        <li><a href="/pack-maths-physique-chimie/">Le Pack complet</a>, les deux matières, −17 %</li>
-        <li><a href="/cours-particuliers/">Cours particuliers en Maths et Physique-Chimie</a>, en ligne ou en présentiel, accompagnement personnalisé</li>
-        <li><a href="/fiches-maths-terminale/">Résumés de cours gratuits</a> par chapitre en maths</li>
-        <li><a href="/fiches-physique-chimie-terminale/">Résumés de cours gratuits</a> par chapitre en physique-chimie</li>
-        <li><a href="/blog/">Articles de méthode</a> pour réviser efficacement</li>
+      <h2>Ce que tu trouveras sur ce site</h2>
+
+      <h3 class="about-rubrique">Les fiches de révision (payantes)</h3>
+      <ul class="about-resource-list">
+        <li>Maths — 20 fiches, tout le programme, 14,99 € <a href="/maths-terminale/">Voir →</a></li>
+        <li>Physique-Chimie — 32 fiches, tout le programme, 14,99 € <a href="/physique-chimie-terminale/">Voir →</a></li>
+        <li>Le Pack — les deux matières, 24,99 € (−17 %) <a href="/pack-maths-physique-chimie/">Voir →</a></li>
       </ul>
+
+      <h3 class="about-rubrique">Les cours et formules par chapitre (gratuits)</h3>
+      <p>Des résumés détaillés chapitre par chapitre, en accès libre. Pour comprendre ou revoir une notion avant de passer aux fiches.</p>
+      <ul class="about-resource-list">
+        <li><a href="/fiches-maths-terminale/">Réviser les maths Terminale →</a></li>
+        <li><a href="/fiches-physique-chimie-terminale/">Réviser la physique-chimie Terminale →</a></li>
+      </ul>
+
+      <h3 class="about-rubrique">Le blog (gratuit)</h3>
+      <p>Des articles sur les sujets qui tombent au bac, les méthodes de révision, comment organiser son planning, les priorités par matière, l'orientation post-bac et le bien-être au lycée.</p>
+      <p><a href="/blog/" class="about-link-arrow">Lire le blog →</a></p>
+
+      <h3 class="about-rubrique">Les cours particuliers</h3>
+      <p>Maths ou physique-chimie, en ligne, 30 €/h. Pour un accompagnement personnalisé. <a href="/cours-particuliers/" class="about-link-arrow">Voir →</a></p>
     </div>
 
-    <div class="about-cta">
-      <h2>Un extrait gratuit avant d'acheter</h2>
-      <p>Téléchargez un aperçu des fiches pour juger par vous-même de la qualité avant de commander.</p>
-      <a href="/extrait-gratuit/" class="btn btn-primary">Obtenir l'extrait gratuit →</a>
-    </div>
+    <!-- CTA fin de page : extrait discret -->
+    <p class="about-extrait-line">Tu veux voir à quoi ressemblent les fiches ? <a href="/extrait-gratuit/">Obtenir un extrait gratuit →</a></p>
 
   </div>
 

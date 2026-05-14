@@ -108,26 +108,22 @@
   </script>
 
   <style>
-    /* ── Layout 2 colonnes (Amazon-style) ── */
+    /* ── Layout empilé ── */
     .product-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      max-width: 960px;
+      max-width: 720px;
       margin: 0 auto;
-      padding: 32px 20px 0;
-      align-items: start;
+      padding: 24px 20px 0;
     }
     .product-gallery {
-      position: sticky;
-      top: 120px;
+      max-width: 440px;
+      margin: 0 auto 28px;
     }
     .product-gallery .product-carousel { max-width: 100%; margin: 0; }
 
-    /* ── Colonne droite ── */
+    /* ── Infos produit ── */
     .product-info {}
     .product-info h1 {
-      font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
       line-height: 1.25;
       color: var(--royal-blue);
       margin-bottom: 14px;
@@ -138,6 +134,9 @@
     .product-rating { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; font-size: 0.88rem; color: var(--text-mid); }
     .product-rating .stars { color: #F5A623; }
 
+    /* ── Accroche ── */
+    .product-accroche { font-size: 0.9rem; color: var(--text-mid); line-height: 1.6; margin-bottom: 14px; }
+
     /* ── Bullets courts ── */
     .product-quick-bullets { list-style: none; padding: 0; margin: 0 0 22px; }
     .product-quick-bullets li { padding: 6px 0 6px 22px; position: relative; font-size: 0.92rem; color: var(--text-mid); border-bottom: 1px solid #f0f0f0; line-height: 1.5; }
@@ -145,11 +144,15 @@
     .product-quick-bullets li::before { content: "✓"; position: absolute; left: 0; color: #2d6a4f; font-weight: 700; }
 
     /* ── Prix + CTA ── */
-    .product-price-cta { background: var(--swan-wing); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+    .product-price-cta { background: var(--swan-wing); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; display: flex; align-items: center; gap: 24px; }
+    .product-price-cta .price-left { flex: 1; }
+    .product-price-cta .price-right { min-width: 260px; display: flex; flex-direction: column; gap: 8px; }
     .product-price-cta .price { font-size: 2rem; font-weight: 800; color: var(--royal-blue); line-height: 1; }
-    .product-price-cta .price-sub { font-size: 0.82rem; color: var(--text-mid); margin-bottom: 14px; margin-top: 3px; }
+    .product-price-cta .price-sub { font-size: 0.82rem; color: var(--text-mid); margin-top: 4px; }
     .product-price-cta .btn-commander { width: 100%; font-size: 1rem; padding: 14px; }
-    .product-price-cta .cta-note { font-size: 0.78rem; color: var(--text-mid); text-align: center; margin-top: 8px; }
+    .product-price-cta .cta-note { font-size: 0.78rem; color: var(--text-mid); text-align: center; margin: 0; }
+    .extract-soft-link { text-align: center; margin: 0; font-size: 0.82rem; }
+    .extract-soft-link a { color: var(--sapphire); text-decoration: underline; }
 
     /* ── Upsell pack ── */
     .product-upsell { background: #f0f5ff; border: 1px solid #c7d7f5; border-radius: 8px; padding: 12px 14px; font-size: 0.85rem; color: var(--text-mid); margin-bottom: 16px; }
@@ -161,7 +164,7 @@
     .product-reassurance li .ico { font-size: 1rem; flex-shrink: 0; }
 
     /* ── Sections pleine largeur ── */
-    .product-detail { max-width: 960px; margin: 0 auto; padding: 48px 20px 80px; }
+    .product-detail { max-width: 720px; margin: 0 auto; padding: 32px 20px 80px; }
     .product-detail h2 { font-size: 1.35rem; color: var(--royal-blue); margin-top: 40px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb; }
     .product-detail h2:first-child { margin-top: 0; }
     .product-detail p { color: var(--text-mid); line-height: 1.7; margin-bottom: 14px; }
@@ -186,6 +189,19 @@
     .faq-item h3 { font-size: 0.97rem; color: var(--royal-blue); margin-bottom: 7px; line-height: 1.4; }
     .faq-item p { font-size: 0.9rem; color: var(--text-mid); margin: 0; line-height: 1.65; }
 
+    /* Tableau chapitres */
+    .chapters-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-bottom: 4px; }
+    .chapters-table th { background: var(--royal-blue); color: #fff; padding: 10px 14px; text-align: left; font-weight: 600; }
+    .chapters-table td { padding: 9px 14px; border-bottom: 1px solid #e5e7eb; color: var(--text-mid); vertical-align: top; }
+    .chapters-table tbody tr:last-child td { border-bottom: none; }
+    .chapters-table td:first-child { font-weight: 600; color: var(--royal-blue); white-space: nowrap; }
+
+    /* CTA inline */
+    .cours-cta-inline { background: #f0f5ff; border: 1px solid #c7d7f5; border-radius: 10px; padding: 20px 24px; margin: 20px 0; display: grid; grid-template-columns: 1fr 270px; gap: 24px; align-items: center; }
+    .cours-cta-inline .cours-cta-title { font-weight: 700; color: var(--royal-blue); margin: 0 0 4px; }
+    .cours-cta-inline .cours-cta-sub { color: var(--text-mid); font-size: 0.88rem; margin: 0; }
+    .cours-cta-inline .btn { width: 100%; text-align: center; white-space: nowrap; }
+
     /* CTA final */
     .product-final-cta { background: var(--royal-blue); border-radius: 12px; padding: 28px 32px; text-align: center; margin-top: 48px; }
     .product-final-cta h2 { color: #fff; font-size: 1.3rem; margin-bottom: 6px; border: none; padding: 0; }
@@ -193,9 +209,11 @@
     .product-final-cta .btn-commander { font-size: 1rem; padding: 14px 32px; }
 
     /* Responsive */
-    @media (max-width: 680px) {
-      .product-layout { grid-template-columns: 1fr; gap: 24px; }
-      .product-gallery { position: static; }
+    @media (max-width: 520px) {
+      .product-gallery { max-width: 100%; }
+      .cours-cta-inline { grid-template-columns: 1fr; }
+      .product-price-cta { flex-direction: column; align-items: stretch; }
+      .product-price-cta .price-right { min-width: unset; }
     }
   </style>
 </head>
@@ -252,7 +270,7 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
     <!-- DROITE : infos produit -->
     <div class="product-info">
 
-      <h1>Fiches de Révision Maths Terminale Spécialité — Bac 2026</h1>
+      <h1>Fiches de Révision Maths Terminale Spécialité Bac 2026 : Tout le programme sur 20 pages</h1>
 
       <div class="product-meta-tags">
         <span class="product-tag">20 fiches PDF</span>
@@ -260,40 +278,27 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
         <span class="product-tag">Livraison immédiate</span>
       </div>
 
-      <div class="product-rating">
-        <span class="stars">⭐⭐⭐⭐⭐</span>
-        <span>5,0 / 5 · Conçues par une polytechnicienne</span>
-      </div>
+      <p class="product-accroche">Le bac approche. Tu as l'impression d'avoir encore tout à réviser ? Ces 20 fiches condensent l'intégralité du programme en une page par chapitre.</p>
 
       <ul class="product-quick-bullets">
         <li><strong>Gagne du temps.</strong> Plus besoin de relire 200 pages de cours. Tout tient en 20 fiches.</li>
         <li><strong>Couvre 100 % du programme.</strong> Aucune impasse possible.</li>
         <li><strong>1 chapitre = 1 page.</strong> Format pensé pour les révisions de dernière minute.</li>
-        <li><strong>Compatible tous supports.</strong> Téléphone, tablette, ordi, impression.</li>
+        <li><strong>Par une polytechnicienne.</strong> Créées par quelqu'un qui a intégré l'X et qui sait ce que le correcteur attend.</li>
       </ul>
 
       <!-- Prix + CTA -->
       <div class="product-price-cta">
-        <div class="price">14,99 €</div>
-        <div class="price-sub">PDF — livraison immédiate par email · Achat unique</div>
-        <button data-product="maths" data-price="14.99" class="btn btn-primary btn-commander">Reçois tes 20 fiches maintenant →</button>
-        <p class="cta-note">Tu commences à réviser dans 2 minutes.</p>
+        <div class="price-left">
+          <div class="price">14,99 €</div>
+          <div class="price-sub">PDF, livraison immédiate par email</div>
+        </div>
+        <div class="price-right">
+          <button data-product="maths" data-price="14.99" class="btn btn-primary btn-commander">Reçois tes 20 fiches maintenant →</button>
+          <p class="cta-note">Tu commences à réviser dans 2 minutes.</p>
+          <p class="extract-soft-link"><a href="/extrait-gratuit/">Tu veux voir à quoi ça ressemble ? Reçois un extrait gratuit →</a></p>
+        </div>
       </div>
-
-      <!-- Upsell pack -->
-      <div class="product-upsell">
-        Tu révises aussi la physique-chimie ?
-        <a href="/pack-maths-physique-chimie/">Pack Maths + Physique-Chimie à 24,99 €</a>
-        au lieu de 29,98 € <strong>(−17 %)</strong>
-      </div>
-
-      <!-- Réassurance -->
-      <ul class="product-reassurance">
-        <li><span class="ico">⚡</span><span><strong>Livraison instantanée.</strong> Le PDF arrive dans ta boîte mail dès le paiement.</span></li>
-        <li><span class="ico">🔒</span><span><strong>Paiement sécurisé</strong> par carte bancaire via Stancer.</span></li>
-        <li><span class="ico">📱</span><span><strong>Compatible tous supports</strong> : téléphone, tablette, ordi, impression.</span></li>
-        <li><span class="ico">✉️</span><span><strong>Support</strong> : contact@c-reussite.fr — réponse sous 24 h.</span></li>
-      </ul>
 
     </div><!-- /product-info -->
   </div><!-- /product-layout -->
@@ -301,8 +306,18 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
   <!-- ══ Sections pleine largeur ══ -->
   <div class="product-detail">
 
-    <h2>Le problème que tu connais</h2>
-    <p>Tes cours font 200 pages. Tes cahiers sont incomplets. Tu ne sais pas par quoi commencer. Et plus le bac approche, plus le stress monte.</p>
+    <!-- Upsell + réassurance -->
+    <div class="product-upsell">
+      Tu révises aussi la physique-chimie ? <a href="/pack-maths-physique-chimie/">Pack Maths + Physique-Chimie · 24,99 € <strong>(−17 %)</strong></a>
+    </div>
+    <ul class="product-reassurance" style="margin-bottom:32px;">
+      <li><span class="ico">⚡</span><span><strong>Livraison instantanée.</strong> Le PDF arrive dans ta boîte mail dès le paiement.</span></li>
+      <li><span class="ico">🔒</span><span><strong>Paiement sécurisé</strong> par carte bancaire via Stancer.</span></li>
+      <li><span class="ico">✉️</span><span><strong>Support</strong> : contact@c-reussite.fr, réponse sous 24 h.</span></li>
+    </ul>
+
+    <h2>Le problème</h2>
+    <p>Tu as 6 thèmes à réviser, de la géométrie aux équations différentielles, et tu ne sais pas ce qui va tomber. Tes cours font 200 pages, tes cahiers sont incomplets, et il ne reste que quelques jours.</p>
 
     <h2>La solution : tout le programme sur 20 pages</h2>
     <p>Chaque fiche = 1 chapitre = 1 page. Pas de blabla. Que l'essentiel : les définitions à connaître, les formules à retenir, les méthodes à appliquer le jour J.</p>
@@ -312,24 +327,41 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
     <ul class="benefit-list">
       <li><strong>20 fiches PDF</strong> couvrant 100 % du programme officiel Maths Terminale Spécialité</li>
       <li><strong>6 thèmes complets</strong> : Raisonnement, Algèbre, Probabilités, Géométrie dans l'espace, Suites, Analyse</li>
-      <li><strong>1 chapitre = 1 page</strong> — pensé pour les révisions de dernière minute</li>
+      <li><strong>1 chapitre = 1 page</strong>, pensé pour les révisions de dernière minute</li>
       <li><strong>PDF optimisé</strong> pour lecture sur téléphone, tablette, ordi et impression</li>
     </ul>
 
     <h2>Chapitres couverts</h2>
-    <ul class="toc-list">
-      <li><strong>Les types de raisonnement</strong></li>
-      <li><strong>Algèbre</strong> : combinatoire et dénombrement</li>
-      <li><strong>Probabilités</strong> : loi binomiale ; somme de variables aléatoires ; loi des grands nombres</li>
-      <li><strong>Espace et géométrie</strong> : vecteurs, droites, plans de l'espace ; orthogonalité et distances</li>
-      <li><strong>Suites</strong> : limites ; opérations sur les limites</li>
-      <li><strong>Analyse</strong> : limites ; dérivation ; continuité ; fonctions ln, cos, sin ; primitives ; calcul intégral ; équations différentielles</li>
-    </ul>
+    <table class="chapters-table">
+      <thead>
+        <tr><th>Thème</th><th>Chapitres</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Raisonnement</td><td>Les types de raisonnement</td></tr>
+        <tr><td>Algèbre</td><td>Combinatoire et dénombrement</td></tr>
+        <tr><td>Probabilités</td><td>Loi binomiale · Somme de variables aléatoires · Loi des grands nombres</td></tr>
+        <tr><td>Géométrie</td><td>Vecteurs, droites, plans de l'espace · Orthogonalité et distances</td></tr>
+        <tr><td>Suites</td><td>Limites · Opérations sur les limites</td></tr>
+        <tr><td>Analyse</td><td>Limites · Dérivation · Continuité · Fonctions ln, cos, sin · Primitives · Calcul intégral · Équations différentielles</td></tr>
+      </tbody>
+    </table>
 
-    <p style="font-size:0.88rem;color:var(--text-mid);margin-top:8px;">
-      Tu veux d'abord consulter les résumés gratuits par chapitre ?
-      → <a href="/fiches-maths-terminale/" style="color:var(--sapphire)">Réviser les maths Terminale — cours gratuits</a>
-    </p>
+    <!-- CTA cours particuliers -->
+    <div class="cours-cta-inline">
+      <div>
+        <p class="cours-cta-title">Besoin d'une aide personnalisée ?</p>
+        <p class="cours-cta-sub">Cours particuliers de maths en ligne, 30 €/h, avec une polytechnicienne.</p>
+      </div>
+      <a href="/cours-particuliers/" class="btn btn-primary">Voir les cours particuliers →</a>
+    </div>
+
+    <!-- CTA ebook avant FAQ -->
+    <div class="cours-cta-inline" style="background:var(--swan-wing);border-color:#e0d8cc;">
+      <div>
+        <p class="cours-cta-title">20 fiches PDF · Livraison immédiate</p>
+      </div>
+      <button data-product="maths" data-price="14.99" class="btn btn-primary btn-commander">Reçois tes 20 fiches · 14,99 € →</button>
+    </div>
 
     <h2>Questions fréquentes</h2>
     <div class="faq-item">
@@ -355,10 +387,10 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
 
     <!-- CTA final -->
     <div class="product-final-cta">
-      <h2>14,99 € — Reçois tes 20 fiches maintenant</h2>
+      <h2>Reçois tes 20 fiches maintenant · 14,99 €</h2>
       <p>Livraison immédiate par email. Tu commences à réviser dans 2 minutes.</p>
       <button data-product="maths" data-price="14.99" class="btn btn-primary btn-commander">Commander →</button>
-      <p style="font-size:0.8rem;color:rgba(255,255,255,0.6);margin-top:12px;margin-bottom:0;">Tu préfères les deux matières ? <a href="/pack-maths-physique-chimie/" style="color:var(--quicksand);text-decoration:underline;">Pack Maths + Physique-Chimie à 24,99 € (−17 %)</a></p>
+      <p style="font-size:0.8rem;color:rgba(255,255,255,0.6);margin-top:12px;margin-bottom:0;">Tu révises aussi la physique-chimie ? <a href="/pack-maths-physique-chimie/" style="color:var(--quicksand);text-decoration:underline;">Pack Maths + Physique-Chimie à 24,99 € (−17 %)</a></p>
     </div>
 
   </div><!-- /product-detail -->

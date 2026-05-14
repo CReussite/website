@@ -59,6 +59,16 @@
     <script src="js/schema.js" defer></script>
 
     <style>
+      /* ── Liens produits sous différenciation ── */
+      .diff-cta .btn-extract { width: 100%; box-sizing: border-box; }
+      .diff-product-links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+      .diff-product-links .btn { flex: 1; text-align: center; }
+
+      /* ── Crédentiels Camille ── */
+      .about-creds { list-style: none; padding: 0; margin: 14px 0 0; }
+      .about-creds li { font-size: 0.85rem; color: var(--text-mid); padding: 4px 0 4px 16px; position: relative; }
+      .about-creds li::before { content: "·"; position: absolute; left: 4px; color: var(--royal-blue); font-weight: 700; }
+
       /* ── Accordion FAQ ── */
       .faq-item {
         cursor: pointer;
@@ -250,7 +260,7 @@
           {
             "@type": "Question",
             "name": "Quelle différence avec les fiches gratuites qu'on trouve en ligne ?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Les fiches gratuites sont souvent incomplètes, non relues et mal structurées. Ici chaque fiche est alignée sur le programme officiel 2025, vérifiée par une polytechnicienne et condensée sur une seule page avec les méthodes de résolution du bac." }
+            "acceptedAnswer": { "@type": "Answer", "text": "Les fiches gratuites sont souvent incomplètes, non relues et mal structurées. Ici chaque fiche est alignée sur le programme officiel 2025-2026, vérifiée par une polytechnicienne et condensée sur une seule page avec les méthodes de résolution du bac." }
           },
           {
             "@type": "Question",
@@ -334,7 +344,7 @@
           plupart sont incomplètes, non vérifiées, ou mal structurées. Un élève qui révise avec un
           support approximatif perd du temps sans le savoir.
         </p>
-        <h2 id="diff-title">Ces fiches sont différentes sur trois points :</h2>
+        <h2 id="diff-title">Ce qui les distingue des fiches gratuites</h2>
         <div class="diff-grid">
           <div class="diff-block">
             <h3>Une page par chapitre au format A4</h3>
@@ -362,6 +372,11 @@
           <button class="btn btn-outline btn-extract" data-extract="bundle">
             Tu veux voir à quoi ressemblent les fiches ? Reçois un extrait gratuit →
           </button>
+        </div>
+        <div class="diff-product-links">
+          <a href="/maths-terminale/" class="btn btn-outline">Fiches Maths →</a>
+          <a href="/physique-chimie-terminale/" class="btn btn-outline">Fiches Physique-Chimie →</a>
+          <a href="/pack-maths-physique-chimie/" class="btn btn-primary">Le Pack (−17 %) →</a>
         </div>
       </div>
     </section>
@@ -394,36 +409,23 @@
         <div class="about-inner">
           <div>
             <h3 class="about-name">Camille Reinhardt</h3>
-            <div class="about-subtitle">Polytechnicienne<br />Docteure en sciences</div>
+            <div class="about-subtitle">Polytechnicienne<br>Docteure en sciences</div>
+            <ul class="about-creds">
+              <li>Prépa PCSI/PC</li>
+              <li>École Polytechnique</li>
+              <li>Université Paris-Saclay</li>
+              <li>Expérience en cours particuliers</li>
+            </ul>
           </div>
 
           <div>
             <p>
-              Je viens d’un petit village. Pas de grand lycée, pas de prépa privée. J’ai travaillé,
-              structuré, recommencé. Et j’ai intégré l’École Polytechnique.
+              Bac mention Très bien, prépa PCSI/PC, École Polytechnique, thèse en sciences de la vie à l'Université Paris-Saclay (Institut Gustave Roussy). Depuis plusieurs années, cours particuliers en maths et physique-chimie, du collège au lycée.
             </p>
             <p>
-              Ce parcours m’a appris une chose : la réussite scolaire n’est pas une question de
-              talent inné. C’est une question de méthode, de clarté et de travail.
+              C'Réussite est né d'un constat simple : les élèves manquent d'un support qui isole l'essentiel d'un chapitre sur une page, avec les formules et les méthodes qui comptent vraiment au bac.
             </p>
-            <p>
-              En accompagnant des élèves en sciences de tous niveaux, du collège au supérieur, j’ai
-              observé le même problème partout : les cours sont longs, les manuels sont denses, et
-              les élèves ne savent pas quoi retenir en priorité. Ces fiches sont ma réponse à ce
-              problème. Chaque fiche isole l’essentiel d’un chapitre, le structure en une page, et
-              donne les méthodes concrètes pour résoudre les exercices du bac.
-            </p>
-            <p>
-              Je connais les exigences du supérieur et je connais les difficultés des élèves au
-              collège et au lycée. Ces fiches sont construites à partir de cette double
-              perspective : ce qu’il faut savoir pour réussir le bac, et ce qu’il faut maîtriser
-              pour aborder sereinement la suite.
-            </p>
-            <p>
-              Je ne promets pas de miracle. Je promets un outil clair, rigoureux, conçu par
-              quelqu’un qui a passé les concours les plus sélectifs et qui a accompagné des élèves
-              de la 6e au Master.
-            </p>
+            <a href="/a-propos/" class="btn-link">En savoir plus sur mon parcours →</a>
           </div>
         </div>
       </div>
@@ -470,7 +472,7 @@
             <p class="faq-a">
               Si tu es prêt à travailler, oui. Elles structurent le programme de façon claire et
               logique. En revanche, pour des difficultés profondes ou un départ de zéro à J-7 du
-              bac, des cours particuliers seront plus efficaces.
+              bac, des <a href="/cours-particuliers/">cours particuliers</a> seront plus efficaces.
             </p>
           </div>
           <div class="faq-item">
@@ -493,7 +495,7 @@
             </div>
             <p class="faq-a">
               Les fiches gratuites sont souvent incomplètes, non relues et mal structurées. Ici
-              chaque fiche est alignée sur le programme officiel 2025, vérifiée par une
+              chaque fiche est alignée sur le programme officiel 2025-2026, vérifiée par une
               polytechnicienne et condensée sur une seule page avec les méthodes de résolution du
               bac.
             </p>
@@ -508,6 +510,19 @@
               bac, en format PDF consultable sur téléphone ou imprimable.
             </p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cours particuliers CTA -->
+    <section aria-label="Cours particuliers">
+      <div class="container">
+        <div style="background:#f0f5ff;border:1px solid #c7d7f5;border-radius:12px;padding:24px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;margin:0 auto;max-width:760px;">
+          <div>
+            <p style="font-weight:700;font-size:1.05rem;color:var(--royal-blue);margin:0 0 6px;">Besoin d’un accompagnement personnalisé ?</p>
+            <p style="font-size:0.9rem;color:var(--text-mid);margin:0;">Cours particuliers de maths ou physique-chimie en ligne, 30 €/h, avec une polytechnicienne.</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn btn-primary" style="white-space:nowrap;">Voir les cours particuliers →</a>
         </div>
       </div>
     </section>
