@@ -216,6 +216,61 @@ async function saveInvoicePath(paymentSessionId, invoicePath) {
   if (error) console.warn(`[storage] saveInvoicePath échoué : ${error.message}`);
 }
 
+/**
+ * Crée une facture de cours particuliers avec un numéro CRE-YYYY-XXXXX
+ * dans la même séquence que les commandes ebooks.
+ */
+async function insertCoursParticuliersInvoice({
+  customerName,
+  customerEmail,
+  customerAddress,
+  items,
+  paymentDate,
+  paymentMethod,
+}) {
+  const supabase = getClient();
+
+  const year = new Date().getFullYear();
+  const { count } = await supabase
+    .from('orders')
+    .select('*', { count: 'exact', head: true })
+    .like('invoice_number', `CRE-${year}-%`);
+
+  const seq = String((count || 0) + 1).padStart(5, '0');
+  const invoiceNumber = `CRE-${year}-${seq}`;
+
+  const totalEur = items.reduce((sum, item) => sum + Number(item.total), 0);
+  const totalCents = Math.round(totalEur * 100);
+
+  const metadata = {
+    type: 'cours_particuliers',
+    customer: { name: customerName, address: customerAddress || '' },
+    items,
+    payment_date: paymentDate,
+    payment_method: paymentMethod,
+  };
+
+  const sessionId = `CP-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+
+  const { data: order, error } = await supabase
+    .from('orders')
+    .insert({
+      email: customerEmail,
+      product_id: 'cours_particuliers',
+      amount: totalCents,
+      payment_session_id: sessionId,
+      invoice_number: invoiceNumber,
+      email_sent: true,
+      invoice_path: JSON.stringify(metadata),
+    })
+    .select()
+    .single();
+
+  if (error) throw new Error(`DB insertCoursParticuliers failed: ${error.message}`);
+
+  return { order, invoiceNumber };
+}
+
 module.exports = {
   getClient,
   insertOrderIdempotent,
@@ -226,4 +281,5 @@ module.exports = {
   getExtractRequests,
   uploadInvoicePdf,
   saveInvoicePath,
+  insertCoursParticuliersInvoice,
 };

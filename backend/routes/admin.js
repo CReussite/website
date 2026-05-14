@@ -1,5 +1,5 @@
 const express = require('express');
-const { getOrders, getAdminStats, getExtractRequests } = require('../services/db');
+const { getOrders, getAdminStats, getExtractRequests, insertCoursParticuliersInvoice } = require('../services/db');
 const { generateInvoice }  = require('../services/invoice');
 
 const router = express.Router();
@@ -137,6 +137,37 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
 
     if (!order) return res.status(404).json({ error: 'Facture introuvable.' });
 
+    // ── Cours particuliers : métadonnées stockées dans invoice_path ──────────
+    if (order.product_id === 'cours_particuliers' && order.invoice_path) {
+      let cpMeta = null;
+      try { cpMeta = JSON.parse(order.invoice_path); } catch (_) {}
+
+      if (cpMeta && cpMeta.type === 'cours_particuliers') {
+        const dateObj = new Date(order.created_at);
+        const dateStr = dateObj.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        const items = cpMeta.items.map(function (item) {
+          return {
+            description: `${item.nature} — ${item.date}`,
+            quantity: Number(item.hours),
+            unit_price: Number(item.hourly_rate),
+          };
+        });
+        return res.json({
+          invoice_number: order.invoice_number,
+          date: dateStr,
+          payment_date: cpMeta.payment_date || dateStr,
+          payment_ref: order.payment_session_id || '—',
+          payment_method: cpMeta.payment_method || '—',
+          customer: {
+            name: cpMeta.customer.name,
+            email: order.email,
+            address: cpMeta.customer.address || '',
+          },
+          items,
+        });
+      }
+    }
+
     const path    = require('path');
     const PRODUCTS = require(path.join(__dirname, '../../docs/content/products.json'));
     const PRODUCT_MAP = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
@@ -207,6 +238,35 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
     });
   } catch (err) {
     console.error('[admin] invoice-data erreur :', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ── POST /api/admin/cours-particuliers ───────────────────────────────────────
+// Génère une facture de cours particuliers et la stocke en base.
+router.post('/cours-particuliers', requireAdminKey, async (req, res) => {
+  try {
+    const { customerName, customerEmail, customerAddress, items, paymentDate, paymentMethod } = req.body;
+
+    if (!customerName || !customerEmail || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ error: 'Données manquantes (nom, email, cours).' });
+    }
+    if (!paymentDate || !paymentMethod) {
+      return res.status(400).json({ error: 'Date et mode de paiement requis.' });
+    }
+
+    const { invoiceNumber } = await insertCoursParticuliersInvoice({
+      customerName,
+      customerEmail,
+      customerAddress,
+      items,
+      paymentDate,
+      paymentMethod,
+    });
+
+    res.json({ invoiceNumber });
+  } catch (err) {
+    console.error('[admin] cours-particuliers erreur :', err.message);
     res.status(500).json({ error: err.message });
   }
 });

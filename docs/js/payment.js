@@ -106,8 +106,8 @@ async function initPayment() {
       }
 
       const { url, paymentId, productId } = await res.json();
-      if (paymentId) localStorage.setItem('stancer_pending_payment', paymentId);
-      if (productId) localStorage.setItem('stancer_pending_product', productId);
+      try { if (paymentId) localStorage.setItem('stancer_pending_payment', paymentId); } catch (_) {}
+      try { if (productId) localStorage.setItem('stancer_pending_product', productId); } catch (_) {}
       window.location.href = url;
     } catch (err) {
       console.error('[payment] Erreur :', err.message);

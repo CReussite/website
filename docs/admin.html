@@ -283,6 +283,112 @@
       .inv-header { flex-direction: column; gap: 12px; text-align: center; }
       .inv-meta-row { flex-direction: column; gap: 4px; }
     }
+
+    /* ─── Cours particuliers ─── */
+    .cp-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+    .cp-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0;
+    }
+    .cp-card-header h2 {
+      margin: 0;
+      font-size: 1.05rem;
+      color: var(--sapphire, #112250);
+    }
+    .btn-cp-toggle {
+      font-size: .82rem;
+      padding: 6px 14px;
+      border: 1px solid var(--sapphire, #112250);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--sapphire, #112250);
+      cursor: pointer;
+    }
+    .btn-cp-toggle:hover { background: var(--sapphire, #112250); color: #fff; }
+    #cp-form-wrap { margin-top: 20px; }
+    .cp-section-label {
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      font-weight: 700;
+      color: #6b7280;
+      margin: 20px 0 10px;
+    }
+    .cp-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 600px) { .cp-grid-2 { grid-template-columns: 1fr; } }
+    .cp-field { display: flex; flex-direction: column; gap: 4px; }
+    .cp-field label { font-size: .8rem; color: #374151; font-weight: 500; }
+    .cp-input {
+      padding: 8px 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: .9rem;
+      font-family: inherit;
+      background: #fff;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .cp-input:focus { outline: none; border-color: var(--sapphire, #112250); }
+    .cours-rows { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+    .cours-row { display: grid; grid-template-columns: 2fr 1fr 90px 90px 90px 32px; gap: 8px; align-items: end; }
+    @media (max-width: 700px) { .cours-row { grid-template-columns: 1fr 1fr; } }
+    .cours-row .cp-field label { font-size: .75rem; }
+    .cours-row-total { font-size: .85rem; font-weight: 700; color: var(--sapphire, #112250); padding: 8px 0; }
+    .btn-rm-cours {
+      background: transparent;
+      border: 1px solid #fca5a5;
+      border-radius: 6px;
+      color: #ef4444;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 6px;
+      line-height: 1;
+      align-self: end;
+    }
+    .btn-rm-cours:hover { background: #fee2e2; }
+    .btn-add-cours {
+      font-size: .82rem;
+      padding: 7px 14px;
+      border: 1px dashed #9ca3af;
+      border-radius: 8px;
+      background: transparent;
+      color: #6b7280;
+      cursor: pointer;
+    }
+    .btn-add-cours:hover { border-color: var(--sapphire, #112250); color: var(--sapphire, #112250); }
+    .cp-total-line {
+      text-align: right;
+      font-weight: 700;
+      font-size: .95rem;
+      color: var(--sapphire, #112250);
+      margin: 8px 0 16px;
+    }
+    .cp-error { color: #b91c1c; font-size: .85rem; margin-bottom: 12px; display: none; }
+    .btn-cp-submit {
+      background: var(--sapphire, #112250);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 28px;
+      font-size: .95rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-cp-submit:disabled { opacity: .6; cursor: default; }
+    .btn-cp-submit:not(:disabled):hover { background: #1e3a70; }
   </style>
 </head>
 <body>
@@ -375,6 +481,59 @@
             <span>https://github.com/CReussite/website/actions</span>
             <em>Voir si les deploiements automatiques ont reussi.</em>
           </a>
+        </div>
+      </div>
+
+      <!-- ─── Cours particuliers ─── -->
+      <div class="cp-card" id="card-cp">
+        <div class="cp-card-header">
+          <h2>Cours particuliers — Générer une facture</h2>
+          <button class="btn-cp-toggle" id="btn-cp-toggle">+ Nouvelle facture</button>
+        </div>
+        <div id="cp-form-wrap" style="display:none;">
+          <p class="cp-section-label">Informations client</p>
+          <div class="cp-grid-2">
+            <div class="cp-field">
+              <label for="cp-name">Nom complet *</label>
+              <input class="cp-input" type="text" id="cp-name" placeholder="Prénom Nom" required>
+            </div>
+            <div class="cp-field">
+              <label for="cp-email">Email *</label>
+              <input class="cp-input" type="email" id="cp-email" placeholder="client@email.com" required>
+            </div>
+          </div>
+          <div class="cp-field" style="margin-top:12px;">
+            <label for="cp-address">Adresse (optionnel)</label>
+            <textarea class="cp-input" id="cp-address" rows="2" placeholder="Rue, ville, code postal…"></textarea>
+          </div>
+
+          <p class="cp-section-label">Détail des cours</p>
+          <div class="cours-rows" id="cours-rows"></div>
+          <button class="btn-add-cours" id="btn-add-cours" type="button">+ Ajouter une ligne</button>
+          <div class="cp-total-line">Total : <span id="cp-grand-total">0,00 €</span></div>
+
+          <p class="cp-section-label">Paiement</p>
+          <div class="cp-grid-2">
+            <div class="cp-field">
+              <label for="cp-pay-date">Date de paiement *</label>
+              <input class="cp-input" type="date" id="cp-pay-date" required>
+            </div>
+            <div class="cp-field">
+              <label for="cp-pay-method">Moyen de paiement *</label>
+              <select class="cp-input" id="cp-pay-method">
+                <option value="Virement bancaire">Virement bancaire</option>
+                <option value="Espèces">Espèces</option>
+                <option value="Chèque">Chèque</option>
+                <option value="Carte bancaire">Carte bancaire</option>
+                <option value="PayPal">PayPal</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="cp-error" id="cp-error"></div>
+          <div style="margin-top:20px;">
+            <button class="btn-cp-submit" id="btn-cp-submit" type="button">Générer la facture</button>
+          </div>
         </div>
       </div>
 
@@ -496,7 +655,7 @@
             </div>
             <div class="inv-payment">
               <span class="inv-payment-badge">Payé</span>
-              <span class="inv-payment-text">Paiement reçu par carte bancaire via Stancer le <span id="inv-payment-date-text">—</span>.</span>
+              <span class="inv-payment-text" id="inv-payment-text">Paiement reçu le <span id="inv-payment-date-text">—</span>.</span>
             </div>
             <div class="inv-legal">
               TVA non applicable, article 293 B du CGI.<br>
@@ -780,6 +939,11 @@
         document.getElementById('inv-payref').textContent = data.payment_ref;
         document.getElementById('inv-paydate').textContent = data.payment_date;
         document.getElementById('inv-payment-date-text').textContent = data.payment_date;
+        var payMethodLabel = (data.payment_method && data.payment_method !== 'Carte bancaire')
+          ? data.payment_method
+          : 'carte bancaire via Stancer';
+        document.getElementById('inv-payment-text').innerHTML =
+          'Paiement reçu par ' + payMethodLabel + ' le <span id="inv-payment-date-text">' + data.payment_date + '</span>.';
 
         document.getElementById('inv-client-name').textContent = data.customer.name;
         let details = data.customer.email;
@@ -906,6 +1070,165 @@
         if (!currentInvoiceNumber) return;
         var url = BACKEND + '/api/admin/invoice/' + encodeURIComponent(currentInvoiceNumber) + '?key=' + encodeURIComponent(adminKey);
         window.open(url, '_blank');
+      });
+
+      // ─── COURS PARTICULIERS ──────────────────────────────────────────────────
+      var cpFormWrap = document.getElementById('cp-form-wrap');
+      var btnCpToggle = document.getElementById('btn-cp-toggle');
+      var cpRowsContainer = document.getElementById('cours-rows');
+      var cpGrandTotal = document.getElementById('cp-grand-total');
+      var cpError = document.getElementById('cp-error');
+      var btnCpSubmit = document.getElementById('btn-cp-submit');
+      var cpRowCount = 0;
+
+      btnCpToggle.addEventListener('click', function () {
+        if (cpFormWrap.style.display === 'none') {
+          cpFormWrap.style.display = 'block';
+          btnCpToggle.textContent = '− Fermer';
+          if (cpRowsContainer.children.length === 0) addCoursRow();
+          // Pré-remplir la date d'aujourd'hui
+          var todayInput = document.getElementById('cp-pay-date');
+          if (!todayInput.value) {
+            var today = new Date();
+            todayInput.value = today.toISOString().slice(0, 10);
+          }
+        } else {
+          cpFormWrap.style.display = 'none';
+          btnCpToggle.textContent = '+ Nouvelle facture';
+        }
+      });
+
+      function fmtEur(val) {
+        return Number(val).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+      }
+
+      function recalcTotals() {
+        var rows = cpRowsContainer.querySelectorAll('.cours-row');
+        var grand = 0;
+        rows.forEach(function (row) {
+          var hours = parseFloat(row.querySelector('.cp-hours').value) || 0;
+          var rate = parseFloat(row.querySelector('.cp-rate').value) || 0;
+          var total = Math.round(hours * rate * 100) / 100;
+          row.querySelector('.cours-row-total').textContent = fmtEur(total);
+          grand += total;
+        });
+        cpGrandTotal.textContent = fmtEur(grand);
+      }
+
+      function addCoursRow() {
+        cpRowCount += 1;
+        var id = cpRowCount;
+        var row = document.createElement('div');
+        row.className = 'cours-row';
+        row.dataset.id = id;
+        row.innerHTML =
+          '<div class="cp-field">' +
+            '<label>Nature du cours *</label>' +
+            '<input class="cp-input cp-nature" type="text" placeholder="Maths Terminale" required>' +
+          '</div>' +
+          '<div class="cp-field">' +
+            '<label>Date *</label>' +
+            '<input class="cp-input cp-date" type="date" required>' +
+          '</div>' +
+          '<div class="cp-field">' +
+            '<label>Heures *</label>' +
+            '<input class="cp-input cp-hours" type="number" min="0.5" step="0.5" placeholder="1.5" required>' +
+          '</div>' +
+          '<div class="cp-field">' +
+            '<label>Tarif/h (€) *</label>' +
+            '<input class="cp-input cp-rate" type="number" min="1" step="0.01" placeholder="25" required>' +
+          '</div>' +
+          '<div class="cp-field">' +
+            '<label>Total</label>' +
+            '<div class="cours-row-total">0,00 €</div>' +
+          '</div>' +
+          '<button class="btn-rm-cours" type="button" title="Supprimer">✕</button>';
+
+        row.querySelector('.cp-hours').addEventListener('input', recalcTotals);
+        row.querySelector('.cp-rate').addEventListener('input', recalcTotals);
+        row.querySelector('.btn-rm-cours').addEventListener('click', function () {
+          if (cpRowsContainer.children.length > 1) {
+            row.remove();
+            recalcTotals();
+          }
+        });
+
+        cpRowsContainer.appendChild(row);
+      }
+
+      document.getElementById('btn-add-cours').addEventListener('click', addCoursRow);
+
+      btnCpSubmit.addEventListener('click', async function () {
+        cpError.style.display = 'none';
+
+        var name = document.getElementById('cp-name').value.trim();
+        var email = document.getElementById('cp-email').value.trim();
+        var address = document.getElementById('cp-address').value.trim();
+        var payDate = document.getElementById('cp-pay-date').value;
+        var payMethod = document.getElementById('cp-pay-method').value;
+
+        if (!name || !email || !payDate) {
+          cpError.textContent = 'Merci de remplir les champs obligatoires (nom, email, date de paiement).';
+          cpError.style.display = 'block';
+          return;
+        }
+
+        var rows = cpRowsContainer.querySelectorAll('.cours-row');
+        var items = [];
+        var valid = true;
+        rows.forEach(function (row) {
+          var nature = row.querySelector('.cp-nature').value.trim();
+          var date = row.querySelector('.cp-date').value;
+          var hours = parseFloat(row.querySelector('.cp-hours').value);
+          var rate = parseFloat(row.querySelector('.cp-rate').value);
+          if (!nature || !date || !hours || !rate) { valid = false; return; }
+          items.push({ nature: nature, date: date, hours: hours, hourly_rate: rate, total: Math.round(hours * rate * 100) / 100 });
+        });
+
+        if (!valid || items.length === 0) {
+          cpError.textContent = 'Merci de compléter toutes les lignes de cours.';
+          cpError.style.display = 'block';
+          return;
+        }
+
+        btnCpSubmit.disabled = true;
+        btnCpSubmit.textContent = 'Génération…';
+
+        try {
+          var res = await fetch(BACKEND + '/api/admin/cours-particuliers?key=' + encodeURIComponent(adminKey), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ customerName: name, customerEmail: email, customerAddress: address, items: items, paymentDate: payDate, paymentMethod: payMethod }),
+          });
+          var data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Erreur serveur');
+
+          // Reset form
+          document.getElementById('cp-name').value = '';
+          document.getElementById('cp-email').value = '';
+          document.getElementById('cp-address').value = '';
+          document.getElementById('cp-pay-date').value = '';
+          cpRowsContainer.innerHTML = '';
+          cpRowCount = 0;
+          cpGrandTotal.textContent = '0,00 €';
+          cpFormWrap.style.display = 'none';
+          btnCpToggle.textContent = '+ Nouvelle facture';
+
+          // Ouvrir directement la facture générée
+          openInvoiceModal(data.invoiceNumber, false);
+
+          // Recharger les commandes en arrière-plan
+          fetch(BACKEND + '/api/admin/orders?key=' + encodeURIComponent(adminKey))
+            .then(function (r) { return r.json(); })
+            .then(function (orders) { allOrders = orders; populateYearFilter(); renderOrders(getFilteredOrders()); })
+            .catch(function () {});
+        } catch (err) {
+          cpError.textContent = err.message;
+          cpError.style.display = 'block';
+        } finally {
+          btnCpSubmit.disabled = false;
+          btnCpSubmit.textContent = 'Générer la facture';
+        }
       });
 
     })();
