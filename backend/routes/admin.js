@@ -244,7 +244,7 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
 
 // ── POST /api/admin/cours-particuliers ───────────────────────────────────────
 // Génère une facture de cours particuliers et la stocke en base.
-router.post('/cours-particuliers', requireAdminKey, async (req, res) => {
+router.post('/cours-particuliers', express.json(), requireAdminKey, async (req, res) => {
   try {
     const { customerName, customerEmail, customerAddress, items, paymentDate, paymentMethod } = req.body;
 
