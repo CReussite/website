@@ -1,6 +1,6 @@
 # C'Réussite - Guide propriétaire
 
-> Dernière mise à jour : 15 avril 2026
+> Dernière mise à jour : 14 mai 2026
 
 ---
 
@@ -30,18 +30,46 @@ C'Réussite est une boutique automatisée : le client paie, reçoit ses fiches P
 
 ## 2. Les pages du site
 
-| Page | Adresse | Visible publiquement ? |
+### Pages produit et service
+
+| Page | Adresse | Notes |
 | --- | --- | --- |
-| Page d'accueil | c-reussite.fr | Oui |
-| Après paiement réussi | c-reussite.fr/success.html | Oui (redirigé par Stancer) |
-| Après annulation | c-reussite.fr/cancel.html | Oui (redirigé par Stancer) |
-| Conditions Générales de Vente | c-reussite.fr/cgv.html | Oui |
-| Conditions Générales d'Utilisation | c-reussite.fr/cgu.html | Oui |
-| Mentions légales | c-reussite.fr/mentions-legales.html | Oui — ⚠️ SIRET et adresse à compléter |
-| Politique de confidentialité | c-reussite.fr/confidentialite.html | Oui |
-| Accès bêta Maths | c-reussite.fr/viewer-maths.html | Protégé par mot de passe bêta-testeur |
-| Accès bêta Physique-Chimie | c-reussite.fr/viewer-physique.html | Protégé par mot de passe bêta-testeur |
-| Tableau de bord admin | c-reussite.fr/admin.html | Protégé par mot de passe (`ADMIN_KEY`) |
+| Accueil | c-reussite.fr/ | Hero 3 cartes produit, différenciation, FAQ, cours particuliers CTA |
+| Ebook Maths | c-reussite.fr/maths-terminale/ | Layout empilé, tableau chapitres, FAQPage schema |
+| Ebook Physique-Chimie | c-reussite.fr/physique-chimie-terminale/ | Idem, 32 fiches, formules+unités |
+| Pack Maths + PC | c-reussite.fr/pack-maths-physique-chimie/ | Prix barré 29,98 €, 2 tableaux chapitres |
+| Cours particuliers | c-reussite.fr/cours-particuliers/ | Service 30 €/h, formulaire de contact |
+| Extrait gratuit | c-reussite.fr/extrait-gratuit/ | Choix Maths/PC/les deux, pré-sélection via ?matiere= |
+| À propos | c-reussite.fr/a-propos/ | Bio Camille, catalogue, extrait discret |
+| FAQ | c-reussite.fr/faq/ | Questions fréquentes générales |
+
+### Ressources gratuites
+
+| Page | Adresse |
+| --- | --- |
+| Hub maths | c-reussite.fr/fiches-maths-terminale/ |
+| Hub physique-chimie | c-reussite.fr/fiches-physique-chimie-terminale/ |
+| Guide cinétique chimique | c-reussite.fr/fiches-physique-chimie-terminale/cinetique-chimique/ |
+| Guide calculer un pH | c-reussite.fr/fiches-physique-chimie-terminale/calculer-ph/ |
+| Guide équilibre chimique | c-reussite.fr/fiches-physique-chimie-terminale/equilibre-chimique/ |
+| Guide synthèse organique | c-reussite.fr/fiches-physique-chimie-terminale/synthese-organique/ |
+| Guide tableau d'avancement | c-reussite.fr/fiches-physique-chimie-terminale/tableau-avancement/ |
+| Blog (hub) | c-reussite.fr/blog/ |
+| Article stress bac | c-reussite.fr/blog/stress-bac-anxiete-scolaire/ |
+| Article chapitres ECE | c-reussite.fr/blog/chapitres-ece-physique-chimie-2026/ |
+| Article préparer ECE | c-reussite.fr/blog/comment-se-preparer-aux-ece-physique-chimie/ |
+
+### Pages techniques
+
+| Page | Adresse | Notes |
+| --- | --- | --- |
+| Après paiement réussi | c-reussite.fr/success.html | Redirigé par Stancer |
+| Après annulation | c-reussite.fr/cancel.html | Redirigé par Stancer |
+| CGV | c-reussite.fr/cgv/ | |
+| CGU | c-reussite.fr/cgu/ | |
+| Mentions légales | c-reussite.fr/mentions-legales/ | ⚠️ SIRET et adresse à compléter |
+| Politique de confidentialité | c-reussite.fr/confidentialite/ | |
+| Tableau de bord admin | c-reussite.fr/admin.html | Protégé par `ADMIN_KEY` |
 
 ---
 
@@ -53,7 +81,7 @@ C'Réussite est une boutique automatisée : le client paie, reçoit ses fiches P
 | Fiches Physique-Chimie Terminale Spécialité | 14,99 € | `fiches-physique-chimie.pdf` |
 | Pack Maths + Physique-Chimie | 24,99 € | Les deux PDFs |
 
-Des extraits gratuits existent pour chaque produit, envoyés automatiquement quand un visiteur clique sur "Recevoir un extrait".
+Des extraits gratuits existent pour Maths et Physique-Chimie. La page `/extrait-gratuit/` permet de choisir la matière (cases à cocher), avec pré-sélection automatique selon la page d'origine via le paramètre `?matiere=maths|physique|pack`.
 
 ### Modifier le catalogue
 
@@ -255,13 +283,14 @@ Ces pages existent déjà sur c-reussite.fr mais **certaines doivent être compl
 
 | Priorité | Action | Pourquoi |
 | --- | --- | --- |
-| 🔴 1 | **Remplacer les PDFs placeholder dans `backend/assets/`** par les vrais fichiers, puis push | Les fichiers actuels sont des placeholders vides (549 octets) — aucun client ne recevra un vrai produit sans ça |
-| 🔴 2 | **Compléter les mentions légales** (SIRET + adresse dans `mentions-legales.html`) | Obligation légale — page déjà en ligne |
+| 🔴 1 | **Remplacer les PDFs placeholder dans `backend/assets/`** par les vrais fichiers, puis push | Les fichiers actuels sont des placeholders vides — aucun client ne recevra un vrai produit sans ça |
+| 🔴 2 | **Compléter les mentions légales** (SIRET + adresse dans `/mentions-legales/`) | Obligation légale — page déjà en ligne |
 | 🟠 3 | **Compléter le KYC Stancer** sur [manage.stancer.com](https://manage.stancer.com/fr/) | Nécessaire pour que les vrais paiements soient versés sur ton compte |
 | 🟡 4 | **Configurer `ALERT_EMAIL` dans Render** | Être prévenue immédiatement si une commande échoue |
 | 🟡 5 | **Configurer `BCC_EMAIL` dans Render** | Recevoir une copie de chaque email de commande |
 | 🟡 6 | **Créer le bucket `invoices` dans Supabase Storage** | Sans ça, les factures ne sont pas archivées (re-génération depuis l'admin reste possible) |
+| 🟡 7 | **Fusionner `feat/seo-pages-produits` sur `main`** | Toutes les pages produit refaites sont sur cette branche — le site live est sur `main` |
 
 ---
 
-Dernière synchronisation : 15 avril 2026
+Dernière synchronisation : 14 mai 2026
