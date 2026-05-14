@@ -138,34 +138,43 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
     if (!order) return res.status(404).json({ error: 'Facture introuvable.' });
 
     // ── Cours particuliers : métadonnées stockées dans invoice_path ──────────
-    if (order.product_id === 'cours_particuliers' && order.invoice_path) {
-      let cpMeta = null;
-      try { cpMeta = JSON.parse(order.invoice_path); } catch (_) {}
+    if (order.product_id === 'cours_particuliers') {
+      const dateObj = new Date(order.created_at);
+      const dateStr = dateObj.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
-      if (cpMeta && cpMeta.type === 'cours_particuliers') {
-        const dateObj = new Date(order.created_at);
-        const dateStr = dateObj.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-        const items = cpMeta.items.map(function (item) {
-          return {
-            description: `${item.nature} — ${item.date}`,
-            quantity: Number(item.hours),
-            unit_price: Number(item.hourly_rate),
-          };
-        });
-        return res.json({
-          invoice_number: order.invoice_number,
-          date: dateStr,
-          payment_date: cpMeta.payment_date || dateStr,
-          payment_ref: order.payment_session_id || '—',
-          payment_method: cpMeta.payment_method || '—',
-          customer: {
-            name: cpMeta.customer.name,
-            email: order.email,
-            address: cpMeta.customer.address || '',
-          },
-          items,
-        });
+      // invoice_path peut être une string JSON (TEXT) ou déjà un objet (JSONB)
+      let cpMeta = null;
+      if (order.invoice_path) {
+        if (typeof order.invoice_path === 'object') {
+          cpMeta = order.invoice_path;
+        } else {
+          try { cpMeta = JSON.parse(order.invoice_path); } catch (_) {}
+        }
       }
+
+      const items = (cpMeta && Array.isArray(cpMeta.items) && cpMeta.items.length > 0)
+        ? cpMeta.items.map(function (item) {
+            return {
+              description: `${item.nature} — ${item.date}`,
+              quantity: Number(item.hours),
+              unit_price: Number(item.hourly_rate),
+            };
+          })
+        : [{ description: 'Cours particuliers', quantity: 1, unit_price: order.amount / 100 }];
+
+      return res.json({
+        invoice_number: order.invoice_number,
+        date: dateStr,
+        payment_date: (cpMeta && cpMeta.payment_date) || dateStr,
+        payment_ref: order.payment_session_id || '—',
+        payment_method: (cpMeta && cpMeta.payment_method) || '—',
+        customer: {
+          name: (cpMeta && cpMeta.customer && cpMeta.customer.name) || order.email,
+          email: order.email,
+          address: (cpMeta && cpMeta.customer && cpMeta.customer.address) || '',
+        },
+        items,
+      });
     }
 
     const path    = require('path');
