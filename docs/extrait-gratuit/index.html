@@ -197,6 +197,22 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
 
   pickMaths.addEventListener('change', updateBtnLabel);
   pickPhysique.addEventListener('change', updateBtnLabel);
+
+  // Pré-sélection depuis l'URL (?matiere=maths ou ?matiere=physique)
+  (function() {
+    const matiere = new URLSearchParams(window.location.search).get('matiere');
+    if (matiere === 'maths') {
+      pickMaths.checked = true;
+      pickPhysique.checked = false;
+    } else if (matiere === 'physique') {
+      pickMaths.checked = false;
+      pickPhysique.checked = true;
+    } else if (matiere === 'pack') {
+      pickMaths.checked = true;
+      pickPhysique.checked = true;
+    }
+  })();
+
   updateBtnLabel();
 
   submitBtn.addEventListener('click', function() {
