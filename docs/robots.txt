@@ -11,9 +11,13 @@ Disallow: /cancel.html
 Disallow: /viewer-maths.html
 Disallow: /viewer-physique.html
 Disallow: /cgv.html
+Disallow: /cgv/
 Disallow: /cgu.html
+Disallow: /cgu/
 Disallow: /mentions-legales.html
+Disallow: /mentions-legales/
 Disallow: /confidentialite.html
+Disallow: /confidentialite/
 
 # ============================================================
 # Crawlers de CITATION (IA qui citent les sources) — AUTORISÉS
