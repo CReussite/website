@@ -225,6 +225,8 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
       alert('Sélectionne au moins une matière.');
       return;
     }
+    const matieres = [pickMaths.checked && 'maths', pickPhysique.checked && 'physique'].filter(Boolean).join(',');
+    dataLayer.push({ event: 'generate_lead', lead_type: 'extrait_gratuit', product_id: matieres });
     let url = '/?extrait=1&email=' + encodeURIComponent(email);
     if (pickMaths.checked) url += '&maths=1';
     if (pickPhysique.checked) url += '&physique=1';

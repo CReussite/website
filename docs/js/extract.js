@@ -175,6 +175,7 @@
 
       form.hidden = true;
       showMessage('C\'est envoyé ! Vérifie ta boîte mail (et tes spams).', false);
+      dataLayer.push({ event: 'generate_lead', lead_type: 'extrait_gratuit', product_id: product_id });
     } catch (err) {
       var msg = (err.name === 'AbortError' || !err.message || err.message === 'Load failed' || err.message === 'Failed to fetch')
         ? 'Connexion impossible. Vérifie ta connexion et réessaie.'
