@@ -48,6 +48,13 @@ router.get('/', express.json(), async (req, res) => {
       .json({ error: 'Impossible de vérifier le paiement.', debug: err.message });
   }
 
+  console.log('[payment-confirm] Full payment object:', JSON.stringify({
+    status: payment.status,
+    auth: payment.auth,
+    response: payment.response,
+    card: payment.card ? { last4: payment.card.last4, brand: payment.card.brand } : null,
+  }));
+
   const VALID_STATUSES = ['captured', 'to_capture', 'capture_sent'];
   if (!VALID_STATUSES.includes(payment.status)) {
     return res.status(402).json({

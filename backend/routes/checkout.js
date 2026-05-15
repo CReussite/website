@@ -51,6 +51,9 @@ router.post('/', express.json(), async (req, res) => {
     }
 
     const payment = await response.json();
+    console.log('[checkout] Stancer response auth:', JSON.stringify(payment.auth));
+    console.log('[checkout] Stancer response status:', payment.status);
+
     const paymentUrl = `https://payment.stancer.com/${process.env.STANCER_PUBLIC_KEY}/${payment.id}`;
 
     res.json({ url: paymentUrl, paymentId: payment.id, productId: product_id });
