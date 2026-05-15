@@ -174,33 +174,61 @@
         });
       }
 
+      // Lecture depuis sessionStorage (navigation privée) puis localStorage (fallback)
+      function getStorage(key) {
+        try { var v = sessionStorage.getItem(key); if (v) return v; } catch (e) { console.debug('[storage] sessionStorage indisponible', e); }
+        try { return localStorage.getItem(key); } catch (e) { console.debug('[storage] localStorage indisponible', e); }
+        return null;
+      }
+
+      function clearStorage() {
+        try { sessionStorage.removeItem('stancer_pending_payment'); } catch (e) { console.debug('[storage]', e); }
+        try { sessionStorage.removeItem('stancer_pending_product'); } catch (e) { console.debug('[storage]', e); }
+        try { localStorage.removeItem('stancer_pending_payment'); } catch (e) { console.debug('[storage]', e); }
+        try { localStorage.removeItem('stancer_pending_product'); } catch (e) { console.debug('[storage]', e); }
+      }
+
       async function confirmPayment() {
-        // Récupère paymentId et productId depuis localStorage (sauvegardés par payment.js)
-        const paymentId = localStorage.getItem('stancer_pending_payment');
-        const productId = localStorage.getItem('stancer_pending_product');
+        var paymentId = getStorage('stancer_pending_payment');
+        var productId = getStorage('stancer_pending_product');
 
         if (!paymentId) {
-          // Pas de paiement en attente — page visitée directement
-          show('state-success');
+          // Aucun paiement en attente — page visitée directement ou stockage indisponible
+          document.getElementById('error-msg').textContent =
+            'Nous ne trouvons pas votre commande. Si vous venez de payer, vérifiez vos emails dans quelques minutes. Si vous n\'avez rien reçu, écrivez-nous.';
+          show('state-error');
           return;
         }
 
+        // Feedback si le backend met du temps à démarrer (Render cold start)
+        var slowTimer = setTimeout(function () {
+          document.querySelector('#state-loading p').textContent =
+            'Cela prend plus de temps que prévu, merci de patienter…';
+        }, 8000);
+
         try {
-          const params = new URLSearchParams({ id: paymentId });
+          var controller = new AbortController();
+          var timeoutId = setTimeout(function () { controller.abort(); }, 25000);
+
+          var params = new URLSearchParams({ id: paymentId });
           if (productId) params.set('product_id', productId);
-          const res = await fetch(BACKEND_URL + '/api/payment/confirm?' + params.toString());
-          const data = await res.json();
+          var res = await fetch(BACKEND_URL + '/api/payment/confirm?' + params.toString(), {
+            signal: controller.signal,
+          });
+          clearTimeout(timeoutId);
+          clearTimeout(slowTimer);
+
+          var data = await res.json();
 
           if (res.ok && data.success) {
-            localStorage.removeItem('stancer_pending_payment');
-            localStorage.removeItem('stancer_pending_product');
+            clearStorage();
 
-            const productMap = {
+            var productMap = {
               maths:    { name: 'Fiches Maths Terminale Spécialité',          price: 14.99 },
               physique: { name: 'Fiches Physique-Chimie Terminale Spécialité', price: 14.99 },
               bundle:   { name: 'Pack Maths + Physique-Chimie',                price: 24.99 },
             };
-            const product = productMap[productId];
+            var product = productMap[productId];
             if (product) {
               dataLayer.push({
                 event: 'purchase',
@@ -215,15 +243,23 @@
 
             show('state-success');
           } else {
-            const msg = data.debug
-              ? data.error + ' [debug: ' + data.debug + ']'
-              : data.error || 'Erreur inconnue.';
-            document.getElementById('error-msg').textContent = msg;
+            // Debug en console uniquement, message clair pour l'utilisateur
+            console.error('[success] Paiement non finalisé :', data.debug || data.error);
+            var userMsg = data.error || 'Erreur inconnue.';
+            // Remplacer les messages techniques par quelque chose de lisible
+            if (userMsg.includes('refused') || userMsg.includes('statut')) {
+              userMsg = 'Votre paiement n\'a pas abouti. Vous n\'avez pas été débité. Réessayez ou contactez-nous.';
+            }
+            document.getElementById('error-msg').textContent = userMsg;
             show('state-error');
           }
         } catch (err) {
+          clearTimeout(slowTimer);
           console.error('[success] Erreur confirmation paiement :', err);
-          document.getElementById('error-msg').textContent = 'Impossible de contacter le serveur.';
+          var msg = err.name === 'AbortError'
+            ? 'Le serveur met trop de temps à répondre. Si vous avez payé, vérifiez vos emails dans quelques minutes.'
+            : 'Impossible de contacter le serveur. Si vous avez payé, vérifiez vos emails dans quelques minutes.';
+          document.getElementById('error-msg').textContent = msg;
           show('state-error');
         }
       }

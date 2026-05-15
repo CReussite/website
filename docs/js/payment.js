@@ -93,12 +93,23 @@ async function initPayment() {
     modalBtn.textContent = 'Redirection…';
     modalBtn.disabled = true;
 
+    // Feedback si le backend met trop de temps à démarrer (Render cold start)
+    const slowTimer = setTimeout(() => {
+      modalBtn.textContent = 'Démarrage du serveur…';
+    }, 8000);
+
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 25000);
+
       const res = await fetch(`${BACKEND_URL}/api/checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ product_id: currentProductId, email: emailInput.value.trim() }),
+        signal: controller.signal,
       });
+      clearTimeout(timeoutId);
+      clearTimeout(slowTimer);
 
       if (!res.ok) {
         const err = await res.json();
@@ -106,14 +117,21 @@ async function initPayment() {
       }
 
       const { url, paymentId, productId } = await res.json();
+      // sessionStorage en priorité (fonctionne en navigation privée), localStorage en fallback
+      try { if (paymentId) sessionStorage.setItem('stancer_pending_payment', paymentId); } catch (_) {}
+      try { if (productId) sessionStorage.setItem('stancer_pending_product', productId); } catch (_) {}
       try { if (paymentId) localStorage.setItem('stancer_pending_payment', paymentId); } catch (_) {}
       try { if (productId) localStorage.setItem('stancer_pending_product', productId); } catch (_) {}
       window.location.href = url;
     } catch (err) {
+      clearTimeout(slowTimer);
       console.error('[payment] Erreur :', err.message);
       modalBtn.textContent = 'Procéder au paiement';
       modalBtn.disabled = false;
-      alert('Une erreur est survenue. Réessaie dans quelques instants.');
+      const msg = err.name === 'AbortError'
+        ? 'Le serveur met trop de temps à répondre. Réessaie dans quelques instants.'
+        : 'Une erreur est survenue. Réessaie dans quelques instants.';
+      alert(msg);
     }
   });
 }
