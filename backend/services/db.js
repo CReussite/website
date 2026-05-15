@@ -80,6 +80,7 @@ async function getOrders({ year, limit = 1000 } = {}) {
   let query = supabase
     .from('orders')
     .select('*')
+    .neq('product_id', 'cours_particuliers')
     .order('created_at', { ascending: false })
     .limit(limit);
 
@@ -99,7 +100,8 @@ async function getAdminStats({ year } = {}) {
   const supabase = getClient();
   let query = supabase
     .from('orders')
-    .select('email, amount, email_sent, invoice_number');
+    .select('email, amount, email_sent, invoice_number')
+    .neq('product_id', 'cours_particuliers');
 
   if (year) query = query.or(`invoice_number.like.${year}-%,invoice_number.like.CRE-${year}-%`);
 
@@ -217,8 +219,8 @@ async function saveInvoicePath(paymentSessionId, invoicePath) {
 }
 
 /**
- * Crée une facture de cours particuliers avec un numéro CRE-YYYY-XXXXX
- * dans la même séquence que les commandes ebooks.
+ * Crée une facture de cours particuliers dans la table cp_invoices.
+ * Numérotation indépendante CP-YYYY-NNNNN, sans impact sur le compteur ebooks.
  */
 async function insertCoursParticuliersInvoice({
   customerName,
@@ -232,43 +234,48 @@ async function insertCoursParticuliersInvoice({
 
   const year = new Date().getFullYear();
   const { count } = await supabase
-    .from('orders')
+    .from('cp_invoices')
     .select('*', { count: 'exact', head: true })
-    .like('invoice_number', `CRE-${year}-%`);
+    .like('invoice_number', `CP-${year}-%`);
 
   const seq = String((count || 0) + 1).padStart(5, '0');
-  const invoiceNumber = `CRE-${year}-${seq}`;
+  const invoiceNumber = `CP-${year}-${seq}`;
 
   const totalEur = items.reduce((sum, item) => sum + Number(item.total), 0);
   const totalCents = Math.round(totalEur * 100);
 
-  const metadata = {
-    type: 'cours_particuliers',
-    customer: { name: customerName, address: customerAddress || '' },
-    items,
-    payment_date: paymentDate,
-    payment_method: paymentMethod,
-  };
-
-  const sessionId = `CP-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-
-  const { data: order, error } = await supabase
-    .from('orders')
+  const { data: invoice, error } = await supabase
+    .from('cp_invoices')
     .insert({
-      email: customerEmail,
-      product_id: 'cours_particuliers',
-      amount: totalCents,
-      payment_session_id: sessionId,
       invoice_number: invoiceNumber,
-      email_sent: true,
-      invoice_path: JSON.stringify(metadata),
+      email: customerEmail,
+      customer_name: customerName,
+      customer_address: customerAddress || '',
+      amount: totalCents,
+      items,
+      payment_date: paymentDate,
+      payment_method: paymentMethod,
     })
     .select()
     .single();
 
   if (error) throw new Error(`DB insertCoursParticuliers failed: ${error.message}`);
 
-  return { order, invoiceNumber };
+  return { invoice, invoiceNumber };
+}
+
+/**
+ * Récupère une facture de cours particuliers par son numéro.
+ */
+async function getCoursParticuliersInvoice(invoiceNumber) {
+  const supabase = getClient();
+  const { data, error } = await supabase
+    .from('cp_invoices')
+    .select('*')
+    .eq('invoice_number', invoiceNumber)
+    .maybeSingle();
+  if (error) throw new Error(`DB getCoursParticuliersInvoice failed: ${error.message}`);
+  return data;
 }
 
 module.exports = {
@@ -282,4 +289,5 @@ module.exports = {
   uploadInvoicePdf,
   saveInvoicePath,
   insertCoursParticuliersInvoice,
+  getCoursParticuliersInvoice,
 };

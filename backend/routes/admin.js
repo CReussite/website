@@ -1,5 +1,5 @@
 const express = require('express');
-const { getOrders, getAdminStats, getExtractRequests, insertCoursParticuliersInvoice } = require('../services/db');
+const { getOrders, getAdminStats, getExtractRequests, insertCoursParticuliersInvoice, getCoursParticuliersInvoice } = require('../services/db');
 const { generateInvoice }  = require('../services/invoice');
 
 const router = express.Router();
@@ -104,6 +104,27 @@ router.get('/export', requireAdminKey, async (req, res) => {
 router.get('/invoice/:invoiceNumber', requireAdminKey, async (req, res) => {
   try {
     const { invoiceNumber } = req.params;
+
+    // Facture cours particuliers → table cp_invoices
+    if (invoiceNumber.startsWith('CP-')) {
+      const cpInvoice = await getCoursParticuliersInvoice(invoiceNumber);
+      if (!cpInvoice) return res.status(404).json({ error: 'Facture introuvable.' });
+
+      const pdfBuffer = await generateInvoice({
+        invoiceNumber: cpInvoice.invoice_number,
+        email:         cpInvoice.email,
+        productName:   'Cours particuliers',
+        amount:        cpInvoice.amount,
+        date:          new Date(cpInvoice.created_at),
+        paymentRef:    '—',
+      });
+
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename="facture-${invoiceNumber}.pdf"`);
+      return res.send(pdfBuffer);
+    }
+
+    // Facture ebook → table orders
     const orders = await getOrders({ limit: 1000 });
     const order  = orders.find(o => o.invoice_number === invoiceNumber);
 
@@ -132,50 +153,45 @@ router.get('/invoice/:invoiceNumber', requireAdminKey, async (req, res) => {
 router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => {
   try {
     const { invoiceNumber } = req.params;
-    const orders = await getOrders({ limit: 1000 });
-    const order  = orders.find(o => o.invoice_number === invoiceNumber);
 
-    if (!order) return res.status(404).json({ error: 'Facture introuvable.' });
+    // ── Cours particuliers : données dans cp_invoices ─────────────────────────
+    if (invoiceNumber.startsWith('CP-')) {
+      const cpInvoice = await getCoursParticuliersInvoice(invoiceNumber);
+      if (!cpInvoice) return res.status(404).json({ error: 'Facture introuvable.' });
 
-    // ── Cours particuliers : métadonnées stockées dans invoice_path ──────────
-    if (order.product_id === 'cours_particuliers') {
-      const dateObj = new Date(order.created_at);
+      const dateObj = new Date(cpInvoice.created_at);
       const dateStr = dateObj.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
-      // invoice_path peut être une string JSON (TEXT) ou déjà un objet (JSONB)
-      let cpMeta = null;
-      if (order.invoice_path) {
-        if (typeof order.invoice_path === 'object') {
-          cpMeta = order.invoice_path;
-        } else {
-          try { cpMeta = JSON.parse(order.invoice_path); } catch (_) {}
-        }
-      }
-
-      const items = (cpMeta && Array.isArray(cpMeta.items) && cpMeta.items.length > 0)
-        ? cpMeta.items.map(function (item) {
+      const items = (Array.isArray(cpInvoice.items) && cpInvoice.items.length > 0)
+        ? cpInvoice.items.map(function (item) {
             return {
               description: `${item.nature} — ${item.date}`,
               quantity: Number(item.hours),
               unit_price: Number(item.hourly_rate),
             };
           })
-        : [{ description: 'Cours particuliers', quantity: 1, unit_price: order.amount / 100 }];
+        : [{ description: 'Cours particuliers', quantity: 1, unit_price: cpInvoice.amount / 100 }];
 
       return res.json({
-        invoice_number: order.invoice_number,
+        invoice_number: cpInvoice.invoice_number,
         date: dateStr,
-        payment_date: (cpMeta && cpMeta.payment_date) || dateStr,
-        payment_ref: order.payment_session_id || '—',
-        payment_method: (cpMeta && cpMeta.payment_method) || '—',
+        payment_date: cpInvoice.payment_date || dateStr,
+        payment_ref: '—',
+        payment_method: cpInvoice.payment_method || '—',
         customer: {
-          name: (cpMeta && cpMeta.customer && cpMeta.customer.name) || order.email,
-          email: order.email,
-          address: (cpMeta && cpMeta.customer && cpMeta.customer.address) || '',
+          name: cpInvoice.customer_name || cpInvoice.email,
+          email: cpInvoice.email,
+          address: cpInvoice.customer_address || '',
         },
         items,
       });
     }
+
+    // ── Ebooks : données dans orders ──────────────────────────────────────────
+    const orders = await getOrders({ limit: 1000 });
+    const order  = orders.find(o => o.invoice_number === invoiceNumber);
+
+    if (!order) return res.status(404).json({ error: 'Facture introuvable.' });
 
     const path    = require('path');
     const PRODUCTS = require(path.join(__dirname, '../../docs/content/products.json'));
