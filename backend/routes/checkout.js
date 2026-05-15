@@ -40,6 +40,7 @@ router.post('/', express.json(), async (req, res) => {
         capture: true,
         customer: { email },
         return_url: `${FRONTEND_URL}/success.html`,
+        auth: { return_url: `${FRONTEND_URL}/success.html` },
       }),
     });
 
