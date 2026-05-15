@@ -75,6 +75,7 @@ document.getElementById('contact-placeholder').outerHTML = `
       submitBtn.textContent = 'Envoyer';
       submitBtn.disabled    = false;
       showFeedback('Message envoyé ! On te répondra rapidement.', false);
+      dataLayer.push({ event: 'contact_form_submit', form_type: 'cours_particuliers' });
     } catch (err) {
       const msg = (!err.message || err.message === 'Load failed' || err.message === 'Failed to fetch')
         ? 'Connexion impossible. Tu peux aussi nous écrire directement à contact@c-reussite.fr'
