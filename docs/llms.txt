@@ -20,11 +20,13 @@
 ### Réviser la physique-chimie en Terminale Spécialité
 
 - [Hub physique-chimie](https://c-reussite.fr/fiches-physique-chimie-terminale/): Index des guides gratuits par chapitre.
+- [Quantité de matière et concentration](https://c-reussite.fr/fiches-physique-chimie-terminale/quantite-matiere-concentration-bac-terminale/): Les 4 formules pour calculer n (masse, volume molaire, concentration, nombre d'entités), concentrations molaire et massique, dilution, titre massique. Pièges d'unités classiques au bac.
 - [Cinétique chimique](https://c-reussite.fr/fiches-physique-chimie-terminale/cinetique-chimique/): Vitesse de réaction, loi d'ordre 1, constante k, temps de demi-réaction t½. Méthode en 4 étapes avec exemple chiffré.
 - [Calculer un pH](https://c-reussite.fr/fiches-physique-chimie-terminale/calculer-ph/): Les 3 cas du bac — acide fort, base forte, solution tampon (Henderson-Hasselbalch). Formules, exemples chiffrés, pièges.
 - [Équilibre chimique](https://c-reussite.fr/fiches-physique-chimie-terminale/equilibre-chimique/): Quotient de réaction Qr, constante K, sens d'évolution, réactions totales.
 - [Tableau d'avancement](https://c-reussite.fr/fiches-physique-chimie-terminale/tableau-avancement/): Méthode en 4 étapes, réactif limitant, x_max — exemple complet sur la combustion du méthane.
 - [Synthèse organique](https://c-reussite.fr/fiches-physique-chimie-terminale/synthese-organique/): Les 6 types de questions du bac — groupes fonctionnels, IR, rendement, reflux, CCM, chimie verte.
+- [Python au bac physique-chimie](https://c-reussite.fr/fiches-physique-chimie-terminale/python-algorithmique-bac-physique-chimie-terminale/): Scripts à connaître pour l'écrit et l'ECE — vecteur vitesse, bilan énergétique, titrage par la dérivée, Monte-Carlo. Syntaxe, commandes matplotlib/numpy, pièges classiques.
 
 ### Réviser les maths en Terminale Spécialité
 
@@ -35,6 +37,7 @@
 ## Blog — Méthode, révisions, orientation
 
 - [Blog C'Réussite](https://c-reussite.fr/blog/): Articles sur la méthode de révision, les examens, l'orientation post-bac et la vie lycéenne.
+- [Bac physique-chimie 2026 : les 15 annales à faire pour couvrir tout le programme](https://c-reussite.fr/blog/annales-bac-physique-chimie-programme-complet/): Sélection de 15 exercices classés par rentabilité (8 pour couvrir les 23 chapitres + 7 de renforcement), avec conseils et pièges pour chaque sujet. Analyse de 90 sujets officiels 2024-2025. Catégorie : Maths & Physique-Chimie.
 - [Stress du bac : ce que la science dit vraiment](https://c-reussite.fr/blog/stress-bac-anxiete-scolaire/): Mécanismes cognitifs, impact sur les performances en maths et physique-chimie, stratégies documentées (testing effect, déchargement cognitif, sommeil). Catégorie : Méthode & organisation.
 - [ECE physique-chimie 2026 : quels chapitres tombent vraiment](https://c-reussite.fr/blog/chapitres-ece-physique-chimie-2026/): Analyse exhaustive des 90 sujets de la banque ECE 2026 — top 5 chapitres, compétences dominantes, outils numériques, chapitres absents. Catégorie : Maths & Physique-Chimie.
 - [Comment se préparer aux ECE physique-chimie 2026](https://c-reussite.fr/blog/comment-se-preparer-aux-ece-physique-chimie/): Déroulé officiel, 8 gestes qui rapportent des points, plan de révision en 4 semaines, 5 erreurs à éviter. Catégorie : Maths & Physique-Chimie.
