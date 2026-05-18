@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  <title>Quantité de matière et concentration au bac : formules et méthodes | C'Réussite</title>
+  <meta name="description" content="Quantité de matière, concentration molaire, dilution, titre massique, Beer-Lambert : toutes les formules du bac de physique-chimie en terminale spécialité, avec méthodes, exemples chiffrés et pièges à éviter.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-physique-chimie-terminale/quantite-matiere-concentration-bac-terminale/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-physique-chimie-terminale/quantite-matiere-concentration-bac-terminale/">
+  <meta property="og:title" content="Quantité de matière et concentration au bac : toutes les formules | C'Réussite">
+  <meta property="og:description" content="Les 4 formules pour n, concentration molaire vs massique, dilution, titre massique : méthodes et exemples chiffrés pour le bac physique-chimie.">
+  <meta property="og:site_name" content="C'Réussite">
+
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"Article","headline":"Quantité de matière et concentration au bac : toutes les formules et méthodes","datePublished":"2026-05-18","dateModified":"2026-05-18","author":{"@type":"Person","name":"Camille Reinhardt","url":"https://c-reussite.fr/a-propos/"},"publisher":{"@type":"Organization","name":"C'Réussite","url":"https://c-reussite.fr"},"mainEntityOfPage":"https://c-reussite.fr/fiches-physique-chimie-terminale/quantite-matiere-concentration-bac-terminale/"},
+    {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://c-reussite.fr/"},{"@type":"ListItem","position":2,"name":"Physique-Chimie Terminale","item":"https://c-reussite.fr/fiches-physique-chimie-terminale/"},{"@type":"ListItem","position":3,"name":"Quantité de matière et concentration","item":"https://c-reussite.fr/fiches-physique-chimie-terminale/quantite-matiere-concentration-bac-terminale/"}]},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"Comment calculer n si l'énoncé donne à la fois la masse et la concentration ?","acceptedAnswer":{"@type":"Answer","text":"On utilise la formule la plus directe selon ce qui est demandé. Si la question porte sur un soluté en solution, n = C × V suffit. Si elle porte sur un solide pesé, n = m/M est plus simple. Les deux doivent donner le même résultat si l'énoncé est cohérent, et c'est parfois demandé comme vérification."}},
+      {"@type":"Question","name":"Quelle est la différence entre volume molaire et masse molaire ?","acceptedAnswer":{"@type":"Answer","text":"La masse molaire M (en g·mol⁻¹) s'applique à toutes les espèces chimiques. Le volume molaire Vm (en L·mol⁻¹) ne s'applique qu'aux gaz, dépend des conditions de température et de pression, et est toujours donné dans l'énoncé. À 0 °C et 1 atm, Vm = 22,4 L·mol⁻¹ ; à 25 °C et 1 atm, Vm ≈ 24,5 L·mol⁻¹."}},
+      {"@type":"Question","name":"Quelle est la différence entre dilution et dissolution ?","acceptedAnswer":{"@type":"Answer","text":"La dissolution est le processus par lequel un soluté se disperse dans un solvant pour former un mélange homogène (du sel qui se dissout dans l'eau). La dilution consiste à ajouter du solvant à une solution déjà existante pour en réduire la concentration."}}
+    ]}
+  ]}
+  </script>
+
+  <style>
+    .article-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px;background:var(--swan-wing);color:var(--sapphire);margin-bottom:12px}
+    .article-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+    .article-header h1{font-size:clamp(1.45rem,3.5vw,1.95rem);line-height:1.25;margin-bottom:10px;color:var(--royal-blue)}
+    .article-meta{font-size:.85rem;color:#5C6475}
+    .article-intro{font-size:1.02rem;color:var(--text-mid);line-height:1.75;margin:20px 0 28px}
+    .article-body h2{font-size:1.2rem;margin-top:36px;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body h3{font-size:1.02rem;font-weight:700;margin-top:24px;margin-bottom:9px;color:var(--royal-blue)}
+    .article-body p{margin-bottom:14px;line-height:1.7;color:var(--text-mid)}
+    .article-body ul,.article-body ol{margin:0 0 14px 22px}
+    .article-body li{margin-bottom:6px;color:var(--text-mid);line-height:1.65}
+    .article-body table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.88rem}
+    .article-body th{background:var(--swan-wing);font-weight:600;text-align:left;padding:9px 12px;border:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body td{padding:9px 12px;border:1px solid #e5e7eb;vertical-align:top;color:var(--text-mid)}
+    .article-body tr:nth-child(even) td{background:#fafafa}
+    .article-body strong{color:var(--royal-blue);font-weight:700}
+    .callout{background:var(--swan-wing);border-left:3px solid var(--sapphire);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .callout p{margin:0;color:var(--text-mid)}
+    .faq-section{margin-top:40px;padding-top:28px;border-top:2px solid #e5e7eb}
+    .faq-section>h2{font-size:1.15rem;margin-bottom:20px;padding-bottom:0;border-bottom:none}
+    .faq-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-item h3{font-size:.97rem;margin-top:0;margin-bottom:7px}
+    .faq-item p{margin:0}
+    .read-next{margin-top:36px;padding-top:24px;border-top:1px solid #e5e7eb}
+    .read-next h2{font-size:1rem;margin-bottom:12px;color:var(--royal-blue);border:none;padding:0}
+    .read-next ul{list-style:none;padding:0;margin:0}
+    .read-next li{padding:6px 0;border-bottom:1px solid #f5f5f5}
+    .read-next li:last-child{border-bottom:none}
+    .read-next a{color:var(--sapphire);text-decoration:underline;font-size:.9rem}
+    .author-box{background:var(--swan-wing);border-radius:10px;padding:16px 20px;margin-top:28px;font-size:.86rem;color:var(--text-mid)}
+    .author-box strong{display:block;margin-bottom:5px;color:var(--royal-blue);font-size:.9rem}
+    .katex-display{overflow-x:auto}
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-physique-chimie-terminale/">Physique-Chimie Terminale</a><span class="bc-sep">›</span>
+      <span>Quantité de matière et concentration</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Physique-Chimie · Terminale</span>
+        <h1>Quantité de matière et concentration au bac : toutes les formules et méthodes</h1>
+        <div class="article-meta">Publié le 18 mai 2026 · Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">La quantité de matière, notée $n$ et exprimée en moles, est la grandeur de base de toute la chimie de terminale. Elle apparaît dans les dosages, les <a href="/fiches-physique-chimie-terminale/tableau-avancement/">tableaux d'avancement</a>, les calculs de rendement, et dans presque tous les exercices de l'épreuve écrite. Cette page récapitule toutes les formules, avec la logique qui les relie, un exemple chiffré pour chacune, et les erreurs d'unité qui font perdre des points.</p>
+
+      <div class="article-body">
+
+        <h2>Les 4 formules pour calculer $n$</h2>
+        <p>Le choix de la formule dépend d'une seule question : qu'est-ce que l'énoncé me donne ?</p>
+        <table>
+          <thead><tr><th>Données disponibles</th><th>Formule</th><th>Unités</th></tr></thead>
+          <tbody>
+            <tr><td>Masse $m$ et masse molaire $M$</td><td>$n = \dfrac{m}{M}$</td><td>$m$ en g, $M$ en g·mol⁻¹</td></tr>
+            <tr><td>Volume d'un gaz $V$ et volume molaire $V_m$</td><td>$n = \dfrac{V}{V_m}$</td><td>$V$ en L, $V_m$ en L·mol⁻¹</td></tr>
+            <tr><td>Concentration molaire $C$ et volume $V$</td><td>$n = C \times V$</td><td>$C$ en mol·L⁻¹, $V$ en L</td></tr>
+            <tr><td>Nombre d'entités $N$</td><td>$n = \dfrac{N}{N_A}$</td><td>$N_A = 6{,}02 \times 10^{23}$ mol⁻¹</td></tr>
+          </tbody>
+        </table>
+        <p>Pour un liquide pur dont on connaît le volume, on combine masse volumique et masse molaire : $n = \dfrac{\rho \times V}{M}$. C'est la première formule, appliquée après avoir calculé $m = \rho \times V$.</p>
+        <div class="callout">
+          <p><strong>Calculer la masse molaire $M$.</strong> Elle se lit dans le tableau périodique : on additionne les masses molaires atomiques de tous les atomes de la molécule. Pour NaCl : $M = 23 + 35{,}5 = 58{,}5$ g·mol⁻¹.</p>
+        </div>
+
+        <h2>Concentrations molaire et massique : ne pas confondre</h2>
+        <p>Ces deux grandeurs décrivent la composition d'une solution, mais elles ne mesurent pas la même chose.</p>
+        <p>La <strong>concentration molaire</strong> $C$ (en mol·L⁻¹) renseigne sur le nombre de moles de soluté par litre de solution :</p>
+        $$C = \frac{n}{V}$$
+        <p>La <strong>concentration massique</strong> $C_m$ (en g·L⁻¹) renseigne sur la masse de soluté par litre de solution :</p>
+        $$C_m = \frac{m}{V}$$
+        <p>Ces deux grandeurs sont reliées par la masse molaire du soluté :</p>
+        $$C_m = C \times M$$
+        <div class="callout">
+          <p>Au bac, si l'énoncé parle de « concentration » sans précision, il s'agit toujours de la concentration <strong>molaire</strong>. La concentration massique est mentionnée explicitement ou exprimée en g·L⁻¹.</p>
+        </div>
+        <p><strong>Exemple chiffré.</strong> Une solution de chlorure de sodium (NaCl, $M = 58{,}4$ g·mol⁻¹) a une concentration molaire $C = 0{,}50$ mol·L⁻¹. Sa concentration massique vaut : $C_m = 0{,}50 \times 58{,}4 = 29{,}2$ g·L⁻¹.</p>
+
+        <h2>Dissolution et dilution : deux protocoles différents</h2>
+        <p>Ces deux opérations sont souvent confondues, alors qu'elles partent de situations opposées.</p>
+        <p>La <strong>dissolution</strong> consiste à préparer une solution à partir d'un soluté pur (solide ou liquide) que l'on introduit dans un solvant. On calcule $n$ à partir de la masse pesée, puis on déduit la concentration une fois le volume final connu.</p>
+        <p>La <strong>dilution</strong> consiste à réduire la concentration d'une solution déjà existante (la solution mère) en y ajoutant du solvant. La grandeur qui se conserve est la quantité de matière de soluté. On en déduit la relation fondamentale :</p>
+        $$C_{\text{mère}} \times V_{\text{mère}} = C_{\text{fille}} \times V_{\text{fille}}$$
+        <p>Le <strong>facteur de dilution</strong> $F$ est le rapport entre les deux concentrations (ou entre les deux volumes) :</p>
+        $$F = \frac{C_{\text{mère}}}{C_{\text{fille}}} = \frac{V_{\text{fille}}}{V_{\text{mère}}}$$
+        <div class="callout">
+          <p>$F$ est toujours supérieur à 1 : on ne peut que diluer, jamais concentrer par ajout de solvant.</p>
+        </div>
+        <p><strong>Exemple chiffré.</strong> On prélève $V_{\text{mère}} = 10{,}0$ mL d'une solution mère à $C_{\text{mère}} = 1{,}00$ mol·L⁻¹. On complète à $V_{\text{fille}} = 100$ mL avec de l'eau distillée.</p>
+        $$C_{\text{fille}} = \frac{C_{\text{mère}} \times V_{\text{mère}}}{V_{\text{fille}}} = \frac{1{,}00 \times 10{,}0}{100} = 0{,}100 \; \text{mol} \cdot \text{L}^{-1}$$
+        <p>Le facteur de dilution est $F = 10$.</p>
+
+        <h2>Titre massique : le cas des solutions commerciales</h2>
+        <p>Les solutions commerciales concentrées (acide chlorhydrique, acide sulfurique, ammoniaque…) sont caractérisées par leur <strong>titre massique</strong> $w$ (proportion en masse de soluté dans la solution) et leur <strong>densité</strong> $d$.</p>
+        $$w = \frac{m_{\text{soluté}}}{m_{\text{solution}}}$$
+        <p>$w$ est sans unité et souvent exprimé en pourcentage. Pour calculer la concentration molaire à partir du titre massique, la démarche suit toujours le même enchaînement :</p>
+        <ol>
+          <li>Masse volumique de la solution : $\rho = d \times \rho_{\text{eau}} = d \times 1000$ g·L⁻¹</li>
+          <li>Masse de soluté dans 1 L de solution : $m_{\text{soluté}} = w \times \rho$</li>
+          <li>Quantité de matière dans 1 L : $n = \dfrac{m_{\text{soluté}}}{M}$</li>
+          <li>Concentration molaire : $C = n$ (car le volume est 1 L)</li>
+        </ol>
+        <p>Ce qui donne la formule synthétique :</p>
+        $$C = \frac{w \times \rho}{M}$$
+        <p><strong>Exemple chiffré.</strong> L'acide éthanoïque du vinaigre a un titre massique $w = 8{,}0\,\%$ et une densité $d = 1{,}01$. Sa masse molaire est $M = 60{,}0$ g·mol⁻¹.</p>
+        $$\rho = 1{,}01 \times 1000 = 1010 \; \text{g} \cdot \text{L}^{-1}$$
+        $$C = \frac{0{,}080 \times 1010}{60{,}0} = 1{,}35 \; \text{mol} \cdot \text{L}^{-1}$$
+
+        <h2>Les erreurs d'unité les plus fréquentes</h2>
+        <p>C'est là que les points se perdent, pas sur les formules elles-mêmes.</p>
+        <p><strong>Erreur 1 — Mélanger mL et L.</strong> Si $C$ est en mol·L⁻¹, alors $V$ doit être en L dans $n = C \times V$. Un volume de 25,0 mL vaut 0,0250 L. Cette conversion doit être faite avant le calcul, pas après.</p>
+        <p><strong>Erreur 2 — Oublier de convertir le titre massique en fraction décimale.</strong> $w = 8\,\%$ s'écrit $0{,}08$ dans la formule $C = w \times \rho / M$. Utiliser 8 au lieu de 0,08 donne un résultat 100 fois trop grand.</p>
+        <p><strong>Erreur 3 — Confondre densité et masse volumique.</strong> La densité $d$ est sans unité (c'est un rapport). La masse volumique $\rho$ est en g·L⁻¹ ou g·mL⁻¹. On passe de l'une à l'autre par $\rho = d \times \rho_{\text{eau}}$, avec $\rho_{\text{eau}} = 1000$ g·L⁻¹.</p>
+
+      </div><!-- /article-body -->
+
+      <!-- CTA avant FAQ -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Physique-Chimie</p>
+            <p class="cta-strip-heading">Quantité de matière, dosages, concentrations — sur une fiche, en PDF</p>
+          </div>
+          <a href="/physique-chimie-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Physique-chimie en ligne — 30 €/h</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2>FAQ — Quantité de matière et concentration</h2>
+        <div class="faq-item">
+          <h3>Comment calculer $n$ si l'énoncé donne à la fois la masse et la concentration ?</h3>
+          <p>On utilise la formule la plus directe selon ce qui est demandé. Si la question porte sur un soluté en solution, $n = C \times V$ suffit. Si elle porte sur un solide pesé, $n = m/M$ est plus simple. Les deux doivent donner le même résultat si l'énoncé est cohérent, et c'est parfois demandé comme vérification.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Quelle est la différence entre volume molaire et masse molaire ?</h3>
+          <p>La masse molaire $M$ (en g·mol⁻¹) s'applique à toutes les espèces chimiques. Le volume molaire $V_m$ (en L·mol⁻¹) ne s'applique qu'aux gaz, dépend des conditions de température et de pression, et est toujours donné dans l'énoncé. À 0 °C et 1 atm, $V_m = 22{,}4$ L·mol⁻¹ ; à 25 °C et 1 atm, $V_m \approx 24{,}5$ L·mol⁻¹.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Quelle est la différence entre dilution et dissolution ?</h3>
+          <p>La dissolution est le processus par lequel un soluté se disperse dans un solvant pour former un mélange homogène. La dilution consiste à ajouter du solvant à une solution déjà existante pour en réduire la concentration. Dans les deux cas, c'est la quantité de matière de soluté qui se conserve.</p>
+        </div>
+      </div>
+
+      <!-- CTA fin -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Physique-Chimie</p>
+            <p class="cta-strip-heading">32 fiches PDF — tout le programme Terminale Spé</p>
+          </div>
+          <a href="/physique-chimie-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Physique-chimie en ligne — 30 €/h</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/fiches-physique-chimie-terminale/tableau-avancement/">Tableau d'avancement : méthode et réactif limitant</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/calculer-ph/">Calculer un pH : acide fort, base forte, solution tampon</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/equilibre-chimique/">Équilibre chimique : quotient de réaction Qr et constante K</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/cinetique-chimique/">Cinétique chimique : ordre 1, k et temps de demi-réaction</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/synthese-organique/">Synthèse organique : rendement, CCM et chimie verte</a></li>
+          <li><a href="/blog/annales-bac-physique-chimie-programme-complet/">Les 15 annales à faire pour couvrir tout le programme</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt — diplômée de l'École polytechnique, docteure en sciences, fondatrice de C'Réussite. Elle accompagne des élèves de la 6e au Master depuis plus de dix ans. <a href="/a-propos/">En savoir plus</a>.
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>

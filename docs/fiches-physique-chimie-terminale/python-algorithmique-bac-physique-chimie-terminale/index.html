@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  <title>Python au bac physique-chimie : scripts à connaître pour l'écrit et l'ECE | C'Réussite</title>
+  <meta name="description" content="Python au bac physique-chimie terminale : syntaxe à connaître, scripts types en mécanique et chimie, ce qui tombe vraiment en ECE. Guide complet avec exemples de code.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-physique-chimie-terminale/python-algorithmique-bac-physique-chimie-terminale/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-physique-chimie-terminale/python-algorithmique-bac-physique-chimie-terminale/">
+  <meta property="og:title" content="Python au bac physique-chimie : les scripts à connaître pour l'écrit et l'ECE | C'Réussite">
+  <meta property="og:description" content="Syntaxe Python à connaître, scripts types en mécanique et chimie, ECE : tout ce qui tombe vraiment au bac physique-chimie terminale.">
+  <meta property="og:site_name" content="C'Réussite">
+
+  <link rel="stylesheet" href="../../css/style.css">
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"Article","headline":"Python au bac physique-chimie : les scripts à connaître pour l'écrit et l'ECE","datePublished":"2026-05-18","dateModified":"2026-05-18","author":{"@type":"Person","name":"Camille Reinhardt","url":"https://c-reussite.fr/a-propos/"},"publisher":{"@type":"Organization","name":"C'Réussite","url":"https://c-reussite.fr"},"mainEntityOfPage":"https://c-reussite.fr/fiches-physique-chimie-terminale/python-algorithmique-bac-physique-chimie-terminale/"},
+    {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://c-reussite.fr/"},{"@type":"ListItem","position":2,"name":"Physique-Chimie Terminale","item":"https://c-reussite.fr/fiches-physique-chimie-terminale/"},{"@type":"ListItem","position":3,"name":"Python au bac physique-chimie","item":"https://c-reussite.fr/fiches-physique-chimie-terminale/python-algorithmique-bac-physique-chimie-terminale/"}]},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"Python tombe-t-il obligatoirement au bac de physique-chimie ?","acceptedAnswer":{"@type":"Answer","text":"Python n'est pas systématique à l'écrit — il peut ne pas apparaître dans une session donnée. En revanche, à l'ECE, une partie Python est fréquente, en particulier pour les exercices de mécanique (bilan énergétique, vecteur vitesse) ou de chimie (titrage par la dérivée). Il vaut mieux ne pas parier sur son absence."}},
+      {"@type":"Question","name":"Faut-il savoir programmer pour réussir la partie Python du bac ?","acceptedAnswer":{"@type":"Answer","text":"Non, au sens strict. La grande majorité des questions Python au bac consiste à compléter ou lire du code existant. Comprendre la logique d'un programme (ce que fait chaque ligne, dans quel ordre) est suffisant. La capacité à écrire un programme de zéro n'est jamais exigée."}},
+      {"@type":"Question","name":"Quelle est la différence entre for et while en physique-chimie ?","acceptedAnswer":{"@type":"Answer","text":"for i in range(n) s'utilise quand on sait à l'avance combien de fois répéter un calcul : par exemple, parcourir une liste de 20 positions. while condition s'utilise quand on s'arrête selon un critère physique : par exemple, continuer à simuler la chute d'un objet tant que son altitude est positive. En pratique, les exercices de traitement de données utilisent for, et les simulations utilisent while."}}
+    ]}
+  ]}
+  </script>
+
+  <style>
+    .article-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px;background:var(--swan-wing);color:var(--sapphire);margin-bottom:12px}
+    .article-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+    .article-header h1{font-size:clamp(1.45rem,3.5vw,1.95rem);line-height:1.25;margin-bottom:10px;color:var(--royal-blue)}
+    .article-meta{font-size:.85rem;color:#5C6475}
+    .article-intro{font-size:1.02rem;color:var(--text-mid);line-height:1.75;margin:20px 0 28px}
+    .article-body h2{font-size:1.2rem;margin-top:36px;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body h3{font-size:1.02rem;font-weight:700;margin-top:24px;margin-bottom:9px;color:var(--royal-blue)}
+    .article-body p{margin-bottom:14px;line-height:1.7;color:var(--text-mid)}
+    .article-body ul,.article-body ol{margin:0 0 14px 22px}
+    .article-body li{margin-bottom:6px;color:var(--text-mid);line-height:1.65}
+    .article-body table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.88rem}
+    .article-body th{background:var(--swan-wing);font-weight:600;text-align:left;padding:9px 12px;border:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body td{padding:9px 12px;border:1px solid #e5e7eb;vertical-align:top;color:var(--text-mid)}
+    .article-body tr:nth-child(even) td{background:#fafafa}
+    .article-body strong{color:var(--royal-blue);font-weight:700}
+    .article-body code{font-family:'Courier New',Courier,monospace;font-size:.87rem;background:#f3f4f6;color:#1d4ed8;padding:2px 6px;border-radius:4px}
+    .article-body pre{background:#1e2939;border-radius:8px;padding:18px 20px;margin:18px 0;overflow-x:auto}
+    .article-body pre code{background:none;color:#e2e8f0;font-size:.84rem;padding:0}
+    .callout{background:var(--swan-wing);border-left:3px solid var(--sapphire);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .callout p{margin:0;color:var(--text-mid)}
+    .faq-section{margin-top:40px;padding-top:28px;border-top:2px solid #e5e7eb}
+    .faq-section>h2{font-size:1.15rem;margin-bottom:20px;padding-bottom:0;border-bottom:none}
+    .faq-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-item h3{font-size:.97rem;margin-top:0;margin-bottom:7px}
+    .faq-item p{margin:0}
+    .read-next{margin-top:36px;padding-top:24px;border-top:1px solid #e5e7eb}
+    .read-next h2{font-size:1rem;margin-bottom:12px;color:var(--royal-blue);border:none;padding:0}
+    .read-next ul{list-style:none;padding:0;margin:0}
+    .read-next li{padding:6px 0;border-bottom:1px solid #f5f5f5}
+    .read-next li:last-child{border-bottom:none}
+    .read-next a{color:var(--sapphire);text-decoration:underline;font-size:.9rem}
+    .author-box{background:var(--swan-wing);border-radius:10px;padding:16px 20px;margin-top:28px;font-size:.86rem;color:var(--text-mid)}
+    .author-box strong{display:block;margin-bottom:5px;color:var(--royal-blue);font-size:.9rem}
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-physique-chimie-terminale/">Physique-Chimie Terminale</a><span class="bc-sep">›</span>
+      <span>Python au bac physique-chimie</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Physique-Chimie · Terminale</span>
+        <h1>Python au bac physique-chimie : les scripts à connaître pour l'écrit et l'ECE</h1>
+        <div class="article-meta">Publié le 18 mai 2026 · Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">Python est au programme de physique-chimie depuis 2019. Pourtant, beaucoup d'élèves arrivent au bac sans savoir exactement ce qu'on peut leur demander, ni à l'écrit, ni surtout lors de l'<a href="/blog/comment-se-preparer-aux-ece-physique-chimie/">ECE</a>. Cette page répond à cette question de façon directe : voici ce qui tombe, ce qui ne tombe pas, et comment se préparer sans perdre de temps.</p>
+
+      <div class="article-body">
+
+        <h2>Ce que le bac peut vous demander en Python</h2>
+        <p>Il y a trois types de tâches possibles, que ce soit à l'écrit ou à l'ECE. Les comprendre permet de calibrer l'effort.</p>
+        <p><strong>Compléter un script existant.</strong> C'est le cas le plus fréquent, notamment en ECE. Le code est partiellement rédigé, avec des commentaires indiquant ce que chaque bloc doit faire. Il faut compléter les lignes manquantes (une instruction, une condition, un calcul). Pour réussir, il faut savoir lire du code et comprendre ce qui manque.</p>
+        <p><strong>Lire et interpréter un script.</strong> L'énoncé fournit un programme complet et pose des questions : que calcule cette variable ? Que représente ce graphique ? À quoi sert cette boucle ? Ce type de question teste la compréhension, pas la capacité à coder.</p>
+        <p><strong>Écrire une portion de code.</strong> Plus rare à l'écrit, mais possible. Il s'agit généralement d'une ou deux lignes à produire à partir d'une formule physique ou d'une consigne précise.</p>
+        <div class="callout">
+          <p>Ce que le bac ne demande jamais : écrire un programme de zéro, de la première à la dernière ligne.</p>
+        </div>
+
+        <h2>La syntaxe de base à avoir en tête</h2>
+        <p>Voici les points techniques sur lesquels les élèves perdent le plus de points :</p>
+        <table>
+          <thead><tr><th>Situation</th><th>Syntaxe correcte</th><th>Erreur classique</th></tr></thead>
+          <tbody>
+            <tr><td>Nombre décimal</td><td><code>1.3e-2</code></td><td><code>1,3e-2</code> (virgule = erreur Python)</td></tr>
+            <tr><td>Puissance</td><td><code>v**2</code></td><td><code>v^2</code> (opérateur inexistant en Python)</td></tr>
+            <tr><td>Multiplication</td><td><code>m * g</code></td><td><code>mg</code> (non reconnu)</td></tr>
+            <tr><td>Convertir une saisie</td><td><code>float(input(...))</code></td><td><code>input(...)</code> seul (renvoie du texte)</td></tr>
+            <tr><td>Ajouter à une liste</td><td><code>liste.append(valeur)</code></td><td>Oubli du <code>.append()</code></td></tr>
+            <tr><td>Notation scientifique</td><td><code>1.6e-19</code></td><td><code>1,6 × 10⁻¹⁹</code> (illisible pour Python)</td></tr>
+          </tbody>
+        </table>
+        <div class="callout">
+          <p>Un seul caractère mal placé suffit pour que le code ne s'exécute pas. À l'ECE, c'est le type d'erreur qui coûte des points facilement récupérables.</p>
+        </div>
+
+        <h2>Les scripts types à connaître</h2>
+
+        <h3>En mécanique</h3>
+        <p><strong>Calcul des coordonnées du vecteur vitesse.</strong> C'est le script le plus fréquent quand l'exercice porte sur l'étude d'un mouvement à partir d'un pointage vidéo. La formule de base est la dérivée centrée :</p>
+        <pre><code># Calcul de la vitesse en chaque point intermédiaire
+for i in range(1, len(x) - 1):
+    vx.append((x[i+1] - x[i-1]) / (t[i+1] - t[i-1]))
+    vy.append((y[i+1] - y[i-1]) / (t[i+1] - t[i-1]))</code></pre>
+        <p>La liste de vitesses a alors un élément de moins aux deux extrémités — piège classique de synchronisation des listes.</p>
+
+        <p><strong>Bilan énergétique.</strong> Le script type calcule <code>Ec = 0.5 * m * v**2</code>, <code>Epp = m * g * z</code> et <code>Em = Ec + Epp</code> à chaque instant, puis superpose les trois courbes sur un même graphique avec <code>plt.plot()</code>. Ce script revient régulièrement car la mécanique (Newton + énergie) est l'un des chapitres les plus fréquents au bac.</p>
+
+        <p><strong>Tracé de vecteurs avec <code>plt.quiver()</code>.</strong> La syntaxe est :</p>
+        <pre><code>plt.quiver(x, y, vx, vy, angles='xy', scale_units='xy', scale=1)</code></pre>
+        <p>Les arguments <code>angles='xy'</code> et <code>scale_units='xy'</code> sont indispensables — sans eux, les vecteurs ne sont pas à l'échelle des axes.</p>
+
+        <p><strong>Simulation de chute libre.</strong> Utilisation d'une boucle <code>while h &gt; 0</code> pour incrémenter le temps et mettre à jour l'altitude. Ce script illustre bien la différence entre <code>for</code> (nombre d'itérations connu) et <code>while</code> (condition d'arrêt physique).</p>
+
+        <h3>En chimie</h3>
+        <p><strong>Détermination de l'avancement maximal et du réactif limitant.</strong> Le script compare les rapports stœchiométriques pour chaque réactif et prend le minimum. C'est une traduction directe du <a href="/fiches-physique-chimie-terminale/tableau-avancement/">tableau d'avancement</a> — aucune difficulté conceptuelle supplémentaire.</p>
+        <pre><code># Réactif limitant
+x_max_A = n_A / a
+x_max_B = n_B / b
+x_max = min(x_max_A, x_max_B)</code></pre>
+
+        <p><strong>Titrage par la méthode de la dérivée.</strong> C'est l'un des scripts les plus demandés à l'ECE chimie. Le principe : calculer <code>dpH/dV</code> en chaque point pour repérer le maximum, qui correspond au volume équivalent.</p>
+        <pre><code># Dérivée centrée du pH
+for i in range(1, len(pH) - 1):
+    dph.append((pH[i+1] - pH[i-1]) / (V[i+1] - V[i-1]))</code></pre>
+        <p>À l'ECE, le code est souvent fourni à moitié : il faut compléter la ligne de calcul de la dérivée ou la ligne <code>plt.plot()</code> qui l'affiche.</p>
+
+        <p><strong>Suivi de la vitesse de réaction.</strong> Calculer la vitesse volumique de disparition d'un réactif à partir de l'évolution de sa concentration dans le temps — même structure que le calcul de vitesse en mécanique. Voir la fiche <a href="/fiches-physique-chimie-terminale/cinetique-chimique/">cinétique chimique</a> pour le contexte physique.</p>
+
+        <h3>Méthode de Monte-Carlo (incertitudes)</h3>
+        <p>La méthode de Monte-Carlo sert à calculer une incertitude-type composée quand plusieurs grandeurs d'entrée ont chacune leur propre incertitude. Le principe : générer un très grand nombre de tirages aléatoires (typiquement 100 000) pour chaque grandeur, calculer la grandeur de sortie pour chacun, puis prendre l'écart-type de la distribution obtenue.</p>
+        <pre><code>import numpy as np
+
+N = 100000
+m_sim = np.random.normal(m, u_m, N)
+g_sim = np.random.normal(g, u_g, N)
+Ec_sim = 0.5 * m_sim * v**2
+
+incertitude = np.std(Ec_sim)</code></pre>
+        <p>Les deux fonctions NumPy à connaître sont <code>np.mean()</code> pour la valeur centrale et <code>np.std()</code> pour l'incertitude.</p>
+
+        <h2>Ce qu'il faut savoir pour l'ECE en particulier</h2>
+        <p>L'ECE Python a quelques caractéristiques propres que l'écrit n'a pas.</p>
+        <p><strong>Le code est toujours fourni avec des commentaires.</strong> Les lignes commençant par <code>#</code> expliquent ce que le bloc suivant est censé faire. Lire ces commentaires avant de regarder le code est la première chose à faire — ils contiennent souvent la formule à traduire en Python.</p>
+        <p><strong>Les bibliothèques sont toujours les mêmes.</strong> <code>matplotlib.pyplot</code> pour les graphiques (importé comme <code>plt</code>), <code>numpy</code> pour les calculs numériques (importé comme <code>np</code>). Il n'y a jamais de bibliothèque surprise à l'ECE.</p>
+        <p>Les commandes graphiques à connaître :</p>
+        <table>
+          <thead><tr><th>Commande</th><th>Usage</th></tr></thead>
+          <tbody>
+            <tr><td><code>plt.scatter(x, y)</code></td><td>Nuage de points (mesures expérimentales)</td></tr>
+            <tr><td><code>plt.plot(x, y)</code></td><td>Courbe continue (modèle)</td></tr>
+            <tr><td><code>plt.xlabel('...')</code></td><td>Nom de l'axe des abscisses</td></tr>
+            <tr><td><code>plt.ylabel('...')</code></td><td>Nom de l'axe des ordonnées</td></tr>
+            <tr><td><code>plt.title('...')</code></td><td>Titre du graphique</td></tr>
+            <tr><td><code>plt.legend()</code></td><td>Afficher la légende</td></tr>
+            <tr><td><code>plt.show()</code></td><td>Afficher la fenêtre graphique</td></tr>
+          </tbody>
+        </table>
+        <p>La régression linéaire avec <code>np.polyfit(x, y, 1)</code> renvoie un tableau à deux éléments : le coefficient directeur en premier, l'ordonnée à l'origine en second. Si le script demande de récupérer la pente, c'est <code>coeffs[0]</code>.</p>
+        <div class="callout">
+          <p>Ne jamais écrire les unités dans le code. Python ne sait traiter que des nombres. Les unités vont dans les titres d'axes (<code>plt.xlabel('Volume (mL)')</code>), jamais dans un calcul.</p>
+        </div>
+
+      </div><!-- /article-body -->
+
+      <!-- CTA avant FAQ -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Physique-Chimie</p>
+            <p class="cta-strip-heading">Tout le programme sur une fiche par chapitre — PDF immédiat</p>
+          </div>
+          <a href="/physique-chimie-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Physique-chimie &amp; Python en ligne — 30 €/h</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2>FAQ — Python au bac physique-chimie</h2>
+        <div class="faq-item">
+          <h3>Python tombe-t-il obligatoirement au bac de physique-chimie ?</h3>
+          <p>Python n'est pas systématique à l'écrit — il peut ne pas apparaître dans une session donnée. En revanche, à l'<a href="/blog/chapitres-ece-physique-chimie-2026/">ECE</a>, une partie Python est fréquente, en particulier pour les exercices de mécanique (bilan énergétique, vecteur vitesse) ou de chimie (titrage par la dérivée). Il vaut mieux ne pas parier sur son absence.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Faut-il savoir programmer pour réussir la partie Python du bac ?</h3>
+          <p>Non, au sens strict. La grande majorité des questions Python au bac consiste à compléter ou lire du code existant. Comprendre la logique d'un programme (ce que fait chaque ligne, dans quel ordre) est suffisant. La capacité à écrire un programme de zéro n'est jamais exigée.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Quelle est la différence entre <code>for</code> et <code>while</code> en physique-chimie ?</h3>
+          <p><code>for i in range(n)</code> s'utilise quand on sait à l'avance combien de fois répéter un calcul : par exemple, parcourir une liste de 20 positions. <code>while condition</code> s'utilise quand on s'arrête selon un critère physique : par exemple, continuer à simuler la chute d'un objet tant que son altitude est positive. En pratique, les exercices de traitement de données utilisent <code>for</code>, et les simulations utilisent <code>while</code>.</p>
+        </div>
+      </div>
+
+      <!-- CTA fin -->
+      <div class="cta-strip">
+        <div class="cta-strip-text">
+          <p class="cta-strip-eyebrow">C'Réussite · Terminale Spé</p>
+          <p class="cta-strip-heading">32 fiches PDF — cours, formules et méthodes sur une page par chapitre</p>
+        </div>
+        <a href="/physique-chimie-terminale/" class="btn">Découvrir l'ebook →</a>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/fiches-physique-chimie-terminale/cinetique-chimique/">Cinétique chimique : ordre 1, k et temps de demi-réaction</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/tableau-avancement/">Tableau d'avancement : méthode et réactif limitant</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/quantite-matiere-concentration-bac-terminale/">Quantité de matière et concentration : toutes les formules</a></li>
+          <li><a href="/blog/annales-bac-physique-chimie-programme-complet/">Les 15 annales à faire pour couvrir tout le programme</a></li>
+          <li><a href="/blog/chapitres-ece-physique-chimie-2026/">ECE 2026 : quels chapitres tombent vraiment</a></li>
+          <li><a href="/blog/comment-se-preparer-aux-ece-physique-chimie/">Comment se préparer aux ECE physique-chimie</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt — diplômée de l'École polytechnique, docteure en sciences, fondatrice de C'Réussite. Elle accompagne des élèves de la 6e au Master depuis plus de dix ans. <a href="/a-propos/">En savoir plus</a>.
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>
