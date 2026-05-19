@@ -41,6 +41,7 @@ router.post('/', express.json(), async (req, res) => {
         customer: { email },
         return_url: `${FRONTEND_URL}/success.html`,
         auth: true,
+        metadata: { product_id },
       }),
     });
 
