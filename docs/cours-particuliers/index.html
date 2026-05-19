@@ -460,9 +460,7 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
       <h2>Prendre contact</h2>
       <p class="cp-cta-sub">Décrivez le besoin et laissez votre numéro. Je vous rappelle sous 24 h pour faire le point et définir un programme adapté.</p>
 
-      <form class="contact-form" name="cours-contact" method="POST" action="/success/" data-netlify="true" netlify-honeypot="bot-field">
-        <input type="hidden" name="form-name" value="cours-contact">
-        <p style="display:none"><label>Ne pas remplir : <input name="bot-field"></label></p>
+      <form class="contact-form" id="cp-contact-form" novalidate>
 
         <div class="form-group">
           <label class="form-label" for="cp-prenom">Prénom de l'élève</label>
@@ -604,6 +602,95 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
   <div id="footer-placeholder"></div>
   <script src="../js/nav.js"></script>
   <script src="../js/footer.js"></script>
+  <script>
+  (function () {
+    var BACKEND = 'https://creussite-backend.onrender.com';
+    var form = document.getElementById('cp-contact-form');
+    var submitBtn = form.querySelector('button[type="submit"]');
+
+    var msgEl = document.createElement('p');
+    msgEl.style.cssText = 'margin-top:14px;font-size:.92rem;font-weight:600;text-align:center;';
+    msgEl.hidden = true;
+    form.appendChild(msgEl);
+
+    function showMsg(text, isError) {
+      msgEl.textContent = text;
+      msgEl.style.color = isError ? '#c0392b' : '#27ae60';
+      msgEl.hidden = false;
+    }
+
+    async function doFetch(payload) {
+      var ctrl = new AbortController();
+      var t = setTimeout(function () { ctrl.abort(); }, 25000);
+      try {
+        return await fetch(BACKEND + '/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: ctrl.signal
+        });
+      } finally {
+        clearTimeout(t);
+      }
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      msgEl.hidden = true;
+
+      var prenom    = (form.querySelector('#cp-prenom').value || '').trim();
+      var niveau    = form.querySelector('#cp-niveau').value;
+      var matiere   = form.querySelector('#cp-matiere').value;
+      var tel       = (form.querySelector('#cp-tel').value || '').trim();
+      var email     = (form.querySelector('#cp-email').value || '').trim();
+      var besoin    = (form.querySelector('#cp-besoin').value || '').trim();
+
+      if (!email || !email.includes('@')) { showMsg('Merci d\'indiquer une adresse email valide.', true); return; }
+      if (!prenom) { showMsg('Merci d\'indiquer le prénom de l\'élève.', true); return; }
+
+      var subject = 'Cours particuliers — ' + (matiere || 'non précisé') + ' — ' + (niveau || 'non précisé');
+      var body = [
+        'Prénom de l\'élève : ' + prenom,
+        'Niveau : ' + (niveau || 'non précisé'),
+        'Matière(s) : ' + (matiere || 'non précisé'),
+        'Téléphone : ' + (tel || 'non renseigné'),
+        '',
+        'Message :',
+        besoin || '(aucun message)'
+      ].join('\n');
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Envoi en cours…';
+
+      try {
+        var res;
+        try {
+          res = await doFetch({ name: prenom, email: email, subject: subject, body: body });
+        } catch (networkErr) {
+          submitBtn.textContent = 'Démarrage du serveur…';
+          await new Promise(function (r) { setTimeout(r, 8000); });
+          submitBtn.textContent = 'Envoi en cours…';
+          res = await doFetch({ name: prenom, email: email, subject: subject, body: body });
+        }
+
+        var data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Erreur serveur');
+
+        form.querySelectorAll('.form-group').forEach(function (g) { g.style.display = 'none'; });
+        submitBtn.style.display = 'none';
+        showMsg('Message envoyé ! Je vous rappelle sous 24 h.', false);
+        dataLayer.push({ event: 'generate_lead', lead_type: 'cours_particuliers' });
+      } catch (err) {
+        var msg = (err.name === 'AbortError' || err.message === 'Failed to fetch' || err.message === 'Load failed')
+          ? 'Connexion impossible. Vérifiez votre connexion et réessayez.'
+          : err.message;
+        showMsg(msg, true);
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Envoyer ma demande →';
+      }
+    });
+  })();
+  </script>
 
 </body>
 </html>
