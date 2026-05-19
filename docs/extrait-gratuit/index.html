@@ -215,22 +215,79 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
 
   updateBtnLabel();
 
-  submitBtn.addEventListener('click', function() {
+  var BACKEND_URL = 'https://creussite-backend.onrender.com';
+
+  // Élément de feedback
+  var msgEl = document.createElement('p');
+  msgEl.style.cssText = 'margin-top:12px;font-size:.9rem;font-weight:600;text-align:center;';
+  msgEl.hidden = true;
+  submitBtn.parentNode.insertBefore(msgEl, submitBtn.nextSibling);
+
+  function showMsg(text, isError) {
+    msgEl.textContent = text;
+    msgEl.style.color = isError ? '#c0392b' : '#27ae60';
+    msgEl.hidden = false;
+  }
+
+  async function doFetch(email, product_id) {
+    var ctrl = new AbortController();
+    var t = setTimeout(function() { ctrl.abort(); }, 25000);
+    try {
+      return await fetch(BACKEND_URL + '/api/extract', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, product_id: product_id }),
+        signal: ctrl.signal
+      });
+    } finally {
+      clearTimeout(t);
+    }
+  }
+
+  submitBtn.addEventListener('click', async function() {
     const email = document.getElementById('extract-email').value.trim();
     if (!email || !email.includes('@')) {
-      alert('Merci d\'indiquer une adresse email valide.');
+      showMsg('Merci d\'indiquer une adresse email valide.', true);
       return;
     }
     if (!pickMaths.checked && !pickPhysique.checked) {
-      alert('Sélectionne au moins une matière.');
+      showMsg('Sélectionne au moins une matière.', true);
       return;
     }
-    const matieres = [pickMaths.checked && 'maths', pickPhysique.checked && 'physique'].filter(Boolean).join(',');
-    dataLayer.push({ event: 'generate_lead', lead_type: 'extrait_gratuit', product_id: matieres });
-    let url = '/?extrait=1&email=' + encodeURIComponent(email);
-    if (pickMaths.checked) url += '&maths=1';
-    if (pickPhysique.checked) url += '&physique=1';
-    window.location.href = url;
+
+    const product_id = (pickMaths.checked && pickPhysique.checked) ? 'bundle'
+                     : pickMaths.checked ? 'maths' : 'physique';
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Envoi en cours…';
+    msgEl.hidden = true;
+
+    try {
+      var res;
+      try {
+        res = await doFetch(email, product_id);
+      } catch (networkErr) {
+        // Serveur en cold start sur Render → on attend 8s et on réessaie
+        submitBtn.textContent = 'Démarrage du serveur…';
+        await new Promise(function(r) { setTimeout(r, 8000); });
+        submitBtn.textContent = 'Envoi en cours…';
+        res = await doFetch(email, product_id);
+      }
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erreur serveur');
+
+      submitBtn.style.display = 'none';
+      showMsg('C\'est envoyé ! Vérifie ta boîte mail (et tes spams).', false);
+      dataLayer.push({ event: 'generate_lead', lead_type: 'extrait_gratuit', product_id: product_id });
+    } catch (err) {
+      const msg = (err.name === 'AbortError' || err.message === 'Failed to fetch' || err.message === 'Load failed')
+        ? 'Connexion impossible. Vérifie ta connexion et réessaie.'
+        : err.message;
+      showMsg(msg, true);
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Recevoir la fiche gratuite →';
+    }
   });
 
   // Urgence : jours restants avant le bac
