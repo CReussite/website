@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  <title>Charge et décharge d'un condensateur au bac : équation différentielle et méthode | C'Réussite</title>
+  <meta name="description" content="Établir l'équation différentielle d'un circuit RC, trouver la constante de temps τ, lire un graphique : la méthode complète pour la charge et la décharge du condensateur au bac de physique-chimie.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-physique-chimie-terminale/charge-decharge-condensateur-bac-terminale/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-physique-chimie-terminale/charge-decharge-condensateur-bac-terminale/">
+  <meta property="og:title" content="Charge et décharge d'un condensateur au bac : méthode complète | C'Réussite">
+  <meta property="og:description" content="Équation différentielle du circuit RC, constante de temps τ, solutions en charge et décharge, méthodes graphiques. Tout le chapitre pour le bac.">
+  <meta property="og:site_name" content="C'Réussite">
+
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"Article","headline":"Charge et décharge d'un condensateur au bac : équation différentielle et méthode","datePublished":"2026-05-19","dateModified":"2026-05-19","author":{"@type":"Person","name":"Camille Reinhardt","url":"https://c-reussite.fr/a-propos/"},"publisher":{"@type":"Organization","name":"C'Réussite","url":"https://c-reussite.fr"},"mainEntityOfPage":"https://c-reussite.fr/fiches-physique-chimie-terminale/charge-decharge-condensateur-bac-terminale/"},
+    {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://c-reussite.fr/"},{"@type":"ListItem","position":2,"name":"Physique-Chimie Terminale","item":"https://c-reussite.fr/fiches-physique-chimie-terminale/"},{"@type":"ListItem","position":3,"name":"Charge et décharge d'un condensateur","item":"https://c-reussite.fr/fiches-physique-chimie-terminale/charge-decharge-condensateur-bac-terminale/"}]},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"Pourquoi l'équation différentielle du circuit RC est-elle du premier ordre ?","acceptedAnswer":{"@type":"Answer","text":"Parce que la relation i = C × du_C/dt introduit une dérivée d'ordre 1 et une seule. Un circuit avec une bobine donnerait une équation d'ordre supérieur. En terminale, seul le circuit RC série est au programme."}},
+      {"@type":"Question","name":"Comment s'assure-t-on que τ = RC a bien l'unité d'un temps ?","acceptedAnswer":{"@type":"Answer","text":"[R] = V/A = Ω et [C] = C/V = F. Le produit [R][C] = Ω·F = (V/A)·(C/V) = C/A = s. C'est bien une durée."}},
+      {"@type":"Question","name":"Que se passe-t-il si le condensateur n'est pas initialement déchargé ?","acceptedAnswer":{"@type":"Answer","text":"L'équation différentielle ne change pas — c'est la solution qui change. La forme générale en charge est u_C(t) = E + (u_0 − E) × e^(−t/τ), où u_0 est la tension initiale. L'énoncé précise toujours u_0 dans ce cas."}}
+    ]}
+  ]}
+  </script>
+
+  <style>
+    .article-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px;background:var(--swan-wing);color:var(--sapphire);margin-bottom:12px}
+    .article-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+    .article-header h1{font-size:clamp(1.45rem,3.5vw,1.95rem);line-height:1.25;margin-bottom:10px;color:var(--royal-blue)}
+    .article-meta{font-size:.85rem;color:#5C6475}
+    .article-intro{font-size:1.02rem;color:var(--text-mid);line-height:1.75;margin:20px 0 28px}
+    .article-body h2{font-size:1.2rem;margin-top:36px;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body h3{font-size:1.02rem;font-weight:700;margin-top:24px;margin-bottom:9px;color:var(--royal-blue)}
+    .article-body p{margin-bottom:14px;line-height:1.7;color:var(--text-mid)}
+    .article-body ul,.article-body ol{margin:0 0 14px 22px}
+    .article-body li{margin-bottom:6px;color:var(--text-mid);line-height:1.65}
+    .article-body table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.88rem}
+    .article-body th{background:var(--swan-wing);font-weight:600;text-align:left;padding:9px 12px;border:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body td{padding:9px 12px;border:1px solid #e5e7eb;vertical-align:top;color:var(--text-mid)}
+    .article-body tr:nth-child(even) td{background:#fafafa}
+    .article-body strong{color:var(--royal-blue);font-weight:700}
+    .callout{background:var(--swan-wing);border-left:3px solid var(--sapphire);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .callout p{margin:0;color:var(--text-mid)}
+    .step-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;min-width:24px;background:var(--royal-blue);color:var(--quicksand);font-weight:700;font-size:.8rem;border-radius:50%;margin-right:8px;vertical-align:middle}
+    .step-row{display:flex;align-items:flex-start;gap:10px;margin:10px 0}
+    .step-row-num{display:flex;align-items:center;justify-content:center;width:26px;height:26px;min-width:26px;background:var(--royal-blue);color:var(--quicksand);font-weight:700;font-size:.8rem;border-radius:50%;margin-top:2px}
+    .step-row-body p{margin:0;color:var(--text-mid);font-size:.95rem;line-height:1.65}
+    .faq-section{margin-top:40px;padding-top:28px;border-top:2px solid #e5e7eb}
+    .faq-section>h2{font-size:1.15rem;margin-bottom:20px;padding-bottom:0;border-bottom:none}
+    .faq-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-item h3{font-size:.97rem;margin-top:0;margin-bottom:7px}
+    .faq-item p{margin:0}
+    .read-next{margin-top:36px;padding-top:24px;border-top:1px solid #e5e7eb}
+    .read-next h2{font-size:1rem;margin-bottom:12px;color:var(--royal-blue);border:none;padding:0}
+    .read-next ul{list-style:none;padding:0;margin:0}
+    .read-next li{padding:6px 0;border-bottom:1px solid #f5f5f5}
+    .read-next li:last-child{border-bottom:none}
+    .read-next a{color:var(--sapphire);text-decoration:underline;font-size:.9rem}
+    .author-box{background:var(--swan-wing);border-radius:10px;padding:16px 20px;margin-top:28px;font-size:.86rem;color:var(--text-mid)}
+    .author-box strong{display:block;margin-bottom:5px;color:var(--royal-blue);font-size:.9rem}
+    .katex-display{overflow-x:auto}
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-physique-chimie-terminale/">Physique-Chimie Terminale</a><span class="bc-sep">›</span>
+      <span>Charge et décharge d'un condensateur</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Physique-Chimie · Terminale</span>
+        <h1>Charge et décharge d'un condensateur au bac : équation différentielle et méthode</h1>
+        <div class="article-meta">Publié le 19 mai 2026 · Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">Le circuit RC est l'un des rares chapitres du programme de physique-chimie en terminale où une équation différentielle apparaît explicitement. C'est aussi l'un des chapitres où les élèves perdent le plus de points, non pas parce que le contenu est difficile, mais parce que la démarche n'est pas claire. Cette page fixe la méthode dans l'ordre : établir l'équation, identifier la constante de temps, écrire la solution, lire un graphique.</p>
+
+      <div class="article-body">
+
+        <h2>Ce qu'il faut savoir avant de commencer</h2>
+        <p>Un condensateur est un dipôle qui stocke de l'énergie sous forme de charges électriques. Dans un circuit RC, il est associé à une résistance $R$. Deux relations sont à connaître par cœur, elles servent dans tous les exercices du chapitre, sans exception.</p>
+        <table>
+          <thead><tr><th>Relation</th><th>Formule</th><th>Ce qu'elle dit</th></tr></thead>
+          <tbody>
+            <tr><td>Charge aux bornes du condensateur</td><td>$q = C \cdot u_C$</td><td>La charge $q$ est proportionnelle à la tension $u_C$</td></tr>
+            <tr><td>Intensité en régime variable</td><td>$i = C \cdot \dfrac{du_C}{dt}$</td><td>Le courant est proportionnel à la dérivée de la tension</td></tr>
+          </tbody>
+        </table>
+        <p>La deuxième relation s'obtient en dérivant la première ($i = dq/dt$, et $C$ est une constante). C'est elle qui introduit la dérivée dans l'équation différentielle.</p>
+
+        <h2>Établir l'équation différentielle : la méthode en 4 étapes</h2>
+        <p>Cette méthode s'applique à la charge comme à la décharge. La seule chose qui change est le membre de droite.</p>
+
+        <div class="step-row">
+          <div class="step-row-num">1</div>
+          <div class="step-row-body">
+            <p><strong>Appliquer la loi des mailles.</strong> On choisit un sens de circulation, puis on écrit que la somme des tensions est nulle.</p>
+            <ul style="margin:6px 0 0 18px;list-style:none;padding:0;">
+              <li style="padding:3px 0;color:var(--text-mid);font-size:.95rem;">&#9656; En charge (générateur de tension $E$) : $E = u_R + u_C$</li>
+              <li style="padding:3px 0;color:var(--text-mid);font-size:.95rem;">&#9656; En décharge (pas de générateur) : $0 = u_R + u_C$</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">2</div>
+          <div class="step-row-body">
+            <p><strong>Exprimer $u_R$ avec la loi d'Ohm.</strong> $u_R = R \cdot i$</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">3</div>
+          <div class="step-row-body">
+            <p><strong>Remplacer $i$ par son expression en fonction de $u_C$.</strong> On utilise $i = C \cdot \dfrac{du_C}{dt}$, donc $u_R = R \cdot C \cdot \dfrac{du_C}{dt}$.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">4</div>
+          <div class="step-row-body">
+            <p><strong>Injecter dans la loi des mailles et mettre en forme.</strong></p>
+          </div>
+        </div>
+
+        <p>On obtient la forme canonique avec $\tau = RC$ :</p>
+        <table>
+          <thead><tr><th>Situation</th><th>Équation différentielle</th></tr></thead>
+          <tbody>
+            <tr><td>En charge</td><td>$\dfrac{du_C}{dt} + \dfrac{u_C}{\tau} = \dfrac{E}{\tau}$</td></tr>
+            <tr><td>En décharge</td><td>$\dfrac{du_C}{dt} + \dfrac{u_C}{\tau} = 0$</td></tr>
+          </tbody>
+        </table>
+        <p>La constante de temps $\tau$ (tau) vaut $RC$. Elle s'exprime en secondes, c'est le seul paramètre qui contrôle la rapidité du circuit.</p>
+
+        <div class="callout">
+          <p><strong>Piège fréquent :</strong> l'équation différentielle doit être mise sous forme standard avec un coefficient 1 devant $\dfrac{du_C}{dt}$. Après l'étape 4, diviser par $RC$ si ce coefficient est encore présent.</p>
+        </div>
+
+        <h2>Les solutions : ce qu'on cherche au bac</h2>
+        <p>Au bac, on ne demande pas de résoudre l'équation différentielle de zéro. On demande de <strong>vérifier</strong> qu'une expression proposée par l'énoncé est bien solution, ou d'identifier les constantes à partir des conditions initiales.</p>
+        <table>
+          <thead><tr><th>Situation</th><th>Solution</th><th>Condition initiale</th></tr></thead>
+          <tbody>
+            <tr><td>Charge (condensateur initialement déchargé)</td><td>$u_C(t) = E\left(1 - e^{-t/\tau}\right)$</td><td>$u_C(0) = 0$</td></tr>
+            <tr><td>Décharge (condensateur chargé à $E$)</td><td>$u_C(t) = E \cdot e^{-t/\tau}$</td><td>$u_C(0) = E$</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <p><strong>Comment vérifier une solution (méthode à rédiger sur la copie) :</strong><br>
+          1. Calculer $\dfrac{du_C}{dt}$ (dériver l'expression proposée).<br>
+          2. Injecter $u_C(t)$ et $\dfrac{du_C}{dt}$ dans l'équation différentielle.<br>
+          3. Vérifier que l'égalité est bien satisfaite.<br>
+          4. Vérifier la condition initiale : calculer $u_C(0)$ et confirmer qu'elle correspond à l'état physique du circuit.</p>
+        </div>
+
+        <h2>La constante de temps $\tau$ : ce qu'elle signifie physiquement</h2>
+        <p>$\tau = RC$ se lit directement sur l'équation différentielle, mais ce qui compte au bac, c'est de savoir ce qu'elle représente et comment la lire sur un graphique.</p>
+        <p>À $t = \tau$ :</p>
+        <ul>
+          <li>En <strong>charge</strong> : le condensateur a atteint <strong>63 %</strong> de sa tension finale $E$ (car $1 - e^{-1} \approx 0{,}63$).</li>
+          <li>En <strong>décharge</strong> : la tension n'est plus qu'à <strong>37 %</strong> de sa valeur initiale (car $e^{-1} \approx 0{,}37$).</li>
+        </ul>
+        <p>On considère que le régime permanent est atteint après <strong>$5\tau$</strong> : la charge (ou la décharge) est alors quasi complète à 99 %.</p>
+
+        <h3>Deux méthodes graphiques pour lire $\tau$ sur une courbe</h3>
+        <p><strong>Méthode 1 : Tangente à l'origine.</strong> Tracer la tangente à la courbe en $t = 0$. Elle coupe l'asymptote horizontale (la valeur finale $E$) exactement en $t = \tau$.</p>
+        <p><strong>Méthode 2 : Méthode des pourcentages.</strong> En charge, repérer la valeur $0{,}63 \times E$ sur l'axe des ordonnées, puis projeter horizontalement sur la courbe : l'abscisse est $\tau$. En décharge, faire de même avec $0{,}37 \times E$.</p>
+        <p>Les deux méthodes donnent le même résultat. La méthode des pourcentages est souvent plus précise quand la tangente est difficile à tracer à la main.</p>
+
+        <h2>Les 3 erreurs qui font perdre des points</h2>
+        <p><strong>Erreur 1 : Sauter la loi des mailles.</strong> Certains élèves écrivent directement l'équation différentielle sans poser la loi des mailles. Le correcteur attend la démarche complète en quatre étapes. Un résultat juste sans démarche est souvent partiellement pénalisé.</p>
+        <p><strong>Erreur 2 : Confondre la convention pour le condensateur.</strong> La relation $i = C \cdot \dfrac{du_C}{dt}$ est valide en <strong>convention récepteur</strong> (la flèche de $i$ et la flèche de $u_C$ pointent dans le même sens sur le condensateur). Au bac, l'énoncé précise généralement la convention, il faut la lire avant d'écrire quoi que ce soit.</p>
+        <p><strong>Erreur 3 : Ne pas vérifier la condition initiale.</strong> Après avoir vérifié que la solution satisfait l'équation différentielle, beaucoup s'arrêtent là. Vérifier la condition initiale ($u_C(0)$) est une étape distincte, souvent notée séparément.</p>
+
+      </div><!-- /article-body -->
+
+      <!-- CTA avant FAQ -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Physique-Chimie</p>
+            <p class="cta-strip-heading">32 fiches PDF, tout le programme Terminale Spé</p>
+          </div>
+          <a href="/physique-chimie-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Physique-chimie en ligne, 30 €/h</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2>FAQ, Circuit RC et condensateur</h2>
+        <div class="faq-item">
+          <h3>Pourquoi l'équation différentielle du circuit RC est-elle du premier ordre ?</h3>
+          <p>Parce que la relation $i = C \cdot \dfrac{du_C}{dt}$ introduit une dérivée d'ordre 1, et une seule. Un circuit avec une bobine (ou une bobine et un condensateur) donnerait une équation d'ordre supérieur. En terminale, seul le circuit RC série est au programme.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Comment s'assure-t-on que $\tau = RC$ a bien l'unité d'un temps ?</h3>
+          <p>La loi d'Ohm donne $[R] = \text{V} \cdot \text{A}^{-1} = \Omega$. La relation $q = Cu_C$ donne $[C] = \text{C} \cdot \text{V}^{-1} = \text{F}$. Le produit $[R][C] = \Omega \cdot \text{F} = (\text{V/A}) \cdot (\text{C/V}) = \text{C/A} = \text{s}$. C'est bien une durée.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Que se passe-t-il si le condensateur n'est pas initialement déchargé ?</h3>
+          <p>L'équation différentielle ne change pas, c'est la solution qui change. La forme générale en charge est $u_C(t) = E + (u_0 - E) \cdot e^{-t/\tau}$, où $u_0$ est la tension initiale. L'énoncé précise toujours $u_0$ dans ce cas.</p>
+        </div>
+      </div>
+
+      <!-- CTA fin -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Physique-Chimie</p>
+            <p class="cta-strip-heading">32 fiches PDF, tout le programme Terminale Spé</p>
+          </div>
+          <a href="/physique-chimie-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Physique-chimie en ligne, 30 €/h</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/fiches-physique-chimie-terminale/titrage-conductimetrique-bac-terminale/">Titrage conductimétrique : méthode, courbe et calculs</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/cinetique-chimique/">Cinétique chimique : ordre 1, k et temps de demi-réaction</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/python-algorithmique-bac-physique-chimie-terminale/">Python au bac : scripts à connaître pour l'écrit et l'ECE</a></li>
+          <li><a href="/blog/annales-bac-physique-chimie-programme-complet/">Les 15 annales à faire pour couvrir tout le programme</a></li>
+          <li><a href="/blog/chapitres-ece-physique-chimie-2026/">ECE 2026 : quels chapitres tombent vraiment</a></li>
+        </ul>
+      </div>      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt est diplômée de l'École polytechnique, docteure en sciences, et fondatrice de C'Réussite. Elle conçoit des fiches de révision structurées pour les élèves de Terminale spé maths et physique-chimie, et accompagne des élèves de la 6e au Master depuis plusieurs années. <a href="/a-propos/" style="color:var(--sapphire);font-weight:700;">En savoir plus →</a>
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>

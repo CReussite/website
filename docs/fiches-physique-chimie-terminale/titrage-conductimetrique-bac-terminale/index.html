@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  <title>Titrage conductimétrique au bac : méthode, courbe et calculs | C'Réussite</title>
+  <meta name="description" content="Titrage conductimétrique au bac de physique-chimie : tracer la courbe, identifier l'équivalence, justifier les pentes avec Kohlrausch et calculer la concentration inconnue. Méthode complète, exemple chiffré, pièges à éviter.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-physique-chimie-terminale/titrage-conductimetrique-bac-terminale/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-physique-chimie-terminale/titrage-conductimetrique-bac-terminale/">
+  <meta property="og:title" content="Titrage conductimétrique au bac : méthode complète | C'Réussite">
+  <meta property="og:description" content="Courbe conductimétrique, loi de Kohlrausch, point d'équivalence, calcul de concentration : tout ce qu'il faut savoir pour le bac physique-chimie.">
+  <meta property="og:site_name" content="C'Réussite">
+
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"Article","headline":"Titrage conductimétrique au bac : méthode, courbe et calculs","datePublished":"2026-05-19","dateModified":"2026-05-19","author":{"@type":"Person","name":"Camille Reinhardt","url":"https://c-reussite.fr/a-propos/"},"publisher":{"@type":"Organization","name":"C'Réussite","url":"https://c-reussite.fr"},"mainEntityOfPage":"https://c-reussite.fr/fiches-physique-chimie-terminale/titrage-conductimetrique-bac-terminale/"},
+    {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://c-reussite.fr/"},{"@type":"ListItem","position":2,"name":"Physique-Chimie Terminale","item":"https://c-reussite.fr/fiches-physique-chimie-terminale/"},{"@type":"ListItem","position":3,"name":"Titrage conductimétrique","item":"https://c-reussite.fr/fiches-physique-chimie-terminale/titrage-conductimetrique-bac-terminale/"}]},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"Pourquoi ajoute-t-on de l'eau distillée avant de commencer un titrage conductimétrique ?","acceptedAnswer":{"@type":"Answer","text":"L'eau distillée ne contient pas d'ions : elle dilue toutes les espèces dans les mêmes proportions, mais ne modifie pas la quantité de matière du réactif titré. Le volume à l'équivalence V_E reste donc identique. En revanche, la dilution initiale garantit la linéarité des portions de courbe, ce qui est indispensable pour lire l'intersection."}},
+      {"@type":"Question","name":"Comment lire V_E avec précision si les deux droites ne se croisent pas nettement ?","acceptedAnswer":{"@type":"Answer","text":"On prolonge à la règle chacune des deux portions linéaires au-delà des points expérimentaux. L'intersection des prolongements donne V_E. Avec un logiciel (Regressi), on modélise chaque portion par une droite affine et on résout le système."}},
+      {"@type":"Question","name":"Le titrage conductimétrique peut-il s'appliquer à toutes les réactions ?","acceptedAnswer":{"@type":"Answer","text":"Non. Trois conditions sont nécessaires : la réaction doit être rapide, totale et unique. En pratique au bac, ces conditions sont toujours vérifiées — l'énoncé ne propose jamais de réaction problématique sans le signaler."}}
+    ]}
+  ]}
+  </script>
+
+  <style>
+    .article-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px;background:var(--swan-wing);color:var(--sapphire);margin-bottom:12px}
+    .article-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+    .article-header h1{font-size:clamp(1.45rem,3.5vw,1.95rem);line-height:1.25;margin-bottom:10px;color:var(--royal-blue)}
+    .article-meta{font-size:.85rem;color:#5C6475}
+    .article-intro{font-size:1.02rem;color:var(--text-mid);line-height:1.75;margin:20px 0 28px}
+    .article-body h2{font-size:1.2rem;margin-top:36px;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body h3{font-size:1.02rem;font-weight:700;margin-top:24px;margin-bottom:9px;color:var(--royal-blue)}
+    .article-body p{margin-bottom:14px;line-height:1.7;color:var(--text-mid)}
+    .article-body ul,.article-body ol{margin:0 0 14px 22px}
+    .article-body li{margin-bottom:6px;color:var(--text-mid);line-height:1.65}
+    .article-body table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.88rem}
+    .article-body th{background:var(--swan-wing);font-weight:600;text-align:left;padding:9px 12px;border:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body td{padding:9px 12px;border:1px solid #e5e7eb;vertical-align:top;color:var(--text-mid)}
+    .article-body tr:nth-child(even) td{background:#fafafa}
+    .article-body strong{color:var(--royal-blue);font-weight:700}
+    .callout{background:var(--swan-wing);border-left:3px solid var(--sapphire);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .callout p{margin:0;color:var(--text-mid)}
+    .faq-section{margin-top:40px;padding-top:28px;border-top:2px solid #e5e7eb}
+    .faq-section>h2{font-size:1.15rem;margin-bottom:20px;padding-bottom:0;border-bottom:none}
+    .faq-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-item h3{font-size:.97rem;margin-top:0;margin-bottom:7px}
+    .faq-item p{margin:0}
+    .read-next{margin-top:36px;padding-top:24px;border-top:1px solid #e5e7eb}
+    .read-next h2{font-size:1rem;margin-bottom:12px;color:var(--royal-blue);border:none;padding:0}
+    .read-next ul{list-style:none;padding:0;margin:0}
+    .read-next li{padding:6px 0;border-bottom:1px solid #f5f5f5}
+    .read-next li:last-child{border-bottom:none}
+    .read-next a{color:var(--sapphire);text-decoration:underline;font-size:.9rem}
+    .author-box{background:var(--swan-wing);border-radius:10px;padding:16px 20px;margin-top:28px;font-size:.86rem;color:var(--text-mid)}
+    .author-box strong{display:block;margin-bottom:5px;color:var(--royal-blue);font-size:.9rem}
+    .katex-display{overflow-x:auto}
+    .step-block{background:var(--swan-wing);border-radius:8px;padding:14px 18px;margin:10px 0}
+    .step-block p{margin:0;color:var(--text-mid)}
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-physique-chimie-terminale/">Physique-Chimie Terminale</a><span class="bc-sep">›</span>
+      <span>Titrage conductimétrique</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Physique-Chimie · Terminale</span>
+        <h1>Titrage conductimétrique au bac : méthode, courbe et calculs</h1>
+        <div class="article-meta">Publié le 19 mai 2026 · Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">Le titrage conductimétrique est l'une des trois formes de titrage au programme de terminale spécialité, avec le titrage pH-métrique et le titrage colorimétrique. Il apparaît régulièrement à l'écrit et en ECE. Le principe est simple : on suit l'évolution de la conductivité de la solution au cours de l'ajout du réactif titrant. L'équivalence se lit sur la courbe à la <strong>rupture de pente</strong>, pas à un saut brusque comme en pH-métrie, mais à un changement de direction. C'est cet écart de comportement qui déroute les élèves, et c'est ce que cette page explique méthode par méthode.</p>
+
+      <div class="article-body">
+
+        <h2>Ce que mesure le conductimètre et pourquoi ça change</h2>
+        <p>La <strong>conductivité</strong> (notée $\sigma$, en S·m⁻¹) mesure la capacité d'une solution à laisser passer le courant électrique. Dans une solution ionique, ce sont les ions qui assurent ce transport, chaque ion contribue proportionnellement à sa concentration et à sa conductivité molaire ionique $\lambda$.</p>
+        <p>La <strong>loi de Kohlrausch</strong> formalise cette relation :</p>
+        $$\sigma = \sum_i \lambda_i \cdot [X_i]$$
+        <p>Les ions H₃O⁺ et OH⁻ ont des conductivités molaires ioniques très élevées (respectivement 35,0 et 20,0 mS·m²·mol⁻¹), bien plus que les ions courants comme Na⁺ (5,0) ou Cl⁻ (7,6). C'est cette différence qui explique les changements de pente : quand un ion très conducteur est remplacé par un ion moins conducteur, la conductivité globale baisse.</p>
+
+        <h2>Le protocole expérimental</h2>
+        <p>Le montage comprend : un bécher, un conductimètre avec sonde immergée, une burette graduée contenant le réactif titrant, un agitateur magnétique.</p>
+        <div class="callout">
+          <p><strong>Étape préalable indispensable : ajouter de l'eau distillée.</strong> Avant de commencer, on ajoute un grand volume d'eau distillée dans le bécher (100 à 200 mL pour un prélèvement de 10 mL). Cette étape a deux rôles : garantir que la sonde est totalement immergée, et surtout <strong>permettre de négliger la variation de volume</strong> due à l'ajout du titrant. Sans cette précaution, la courbe serait courbée et l'équivalence difficile à lire. L'ajout d'eau ne modifie pas $V_E$ car la <a href="/fiches-physique-chimie-terminale/quantite-matiere-concentration-bac-terminale/">quantité de matière</a> du réactif titré reste inchangée.</p>
+        </div>
+        <p><strong>Déroulement :</strong> on verse le titrant par petites quantités (0,5 à 1 mL), on attend stabilisation de la mesure, on relève $\sigma$. On trace ensuite $\sigma = f(V_{\text{titrant}})$.</p>
+
+        <h2>Lire la courbe et identifier l'équivalence</h2>
+        <p>La courbe conductimétrique est constituée de <strong>deux demi-droites qui se coupent</strong>. L'intersection définit le <strong>point d'équivalence</strong>, et le volume $V_E$ lu en abscisse est le volume de titrant versé à l'équivalence.</p>
+        <p>Pour trouver ce point précisément : on trace à la règle les deux portions linéaires (avant et après l'équivalence) et on lit les coordonnées de leur intersection.</p>
+
+        <table>
+          <thead><tr><th>Type de titrage</th><th>Avant équivalence</th><th>Après équivalence</th></tr></thead>
+          <tbody>
+            <tr><td>Acide fort (HCl) par base forte (NaOH)</td><td>$\sigma$ diminue : H₃O⁺ remplacé par Na⁺, moins conducteur</td><td>$\sigma$ augmente : excès OH⁻, très conducteur</td></tr>
+            <tr><td>Acide faible (CH₃COOH) par base forte (NaOH)</td><td>$\sigma$ augmente légèrement, ions produits s'accumulent</td><td>$\sigma$ augmente plus fort, excès OH⁻</td></tr>
+            <tr><td>Précipitation (Cl⁻ par Ag⁺)</td><td>$\sigma$ diminue : Cl⁻ précipite, retrait d'ions</td><td>$\sigma$ augmente : Ag⁺ en excès s'accumule</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Justifier les pentes avec la loi de Kohlrausch</h2>
+        <p>C'est la question qui revient le plus souvent en ECE et à l'écrit. La méthode est toujours la même : faire l'inventaire des ions avant et après l'équivalence, et comparer leurs conductivités molaires.</p>
+
+        <h3>Exemple : titrage de HCl par NaOH</h3>
+        <p>La réaction support est : H₃O⁺ + OH⁻ → 2 H₂O (totale, rapide, unique).</p>
+        <p><strong>Avant l'équivalence :</strong> on consomme H₃O⁺ ($\lambda = 35{,}0$) et on apporte Na⁺ ($\lambda = 5{,}0$). Le bilan est négatif : la conductivité diminue. La pente est négative.</p>
+        <p><strong>Après l'équivalence :</strong> H₃O⁺ est épuisé. On verse un excès de NaOH, Na⁺ et OH⁻ ($\lambda = 20{,}0$) s'accumulent tous les deux sans réagir. La conductivité remonte. La pente est positive et plus forte.</p>
+
+        <div class="callout">
+          <p><strong>Rédaction attendue sur la copie :</strong><br>
+          1. Écrire l'équation de la réaction de titrage.<br>
+          2. Identifier les ions présents avant et après l'équivalence.<br>
+          3. Comparer les $\lambda$ des ions qui disparaissent et de ceux qui apparaissent.<br>
+          4. Conclure sur le signe de la pente.</p>
+        </div>
+
+        <h2>Calculer la concentration inconnue à partir de $V_E$</h2>
+        <p>À l'équivalence, les réactifs ont été introduits dans les <strong>proportions stœchiométriques</strong>. On utilise la relation :</p>
+        $$\frac{n_A}{a} = \frac{n_B}{b}$$
+        <p>où $a$ et $b$ sont les coefficients stœchiométriques de A et B dans l'équation de la réaction.</p>
+        <p><strong>Exemple chiffré :</strong> on titre $V_A = 10{,}0$ mL d'une solution d'acide chlorhydrique de concentration $C_A$ inconnue par une solution de soude de concentration $C_B = 0{,}100$ mol/L. L'équivalence est atteinte pour $V_E = 12{,}5$ mL.</p>
+        <p>La réaction est : HCl + NaOH → NaCl + H₂O (coefficients 1 et 1). À l'équivalence : $C_A \cdot V_A = C_B \cdot V_E$.</p>
+        $$C_A = \frac{C_B \cdot V_E}{V_A} = \frac{0{,}100 \times 12{,}5}{10{,}0} = 0{,}125 \; \text{mol/L}$$
+
+        <h2>Les 3 erreurs qui font perdre des points</h2>
+        <p><strong>Erreur 1 : Oublier d'ajouter de l'eau distillée dans le protocole.</strong> En ECE, si on ne mentionne pas cette étape et sa justification (négliger la dilution pour obtenir des droites), des points sont perdus sur le protocole.</p>
+        <p><strong>Erreur 2 : Confondre la rupture de pente avec un saut de conductivité.</strong> En pH-métrie, on cherche un saut vertical. En conductimétrie, on cherche un <strong>changement de direction entre deux droites</strong>. Ce sont deux méthodes différentes : les mélanger est une erreur de principe.</p>
+        <p><strong>Erreur 3 : Justifier la pente sans mentionner les $\lambda$.</strong> Dire "la conductivité diminue parce que H₃O⁺ est consommé" est incomplet. Il faut préciser que H₃O⁺ a un $\lambda$ très élevé (35,0 mS·m²·mol⁻¹) et que l'ion qui le remplace (Na⁺, $\lambda = 5{,}0$) est bien moins conducteur. La loi de Kohlrausch doit apparaître dans la réponse.</p>
+
+      </div><!-- /article-body -->
+
+      <!-- CTA avant FAQ -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Physique-Chimie</p>
+            <p class="cta-strip-heading">32 fiches PDF, tout le programme Terminale Spé</p>
+          </div>
+          <a href="/physique-chimie-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Physique-chimie en ligne, 30 €/h</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2>FAQ, Titrage conductimétrique</h2>
+        <div class="faq-item">
+          <h3>Pourquoi ajoute-t-on de l'eau distillée avant de commencer, alors que ça change la concentration initiale ?</h3>
+          <p>L'eau distillée ne contient pas d'ions : elle dilue toutes les espèces dans les mêmes proportions, mais ne modifie pas la <a href="/fiches-physique-chimie-terminale/quantite-matiere-concentration-bac-terminale/">quantité de matière</a> du réactif titré. Le volume à l'équivalence $V_E$ reste donc identique. En revanche, la dilution initiale garantit la linéarité des portions de courbe, ce qui est indispensable pour exploiter l'intersection.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Comment lire $V_E$ avec précision si les deux droites ne se croisent pas nettement ?</h3>
+          <p>On prolonge à la règle chacune des deux portions linéaires au-delà des points expérimentaux. L'intersection des prolongements donne $V_E$. Avec un logiciel (Regressi), on modélise chaque portion par une droite affine et on résout le système, la précision est meilleure qu'à la main.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Le titrage conductimétrique peut-il s'appliquer à toutes les réactions ?</h3>
+          <p>Non. Trois conditions sont nécessaires : la réaction doit être rapide (pour que l'équilibre soit atteint à chaque mesure), totale (pour que l'équivalence soit nette) et unique (pour éviter les réactions parasites). En pratique au bac, ces conditions sont toujours vérifiées.</p>
+        </div>
+      </div>
+
+      <!-- CTA fin -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Physique-Chimie</p>
+            <p class="cta-strip-heading">32 fiches PDF, tout le programme Terminale Spé</p>
+          </div>
+          <a href="/physique-chimie-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Physique-chimie en ligne, 30 €/h</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/fiches-physique-chimie-terminale/calculer-ph/">Calculer un pH : acide fort, base forte, solution tampon</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/quantite-matiere-concentration-bac-terminale/">Quantité de matière et concentration : les 4 formules</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/tableau-avancement/">Tableau d'avancement : méthode et réactif limitant</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/equilibre-chimique/">Équilibre chimique : quotient de réaction Qr et constante K</a></li>
+          <li><a href="/blog/annales-bac-physique-chimie-programme-complet/">Les 15 annales à faire pour couvrir tout le programme</a></li>
+          <li><a href="/blog/chapitres-ece-physique-chimie-2026/">ECE 2026 : quels chapitres tombent vraiment</a></li>
+        </ul>
+      </div>      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt est diplômée de l'École polytechnique, docteure en sciences, et fondatrice de C'Réussite. Elle conçoit des fiches de révision structurées pour les élèves de Terminale spé maths et physique-chimie, et accompagne des élèves de la 6e au Master depuis plusieurs années. <a href="/a-propos/" style="color:var(--sapphire);font-weight:700;">En savoir plus →</a>
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>
