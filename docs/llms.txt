@@ -26,6 +26,8 @@
 - [Équilibre chimique](https://c-reussite.fr/fiches-physique-chimie-terminale/equilibre-chimique/): Quotient de réaction Qr, constante K, sens d'évolution, réactions totales.
 - [Tableau d'avancement](https://c-reussite.fr/fiches-physique-chimie-terminale/tableau-avancement/): Méthode en 4 étapes, réactif limitant, x_max — exemple complet sur la combustion du méthane.
 - [Synthèse organique](https://c-reussite.fr/fiches-physique-chimie-terminale/synthese-organique/): Les 6 types de questions du bac — groupes fonctionnels, IR, rendement, reflux, CCM, chimie verte.
+- [Titrage conductimétrique](https://c-reussite.fr/fiches-physique-chimie-terminale/titrage-conductimetrique-bac-terminale/): Loi de Kohlrausch, conductivité molaire ionique, protocole (ajout d'eau distillée), lecture de la rupture de pente, justification des pentes, calcul de la concentration inconnue à partir de V_E.
+- [Charge et décharge d'un condensateur](https://c-reussite.fr/fiches-physique-chimie-terminale/charge-decharge-condensateur-bac-terminale/): Équation différentielle du circuit RC en 4 étapes (loi des mailles, loi d'Ohm, i = C·du_C/dt, forme canonique), constante de temps τ = RC, solutions en charge et décharge, méthodes graphiques (tangente, pourcentages 63 %/37 %).
 - [Python au bac physique-chimie](https://c-reussite.fr/fiches-physique-chimie-terminale/python-algorithmique-bac-physique-chimie-terminale/): Scripts à connaître pour l'écrit et l'ECE — vecteur vitesse, bilan énergétique, titrage par la dérivée, Monte-Carlo. Syntaxe, commandes matplotlib/numpy, pièges classiques.
 
 ### Réviser les maths en Terminale Spécialité
