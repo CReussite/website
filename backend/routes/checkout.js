@@ -46,19 +46,18 @@ router.post('/', express.json(), async (req, res) => {
 
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
-      console.error('[checkout] Stancer API error:', response.status, JSON.stringify(err));
+      console.error('[checkout] Stancer API error:', response.status, JSON.stringify(err), '| email:', email, '| product:', product_id);
       throw new Error(err.message || `Stancer ${response.status}`);
     }
 
     const payment = await response.json();
-    console.log('[checkout] Stancer response auth:', JSON.stringify(payment.auth));
-    console.log('[checkout] Stancer response status:', payment.status);
+    console.log('[checkout] Paiement créé:', payment.id, '| product:', product_id, '| email:', email);
 
     const paymentUrl = `https://payment.stancer.com/${process.env.STANCER_PUBLIC_KEY}/${payment.id}`;
 
     res.json({ url: paymentUrl, paymentId: payment.id, productId: product_id });
   } catch (err) {
-    console.error('[checkout] Erreur création paiement Stancer :', err.message);
+    console.error('[checkout] Erreur création paiement Stancer :', err.message, '| email:', email, '| product:', product_id);
     res.status(500).json({ error: 'Impossible de créer la session de paiement.' });
   }
 });
