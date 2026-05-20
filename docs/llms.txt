@@ -33,12 +33,14 @@
 ### Réviser les maths en Terminale Spécialité
 
 - [Hub maths](https://c-reussite.fr/fiches-maths-terminale/): Index des guides gratuits par chapitre.
+- [Formules de dérivation](https://c-reussite.fr/fiches-maths-terminale/formules-derivation-bac-terminale/): Tableau complet des dérivées (fonctions usuelles, règles opératoires, fonctions composées), équation de la tangente, utilisation de la dérivée pour les variations. Méthode en 3 étapes pour les composées.
 - [Géométrie dans l'espace](https://c-reussite.fr/fiches-maths-terminale/geometrie-espace-bac-terminale/): Représentation paramétrique, équation de plan, positions relatives, projeté orthogonal et distances. Méthode complète avec exemples chiffrés.
 - [Intégration par parties](https://c-reussite.fr/fiches-maths-terminale/integration-par-parties-bac-terminale/): Formule IPP, règle ALPES, méthode en 4 étapes, trois types d'exercices classiques (polynôme × exponentielle, astuce ×1 pour ln et arctan, double IPP).
 
 ## Blog — Méthode, révisions, orientation
 
 - [Blog C'Réussite](https://c-reussite.fr/blog/): Articles sur la méthode de révision, les examens, l'orientation post-bac et la vie lycéenne.
+- [Régression linéaire au tableur en ECE](https://c-reussite.fr/fiches-physique-chimie-terminale/regression-lineaire-tableur-ece/): Méthode en 6 étapes (saisie, nuage, courbe de tendance, R², unité de la pente, exploitation). Incertitude par encadrement ou Monte-Carlo Python. Le geste présent dans 1 sujet ECE sur 5. Catégorie : Maths & Physique-Chimie.
 - [Bac physique-chimie 2026 : les 15 annales à faire pour couvrir tout le programme](https://c-reussite.fr/blog/annales-bac-physique-chimie-programme-complet/): Sélection de 15 exercices classés par rentabilité (8 pour couvrir les 23 chapitres + 7 de renforcement), avec conseils et pièges pour chaque sujet. Analyse de 90 sujets officiels 2024-2025. Catégorie : Maths & Physique-Chimie.
 - [Stress du bac : ce que la science dit vraiment](https://c-reussite.fr/blog/stress-bac-anxiete-scolaire/): Mécanismes cognitifs, impact sur les performances en maths et physique-chimie, stratégies documentées (testing effect, déchargement cognitif, sommeil). Catégorie : Méthode & organisation.
 - [ECE physique-chimie 2026 : quels chapitres tombent vraiment](https://c-reussite.fr/blog/chapitres-ece-physique-chimie-2026/): Analyse exhaustive des 90 sujets de la banque ECE 2026 — top 5 chapitres, compétences dominantes, outils numériques, chapitres absents. Catégorie : Maths & Physique-Chimie.

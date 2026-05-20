@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <!-- End Google Tag Manager -->
+
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  <!-- SEO -->
+  <title>Régression linéaire au tableur en ECE : méthode complète en 6 étapes | C'Réussite</title>
+  <meta name="description" content="Régression linéaire au tableur en ECE physique-chimie : la méthode en 6 étapes, le R², les unités, l'incertitude. Le geste qui rapporte des points dans 1 sujet sur 5.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-physique-chimie-terminale/regression-lineaire-tableur-ece/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-physique-chimie-terminale/regression-lineaire-tableur-ece/">
+  <meta property="og:title" content="Régression linéaire au tableur en ECE : méthode complète en 6 étapes | C'Réussite">
+  <meta property="og:description" content="18 sujets ECE 2026 sur 90 demandent une régression linéaire. Méthode en 6 étapes, R², unités de la pente, incertitude : tout ce qu'il faut maîtriser.">
+  <meta property="og:site_name" content="C'Réussite">
+
+  <link rel="stylesheet" href="../../css/style.css">
+
+  <!-- Données structurées -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Régression linéaire au tableur en ECE : la méthode pas à pas",
+        "description": "Méthode en 6 étapes pour réaliser une régression linéaire au tableur en ECE physique-chimie 2026. R², unités de la pente, incertitude, pièges classiques.",
+        "datePublished": "2026-04-30",
+        "dateModified": "2026-05-20",
+        "author": { "@type": "Person", "name": "Camille Reinhardt", "url": "https://c-reussite.fr/a-propos/" },
+        "publisher": { "@type": "Organization", "name": "C'Réussite", "url": "https://c-reussite.fr" },
+        "mainEntityOfPage": "https://c-reussite.fr/fiches-physique-chimie-terminale/regression-lineaire-tableur-ece/"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://c-reussite.fr/" },
+          { "@type": "ListItem", "position": 2, "name": "Physique-Chimie Terminale", "item": "https://c-reussite.fr/fiches-physique-chimie-terminale/" },
+          { "@type": "ListItem", "position": 3, "name": "Régression linéaire au tableur ECE", "item": "https://c-reussite.fr/fiches-physique-chimie-terminale/regression-lineaire-tableur-ece/" }
+        ]
+      },
+      {
+        "@type": "HowTo",
+        "name": "Réaliser une régression linéaire au tableur en ECE",
+        "description": "Méthode pas à pas pour exploiter un nuage de points expérimental par régression linéaire au tableur (Excel, LibreOffice Calc, Regressi) le jour de l'ECE physique-chimie.",
+        "totalTime": "PT10M",
+        "tool": [
+          { "@type": "HowToTool", "name": "Tableur (Excel, LibreOffice Calc) ou Regressi" },
+          { "@type": "HowToTool", "name": "Données expérimentales" }
+        ],
+        "step": [
+          { "@type": "HowToStep", "position": 1, "name": "Entrer les données proprement", "text": "Créer deux colonnes avec en-tête nommé et unité entre parenthèses, une mesure par ligne, sans cellule fusionnée." },
+          { "@type": "HowToStep", "position": 2, "name": "Tracer un nuage de points", "text": "Sélectionner les deux colonnes et insérer un graphique XY scatter avec marqueurs uniquement. Ne pas relier les points par des segments." },
+          { "@type": "HowToStep", "position": 3, "name": "Ajouter une courbe de tendance", "text": "Clic droit sur un point puis Ajouter une courbe de tendance. Choisir le type linéaire, exponentiel ou polynomial selon le phénomène." },
+          { "@type": "HowToStep", "position": 4, "name": "Afficher l'équation et le R²", "text": "Cocher impérativement Afficher l'équation sur le graphique et Afficher le coefficient de détermination R²." },
+          { "@type": "HowToStep", "position": 5, "name": "Lire la pente avec son unité", "text": "Lire la pente a et l'ordonnée à l'origine b. Vérifier l'unité de la pente et donner le bon nombre de chiffres significatifs." },
+          { "@type": "HowToStep", "position": 6, "name": "Exploiter la pente", "text": "Égaler la pente à l'expression théorique fournie dans le sujet pour en déduire la grandeur physique cherchée." }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Quel est le seuil de R² qui valide une régression linéaire en ECE ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "En physique-chimie au lycée, la convention est R² ≥ 0,99 pour valider un modèle linéaire. Entre 0,98 et 0,99, le modèle est correct mais doit être discuté. En dessous de 0,98, le modèle linéaire ne convient pas." }
+          },
+          {
+            "@type": "Question",
+            "name": "Comment trouve-t-on l'unité de la pente d'une régression ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "L'unité de la pente est le rapport des unités des deux axes. Si l'axe y est en absorbance (sans unité) et l'axe x en concentration (mol·L⁻¹), la pente est en L·mol⁻¹. Sans cette unité, le résultat est incomplet et pénalisé." }
+          },
+          {
+            "@type": "Question",
+            "name": "Faut-il maîtriser Excel, LibreOffice Calc et Regressi pour l'ECE ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Non. Un seul outil suffit : celui qui est installé dans ton lycée. La méthode en 6 étapes est identique sur les trois. Renseigne-toi auprès de ton professeur sur l'outil utilisé en TP." }
+          },
+          {
+            "@type": "Question",
+            "name": "Pourquoi ne faut-il pas relier les points par des segments ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Parce que la régression représente le modèle théorique, et les points représentent les données expérimentales. Les deux doivent rester visuellement distincts. Relier les points par une ligne brisée signale une confusion entre données et modèle." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-tag { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 10px; border-radius: 20px; background: var(--swan-wing); color: var(--sapphire); margin-bottom: 12px; }
+    .article-header { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid #e5e7eb; }
+    .article-header h1 { font-size: clamp(1.45rem, 3.5vw, 1.95rem); line-height: 1.25; margin-bottom: 10px; color: var(--royal-blue); }
+    .article-meta { font-size: 0.85rem; color: #5C6475; }
+    .article-intro { font-size: 1.02rem; color: var(--text-mid); line-height: 1.75; margin: 20px 0 28px; }
+    .summary-box { background: var(--swan-wing); border-radius: 10px; padding: 18px 22px; margin: 0 0 28px; }
+    .summary-box ul { margin: 8px 0 0 20px; }
+    .summary-box li { font-size: 0.92rem; color: var(--text-mid); margin-bottom: 5px; }
+    .article-body h2 { font-size: 1.25rem; margin-top: 40px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb; color: var(--royal-blue); }
+    .article-body h3 { font-size: 1.05rem; font-weight: 700; margin-top: 28px; margin-bottom: 10px; color: var(--royal-blue); }
+    .article-body p { margin-bottom: 14px; line-height: 1.7; color: var(--text-mid); }
+    .article-body ul, .article-body ol { margin: 0 0 14px 22px; }
+    .article-body li { margin-bottom: 6px; color: var(--text-mid); line-height: 1.65; }
+    .article-body table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 0.9rem; }
+    .article-body th { background: var(--swan-wing); font-weight: 600; text-align: right; padding: 9px 12px; border: 1px solid #e5e7eb; color: var(--royal-blue); }
+    .article-body td { padding: 9px 12px; border: 1px solid #e5e7eb; vertical-align: top; color: var(--text-mid); text-align: right; }
+    .article-body td:first-child, .article-body th:first-child { text-align: left; }
+    .article-body tr:nth-child(even) td { background: #fafafa; }
+    .article-body strong { color: var(--royal-blue); font-weight: 700; }
+    .callout { background: var(--swan-wing); border-left: 3px solid var(--sapphire); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0; }
+    .callout p { margin: 0; color: var(--text-mid); }
+    .callout-warning { background: #fff7ed; border-left: 3px solid #f59e0b; border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 14px 0; }
+    .callout-warning p { margin: 0; color: var(--text-mid); }
+    .step-row { display: flex; align-items: flex-start; gap: 12px; margin: 12px 0; }
+    .step-row-num { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; min-width: 28px; background: var(--royal-blue); color: var(--quicksand); font-weight: 700; font-size: 0.85rem; border-radius: 50%; margin-top: 2px; }
+    .step-row-body p { margin: 0 0 6px; color: var(--text-mid); line-height: 1.7; }
+    .step-row-body p:last-child { margin-bottom: 0; }
+    .piege-list { list-style: none; padding: 0; margin: 0 0 14px; }
+    .piege-list li { padding: 12px 16px; border: 1px solid #fde8d8; border-radius: 8px; margin-bottom: 8px; background: #fff7f3; }
+    .piege-list li strong { display: block; color: #c0392b; margin-bottom: 4px; font-size: 0.93rem; }
+    .piege-list li span { font-size: 0.88rem; color: var(--text-mid); line-height: 1.6; }
+    .faq-section { margin-top: 40px; padding-top: 28px; border-top: 2px solid #e5e7eb; }
+    .faq-section > h2 { font-size: 1.15rem; margin-bottom: 20px; padding-bottom: 0; border-bottom: none; }
+    .faq-item { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #f0f0f0; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-item h3 { font-size: 0.97rem; margin-top: 0; margin-bottom: 7px; }
+    .faq-item p { margin: 0; }
+    .read-next { margin-top: 36px; padding-top: 24px; border-top: 1px solid #e5e7eb; }
+    .read-next h2 { font-size: 1rem; margin-bottom: 12px; color: var(--royal-blue); border: none; padding: 0; margin-top: 0; }
+    .read-next ul { list-style: none; padding: 0; margin: 0; }
+    .read-next li { padding: 6px 0; border-bottom: 1px solid #f5f5f5; }
+    .read-next li:last-child { border-bottom: none; }
+    .read-next a { color: var(--sapphire); text-decoration: underline; font-size: 0.9rem; }
+    .author-box { background: var(--swan-wing); border-radius: 10px; padding: 16px 20px; margin-top: 28px; font-size: 0.86rem; color: var(--text-mid); }
+    .author-box strong { display: block; margin-bottom: 5px; color: var(--royal-blue); font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL"
+height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-physique-chimie-terminale/">Physique-Chimie Terminale</a><span class="bc-sep">›</span>
+      <span>Régression linéaire au tableur ECE</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Physique-Chimie · ECE</span>
+        <h1>Régression linéaire au tableur en ECE : la méthode pas à pas</h1>
+        <div class="article-meta">Publié le 30 avril 2026 · Mis à jour le 20 mai 2026 · Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">Sur les 90 sujets ECE physique-chimie 2026, <strong>18 demandent explicitement une modélisation graphique avec régression linéaire</strong>, soit un sujet sur cinq. Et bien plus encore mobilisent une exploitation au tableur : régression et exploitation graphique cumulées dépassent 60 % du corpus. C'est, statistiquement, le geste le plus rentable de l'épreuve.</p>
+
+      <div class="summary-box">
+        <strong>L'essentiel en 30 secondes</strong>
+        <ul>
+          <li><strong>Fréquence :</strong> 18 sujets ECE 2026 sur 90 demandent une régression linéaire.</li>
+          <li><strong>Méthode :</strong> 6 étapes — entrer les données, tracer un nuage, ajouter une tendance, afficher équation et R², lire la pente avec son unité, exploiter la pente.</li>
+          <li><strong>Validation :</strong> R² ≥ 0,99 valide le modèle linéaire. Sans R², pas de point sur ANA/VAL.</li>
+          <li><strong>Piège n° 1 :</strong> une pente sans unité ne vaut rien.</li>
+          <li><strong>Incertitude :</strong> encadrement manuel ou Monte-Carlo Python (le code est toujours fourni).</li>
+        </ul>
+      </div>
+
+      <div class="article-body">
+
+        <h2>Pourquoi cette méthode rapporte autant</h2>
+        <p>Quand un sujet demande de modéliser un nuage de points par une régression linéaire, il évalue trois compétences en une fois :</p>
+        <ul>
+          <li><strong>Réaliser :</strong> tu manipules le tableur, tu produis un graphique propre, tu lis la pente.</li>
+          <li><strong>Analyser :</strong> tu choisis le type de modélisation (linéaire, exponentielle), tu valides le modèle par le R².</li>
+          <li><strong>Valider :</strong> tu compares le résultat à une valeur de référence, tu donnes une incertitude.</li>
+        </ul>
+        <p>Trois compétences sur les six de l'épreuve, traitées en quelques minutes. C'est le geste qui a le meilleur ratio temps/points de l'ECE.</p>
+
+        <h2>La méthode complète en 6 étapes</h2>
+
+        <div class="step-row">
+          <div class="step-row-num">1</div>
+          <div class="step-row-body">
+            <p><strong>Entrer les données proprement.</strong> Créer deux colonnes : la première pour la grandeur en abscisse, la seconde pour la grandeur en ordonnée. L'en-tête de chaque colonne doit contenir le nom et <strong>l'unité entre parenthèses</strong> — ex. <em>t (s)</em> ou <em>A (sans unité)</em>. Saisir une mesure par ligne, sans cellule fusionnée.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">2</div>
+          <div class="step-row-body">
+            <p><strong>Tracer un nuage de points.</strong> Sélectionner les deux colonnes (en-têtes compris), puis insérer un graphique <strong>XY — nuage de points avec marqueurs uniquement</strong>. Ne pas choisir le type « courbe » ou « ligne » : relier les points par des segments signifie qu'on interpole les données, ce qui n'est pas ce que l'on cherche ici.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">3</div>
+          <div class="step-row-body">
+            <p><strong>Ajouter une courbe de tendance.</strong> Clic droit sur un point du nuage → <em>Ajouter une courbe de tendance</em>. Choisir le type selon le phénomène : <strong>linéaire</strong> si la relation est directement proportionnelle (Beer-Lambert, <a href="/fiches-physique-chimie-terminale/cinetique-chimique/">cinétique d'ordre 1 en ln[A] = f(t)</a>, loi d'Ohm) ; <strong>exponentielle</strong> pour la charge ou la décharge d'un <a href="/fiches-physique-chimie-terminale/charge-decharge-condensateur-bac-terminale/">condensateur RC</a>. Le sujet précise toujours quel type utiliser.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">4</div>
+          <div class="step-row-body">
+            <p><strong>Afficher l'équation et le R².</strong> Cocher impérativement les deux cases : <strong>Afficher l'équation sur le graphique</strong> et <strong>Afficher le R²</strong>. Le R² (coefficient de détermination) mesure la qualité de l'ajustement : R² ≥ 0,99 valide le modèle ; en dessous de 0,98, la relation n'est pas linéaire ou il y a des points aberrants à signaler.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">5</div>
+          <div class="step-row-body">
+            <p><strong>Lire la pente avec son unité.</strong> L'équation s'affiche sous la forme y = a·x + b. La pente est la valeur <em>a</em>. Son unité se déduit du rapport des unités des axes : si y est en volt (V) et x en seconde (s), la pente est en V·s⁻¹. <strong>Ne jamais donner une pente sans unité</strong> : c'est pénalisé sur la compétence Réaliser.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">6</div>
+          <div class="step-row-body">
+            <p><strong>Exploiter la pente.</strong> La pente n'est pas le résultat final : c'est une valeur intermédiaire. Le sujet donne toujours une expression théorique reliant la pente à la grandeur cherchée — il suffit d'identifier les deux et de calculer. Exemple en cinétique d'ordre 1 : ln[A] = −k·t + ln[A]₀, donc la pente vaut −k et on déduit k = |pente|, puis t½ = ln(2)/k.</p>
+          </div>
+        </div>
+
+        <h2>L'incertitude associée à la pente</h2>
+        <p>Sur 53 % des sujets ECE 2026, le tableau de validation finale demande une incertitude sur la grandeur calculée. Deux méthodes au choix selon le sujet.</p>
+
+        <h3>Méthode simple par encadrement</h3>
+        <p>Tu déplaces manuellement la droite aux limites haute et basse du nuage de points pour obtenir une fourchette sur la pente. Tu traces deux droites « extrêmes » qui passent par les points les plus hauts d'une part, les plus bas d'autre part. Tu mesures la pente de chacune. La demi-différence donne l'incertitude sur la pente.</p>
+
+        <h3>Méthode par simulation Monte-Carlo en Python</h3>
+        <p>Le sujet fournit toujours un script Python prêt à l'emploi. Tu n'as qu'à entrer les valeurs d'incertitude de chaque mesure et exécuter : le programme calcule automatiquement l'incertitude sur la pente.</p>
+        <p><a href="/fiches-physique-chimie-terminale/python-algorithmique-bac-physique-chimie-terminale/" style="color:var(--sapphire);font-weight:700;text-decoration:underline;">Voir le guide Python au bac physique-chimie : syntaxe numpy, np.mean et np.std →</a></p>
+
+        <h2>Les trois pièges les plus pénalisés</h2>
+        <ul class="piege-list">
+          <li>
+            <strong>Piège 1 : Oublier le R².</strong>
+            <span>Sans R² affiché, la modélisation n'est pas validée. C'est un automatisme à acquérir : un graphique de régression sans R² est incomplet.</span>
+          </li>
+          <li>
+            <strong>Piège 2 : Pente sans unité.</strong>
+            <span>Une pente vaut « 0,025 s⁻¹ », pas « 0,025 ». L'unité fait partie du résultat. Sans unité, le point sur REA est perdu.</span>
+          </li>
+          <li>
+            <strong>Piège 3 : Confondre la pente et la grandeur physique cherchée.</strong>
+            <span>La pente n'est pas le résultat : c'est l'intermédiaire. Tu dois franchir une étape supplémentaire pour relier la pente à la grandeur demandée, via la relation théorique fournie dans le sujet.</span>
+          </li>
+        </ul>
+
+        <h2>Cas particulier : Regressi</h2>
+        <p>Regressi est un logiciel français spécialisé pour le traitement de données expérimentales en sciences physiques, très utilisé dans les lycées. L'interface est plus orientée « physique » : les unités sont gérées explicitement, les régressions classiques sont accessibles en deux clics, et le R² s'affiche automatiquement.</p>
+        <p>La méthode reste identique : entrer les données, tracer la courbe, modéliser, lire la pente avec son unité, l'exploiter via la relation théorique du sujet.</p>
+
+      </div><!-- /article-body -->
+
+      <!-- CTA avant FAQ -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Physique-Chimie</p>
+            <p class="cta-strip-heading">32 fiches PDF — tout le programme Terminale Spé</p>
+          </div>
+          <a href="/physique-chimie-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Physique-chimie ECE en ligne — 30 €/h</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2>FAQ — Régression linéaire au tableur</h2>
+        <div class="faq-item">
+          <h3>Quel est le seuil de R² qui valide une régression linéaire en ECE ?</h3>
+          <p>En physique-chimie au lycée, la convention est R² ≥ 0,99 pour valider un modèle linéaire. Entre 0,98 et 0,99, le modèle est correct mais doit être discuté. En dessous de 0,98, le modèle linéaire ne convient pas : soit il y a des points aberrants, soit la relation n'est pas linéaire et il faut tester un autre modèle (exponentiel, etc.).</p>
+        </div>
+        <div class="faq-item">
+          <h3>Comment trouve-t-on l'unité de la pente d'une régression ?</h3>
+          <p>L'unité de la pente est le rapport des unités des deux axes. Si l'axe y est en absorbance (sans unité) et l'axe x en concentration (mol·L⁻¹), la pente est en L·mol⁻¹. Si y est en volt (V) et x en seconde (s), la pente est en V·s⁻¹. Sans cette unité, le résultat est incomplet et pénalisé.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Faut-il maîtriser Excel, LibreOffice Calc et Regressi pour l'ECE ?</h3>
+          <p>Non. Un seul outil suffit : celui qui est installé dans ton lycée. La méthode en 6 étapes est identique sur les trois. LibreOffice Calc et Excel se ressemblent énormément ; Regressi est plus orienté physique mais utilise la même logique. Renseigne-toi auprès de ton professeur sur l'outil utilisé en TP.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Comment calcule-t-on une incertitude sur la pente d'une régression ?</h3>
+          <p>Deux méthodes acceptées en ECE. Par encadrement : on déplace manuellement la droite aux limites du nuage, on mesure les deux pentes extrêmes, la demi-différence donne l'incertitude. Par simulation Monte-Carlo en Python : le code est toujours fourni dans l'énoncé.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Pourquoi ne faut-il pas relier les points par des segments ?</h3>
+          <p>Parce que la régression représente le modèle théorique, et les points représentent les données expérimentales. Les deux doivent rester visuellement distincts. Relier les points par une ligne brisée signale une confusion entre données et modèle, et est sanctionné sur la compétence Communiquer.</p>
+        </div>
+      </div>
+
+      <!-- CTA fin -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Physique-Chimie</p>
+            <p class="cta-strip-heading">32 fiches PDF — tout le programme Terminale Spé</p>
+          </div>
+          <a href="/physique-chimie-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Physique-chimie ECE en ligne — 30 €/h</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/blog/comment-se-preparer-aux-ece-physique-chimie/">Comment se préparer aux ECE physique-chimie 2026 : méthode et plan en 4 semaines</a></li>
+          <li><a href="/blog/chapitres-ece-physique-chimie-2026/">ECE physique-chimie 2026 : quels chapitres tombent vraiment</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/cinetique-chimique/">Cinétique chimique : ordre 1, k et temps de demi-réaction</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/charge-decharge-condensateur-bac-terminale/">Charge et décharge d'un condensateur : équation différentielle et méthode</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/python-algorithmique-bac-physique-chimie-terminale/">Python au bac physique-chimie : scripts à connaître pour l'ECE</a></li>
+          <li><a href="/blog/annales-bac-physique-chimie-programme-complet/">Les 15 annales à faire pour couvrir tout le programme</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt est diplômée de l'École polytechnique, docteure en sciences, et fondatrice de C'Réussite. Elle conçoit des fiches de révision structurées pour les élèves de Terminale spé maths et physique-chimie, et accompagne des élèves de la 6e au Master depuis plusieurs années. <a href="/a-propos/" style="color:var(--sapphire);font-weight:700;">En savoir plus →</a>
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>
