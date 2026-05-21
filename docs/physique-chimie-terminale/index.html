@@ -38,86 +38,166 @@
 
   <!-- Données structurées -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://c-reussite.fr/" },
-          { "@type": "ListItem", "position": 2, "name": "Ebook Physique-Chimie Terminale", "item": "https://c-reussite.fr/physique-chimie-terminale/" }
-        ]
-      },
-      {
-        "@type": "Product",
-        "name": "Fiches de Révision Physique-Chimie Terminale Spécialité — Bac 2026",
-        "description": "32 fiches PDF couvrant 100 % du programme officiel de Physique-Chimie Terminale Spécialité Bac 2026. Formules avec unités SI, définitions et méthodes sur une page par chapitre. Conçues par Camille Reinhardt, polytechnicienne.",
-        "image": "https://c-reussite.fr/img/cover-physique.jpg",
-        "sku": "PC-TERM-2026",
-        "brand": { "@type": "Brand", "name": "C'Réussite" },
-        "author": { "@id": "https://c-reussite.fr/a-propos/#camille" },
-        "offers": {
-          "@type": "Offer",
-          "price": "14.99",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock",
-          "priceValidUntil": "2026-12-31",
-          "url": "https://c-reussite.fr/physique-chimie-terminale/",
-          "seller": { "@id": "https://c-reussite.fr/#organization" }
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Accueil",
+          "item": "https://c-reussite.fr/"
         },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "5.0",
-          "reviewCount": "1",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "review": [
-          {
-            "@type": "Review",
-            "author": { "@type": "Person", "name": "Neyla" },
-            "reviewBody": "Les fiches sont très complètes. On retrouve le cours entier en une seule page avec des méthodes qui s'appliquent pour tous les exercices. Je les recommande.",
-            "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
-          }
-        ]
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Ebook Physique-Chimie Terminale",
+          "item": "https://c-reussite.fr/physique-chimie-terminale/"
+        }
+      ]
+    },
+    {
+      "@type": "Product",
+      "name": "Fiches de révision Physique-Chimie Terminale Spécialité - Bac 2026",
+      "description": "32 fiches PDF couvrant 100 % du programme officiel de Physique-Chimie Terminale Spécialité Bac 2026 : définitions, formules avec unités SI et méthodes sur une page par chapitre.",
+      "image": "https://c-reussite.fr/img/cover-physique.jpg",
+      "sku": "PC-TERM-2026",
+      "brand": {
+        "@type": "Brand",
+        "name": "C'Réussite"
       },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Est-ce que les fiches couvrent la chimie ET la physique ?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Oui. Les 32 fiches couvrent les 6 thèmes du programme : chimie (8 chapitres), mécanique (5 chapitres), mécanique des fluides, thermodynamique, électricité et ondes (6 chapitres)." }
+      "author": {
+        "@id": "https://c-reussite.fr/a-propos/#camille"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "14.99",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "priceValidUntil": "2026-12-31",
+        "url": "https://c-reussite.fr/physique-chimie-terminale/",
+        "seller": {
+          "@id": "https://c-reussite.fr/#organization"
+        },
+        "itemCondition": "https://schema.org/NewCondition",
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "0.00",
+            "currency": "EUR"
           },
-          {
-            "@type": "Question",
-            "name": "Les formules sont données avec les unités ?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Oui, systématiquement. Chaque formule est accompagnée de ses unités SI — un point sur lequel les correcteurs du bac sont particulièrement exigeants." }
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "FR"
           },
-          {
-            "@type": "Question",
-            "name": "Sous quel format sont les fiches ?",
-            "acceptedAnswer": { "@type": "Answer", "text": "En PDF. Tu peux les lire sur smartphone, tablette, ordinateur, ou les imprimer. Aucun logiciel spécial n'est nécessaire." }
-          },
-          {
-            "@type": "Question",
-            "name": "Qui a créé ces fiches ?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Camille Reinhardt, diplômée de l'École Polytechnique (prépa PCSI/PC) et docteure en sciences de l'Université Paris-Saclay. Elle enseigne la physique-chimie depuis plus de cinq ans." }
-          },
-          {
-            "@type": "Question",
-            "name": "Quand est-ce que je reçois les fiches ?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Immédiatement après le paiement, par email. Tu commences à réviser dans 2 minutes." }
-          },
-          {
-            "@type": "Question",
-            "name": "Est-ce adapté pour réviser à la dernière minute ?",
-            "acceptedAnswer": { "@type": "Answer", "text": "C'est exactement pour ça qu'elles ont été conçues. 1 chapitre = 1 page : tu vas droit à l'essentiel. Idéal dans les jours qui précèdent l'épreuve." }
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 0,
+              "maxValue": 0,
+              "unitCode": "DAY"
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 0,
+              "maxValue": 0,
+              "unitCode": "DAY"
+            }
           }
-        ]
-      }
-    ]
-  }
+        },
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": "FR",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted",
+          "merchantReturnLink": "https://c-reussite.fr/cgv/"
+        }
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "reviewCount": "1",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "review": [
+        {
+          "@type": "Review",
+          "author": {
+            "@type": "Person",
+            "name": "Neyla"
+          },
+          "reviewBody": "Les fiches sont très complètes. On retrouve le cours entier en une seule page avec des méthodes qui s'appliquent pour tous les exercices. Je les recommande.",
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          }
+        }
+      ],
+      "@id": "https://c-reussite.fr/physique-chimie-terminale/#product",
+      "url": "https://c-reussite.fr/physique-chimie-terminale/",
+      "mpn": "PC-TERM-2026",
+      "category": "Fiches de révision > Physique-Chimie Terminale"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Est-ce que les fiches couvrent la chimie ET la physique ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui. Les 32 fiches couvrent les 6 thèmes du programme : chimie (8 chapitres), mécanique (5 chapitres), mécanique des fluides, thermodynamique, électricité et ondes (6 chapitres)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Les formules sont données avec les unités ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui, systématiquement. Chaque formule est accompagnée de ses unités SI — un point sur lequel les correcteurs du bac sont particulièrement exigeants."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Sous quel format sont les fiches ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En PDF. Tu peux les lire sur smartphone, tablette, ordinateur, ou les imprimer. Aucun logiciel spécial n'est nécessaire."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qui a créé ces fiches ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Camille Reinhardt, diplômée de l'École Polytechnique (prépa PCSI/PC) et docteure en sciences de l'Université Paris-Saclay. Elle enseigne la physique-chimie depuis plus de cinq ans."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quand est-ce que je reçois les fiches ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Immédiatement après le paiement, par email. Tu commences à réviser dans 2 minutes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Est-ce adapté pour réviser à la dernière minute ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "C'est exactement pour ça qu'elles ont été conçues. 1 chapitre = 1 page : tu vas droit à l'essentiel. Idéal dans les jours qui précèdent l'épreuve."
+          }
+        }
+      ]
+    }
+  ]
+}
   </script>
 
   <style>

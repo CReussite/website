@@ -6,6 +6,8 @@
   },
   "dependencies": {},
   "scripts": {
+    "generate:merchant-feed": "node scripts/generate-merchant-feed.js",
+    "sync:product-schema": "node scripts/sync-product-schema.js",
     "start": "node backend/server.js"
   }
 }

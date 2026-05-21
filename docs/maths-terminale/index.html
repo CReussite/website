@@ -38,81 +38,158 @@
 
   <!-- Données structurées -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://c-reussite.fr/" },
-          { "@type": "ListItem", "position": 2, "name": "Ebook Maths Terminale", "item": "https://c-reussite.fr/maths-terminale/" }
-        ]
-      },
-      {
-        "@type": "Product",
-        "name": "Fiches de Révision Maths Terminale Spécialité — Bac 2026",
-        "description": "20 fiches PDF couvrant 100 % du programme officiel de Maths Terminale Spécialité Bac 2026. Cours condensé, formules clés et méthodes de résolution sur une page par chapitre. Conçues par Camille Reinhardt, polytechnicienne.",
-        "image": "https://c-reussite.fr/img/cover-maths.jpg",
-        "sku": "MATHS-TERM-2026",
-        "brand": { "@type": "Brand", "name": "C'Réussite" },
-        "author": { "@id": "https://c-reussite.fr/a-propos/#camille" },
-        "offers": {
-          "@type": "Offer",
-          "price": "14.99",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock",
-          "priceValidUntil": "2026-12-31",
-          "url": "https://c-reussite.fr/maths-terminale/",
-          "seller": { "@id": "https://c-reussite.fr/#organization" }
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Accueil",
+          "item": "https://c-reussite.fr/"
         },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "5.0",
-          "reviewCount": "1",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "review": [
-          {
-            "@type": "Review",
-            "author": { "@type": "Person", "name": "Neyla" },
-            "reviewBody": "Les fiches sont géniales, le cours est très bien expliqué et il y a des méthodes qui s'appliquent à tous les exercices. Il y a aussi des explications sur quand et comment il faut utiliser certaines formules lorsqu'il y en a plusieurs dans un seul chapitre et je trouve ça vraiment utile.",
-            "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
-          }
-        ]
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Ebook Maths Terminale",
+          "item": "https://c-reussite.fr/maths-terminale/"
+        }
+      ]
+    },
+    {
+      "@type": "Product",
+      "name": "Fiches de révision Maths Terminale Spécialité - Bac 2026",
+      "description": "20 fiches PDF couvrant 100 % du programme officiel de Maths Terminale Spécialité Bac 2026 : cours condensé, formules clés et méthodes de résolution sur une page par chapitre.",
+      "image": "https://c-reussite.fr/img/cover-maths.jpg",
+      "sku": "MATHS-TERM-2026",
+      "brand": {
+        "@type": "Brand",
+        "name": "C'Réussite"
       },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Est-ce que les fiches couvrent tout le programme ?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Oui. Les 20 fiches couvrent les 6 thèmes et tous les chapitres du programme officiel de Maths Terminale Spécialité Bac 2026." }
+      "author": {
+        "@id": "https://c-reussite.fr/a-propos/#camille"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "14.99",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "priceValidUntil": "2026-12-31",
+        "url": "https://c-reussite.fr/maths-terminale/",
+        "seller": {
+          "@id": "https://c-reussite.fr/#organization"
+        },
+        "itemCondition": "https://schema.org/NewCondition",
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "0.00",
+            "currency": "EUR"
           },
-          {
-            "@type": "Question",
-            "name": "Sous quel format sont les fiches ?",
-            "acceptedAnswer": { "@type": "Answer", "text": "En PDF. Tu peux les lire sur smartphone, tablette, ordinateur, ou les imprimer." }
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "FR"
           },
-          {
-            "@type": "Question",
-            "name": "Qui a créé ces fiches ?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Camille Reinhardt, diplômée de l'École Polytechnique et docteure en sciences de l'Université Paris-Saclay." }
-          },
-          {
-            "@type": "Question",
-            "name": "Quand est-ce que je reçois les fiches ?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Immédiatement après le paiement, par email. Tu commences à réviser dans 2 minutes." }
-          },
-          {
-            "@type": "Question",
-            "name": "Est-ce adapté pour réviser à la dernière minute ?",
-            "acceptedAnswer": { "@type": "Answer", "text": "C'est exactement pour ça qu'elles ont été conçues : 1 chapitre = 1 page, pour aller droit à l'essentiel sans perdre de temps à trier dans ses cours." }
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 0,
+              "maxValue": 0,
+              "unitCode": "DAY"
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 0,
+              "maxValue": 0,
+              "unitCode": "DAY"
+            }
           }
-        ]
-      }
-    ]
-  }
+        },
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": "FR",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted",
+          "merchantReturnLink": "https://c-reussite.fr/cgv/"
+        }
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "reviewCount": "1",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "review": [
+        {
+          "@type": "Review",
+          "author": {
+            "@type": "Person",
+            "name": "Neyla"
+          },
+          "reviewBody": "Les fiches sont géniales, le cours est très bien expliqué et il y a des méthodes qui s'appliquent à tous les exercices. Il y a aussi des explications sur quand et comment il faut utiliser certaines formules lorsqu'il y en a plusieurs dans un seul chapitre et je trouve ça vraiment utile.",
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          }
+        }
+      ],
+      "@id": "https://c-reussite.fr/maths-terminale/#product",
+      "url": "https://c-reussite.fr/maths-terminale/",
+      "mpn": "MATHS-TERM-2026",
+      "category": "Fiches de révision > Maths Terminale"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Est-ce que les fiches couvrent tout le programme ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui. Les 20 fiches couvrent les 6 thèmes et tous les chapitres du programme officiel de Maths Terminale Spécialité Bac 2026."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Sous quel format sont les fiches ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En PDF. Tu peux les lire sur smartphone, tablette, ordinateur, ou les imprimer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qui a créé ces fiches ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Camille Reinhardt, diplômée de l'École Polytechnique et docteure en sciences de l'Université Paris-Saclay."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quand est-ce que je reçois les fiches ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Immédiatement après le paiement, par email. Tu commences à réviser dans 2 minutes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Est-ce adapté pour réviser à la dernière minute ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "C'est exactement pour ça qu'elles ont été conçues : 1 chapitre = 1 page, pour aller droit à l'essentiel sans perdre de temps à trier dans ses cours."
+          }
+        }
+      ]
+    }
+  ]
+}
   </script>
 
   <style>

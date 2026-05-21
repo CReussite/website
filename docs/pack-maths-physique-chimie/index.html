@@ -38,87 +38,171 @@
 
   <!-- Données structurées -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://c-reussite.fr/" },
-          { "@type": "ListItem", "position": 2, "name": "Pack Maths + Physique-Chimie", "item": "https://c-reussite.fr/pack-maths-physique-chimie/" }
-        ]
-      },
-      {
-        "@type": "Product",
-        "name": "Pack Maths + Physique-Chimie Terminale Spécialité Bac 2026",
-        "description": "52 fiches PDF couvrant 100 % des programmes Maths et Physique-Chimie Terminale Spécialité Bac 2026. Conçues par Camille Reinhardt, polytechnicienne et docteure en sciences.",
-        "image": "https://c-reussite.fr/img/cover-maths.jpg",
-        "sku": "PACK-TERM-2026",
-        "brand": { "@type": "Brand", "name": "C'Réussite" },
-        "author": { "@id": "https://c-reussite.fr/a-propos/#camille" },
-        "offers": {
-          "@type": "Offer",
-          "price": "24.99",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock",
-          "priceValidUntil": "2026-12-31",
-          "url": "https://c-reussite.fr/pack-maths-physique-chimie/",
-          "seller": { "@id": "https://c-reussite.fr/#organization" }
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Accueil",
+          "item": "https://c-reussite.fr/"
         },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "5.0",
-          "reviewCount": "2",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "review": [
-          {
-            "@type": "Review",
-            "author": { "@type": "Person", "name": "Lucie" },
-            "reviewBody": "Ces fiches regroupent le cours en une seule page, elles m'aident au quotidien, sont faciles d'accès et très récapitulatives. Tu peux voir ton chapitre en un clin d'œil. Je ne m'en passe plus. Très satisfaite de mon achat.",
-            "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
-          },
-          {
-            "@type": "Review",
-            "author": { "@type": "Person", "name": "Isabelle" },
-            "reviewBody": "Achat fait pour ma fille. Cela lui a permis de revoir les différentes notions plus sereinement. Ces fiches lui facilitent la vie. Elle ne s'en passe plus. Ravie de mon achat.",
-            "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
-          }
-        ]
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Pack Maths + Physique-Chimie",
+          "item": "https://c-reussite.fr/pack-maths-physique-chimie/"
+        }
+      ]
+    },
+    {
+      "@type": "Product",
+      "name": "Pack fiches Maths + Physique-Chimie Terminale Spécialité - Bac 2026",
+      "description": "Pack de 52 fiches PDF : Maths Terminale Spécialité et Physique-Chimie Terminale Spécialité. 100 % des deux programmes officiels Bac 2026, livraison immédiate par email.",
+      "image": "https://c-reussite.fr/img/carousel/bundle/ebook-pack-maths-physique-terminale-1.png",
+      "sku": "PACK-TERM-2026",
+      "brand": {
+        "@type": "Brand",
+        "name": "C'Réussite"
       },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Quelle est la différence entre le pack et les ebooks séparés ?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Le contenu est identique. Le pack regroupe les deux ebooks (Maths + Physique-Chimie) à prix réduit : 24,99 € au lieu de 29,98 € si achetés séparément." }
+      "author": {
+        "@id": "https://c-reussite.fr/a-propos/#camille"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "24.99",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "priceValidUntil": "2026-12-31",
+        "url": "https://c-reussite.fr/pack-maths-physique-chimie/",
+        "seller": {
+          "@id": "https://c-reussite.fr/#organization"
+        },
+        "itemCondition": "https://schema.org/NewCondition",
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "0.00",
+            "currency": "EUR"
           },
-          {
-            "@type": "Question",
-            "name": "Je reçois un seul PDF ou deux ?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Deux PDFs séparés : un pour les Maths (20 fiches), un pour la Physique-Chimie (32 fiches)." }
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "FR"
           },
-          {
-            "@type": "Question",
-            "name": "Est-ce que les fiches couvrent tout le programme des deux matières ?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Oui. 100 % du programme officiel Maths Terminale Spécialité + 100 % du programme officiel Physique-Chimie Terminale Spécialité." }
-          },
-          {
-            "@type": "Question",
-            "name": "Qui a créé ces fiches ?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Camille Reinhardt, diplômée de l'École Polytechnique (prépa PCSI/PC) et docteure en sciences de l'Université Paris-Saclay." }
-          },
-          {
-            "@type": "Question",
-            "name": "Quand est-ce que je reçois les fiches ?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Immédiatement après le paiement, par email. Tu commences à réviser dans 2 minutes." }
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 0,
+              "maxValue": 0,
+              "unitCode": "DAY"
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 0,
+              "maxValue": 0,
+              "unitCode": "DAY"
+            }
           }
-        ]
-      }
-    ]
-  }
+        },
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": "FR",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted",
+          "merchantReturnLink": "https://c-reussite.fr/cgv/"
+        }
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "reviewCount": "2",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "review": [
+        {
+          "@type": "Review",
+          "author": {
+            "@type": "Person",
+            "name": "Lucie"
+          },
+          "reviewBody": "Ces fiches regroupent le cours en une seule page, elles m'aident au quotidien, sont faciles d'accès et très récapitulatives. Tu peux voir ton chapitre en un clin d'œil. Je ne m'en passe plus. Très satisfaite de mon achat.",
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          }
+        },
+        {
+          "@type": "Review",
+          "author": {
+            "@type": "Person",
+            "name": "Isabelle"
+          },
+          "reviewBody": "Achat fait pour ma fille. Cela lui a permis de revoir les différentes notions plus sereinement. Ces fiches lui facilitent la vie. Elle ne s'en passe plus. Ravie de mon achat.",
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          }
+        }
+      ],
+      "@id": "https://c-reussite.fr/pack-maths-physique-chimie/#product",
+      "url": "https://c-reussite.fr/pack-maths-physique-chimie/",
+      "mpn": "PACK-TERM-2026",
+      "category": "Fiches de révision > Pack Terminale"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quelle est la différence entre le pack et les ebooks séparés ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le contenu est identique. Le pack regroupe les deux ebooks (Maths + Physique-Chimie) à prix réduit : 24,99 € au lieu de 29,98 € si achetés séparément."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Je reçois un seul PDF ou deux ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Deux PDFs séparés : un pour les Maths (20 fiches), un pour la Physique-Chimie (32 fiches)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Est-ce que les fiches couvrent tout le programme des deux matières ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui. 100 % du programme officiel Maths Terminale Spécialité + 100 % du programme officiel Physique-Chimie Terminale Spécialité."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qui a créé ces fiches ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Camille Reinhardt, diplômée de l'École Polytechnique (prépa PCSI/PC) et docteure en sciences de l'Université Paris-Saclay."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quand est-ce que je reçois les fiches ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Immédiatement après le paiement, par email. Tu commences à réviser dans 2 minutes."
+          }
+        }
+      ]
+    }
+  ]
+}
   </script>
 
   <style>

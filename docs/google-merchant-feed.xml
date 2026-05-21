@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
+  <channel>
+    <title>C'Réussite - Produits</title>
+    <link>https://c-reussite.fr/</link>
+    <description>Flux produits pour Google Merchant Center</description>
+    <item>
+      <g:id>maths</g:id>
+      <g:title>Fiches de révision Maths Terminale Spécialité - Bac 2026</g:title>
+      <g:description>20 fiches PDF couvrant 100 % du programme officiel de Maths Terminale Spécialité Bac 2026 : cours condensé, formules clés et méthodes de résolution sur une page par chapitre.</g:description>
+      <g:link>https://c-reussite.fr/maths-terminale/</g:link>
+      <g:canonical_link>https://c-reussite.fr/maths-terminale/</g:canonical_link>
+      <g:image_link>https://c-reussite.fr/img/cover-maths.jpg</g:image_link>
+      <g:additional_image_link>https://c-reussite.fr/img/carousel/maths/ebook-maths-terminale-1.png</g:additional_image_link>
+      <g:additional_image_link>https://c-reussite.fr/img/carousel/maths/ebook-maths-terminale-2.png</g:additional_image_link>
+      <g:additional_image_link>https://c-reussite.fr/img/carousel/maths/ebook-maths-terminale-3.png</g:additional_image_link>
+      <g:availability>in_stock</g:availability>
+      <g:price>14.99 EUR</g:price>
+      <g:condition>new</g:condition>
+      <g:brand>C&apos;Réussite</g:brand>
+      <g:mpn>MATHS-TERM-2026</g:mpn>
+      <g:google_product_category>Media &gt; Books &gt; E-Books</g:google_product_category>
+      <g:product_type>Fiches de révision &gt; Maths Terminale</g:product_type>
+      <g:shipping>
+        <g:country>FR</g:country>
+        <g:service>Livraison numérique immédiate</g:service>
+        <g:price>0.00 EUR</g:price>
+      </g:shipping>
+    </item>
+    <item>
+      <g:id>physique</g:id>
+      <g:title>Fiches de révision Physique-Chimie Terminale Spécialité - Bac 2026</g:title>
+      <g:description>32 fiches PDF couvrant 100 % du programme officiel de Physique-Chimie Terminale Spécialité Bac 2026 : définitions, formules avec unités SI et méthodes sur une page par chapitre.</g:description>
+      <g:link>https://c-reussite.fr/physique-chimie-terminale/</g:link>
+      <g:canonical_link>https://c-reussite.fr/physique-chimie-terminale/</g:canonical_link>
+      <g:image_link>https://c-reussite.fr/img/cover-physique.jpg</g:image_link>
+      <g:additional_image_link>https://c-reussite.fr/img/carousel/physique/ebook-physique-chimie-terminale-1.png</g:additional_image_link>
+      <g:additional_image_link>https://c-reussite.fr/img/carousel/physique/ebook-physique-chimie-terminale-2.png</g:additional_image_link>
+      <g:additional_image_link>https://c-reussite.fr/img/carousel/physique/ebook-physique-chimie-terminale-3.png</g:additional_image_link>
+      <g:availability>in_stock</g:availability>
+      <g:price>14.99 EUR</g:price>
+      <g:condition>new</g:condition>
+      <g:brand>C&apos;Réussite</g:brand>
+      <g:mpn>PC-TERM-2026</g:mpn>
+      <g:google_product_category>Media &gt; Books &gt; E-Books</g:google_product_category>
+      <g:product_type>Fiches de révision &gt; Physique-Chimie Terminale</g:product_type>
+      <g:shipping>
+        <g:country>FR</g:country>
+        <g:service>Livraison numérique immédiate</g:service>
+        <g:price>0.00 EUR</g:price>
+      </g:shipping>
+    </item>
+    <item>
+      <g:id>bundle</g:id>
+      <g:title>Pack fiches Maths + Physique-Chimie Terminale Spécialité - Bac 2026</g:title>
+      <g:description>Pack de 52 fiches PDF : Maths Terminale Spécialité et Physique-Chimie Terminale Spécialité. 100 % des deux programmes officiels Bac 2026, livraison immédiate par email.</g:description>
+      <g:link>https://c-reussite.fr/pack-maths-physique-chimie/</g:link>
+      <g:canonical_link>https://c-reussite.fr/pack-maths-physique-chimie/</g:canonical_link>
+      <g:image_link>https://c-reussite.fr/img/carousel/bundle/ebook-pack-maths-physique-terminale-1.png</g:image_link>
+      <g:additional_image_link>https://c-reussite.fr/img/carousel/bundle/ebook-pack-maths-physique-terminale-2.png</g:additional_image_link>
+      <g:additional_image_link>https://c-reussite.fr/img/carousel/bundle/ebook-pack-maths-physique-terminale-3.png</g:additional_image_link>
+      <g:availability>in_stock</g:availability>
+      <g:price>24.99 EUR</g:price>
+      <g:condition>new</g:condition>
+      <g:brand>C&apos;Réussite</g:brand>
+      <g:mpn>PACK-TERM-2026</g:mpn>
+      <g:google_product_category>Media &gt; Books &gt; E-Books</g:google_product_category>
+      <g:product_type>Fiches de révision &gt; Pack Terminale</g:product_type>
+      <g:shipping>
+        <g:country>FR</g:country>
+        <g:service>Livraison numérique immédiate</g:service>
+        <g:price>0.00 EUR</g:price>
+      </g:shipping>
+    </item>
+  </channel>
+</rss>
