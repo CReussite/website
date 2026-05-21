@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  <title>Tableau des primitives au bac de maths : formules et méthode | C'Réussite</title>
+  <meta name="description" content="Tableau complet des primitives au bac de maths Terminale spé : fonctions usuelles, formes composées, coefficient d'ajustement et condition initiale. Méthode pas à pas pour ne plus se tromper.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-maths-terminale/primitives-bac-terminale/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-maths-terminale/primitives-bac-terminale/">
+  <meta property="og:title" content="Tableau des primitives au bac de maths : formules et méthode | C'Réussite">
+  <meta property="og:description" content="Fonctions usuelles, formes composées, coefficient d'ajustement, condition initiale : toutes les primitives pour le bac maths Terminale.">
+  <meta property="og:site_name" content="C'Réussite">
+
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"Article","headline":"Tableau des primitives à connaître au bac de maths : formules et méthode","datePublished":"2026-05-21","dateModified":"2026-05-21","author":{"@type":"Person","name":"Camille Reinhardt","url":"https://c-reussite.fr/a-propos/"},"publisher":{"@type":"Organization","name":"C'Réussite","url":"https://c-reussite.fr"},"mainEntityOfPage":"https://c-reussite.fr/fiches-maths-terminale/primitives-bac-terminale/"},
+    {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://c-reussite.fr/"},{"@type":"ListItem","position":2,"name":"Maths Terminale","item":"https://c-reussite.fr/fiches-maths-terminale/"},{"@type":"ListItem","position":3,"name":"Primitives au bac","item":"https://c-reussite.fr/fiches-maths-terminale/primitives-bac-terminale/"}]},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"Quelle est la différence entre une primitive et une intégrale ?","acceptedAnswer":{"@type":"Answer","text":"Une primitive de f est une fonction F telle que F' = f. Une intégrale définie ∫_a^b f(x)dx est un nombre — l'aire algébrique sous la courbe entre a et b. Le lien entre les deux est le théorème fondamental de l'analyse : ∫_a^b f(x)dx = F(b) − F(a), où F est n'importe quelle primitive de f."}},
+      {"@type":"Question","name":"Comment vérifier qu'une primitive est correcte ?","acceptedAnswer":{"@type":"Answer","text":"En la dérivant. Si F'(x) = f(x), la primitive est juste. C'est le contrôle le plus fiable, et il prend moins de temps que de refaire le calcul. Quand l'énoncé demande de montrer que F est une primitive de f, c'est exactement cette vérification qu'on attend."}},
+      {"@type":"Question","name":"Peut-on primitiver terme à terme une somme de fonctions ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Les primitives sont linéaires : la primitive d'une somme est la somme des primitives, et un coefficient multiplicatif se conserve. La primitive de 3e^x + 2cos(x) est 3e^x + 2sin(x) + k."}}
+    ]}
+  ]}
+  </script>
+
+  <style>
+    .article-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px;background:var(--swan-wing);color:var(--sapphire);margin-bottom:12px}
+    .article-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+    .article-header h1{font-size:clamp(1.45rem,3.5vw,1.95rem);line-height:1.25;margin-bottom:10px;color:var(--royal-blue)}
+    .article-meta{font-size:.85rem;color:#5C6475}
+    .article-intro{font-size:1.02rem;color:var(--text-mid);line-height:1.75;margin:20px 0 28px}
+    .article-body h2{font-size:1.2rem;margin-top:36px;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body h3{font-size:1.02rem;font-weight:700;margin-top:24px;margin-bottom:9px;color:var(--royal-blue)}
+    .article-body p{margin-bottom:14px;line-height:1.7;color:var(--text-mid)}
+    .article-body ul,.article-body ol{margin:0 0 14px 22px}
+    .article-body li{margin-bottom:6px;color:var(--text-mid);line-height:1.65}
+    .article-body table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.88rem}
+    .article-body th{background:var(--swan-wing);font-weight:600;text-align:left;padding:9px 12px;border:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body td{padding:9px 12px;border:1px solid #e5e7eb;vertical-align:middle;color:var(--text-mid)}
+    .article-body tr:nth-child(even) td{background:#fafafa}
+    .article-body strong{color:var(--royal-blue);font-weight:700}
+    .callout{background:var(--swan-wing);border-left:3px solid var(--sapphire);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .callout p{margin:0;color:var(--text-mid)}
+    .example-block{background:#f8f9fa;border-radius:8px;padding:14px 18px;margin:12px 0;border-left:3px solid var(--quicksand)}
+    .example-block p{margin:0 0 6px;color:var(--text-mid);font-size:.92rem}
+    .example-block p:last-child{margin:0}
+    .step-row{display:flex;align-items:flex-start;gap:12px;margin:12px 0}
+    .step-row-num{display:flex;align-items:center;justify-content:center;width:28px;height:28px;min-width:28px;background:var(--royal-blue);color:var(--quicksand);font-weight:700;font-size:.85rem;border-radius:50%;margin-top:2px}
+    .step-row-body p{margin:0 0 4px;color:var(--text-mid);line-height:1.7}
+    .step-row-body p:last-child{margin:0}
+    .faq-section{margin-top:40px;padding-top:28px;border-top:2px solid #e5e7eb}
+    .faq-section>h2{font-size:1.15rem;margin-bottom:20px;padding-bottom:0;border-bottom:none}
+    .faq-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-item h3{font-size:.97rem;margin-top:0;margin-bottom:7px}
+    .faq-item p{margin:0}
+    .read-next{margin-top:36px;padding-top:24px;border-top:1px solid #e5e7eb}
+    .read-next h2{font-size:1rem;margin-bottom:12px;color:var(--royal-blue);border:none;padding:0}
+    .read-next ul{list-style:none;padding:0;margin:0}
+    .read-next li{padding:6px 0;border-bottom:1px solid #f5f5f5}
+    .read-next li:last-child{border-bottom:none}
+    .read-next a{color:var(--sapphire);text-decoration:underline;font-size:.9rem}
+    .author-box{background:var(--swan-wing);border-radius:10px;padding:16px 20px;margin-top:28px;font-size:.86rem;color:var(--text-mid)}
+    .author-box strong{display:block;margin-bottom:5px;color:var(--royal-blue);font-size:.9rem}
+    .katex-display{overflow-x:auto}
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-maths-terminale/">Maths Terminale</a><span class="bc-sep">›</span>
+      <span>Primitives au bac</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Maths · Terminale</span>
+        <h1>Tableau des primitives à connaître au bac de maths : formules et méthode</h1>
+        <div class="article-meta">Publié le 21 mai 2026 · Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">Une primitive de $f$, c'est une fonction $F$ dont la dérivée redonne $f$. Autrement dit, c'est la <a href="/fiches-maths-terminale/formules-derivation-bac-terminale/">dérivation</a> à l'envers. Si vous savez dériver, vous savez déjà primitiver : il s'agit de reconnaître des formes et d'appliquer les formules dans le sens inverse. Cette page regroupe toutes les formules exigibles au bac, la méthode pour les fonctions composées, et les deux pièges qui font perdre le plus de points.</p>
+
+      <div class="article-body">
+
+        <h2>Les primitives des fonctions usuelles</h2>
+        <p>Ces formules s'appliquent directement, sans chercher à identifier une structure composée.</p>
+        <table>
+          <thead><tr><th>Fonction $f(x)$</th><th>Une primitive $F(x)$</th><th>Domaine</th></tr></thead>
+          <tbody>
+            <tr><td>$a$ (constante)</td><td>$ax$</td><td>$\mathbb{R}$</td></tr>
+            <tr><td>$x^n$ ($n \neq -1$, entier)</td><td>$\dfrac{x^{n+1}}{n+1}$</td><td>$\mathbb{R}$ si $n \geq 0$ ; $\mathbb{R}^*$ si $n \leq -2$</td></tr>
+            <tr><td>$\dfrac{1}{x}$</td><td>$\ln(|x|)$</td><td>$\mathbb{R}^*$</td></tr>
+            <tr><td>$\dfrac{1}{x^2}$</td><td>$-\dfrac{1}{x}$</td><td>$\mathbb{R}^*$</td></tr>
+            <tr><td>$\dfrac{1}{\sqrt{x}}$</td><td>$2\sqrt{x}$</td><td>$]0\,;\,+\infty[$</td></tr>
+            <tr><td>$e^x$</td><td>$e^x$</td><td>$\mathbb{R}$</td></tr>
+            <tr><td>$\cos(x)$</td><td>$\sin(x)$</td><td>$\mathbb{R}$</td></tr>
+            <tr><td>$\sin(x)$</td><td>$-\cos(x)$</td><td>$\mathbb{R}$</td></tr>
+            <tr><td>$\ln(x)$</td><td>$x\ln(x) - x$</td><td>$]0\,;\,+\infty[$</td></tr>
+          </tbody>
+        </table>
+        <div class="callout">
+          <p><strong>Deux points de vigilance :</strong> La primitive de $\sin(x)$ est $-\cos(x)$, avec un signe moins. Vérifiez toujours en dérivant votre résultat. La primitive de $\ln(x)$ est $x\ln(x) - x$ — elle peut apparaître dans un calcul d'aire ou une <a href="/fiches-maths-terminale/integration-par-parties-bac-terminale/">intégration par parties</a>.</p>
+        </div>
+
+        <h2>Les primitives des fonctions composées</h2>
+        <p>C'est là que se joue la majorité des questions de primitives au bac. La clé est de reconnaître la forme $u' \times f(u)$.</p>
+        <table>
+          <thead><tr><th>Forme de $f(x)$</th><th>Une primitive $F(x)$</th><th>Condition</th></tr></thead>
+          <tbody>
+            <tr><td>$u' \times u^n$</td><td>$\dfrac{u^{n+1}}{n+1}$</td><td>$n \neq -1$</td></tr>
+            <tr><td>$\dfrac{u'}{u}$</td><td>$\ln(|u|)$</td><td>$u \neq 0$</td></tr>
+            <tr><td>$\dfrac{u'}{u^2}$</td><td>$-\dfrac{1}{u}$</td><td>$u \neq 0$</td></tr>
+            <tr><td>$u' \times e^u$</td><td>$e^u$</td><td>/</td></tr>
+            <tr><td>$\dfrac{u'}{\sqrt{u}}$</td><td>$2\sqrt{u}$</td><td>$u > 0$</td></tr>
+            <tr><td>$u' \times \cos(u)$</td><td>$\sin(u)$</td><td>/</td></tr>
+            <tr><td>$u' \times \sin(u)$</td><td>$-\cos(u)$</td><td>/</td></tr>
+          </tbody>
+        </table>
+        <div class="callout">
+          <p><strong>Cas fréquent :</strong> pour $e^{ax+b}$, la primitive est $\dfrac{1}{a}\,e^{ax+b}$. Le coefficient $\dfrac{1}{a}$ compense la dérivée de l'exposant.</p>
+        </div>
+
+        <h2>La méthode en 3 étapes pour les formes composées</h2>
+        <p>La difficulté principale est que la fonction n'est presque jamais écrite exactement sous la forme $u' \times f(u)$. Il faut ajuster un coefficient.</p>
+
+        <div class="step-row">
+          <div class="step-row-num">1</div>
+          <div class="step-row-body"><p><strong>Identifier $u$.</strong> C'est ce qui est à l'intérieur : l'exposant de l'exponentielle, le contenu de la puissance, ce qui est sous le logarithme ou sous la racine.</p></div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">2</div>
+          <div class="step-row-body"><p><strong>Calculer $u'$ à part.</strong> Dériver $u$ indépendamment. Ce coefficient va déterminer l'ajustement nécessaire.</p></div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">3</div>
+          <div class="step-row-body"><p><strong>Ajuster le coefficient.</strong> Comparer ce que vous avez dans la fonction avec $u'$. Le coefficient d'ajustement est le rapport : $\dfrac{\text{coefficient de départ}}{\text{coefficient de }u'}$.</p></div>
+        </div>
+
+        <div class="example-block">
+          <p><strong>Exemple :</strong> primitiver $f(x) = 4x\,(x^2+5)^4$.</p>
+          <p>On pose $u = x^2 + 5$, donc $u' = 2x$. La forme est $u' \times u^n$ avec $n = 4$. La primitive de $u' \times u^4$ serait $\dfrac{u^5}{5}$.</p>
+          <p>Le coefficient de départ est $4x$, mais $u' = 2x$ : le rapport est $\dfrac{4}{2} = 2$.</p>
+          <p>Résultat : $F(x) = 2 \times \dfrac{(x^2+5)^5}{5} = \dfrac{2(x^2+5)^5}{5}$.</p>
+          <p><strong>Vérification :</strong> dériver $F$ doit redonner $f$. Toujours faire ce contrôle.</p>
+        </div>
+
+        <h2>Une primitive ou toutes les primitives ?</h2>
+        <p>La distinction compte au bac, et les deux formulations n'appellent pas la même réponse.</p>
+        <ul>
+          <li>Si l'énoncé demande <strong>une primitive</strong> : donner $F(x)$ sans constante (on prend $k = 0$).</li>
+          <li>Si l'énoncé demande <strong>les primitives</strong> (ou toutes les primitives) : écrire $F(x) + k$ avec $k \in \mathbb{R}$. Oublier le $+k$ fait perdre des points.</li>
+          <li>Si l'énoncé donne une <strong>condition initiale</strong> du type $F(1) = 3$ : trouver $F(x) + k$, substituer la condition, résoudre pour $k$.</li>
+        </ul>
+
+        <div class="example-block">
+          <p><strong>Exemple avec condition initiale :</strong> les primitives de $f(x) = 6x$ sont $F(x) = 3x^2 + k$. Si on impose $F(1) = 8$, alors $3 + k = 8$, donc $k = 5$. La primitive cherchée est $F(x) = 3x^2 + 5$.</p>
+        </div>
+
+        <h2>Les 3 pièges qui font perdre des points</h2>
+        <p><strong>Piège 1 : Le signe de la primitive de $\sin(x)$.</strong> La primitive de $\sin(x)$ est $-\cos(x)$, pas $+\cos(x)$. La confusion vient du fait que c'est la dérivée de $\cos(x)$ qui est $-\sin(x)$. Réflexe à adopter : toujours vérifier par dérivation.</p>
+        <p><strong>Piège 2 : Oublier le coefficient d'ajustement.</strong> Sur une fonction comme $e^{3x}$, écrire $e^{3x}$ comme primitive est faux. La primitive est $\dfrac{1}{3}e^{3x}$, parce que la dérivée de $e^{3x}$ est $3e^{3x}$. Le facteur $\dfrac{1}{3}$ est indispensable pour compenser.</p>
+        <p><strong>Piège 3 : Confondre $u > 0$ et $u \neq 0$ pour le logarithme.</strong> $\ln(u)$ n'existe que si $u > 0$. La forme composée $\dfrac{u'}{u}$ a pour primitive $\ln(|u|)$, ce qui couvre les cas où $u$ peut être négatif. Préciser le domaine est attendu dès qu'un logarithme apparaît.</p>
+
+      </div><!-- /article-body -->
+
+      <!-- CTA avant FAQ -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Maths Terminale</p>
+            <p class="cta-strip-heading">20 fiches PDF — tout le programme Terminale Spé</p>
+          </div>
+          <a href="/maths-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Maths en ligne — 30 €/h</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2>FAQ — Primitives au bac</h2>
+        <div class="faq-item">
+          <h3>Quelle est la différence entre une primitive et une intégrale ?</h3>
+          <p>Une primitive de $f$ est une fonction $F$ telle que $F' = f$. Une intégrale définie $\int_a^b f(x)\,dx$ est un nombre — l'aire algébrique sous la courbe entre $a$ et $b$. Le lien entre les deux est le théorème fondamental de l'analyse : $\int_a^b f(x)\,dx = F(b) - F(a)$, où $F$ est n'importe quelle primitive de $f$. En pratique au bac, calculer une intégrale revient à trouver une primitive, puis évaluer le crochet $[F(x)]_a^b$.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Comment vérifier qu'une primitive est correcte sans recommencer le calcul ?</h3>
+          <p>En la dérivant. Si $F'(x) = f(x)$, la primitive est juste. C'est le contrôle le plus fiable, et il prend moins de temps que de refaire le calcul depuis le début. Quand l'énoncé vous demande "montrer que $F$ est une primitive de $f$", c'est exactement cette vérification qu'on attend.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Peut-on primitiver terme à terme une somme de fonctions ?</h3>
+          <p>Oui. Les primitives sont linéaires : la primitive d'une somme est la somme des primitives, et un coefficient multiplicatif se conserve. La primitive de $3e^x + 2\cos(x)$ est $3e^x + 2\sin(x) + k$. Cette propriété permet de traiter chaque terme indépendamment.</p>
+        </div>
+      </div>
+
+      <!-- CTA fin -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Maths Terminale</p>
+            <p class="cta-strip-heading">20 fiches PDF — tout le programme Terminale Spé</p>
+          </div>
+          <a href="/maths-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Maths en ligne — 30 €/h</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/fiches-maths-terminale/formules-derivation-bac-terminale/">Formules de dérivation : toutes les formules et la méthode</a></li>
+          <li><a href="/fiches-maths-terminale/integration-par-parties-bac-terminale/">Intégration par parties : formule, règle ALPES, méthode</a></li>
+          <li><a href="/fiches-maths-terminale/geometrie-espace-bac-terminale/">Géométrie dans l'espace : représentation paramétrique, plans et distances</a></li>          <li><a href="/blog/annales-bac-physique-chimie-programme-complet/">Annales physique-chimie 2026 : les 15 exercices essentiels</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt est diplômée de l'École polytechnique, docteure en sciences, et fondatrice de C'Réussite. Elle conçoit des fiches de révision structurées pour les élèves de Terminale spé maths et physique-chimie, et accompagne des élèves de la 6e au Master depuis plusieurs années. <a href="/a-propos/" style="color:var(--sapphire);font-weight:700;">En savoir plus →</a>
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>
