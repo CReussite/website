@@ -24,6 +24,7 @@ async function initPayment() {
   const modalPrice = document.getElementById('payment-modal-price');
   const modalBtn = document.getElementById('payment-modal-btn');
   const modalClose = document.getElementById('payment-modal-close');
+  const nameInput = document.getElementById('payment-name');
   const emailInput = document.getElementById('payment-email');
   const checkRetract = document.getElementById('check-retractation');
   const checkCgv = document.getElementById('check-cgv');
@@ -35,8 +36,9 @@ async function initPayment() {
   }
 
   function updateModalBtn() {
+    const nameValid = nameInput.value.trim() !== '';
     const emailValid = emailInput.value.trim() !== '' && emailInput.validity.valid;
-    modalBtn.disabled = !(checkRetract.checked && checkCgv.checked && emailValid);
+    modalBtn.disabled = !(checkRetract.checked && checkCgv.checked && nameValid && emailValid);
   }
 
   function openModal(productId) {
@@ -50,6 +52,7 @@ async function initPayment() {
     // Réinitialiser les cases à chaque ouverture
     checkRetract.checked = false;
     checkCgv.checked = false;
+    nameInput.value = '';
     emailInput.value = '';
     modalBtn.disabled = true;
     modalBtn.textContent = 'Procéder au paiement';
@@ -84,6 +87,7 @@ async function initPayment() {
   // ── Activer le bouton quand les deux cases sont cochées ─
   checkRetract.addEventListener('change', updateModalBtn);
   checkCgv.addEventListener('change', updateModalBtn);
+  nameInput.addEventListener('input', updateModalBtn);
   emailInput.addEventListener('input', updateModalBtn);
 
   // ── Procéder au paiement ──────────────────────────────
@@ -105,7 +109,7 @@ async function initPayment() {
       const res = await fetch(`${BACKEND_URL}/api/checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ product_id: currentProductId, email: emailInput.value.trim() }),
+        body: JSON.stringify({ product_id: currentProductId, name: nameInput.value.trim(), email: emailInput.value.trim() }),
         signal: controller.signal,
       });
       clearTimeout(timeoutId);

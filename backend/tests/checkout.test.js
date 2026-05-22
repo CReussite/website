@@ -64,10 +64,11 @@ const BACKEND = process.env.BACKEND_URL || 'https://creussite-backend.onrender.c
 
 describe(`Checkout live (${BACKEND})`, () => {
   test('produit inconnu → 400', { skip: process.env.SKIP_LIVE ? 'SKIP_LIVE défini' : false }, async () => {
-    const r = await postJSON(`${BACKEND}/api/checkout`, { product_id: 'inexistant' });
+    const r = await postJSON(`${BACKEND}/api/checkout`, { product_id: 'inexistant', name: 'Test User', email: 'test@example.com' });
     assert.equal(r.status, 400);
     assert.ok(r.body.error);
   });
+
 
   let skipLive;
   if (process.env.STANCER_SECRET_KEY) {
@@ -77,7 +78,7 @@ describe(`Checkout live (${BACKEND})`, () => {
   }
 
   test('product_id valide → URL Stancer retournée', { skip: skipLive }, async () => {
-    const r = await postJSON(`${BACKEND}/api/checkout`, { product_id: 'maths' });
+    const r = await postJSON(`${BACKEND}/api/checkout`, { product_id: 'maths', name: 'Test User', email: 'test@example.com' });
     assert.equal(r.status, 200, `réponse inattendue : ${JSON.stringify(r.body)}`);
     assert.ok(r.body.url, 'doit retourner une URL Stancer');
     assert.ok(r.body.url.startsWith('https://payment.stancer.com'), 'URL doit être Stancer');

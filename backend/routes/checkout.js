@@ -15,7 +15,7 @@ function stancerAuth() {
 }
 
 router.post('/', express.json(), async (req, res) => {
-  const { product_id, email } = req.body;
+  const { product_id, name, email } = req.body;
 
   const product = PRODUCT_MAP[product_id];
   if (!product) {
@@ -38,7 +38,8 @@ router.post('/', express.json(), async (req, res) => {
         currency: 'eur',
         description: product.name,
         capture: true,
-        customer: { email },
+        order_id: `CRE-${Date.now()}`,
+        customer: { ...(name ? { name: name.trim() } : {}), email },
         return_url: `${FRONTEND_URL}/success.html`,
         auth: true,
       }),
