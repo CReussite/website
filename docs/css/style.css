@@ -28,6 +28,19 @@ body {
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 
+/* Liens visibles dans le contenu éditorial */
+.article-body a,
+.faq-item p a,
+.callout a,
+.summary-box a,
+.step-row-body a,
+.day-block a {
+  color: var(--sapphire);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 /* ===== LAYOUT ===== */
 .container {
   max-width: 860px;
