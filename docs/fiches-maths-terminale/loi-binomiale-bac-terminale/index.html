@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  <title>Loi binomiale au bac de maths : P(X = k), P(X ≥ k) et P(X ≤ k) | C'Réussite</title>
+  <meta name="description" content="Maîtriser la loi binomiale en Terminale spé maths : formule complète, méthode pour calculer exactement k succès, au moins k et au plus k succès. Tableau de traduction, exemples résolus et pièges classiques.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-maths-terminale/loi-binomiale-bac-terminale/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-maths-terminale/loi-binomiale-bac-terminale/">
+  <meta property="og:title" content="Loi binomiale au bac de maths : formule, P(X=k), P(X≥k), P(X≤k) | C'Réussite">
+  <meta property="og:description" content="Formule complète de la loi binomiale, tableau de traduction des formulations (au moins, au plus, strictement), espérance, variance, pièges classiques.">
+  <meta property="og:site_name" content="C'Réussite">
+  <meta property="article:published_time" content="2026-05-27">
+  <meta property="article:author" content="Camille Reinhardt">
+  <meta property="article:section" content="Maths Terminale Spécialité">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Loi binomiale au bac : formule, P(X=k), P(X≥k), P(X≤k)">
+  <meta name="twitter:description" content="Formule complète, tableau de traduction des formulations, espérance, variance et pièges classiques.">
+
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"Article","headline":"Loi binomiale au bac de maths : calculer P(X = k), P(X ≥ k) et P(X ≤ k)","description":"Maîtriser la loi binomiale en Terminale spé maths : formule complète, méthode pour calculer exactement k succès, au moins k et au plus k succès. Tableau de traduction, exemples et pièges.","datePublished":"2026-05-27","dateModified":"2026-05-27","author":{"@type":"Person","name":"Camille Reinhardt","url":"https://c-reussite.fr/a-propos/"},"publisher":{"@type":"Organization","name":"C'Réussite","url":"https://c-reussite.fr"},"mainEntityOfPage":"https://c-reussite.fr/fiches-maths-terminale/loi-binomiale-bac-terminale/","articleSection":"Maths Terminale Spécialité","educationalLevel":"Terminale","keywords":"loi binomiale bac terminale, P(X=k), P(X>=k), P(X<=k), formule loi binomiale, probabilités bac maths"},
+    {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://c-reussite.fr/"},{"@type":"ListItem","position":2,"name":"Maths Terminale","item":"https://c-reussite.fr/fiches-maths-terminale/"},{"@type":"ListItem","position":3,"name":"Loi binomiale","item":"https://c-reussite.fr/fiches-maths-terminale/loi-binomiale-bac-terminale/"}]},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"Comment justifier qu'une variable suit une loi binomiale quand l'énoncé ne le dit pas ?","acceptedAnswer":{"@type":"Answer","text":"En vérifiant trois conditions : les n répétitions sont indépendantes, la probabilité de succès p est la même à chaque essai, et la variable X compte le nombre de succès. Si les trois sont réunies, on rédige la phrase type et on conclut. Un tirage avec remise garantit généralement l'indépendance."}},
+      {"@type":"Question","name":"Quelle est la différence entre binomFDP et binomFRép sur la calculatrice ?","acceptedAnswer":{"@type":"Answer","text":"binomFDP(n ; p ; k) calcule la probabilité exacte P(X = k). binomFRép(n ; p ; k) calcule la probabilité cumulée P(X ≤ k), c'est-à-dire la somme de toutes les probabilités de 0 à k. Pour les questions au moins ou au plus, c'est binomFRép qu'on utilise en général, parfois combinée à la règle du complémentaire."}},
+      {"@type":"Question","name":"Comment trouver le plus petit n pour qu'une probabilité dépasse un seuil ?","acceptedAnswer":{"@type":"Answer","text":"Ce type de question demande de résoudre une inéquation du type P(X ≥ 1) ≥ 0,99, soit 1 − (1−p)^n ≥ 0,99, soit (1−p)^n ≤ 0,01. On peut résoudre par logarithme (attention au sens de l'inégalité quand on divise par ln(1−p) < 0) ou par tableau de valeurs à la calculatrice en testant des valeurs successives de n."}}
+    ]}
+  ]}
+  </script>
+
+  <style>
+    .article-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px;background:var(--swan-wing);color:var(--sapphire);margin-bottom:12px}
+    .article-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+    .article-header h1{font-size:clamp(1.45rem,3.5vw,1.95rem);line-height:1.25;margin-bottom:10px;color:var(--royal-blue)}
+    .article-meta{font-size:.85rem;color:#5C6475}
+    .article-intro{font-size:1.02rem;color:var(--text-mid);line-height:1.75;margin:20px 0 28px}
+    .article-body h2{font-size:1.2rem;margin-top:36px;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body h3{font-size:1.02rem;font-weight:700;margin-top:24px;margin-bottom:9px;color:var(--royal-blue)}
+    .article-body p{margin-bottom:14px;line-height:1.7;color:var(--text-mid)}
+    .article-body ul,.article-body ol{margin:0 0 14px 22px}
+    .article-body li{margin-bottom:6px;color:var(--text-mid);line-height:1.65}
+    .article-body table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.86rem}
+    .article-body th{background:var(--swan-wing);font-weight:600;text-align:left;padding:9px 12px;border:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body td{padding:9px 12px;border:1px solid #e5e7eb;vertical-align:middle;color:var(--text-mid)}
+    .article-body tr:nth-child(even) td{background:#fafafa}
+    .article-body strong{color:var(--royal-blue);font-weight:700}
+    .callout{background:var(--swan-wing);border-left:3px solid var(--sapphire);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .callout p{margin:0;color:var(--text-mid)}
+    .example-block{background:#f8f9fa;border-radius:8px;padding:14px 18px;margin:12px 0;border-left:3px solid var(--quicksand)}
+    .example-block p{margin:0 0 6px;color:var(--text-mid);font-size:.92rem}
+    .example-block p:last-child{margin:0}
+    .piege-list{background:#fff3f3;border-left:3px solid #e53e3e;border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .piege-list p{margin:0 0 10px;color:var(--text-mid);font-size:.9rem}
+    .piege-list p:last-child{margin:0}
+    .piege-list strong{color:#c0392b}
+    .step-row{display:flex;align-items:flex-start;gap:12px;margin:12px 0}
+    .step-row-num{display:flex;align-items:center;justify-content:center;width:28px;height:28px;min-width:28px;background:var(--royal-blue);color:var(--quicksand);font-weight:700;font-size:.85rem;border-radius:50%;margin-top:2px}
+    .step-row-body p{margin:0 0 4px;color:var(--text-mid);line-height:1.7}
+    .step-row-body p:last-child{margin:0}
+    .formula-block{background:#f0f4ff;border-left:4px solid var(--royal-blue);border-radius:0 8px 8px 0;padding:10px 18px;margin:12px 0 16px;overflow-x:auto}
+    .katex-display{margin:0!important;overflow-x:auto}
+    .faq-section{margin-top:40px;padding-top:28px;border-top:2px solid #e5e7eb}
+    .faq-section>h2{font-size:1.15rem;margin-bottom:20px;padding-bottom:0;border-bottom:none}
+    .faq-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-item h3{font-size:.97rem;margin-top:0;margin-bottom:7px}
+    .faq-item p{margin:0}
+    .read-next{margin-top:36px;padding-top:24px;border-top:1px solid #e5e7eb}
+    .read-next h2{font-size:1rem;margin-bottom:12px;color:var(--royal-blue);border:none;padding:0}
+    .read-next ul{list-style:none;padding:0;margin:0}
+    .read-next li{padding:6px 0;border-bottom:1px solid #f5f5f5}
+    .read-next li:last-child{border-bottom:none}
+    .read-next a{color:var(--sapphire);text-decoration:underline;font-size:.9rem}
+    .author-box{background:var(--swan-wing);border-radius:10px;padding:16px 20px;margin-top:28px;font-size:.86rem;color:var(--text-mid)}
+    .author-box strong{display:block;margin-bottom:5px;color:var(--royal-blue);font-size:.9rem}
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-maths-terminale/">Maths Terminale</a><span class="bc-sep">›</span>
+      <span>Loi binomiale</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Maths · Terminale</span>
+        <h1>Loi binomiale au bac de maths : calculer $P(X = k)$, $P(X \geq k)$ et $P(X \leq k)$</h1>
+        <div class="article-meta">Publié le 27 mai 2026 · Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">La loi binomiale est l'un des chapitres les plus rentables du programme : elle tombe dans plus de 97 % des sujets de bac, souvent en début d'exercice, avec des questions accessibles si l'on sait exactement quoi faire. Le vrai obstacle n'est pas la formule. C'est de savoir traduire l'énoncé. "Au moins", "au plus", "strictement plus" : chaque formulation appelle une stratégie de calcul différente. C'est précisément ce que cette page explique.</p>
+
+      <div class="article-body">
+
+        <h2>Ce que modélise la loi binomiale</h2>
+        <p>La loi binomiale $\mathcal{B}(n, p)$ s'applique quand on répète $n$ fois, de manière <strong>identique et indépendante</strong>, une épreuve qui n'a que deux issues : un succès (probabilité $p$) ou un échec (probabilité $1 - p$). La variable aléatoire $X$ compte le nombre de succès obtenus.</p>
+        <p>Pour que la loi binomiale s'applique, trois conditions doivent être réunies et citées dans la copie :</p>
+        <div class="step-row">
+          <div class="step-row-num">1</div>
+          <div class="step-row-body"><p>Les $n$ répétitions sont <strong>indépendantes</strong> : le résultat d'un essai n'influence pas le suivant.</p></div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">2</div>
+          <div class="step-row-body"><p>Les $n$ répétitions sont <strong>identiques</strong> : la probabilité $p$ est la même à chaque essai.</p></div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">3</div>
+          <div class="step-row-body"><p>$X$ compte le <strong>nombre de succès</strong> parmi les $n$ répétitions.</p></div>
+        </div>
+        <div class="callout">
+          <p><strong>La phrase type à écrire au bac :</strong> "On répète $n$ fois, de manière identique et indépendante, une épreuve de Bernoulli dont le succès est [définir le succès] de probabilité $p$. La variable aléatoire $X$ comptant le nombre de succès suit donc la loi $\mathcal{B}(n, p)$."</p>
+        </div>
+
+        <h2>La formule de base : $P(X = k)$</h2>
+        <p>Pour tout entier $k$ compris entre $0$ et $n$ :</p>
+        <div class="formula-block">$$P(X = k) = \binom{n}{k} \times p^k \times (1-p)^{n-k}$$</div>
+
+        <table>
+          <thead><tr><th>Composante</th><th>Ce qu'elle représente</th></tr></thead>
+          <tbody>
+            <tr><td>$\binom{n}{k}$</td><td>Nombre de chemins menant à exactement $k$ succès parmi $n$ essais</td></tr>
+            <tr><td>$p^k$</td><td>Probabilité d'obtenir les $k$ succès</td></tr>
+            <tr><td>$(1-p)^{n-k}$</td><td>Probabilité d'obtenir les $n - k$ échecs restants</td></tr>
+          </tbody>
+        </table>
+
+        <p>Comment calculer $\binom{n}{k}$ : avec la calculatrice (touche "nCr" ou menu combinaison), ou avec la formule $\displaystyle\binom{n}{k} = \dfrac{n!}{k!\,(n-k)!}$. Les cas simples à connaître par coeur : $\binom{n}{0} = 1$, $\binom{n}{1} = n$, $\binom{n}{n} = 1$.</p>
+
+        <div class="example-block">
+          <p><strong>Exemple.</strong> On tire 5 cartes avec remise dans un jeu de 52. Le succès est "tirer un coeur" ($p = 1/4$). Calculer la probabilité d'obtenir exactement 2 coeurs.</p>
+          <p>$$P(X = 2) = \binom{5}{2} \times \left(\frac{1}{4}\right)^2 \times \left(\frac{3}{4}\right)^3 = 10 \times \frac{1}{16} \times \frac{27}{64} = \frac{270}{1024} \approx 0{,}264$$</p>
+        </div>
+
+        <h2>Traduire l'énoncé : le tableau de référence</h2>
+        <p>C'est l'étape qui fait perdre le plus de points. L'énoncé utilise du langage naturel ; il faut le convertir en écriture mathématique avant de calculer quoi que ce soit.</p>
+
+        <table>
+          <thead><tr><th>Formulation de l'énoncé</th><th>Traduction mathématique</th><th>Méthode</th></tr></thead>
+          <tbody>
+            <tr><td>Exactement $k$ succès</td><td>$P(X = k)$</td><td>Formule directe</td></tr>
+            <tr><td>Au moins $k$ succès</td><td>$P(X \geq k) = 1 - P(X \leq k-1)$</td><td>Événement contraire</td></tr>
+            <tr><td>Au plus $k$ succès</td><td>$P(X \leq k)$</td><td>Somme ou calculatrice</td></tr>
+            <tr><td>Strictement plus de $k$ succès</td><td>$P(X > k) = 1 - P(X \leq k)$</td><td>Événement contraire</td></tr>
+            <tr><td>Strictement moins de $k$ succès</td><td>$P(X < k) = P(X \leq k-1)$</td><td>Somme ou calculatrice</td></tr>
+            <tr><td>Au moins un succès</td><td>$P(X \geq 1) = 1 - (1-p)^n$</td><td>Événement contraire</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <p><strong>Règle d'or :</strong> dès que l'énoncé dit "au moins" ou "strictement plus de", passer par l'événement contraire. Cela transforme une somme potentiellement longue en un seul calcul.</p>
+        </div>
+
+        <h2>Calculer $P(X \geq k)$ : l'événement contraire</h2>
+        <p>L'événement "au moins $k$ succès" est le contraire de "au plus $k-1$ succès" :</p>
+        <div class="formula-block">$$P(X \geq k) = 1 - P(X \leq k-1)$$</div>
+        <p>Le cas le plus fréquent au bac est "au moins un succès" ($k = 1$) :</p>
+        <div class="formula-block">$$P(X \geq 1) = 1 - P(X = 0) = 1 - (1-p)^n$$</div>
+        <p>Car $P(X = 0) = \binom{n}{0} \times p^0 \times (1-p)^n = (1-p)^n$.</p>
+
+        <div class="example-block">
+          <p><strong>Exemple.</strong> Un candidat répond au hasard à un QCM de 8 questions, chacune avec 4 propositions dont une seule est juste ($p = 1/4$). Calculer la probabilité qu'il ait au moins une bonne réponse.</p>
+          <p>$$P(X \geq 1) = 1 - P(X = 0) = 1 - \left(\frac{3}{4}\right)^8 = 1 - \frac{6561}{65536} \approx 0{,}900$$</p>
+          <p>Il y a environ 90 % de chances qu'il ait au moins une bonne réponse.</p>
+        </div>
+
+        <h2>Calculer $P(X \leq k)$ : somme et calculatrice</h2>
+        <p>"Au plus $k$ succès" signifie : 0 succès, ou 1 succès, ..., ou $k$ succès :</p>
+        <div class="formula-block">$$P(X \leq k) = \sum_{i=0}^{k} \binom{n}{i} p^i (1-p)^{n-i}$$</div>
+        <p>Quand $k$ est petit (0, 1 ou 2), le calcul à la main est rapide. Quand $k$ est plus grand, on utilise la calculatrice.</p>
+
+        <h3>Sur calculatrice</h3>
+        <table>
+          <thead><tr><th>Calculatrice</th><th>$P(X = k)$</th><th>$P(X \leq k)$</th></tr></thead>
+          <tbody>
+            <tr><td>TI (français)</td><td><code>binomFDP(n ; p ; k)</code></td><td><code>binomFRép(n ; p ; k)</code></td></tr>
+            <tr><td>Casio / TI (anglais)</td><td><code>binompdf(n, p, k)</code></td><td><code>binomcdf(n, p, k)</code></td></tr>
+          </tbody>
+        </table>
+
+        <div class="example-block">
+          <p><strong>Exemple.</strong> Dans une usine, 15 % des pièces produites sont défectueuses. On prélève 10 pièces. Calculer la probabilité qu'au plus 2 pièces soient défectueuses.</p>
+          <p>$$P(X \leq 2) = P(X=0) + P(X=1) + P(X=2)$$</p>
+          <p>$$= (0{,}85)^{10} + 10 \times 0{,}15 \times (0{,}85)^9 + 45 \times (0{,}15)^2 \times (0{,}85)^8 \approx 0{,}820$$</p>
+          <p>Avec la calculatrice : <code>binomFRép(10 ; 0,15 ; 2)</code> donne directement $\approx 0{,}820$.</p>
+        </div>
+
+        <h2>Espérance et variance</h2>
+        <table>
+          <thead><tr><th>Indicateur</th><th>Formule</th><th>Ce qu'il représente</th></tr></thead>
+          <tbody>
+            <tr><td>Espérance</td><td>$E(X) = np$</td><td>Nombre moyen de succès attendu</td></tr>
+            <tr><td>Variance</td><td>$V(X) = np(1-p)$</td><td>Dispersion autour de la moyenne</td></tr>
+            <tr><td>Écart-type</td><td>$\sigma(X) = \sqrt{np(1-p)}$</td><td>Utilisé avec l'inégalité de Bienaymé-Tchebychev</td></tr>
+          </tbody>
+        </table>
+
+        <div class="example-block">
+          <p><strong>Exemple.</strong> Si on lance 60 fois un dé et que le succès est "obtenir un 6", alors $E(X) = 60 \times \dfrac{1}{6} = 10$ : on espère obtenir 10 fois le chiffre 6 en moyenne.</p>
+        </div>
+
+        <h2>Les 4 pièges classiques au bac</h2>
+        <div class="piege-list">
+          <p><strong>Piège 1 : Ne pas vérifier les conditions avant d'écrire $X \sim \mathcal{B}(n,p)$.</strong> Justifier qu'on est dans un schéma de Bernoulli est obligatoire. Sans la phrase type, on perd des points de rédaction même si le calcul est juste.</p>
+          <p><strong>Piège 2 : Confondre $P(X \geq k)$ et $P(X > k)$.</strong> Ces deux expressions ne sont pas équivalentes. $P(X \geq 2) = 1 - P(X \leq 1)$, tandis que $P(X > 2) = 1 - P(X \leq 2)$. L'écart est toujours d'un rang.</p>
+          <p><strong>Piège 3 : Oublier que "strictement moins de 3" équivaut à "au plus 2".</strong> En loi binomiale, $X$ ne prend que des valeurs entières. Donc $P(X < 3) = P(X \leq 2)$. Ce glissement de formulation est fréquent dans les énoncés.</p>
+          <p><strong>Piège 4 : Mal saisir les paramètres dans la calculatrice.</strong> L'ordre des paramètres est toujours $(n, p, k)$. Inverser $p$ et $k$ produit un résultat faux sans message d'erreur. Vérifier que le résultat est compris entre 0 et 1.</p>
+        </div>
+
+        <h2>Trouver le plus petit $n$ vérifiant une inégalité de probabilité</h2>
+        <p>Ce type de question demande de résoudre une inéquation du type $P(X \geq 1) \geq 0{,}99$.</p>
+        <div class="formula-block">$$1 - (1-p)^n \geq 0{,}99 \quad \Longleftrightarrow \quad (1-p)^n \leq 0{,}01$$</div>
+        <p>On résout par logarithme :</p>
+        <div class="formula-block">$$n \geq \frac{\ln(0{,}01)}{\ln(1-p)}$$</div>
+        <p>Attention au sens de l'inégalité : diviser par $\ln(1-p)$, qui est négatif, inverse le signe. On peut aussi résoudre par tableau de valeurs à la calculatrice en testant des valeurs successives de $n$.</p>
+
+      </div><!-- /article-body -->
+
+      <!-- CTA avant FAQ -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Maths Terminale</p>
+            <p class="cta-strip-heading">20 fiches PDF — tout le programme Terminale Spé</p>
+          </div>
+          <a href="/maths-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Maths en ligne — 30 €/h</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2>FAQ — Loi binomiale au bac</h2>
+        <div class="faq-item">
+          <h3>Comment justifier qu'une variable suit une loi binomiale quand l'énoncé ne le dit pas ?</h3>
+          <p>En vérifiant les trois conditions : les $n$ répétitions sont indépendantes, la probabilité de succès $p$ est la même à chaque essai, et la variable $X$ compte le nombre de succès. Si les trois sont réunies, on rédige la phrase type et on conclut. Un tirage avec remise garantit généralement l'indépendance. Un tirage sans remise dans une population très grande peut aussi être assimilé à un schéma de Bernoulli.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Quelle est la différence entre <code>binomFDP</code> et <code>binomFRép</code> sur la calculatrice ?</h3>
+          <p><code>binomFDP(n ; p ; k)</code> calcule la probabilité exacte $P(X = k)$. <code>binomFRép(n ; p ; k)</code> calcule la probabilité cumulée $P(X \leq k)$, c'est-à-dire la somme de toutes les probabilités de 0 à $k$. Pour les questions "au moins" ou "au plus", c'est <code>binomFRép</code> qu'on utilise en général, parfois combinée à la règle du complémentaire.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Comment trouver le plus petit $n$ pour qu'une probabilité dépasse un seuil ?</h3>
+          <p>On pose l'inéquation (par exemple $P(X \geq 1) \geq 0{,}99$, soit $(1-p)^n \leq 0{,}01$) et on résout par logarithme en faisant attention au sens de l'inégalité quand on divise par $\ln(1-p) < 0$. On peut aussi résoudre par tableau de valeurs à la calculatrice en testant des valeurs successives de $n$.</p>
+        </div>
+      </div>
+
+      <!-- CTA fin -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Maths Terminale</p>
+            <p class="cta-strip-heading">20 fiches PDF — tout le programme Terminale Spé</p>
+          </div>
+          <a href="/maths-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Extrait gratuit</p>
+            <p class="cta-strip-heading">Télécharge une fiche sans engagement</p>
+          </div>
+          <a href="/extrait-gratuit/" class="btn">Télécharger →</a>
+        </div>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/fiches-maths-terminale/arbre-probabilites-bac-terminale/">Arbre de probabilités : construction, probabilités totales et conditionnelle inversée</a></li>
+          <li><a href="/blog/chapitres-bac-maths-spe/">Bac maths spé 2026 : les chapitres qui tombent vraiment (308 exercices)</a></li>
+          <li><a href="/fiches-maths-terminale/geometrie-espace-bac-terminale/">Géométrie dans l'espace : représentation paramétrique, plans et distances</a></li>
+          <li><a href="/fiches-maths-terminale/primitives-bac-terminale/">Primitives au bac : tableau complet et méthode</a></li>
+          <li><a href="/fiches-maths-terminale/formules-derivation-bac-terminale/">Formules de dérivation : toutes les formules et la méthode</a></li>
+          <li><a href="/fiches-maths-terminale/">Tous les guides maths Terminale</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt est diplômée de l'École polytechnique, docteure en sciences, et fondatrice de C'Réussite. Elle conçoit des fiches de révision structurées pour les élèves de Terminale spé maths et physique-chimie, et accompagne des élèves de la 6e au Master depuis plusieurs années. <a href="/a-propos/" style="color:var(--sapphire);font-weight:700;">En savoir plus →</a>
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>

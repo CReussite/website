@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  <title>Arbre de probabilités au bac de maths : construction et calculs | C'Réussite</title>
+  <meta name="description" content="Maîtriser l'arbre de probabilités en Terminale spé maths : règles de construction, probabilités totales, conditionnelle inversée. Méthode complète avec exemple résolu et pièges classiques.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-maths-terminale/arbre-probabilites-bac-terminale/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-maths-terminale/arbre-probabilites-bac-terminale/">
+  <meta property="og:title" content="Arbre de probabilités au bac de maths : construction et calculs | C'Réussite">
+  <meta property="og:description" content="Deux règles fondamentales, formule des probabilités totales, conditionnelle inversée et lien avec la loi binomiale. Exemple complet résolu.">
+  <meta property="og:site_name" content="C'Réussite">
+  <meta property="article:published_time" content="2026-05-27">
+  <meta property="article:author" content="Camille Reinhardt">
+  <meta property="article:section" content="Maths Terminale Spécialité">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Arbre de probabilités au bac : construction et calculs">
+  <meta name="twitter:description" content="Deux règles, probabilités totales, conditionnelle inversée. Méthode complète avec exemple résolu.">
+
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"Article","headline":"Arbre de probabilités au bac de maths : construction, calculs et pièges classiques","description":"Maîtriser l'arbre de probabilités en Terminale spé maths : deux règles fondamentales, formule des probabilités totales, probabilité conditionnelle inversée, lien avec la loi binomiale.","datePublished":"2026-05-27","dateModified":"2026-05-27","author":{"@type":"Person","name":"Camille Reinhardt","url":"https://c-reussite.fr/a-propos/"},"publisher":{"@type":"Organization","name":"C'Réussite","url":"https://c-reussite.fr"},"mainEntityOfPage":"https://c-reussite.fr/fiches-maths-terminale/arbre-probabilites-bac-terminale/","articleSection":"Maths Terminale Spécialité","educationalLevel":"Terminale","keywords":"arbre de probabilités bac terminale, probabilités totales, probabilité conditionnelle, loi binomiale, maths terminale"},
+    {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://c-reussite.fr/"},{"@type":"ListItem","position":2,"name":"Maths Terminale","item":"https://c-reussite.fr/fiches-maths-terminale/"},{"@type":"ListItem","position":3,"name":"Arbre de probabilités","item":"https://c-reussite.fr/fiches-maths-terminale/arbre-probabilites-bac-terminale/"}]},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"Doit-on toujours construire l'arbre si l'énoncé ne le demande pas explicitement ?","acceptedAnswer":{"@type":"Answer","text":"Non. Si l'exercice est court et que les événements sont clairs, on peut poser les calculs directement avec les formules. L'arbre est un outil visuel, pas une obligation. Sur un sujet de bac, il sécurise la compréhension et facilite la lecture des chemins."}},
+      {"@type":"Question","name":"Comment savoir si on doit utiliser la formule des probabilités totales ou simplement lire un chemin ?","acceptedAnswer":{"@type":"Answer","text":"Si l'événement demandé apparaît à l'extrémité d'un seul chemin, on lit ce chemin (règle du produit). S'il apparaît à l'extrémité de plusieurs chemins, on additionne (probabilités totales). C'est la structure de l'arbre qui répond à la question."}},
+      {"@type":"Question","name":"L'arbre peut-il avoir plus de deux niveaux ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Certains exercices modélisent trois étapes ou plus. Les règles restent identiques : somme à 1 par nœud, produit sur chaque chemin. La difficulté augmente mais la méthode ne change pas."}}
+    ]}
+  ]}
+  </script>
+
+  <style>
+    .article-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px;background:var(--swan-wing);color:var(--sapphire);margin-bottom:12px}
+    .article-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+    .article-header h1{font-size:clamp(1.45rem,3.5vw,1.95rem);line-height:1.25;margin-bottom:10px;color:var(--royal-blue)}
+    .article-meta{font-size:.85rem;color:#5C6475}
+    .article-intro{font-size:1.02rem;color:var(--text-mid);line-height:1.75;margin:20px 0 28px}
+    .article-body h2{font-size:1.2rem;margin-top:36px;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body h3{font-size:1.02rem;font-weight:700;margin-top:24px;margin-bottom:9px;color:var(--royal-blue)}
+    .article-body p{margin-bottom:14px;line-height:1.7;color:var(--text-mid)}
+    .article-body ul,.article-body ol{margin:0 0 14px 22px}
+    .article-body li{margin-bottom:6px;color:var(--text-mid);line-height:1.65}
+    .article-body table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.86rem}
+    .article-body th{background:var(--swan-wing);font-weight:600;text-align:left;padding:9px 12px;border:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body td{padding:9px 12px;border:1px solid #e5e7eb;vertical-align:middle;color:var(--text-mid)}
+    .article-body tr:nth-child(even) td{background:#fafafa}
+    .article-body strong{color:var(--royal-blue);font-weight:700}
+    .callout{background:var(--swan-wing);border-left:3px solid var(--sapphire);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .callout p{margin:0;color:var(--text-mid)}
+    .example-block{background:#f8f9fa;border-radius:8px;padding:14px 18px;margin:12px 0;border-left:3px solid var(--quicksand)}
+    .example-block p{margin:0 0 8px;color:var(--text-mid);font-size:.92rem}
+    .example-block p:last-child{margin:0}
+    .piege-list{background:#fff3f3;border-left:3px solid #e53e3e;border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .piege-list p{margin:0 0 10px;color:var(--text-mid);font-size:.9rem}
+    .piege-list p:last-child{margin:0}
+    .piege-list strong{color:#c0392b}
+    .step-row{display:flex;align-items:flex-start;gap:12px;margin:12px 0}
+    .step-row-num{display:flex;align-items:center;justify-content:center;width:28px;height:28px;min-width:28px;background:var(--royal-blue);color:var(--quicksand);font-weight:700;font-size:.85rem;border-radius:50%;margin-top:2px}
+    .step-row-body p{margin:0 0 4px;color:var(--text-mid);line-height:1.7}
+    .step-row-body p:last-child{margin:0}
+    .formula-block{background:#f0f4ff;border-left:4px solid var(--royal-blue);border-radius:0 8px 8px 0;padding:10px 18px;margin:12px 0 16px;overflow-x:auto}
+    .katex-display{margin:0!important;overflow-x:auto}
+    .faq-section{margin-top:40px;padding-top:28px;border-top:2px solid #e5e7eb}
+    .faq-section>h2{font-size:1.15rem;margin-bottom:20px;padding-bottom:0;border-bottom:none}
+    .faq-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-item h3{font-size:.97rem;margin-top:0;margin-bottom:7px}
+    .faq-item p{margin:0}
+    .read-next{margin-top:36px;padding-top:24px;border-top:1px solid #e5e7eb}
+    .read-next h2{font-size:1rem;margin-bottom:12px;color:var(--royal-blue);border:none;padding:0}
+    .read-next ul{list-style:none;padding:0;margin:0}
+    .read-next li{padding:6px 0;border-bottom:1px solid #f5f5f5}
+    .read-next li:last-child{border-bottom:none}
+    .read-next a{color:var(--sapphire);text-decoration:underline;font-size:.9rem}
+    .author-box{background:var(--swan-wing);border-radius:10px;padding:16px 20px;margin-top:28px;font-size:.86rem;color:var(--text-mid)}
+    .author-box strong{display:block;margin-bottom:5px;color:var(--royal-blue);font-size:.9rem}
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-maths-terminale/">Maths Terminale</a><span class="bc-sep">›</span>
+      <span>Arbre de probabilités</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Maths · Terminale</span>
+        <h1>Arbre de probabilités au bac de maths : construction, calculs et pièges classiques</h1>
+        <div class="article-meta">Publié le 27 mai 2026 · Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">L'arbre de probabilités est l'un des outils les plus polyvalents du programme de Terminale spé maths. Il modélise les expériences aléatoires à plusieurs étapes, facilite la lecture des probabilités conditionnelles et structure les calculs pour ne rien oublier. Il tombe dans pratiquement chaque sujet de bac, seul ou combiné avec la <a href="/fiches-maths-terminale/loi-binomiale-bac-terminale/">loi binomiale</a>. Cette page explique comment le construire correctement, quelles formules appliquer, et où les élèves perdent le plus de points.</p>
+
+      <div class="article-body">
+
+        <h2>Les deux règles qui gouvernent l'arbre</h2>
+        <p>Un arbre de probabilités est constitué de noeuds, de branches et de feuilles. Deux règles suffisent à comprendre et à corriger n'importe quel arbre.</p>
+
+        <h3>Règle 1 : la somme des branches issues d'un même noeud vaut toujours 1</h3>
+        <p>Si $P(A) = 0{,}7$, alors la branche complémentaire porte $P(\bar{A}) = 0{,}3$. Cette règle s'applique à tous les niveaux, y compris pour les probabilités conditionnelles : $P_A(B) + P_A(\bar{B}) = 1$.</p>
+        <div class="formula-block">$$\text{Pour tout nœud } N : \quad \sum_{\text{branches issues de }N} p_i = 1$$</div>
+
+        <h3>Règle 2 : la probabilité d'un chemin est le produit des probabilités de ses branches</h3>
+        <p>Un chemin qui passe successivement par $A$ puis $B$ a pour probabilité :</p>
+        <div class="formula-block">$$P(A \cap B) = P(A) \times P_A(B)$$</div>
+        <p>C'est la règle du produit. Elle découle directement de la définition de la probabilité conditionnelle.</p>
+
+        <h2>Ce que portent les branches : la distinction essentielle</h2>
+        <p>La distinction entre branches du premier niveau et branches du second niveau est systématiquement mal comprise et régulièrement sanctionnée au bac.</p>
+
+        <table>
+          <thead><tr><th>Niveau de la branche</th><th>Ce qu'elle porte</th><th>Exemple</th></tr></thead>
+          <tbody>
+            <tr><td>Branches primaires (depuis la racine)</td><td>Probabilités simples</td><td>$P(A)$, $P(\bar{A})$</td></tr>
+            <tr><td>Branches secondaires (depuis un noeud)</td><td>Probabilités <strong>conditionnelles</strong></td><td>$P_A(B)$, $P_{\bar{A}}(B)$</td></tr>
+            <tr><td>Feuilles (extrémités)</td><td>Intersections (produit du chemin)</td><td>$P(A \cap B) = P(A) \times P_A(B)$</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <p>Toute branche du second niveau est une probabilité conditionnelle. Ce n'est pas une probabilité simple habillée différemment. Confondre les deux est le piège le plus classique de ce chapitre.</p>
+        </div>
+
+        <h2>Les trois calculs incontournables</h2>
+
+        <h3>1. La probabilité d'une intersection : lire un chemin</h3>
+        <p>Pour obtenir $P(A \cap B)$, on multiplie les probabilités des branches du chemin correspondant. C'est la règle du produit.</p>
+        <div class="formula-block">$$P(A \cap B) = P(A) \times P_A(B)$$</div>
+
+        <h3>2. La formule des probabilités totales : additionner les chemins</h3>
+        <p>Quand un événement $B$ apparaît à l'extrémité de plusieurs chemins, sa probabilité globale est la somme de tous ces chemins. Si $A$ et $\bar{A}$ forment une partition de l'univers :</p>
+        <div class="formula-block">$$P(B) = P(A \cap B) + P(\bar{A} \cap B) = P(A) \times P_A(B) + P(\bar{A}) \times P_{\bar{A}}(B)$$</div>
+        <p>Cette formule est demandée dans la quasi-totalité des exercices de probabilités du bac. Il faut la nommer explicitement dans la copie.</p>
+
+        <h3>3. La probabilité conditionnelle inversée</h3>
+        <p>C'est la question qui fait perdre le plus de points. L'arbre a été construit dans un sens (cause à effet), et l'énoncé demande la probabilité dans le sens inverse (effet à cause) : par exemple, $P_B(A)$ alors que l'arbre donne $P_A(B)$.</p>
+        <p>La méthode en 3 étapes :</p>
+
+        <div class="step-row">
+          <div class="step-row-num">1</div>
+          <div class="step-row-body"><p><strong>Poser la formule.</strong> $$P_B(A) = \dfrac{P(A \cap B)}{P(B)}$$</p></div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">2</div>
+          <div class="step-row-body"><p><strong>Calculer le numérateur</strong> en lisant le chemin correspondant dans l'arbre (règle du produit).</p></div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">3</div>
+          <div class="step-row-body"><p><strong>Calculer le dénominateur</strong> via la formule des probabilités totales. Puis diviser.</p></div>
+        </div>
+
+        <div class="callout">
+          <p>La rédaction doit être explicite : citez les formules par leur nom, posez les calculs intermédiaires. Un résultat juste sans justification ne rapporte pas les points de rédaction.</p>
+        </div>
+
+        <h2>Exemple résolu : contrôle qualité en usine</h2>
+        <p>Une usine fabrique des pièces sur deux lignes de production. La ligne A produit 60 % des pièces, la ligne B produit les 40 % restants. Le taux de pièces défectueuses est de 4 % sur la ligne A et de 10 % sur la ligne B. On choisit une pièce au hasard dans la production.</p>
+        <p>On définit : $A$ = "la pièce vient de la ligne A", $B$ = "la pièce vient de la ligne B", $D$ = "la pièce est défectueuse", $\bar{D}$ = "la pièce est conforme".</p>
+
+        <h3>Construction de l'arbre</h3>
+        <p>Branches primaires : $P(A) = 0{,}6$, $P(B) = 0{,}4$. Branches secondaires : $P_A(D) = 0{,}04$, $P_A(\bar{D}) = 0{,}96$, $P_B(D) = 0{,}10$, $P_B(\bar{D}) = 0{,}90$.</p>
+        <table>
+          <thead><tr><th>Chemin</th><th>Calcul</th><th>Résultat</th></tr></thead>
+          <tbody>
+            <tr><td>$A \cap D$</td><td>$0{,}6 \times 0{,}04$</td><td>$0{,}024$</td></tr>
+            <tr><td>$A \cap \bar{D}$</td><td>$0{,}6 \times 0{,}96$</td><td>$0{,}576$</td></tr>
+            <tr><td>$B \cap D$</td><td>$0{,}4 \times 0{,}10$</td><td>$0{,}040$</td></tr>
+            <tr><td>$B \cap \bar{D}$</td><td>$0{,}4 \times 0{,}90$</td><td>$0{,}360$</td></tr>
+          </tbody>
+        </table>
+        <p>Vérification : $0{,}024 + 0{,}576 + 0{,}040 + 0{,}360 = 1$. Correct.</p>
+
+        <h3>Calculer $P(D)$ : formule des probabilités totales</h3>
+        <p>L'événement $D$ apparaît au bout de deux chemins ($A \cap D$ et $B \cap D$). Les événements $A$ et $B$ forment une partition de l'univers. D'après la formule des probabilités totales :</p>
+        <div class="formula-block">$$P(D) = P(A \cap D) + P(B \cap D) = 0{,}024 + 0{,}040 = 0{,}064$$</div>
+        <p>La pièce tirée au hasard a une probabilité de 6,4 % d'être défectueuse.</p>
+
+        <h3>Calculer $P_D(B)$ : probabilité conditionnelle inversée</h3>
+        <p>On cherche la probabilité que la pièce vienne de la ligne B, sachant qu'elle est défectueuse. L'arbre a été construit dans le sens ligne à défaut ; on veut l'inverse.</p>
+        <div class="formula-block">$$P_D(B) = \frac{P(B \cap D)}{P(D)} = \frac{0{,}040}{0{,}064} = \frac{40}{64} = 0{,}625$$</div>
+        <p>Parmi les pièces défectueuses, 62,5 % proviennent de la ligne B, alors que cette ligne ne représente que 40 % de la production. Un taux de défaut plus élevé sur B compense son volume de production plus faible : c'est le résultat contre-intuitif que le bac cherche à faire interpréter.</p>
+
+        <h2>Lien avec la loi binomiale</h2>
+        <p>Quand une épreuve de Bernoulli est répétée $n$ fois de façon identique et indépendante, l'arbre devient impraticable (trop de branches). On passe alors à la <a href="/fiches-maths-terminale/loi-binomiale-bac-terminale/">loi binomiale</a> $\mathcal{B}(n, p)$.</p>
+        <p>Pour justifier le passage à la loi binomiale, il faut vérifier explicitement dans la copie :</p>
+        <ul>
+          <li>les $n$ répétitions sont <strong>indépendantes</strong> ;</li>
+          <li>chaque épreuve a deux issues : succès (probabilité $p$) ou échec (probabilité $1-p$) ;</li>
+          <li>$p$ est <strong>identique</strong> à chaque répétition.</li>
+        </ul>
+        <div class="formula-block">$$P(X = k) = \binom{n}{k} p^k (1-p)^{n-k} \qquad P(X \geq k) = 1 - P(X \leq k-1)$$</div>
+
+        <h2>Les 4 pièges classiques</h2>
+        <div class="piege-list">
+          <p><strong>Piège 1 : Inscrire une probabilité simple sur une branche secondaire.</strong> Les branches du second niveau portent des probabilités conditionnelles, toujours. Écrire $P(B)$ à la place de $P_A(B)$ est une erreur conceptuelle.</p>
+          <p><strong>Piège 2 : Ne pas nommer les formules.</strong> "Par la formule des probabilités totales" et "Par la formule des probabilités conditionnelles" doivent apparaître dans la copie. Sans ça, on perd des points de rédaction même avec le bon résultat.</p>
+          <p><strong>Piège 3 : Oublier de vérifier la cohérence.</strong> Toute probabilité est comprise entre 0 et 1. Si le résultat ne l'est pas, il y a une erreur quelque part. La somme de toutes les feuilles doit également valoir 1.</p>
+          <p><strong>Piège 4 : Confondre $P_A(B)$ et $P_B(A)$.</strong> Ce sont deux probabilités différentes. $P_A(B)$ est la probabilité de $B$ sachant $A$. $P_B(A)$ est la probabilité de $A$ sachant $B$. L'une se lit dans l'arbre, l'autre se calcule avec la formule de Bayes.</p>
+        </div>
+
+      </div><!-- /article-body -->
+
+      <!-- CTA avant FAQ -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Maths Terminale</p>
+            <p class="cta-strip-heading">20 fiches PDF — tout le programme Terminale Spé</p>
+          </div>
+          <a href="/maths-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Maths en ligne — 30 €/h</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2>FAQ — Arbre de probabilités au bac</h2>
+        <div class="faq-item">
+          <h3>Doit-on toujours construire l'arbre si l'énoncé ne le demande pas explicitement ?</h3>
+          <p>Non. Si l'exercice est court et que les événements sont clairs, on peut poser les calculs directement avec les formules. L'arbre est un outil visuel, pas une obligation. Sur un sujet de bac, il sécurise la compréhension et facilite la lecture des chemins. Le temps de le dessiner est généralement bien investi.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Comment savoir si on doit utiliser la formule des probabilités totales ou simplement lire un chemin ?</h3>
+          <p>Si l'événement demandé apparaît à l'extrémité d'un seul chemin, on lit ce chemin (règle du produit). S'il apparaît à l'extrémité de plusieurs chemins, on additionne (probabilités totales). C'est la structure de l'arbre qui répond à la question.</p>
+        </div>
+        <div class="faq-item">
+          <h3>L'arbre peut-il avoir plus de deux niveaux ?</h3>
+          <p>Oui. Certains exercices modélisent trois étapes ou plus. Les règles restent identiques : somme à 1 par noeud, produit sur chaque chemin. La difficulté augmente mais la méthode ne change pas. Pour $n$ répétitions identiques et indépendantes, il est plus pratique de passer à la <a href="/fiches-maths-terminale/loi-binomiale-bac-terminale/">loi binomiale</a>.</p>
+        </div>
+      </div>
+
+      <!-- CTA fin -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Maths Terminale</p>
+            <p class="cta-strip-heading">20 fiches PDF — tout le programme Terminale Spé</p>
+          </div>
+          <a href="/maths-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Extrait gratuit</p>
+            <p class="cta-strip-heading">Télécharge une fiche sans engagement</p>
+          </div>
+          <a href="/extrait-gratuit/" class="btn">Télécharger →</a>
+        </div>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/fiches-maths-terminale/loi-binomiale-bac-terminale/">Loi binomiale : formule, P(X = k), P(X ≥ k) et P(X ≤ k)</a></li>
+          <li><a href="/blog/chapitres-bac-maths-spe/">Bac maths spé 2026 : les chapitres qui tombent vraiment (308 exercices)</a></li>
+          <li><a href="/fiches-maths-terminale/geometrie-espace-bac-terminale/">Géométrie dans l'espace : représentation paramétrique, plans et distances</a></li>
+          <li><a href="/fiches-maths-terminale/primitives-bac-terminale/">Primitives au bac : tableau complet et méthode</a></li>
+          <li><a href="/fiches-maths-terminale/formules-derivation-bac-terminale/">Formules de dérivation : toutes les formules et la méthode</a></li>
+          <li><a href="/fiches-maths-terminale/">Tous les guides maths Terminale</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt est diplômée de l'École polytechnique, docteure en sciences, et fondatrice de C'Réussite. Elle conçoit des fiches de révision structurées pour les élèves de Terminale spé maths et physique-chimie, et accompagne des élèves de la 6e au Master depuis plusieurs années. <a href="/a-propos/" style="color:var(--sapphire);font-weight:700;">En savoir plus →</a>
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>

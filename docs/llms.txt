@@ -33,6 +33,8 @@
 ### Réviser les maths en Terminale Spécialité
 
 - [Hub maths](https://c-reussite.fr/fiches-maths-terminale/): Index des guides gratuits par chapitre.
+- [Loi binomiale au bac](https://c-reussite.fr/fiches-maths-terminale/loi-binomiale-bac-terminale/): Formule $P(X=k)=\binom{n}{k}p^k(1-p)^{n-k}$, espérance E(X)=np, variance V(X)=np(1-p), calcul avec la calculatrice (binomFDP/binomFRép), exemples chiffrés et 4 pièges classiques.
+- [Arbre de probabilités au bac](https://c-reussite.fr/fiches-maths-terminale/arbre-probabilites-bac-terminale/): Règle du produit $P(A\cap B)=P(A)P_A(B)$, probabilités totales, conditionnelle inversée, exemple complet usine A/B, liens avec la loi binomiale. 4 pièges et méthode en 3 étapes.
 - [Formules de dérivation](https://c-reussite.fr/fiches-maths-terminale/formules-derivation-bac-terminale/): Tableau complet des dérivées (fonctions usuelles, règles opératoires, fonctions composées), équation de la tangente, utilisation de la dérivée pour les variations. Méthode en 3 étapes pour les composées.
 - [Primitives au bac](https://c-reussite.fr/fiches-maths-terminale/primitives-bac-terminale/): Tableau des primitives usuelles et composées (u'·u^n, u'/u, u'·e^u, u'/√u), méthode d'ajustement du coefficient en 3 étapes, condition initiale, différence primitive/toutes les primitives. Pièges sur le signe de sin et le coefficient d'ajustement.
 - [Géométrie dans l'espace](https://c-reussite.fr/fiches-maths-terminale/geometrie-espace-bac-terminale/): Représentation paramétrique, équation de plan, positions relatives, projeté orthogonal et distances. Méthode complète avec exemples chiffrés.
