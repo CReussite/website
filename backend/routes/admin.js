@@ -168,19 +168,25 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
               description: `${item.nature} — ${item.date}`,
               quantity: Number(item.hours),
               unit_price: Number(item.hourly_rate),
+              payment_date: item.payment_date || '',
+              payment_method: item.payment_method || '',
             };
           })
         : [{ description: 'Cours particuliers', quantity: 1, unit_price: cpInvoice.amount / 100 }];
 
+      const firstPaidItem = Array.isArray(cpInvoice.items)
+        ? cpInvoice.items.find(item => item.payment_date || item.payment_method)
+        : null;
+
       return res.json({
         invoice_number: cpInvoice.invoice_number,
         date: dateStr,
-        payment_date: cpInvoice.payment_date || dateStr,
+        payment_date: cpInvoice.payment_date || firstPaidItem?.payment_date || dateStr,
         payment_ref: '—',
-        payment_method: cpInvoice.payment_method || '—',
+        payment_method: cpInvoice.payment_method || firstPaidItem?.payment_method || '—',
         customer: {
           name: cpInvoice.customer_name || cpInvoice.email,
-          email: cpInvoice.email,
+          email: cpInvoice.email || '',
           address: cpInvoice.customer_address || '',
         },
         items,
@@ -273,20 +279,35 @@ router.post('/cours-particuliers', express.json(), requireAdminKey, async (req, 
   try {
     const { customerName, customerEmail, customerAddress, items, paymentDate, paymentMethod } = req.body;
 
-    if (!customerName || !customerEmail || !Array.isArray(items) || items.length === 0) {
-      return res.status(400).json({ error: 'Données manquantes (nom, email, cours).' });
+    if (!customerName || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ error: 'Données manquantes (nom, cours).' });
     }
-    if (!paymentDate || !paymentMethod) {
-      return res.status(400).json({ error: 'Date et mode de paiement requis.' });
+    const normalizedItems = items.map(item => ({
+      ...item,
+      payment_date: item.payment_date || paymentDate || '',
+      payment_method: item.payment_method || paymentMethod || '',
+    }));
+
+    const hasIncompleteItem = normalizedItems.some(item => (
+      !item.nature ||
+      !item.date ||
+      !item.hours ||
+      !item.hourly_rate ||
+      !item.payment_date ||
+      !item.payment_method
+    ));
+
+    if (hasIncompleteItem) {
+      return res.status(400).json({ error: 'Cours incomplet (cours, date, montant et paiement requis).' });
     }
 
     const { invoiceNumber } = await insertCoursParticuliersInvoice({
       customerName,
-      customerEmail,
+      customerEmail: customerEmail || '',
       customerAddress,
-      items,
-      paymentDate,
-      paymentMethod,
+      items: normalizedItems,
+      paymentDate: paymentDate || normalizedItems[0].payment_date,
+      paymentMethod: paymentMethod || normalizedItems[0].payment_method,
     });
 
     res.json({ invoiceNumber });

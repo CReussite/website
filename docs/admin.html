@@ -342,7 +342,7 @@
     }
     .cp-input:focus { outline: none; border-color: var(--sapphire, #112250); }
     .cours-rows { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
-    .cours-row { display: grid; grid-template-columns: 2fr 1fr 90px 90px 90px 32px; gap: 8px; align-items: end; }
+    .cours-row { display: grid; grid-template-columns: 1.5fr 1fr 90px 90px 1fr 1fr 90px 32px; gap: 8px; align-items: end; }
     @media (max-width: 700px) { .cours-row { grid-template-columns: 1fr 1fr; } }
     .cours-row .cp-field label { font-size: .75rem; }
     .cours-row-total { font-size: .85rem; font-weight: 700; color: var(--sapphire, #112250); padding: 8px 0; }
@@ -498,8 +498,8 @@
               <input class="cp-input" type="text" id="cp-name" placeholder="Prénom Nom" required>
             </div>
             <div class="cp-field">
-              <label for="cp-email">Email *</label>
-              <input class="cp-input" type="email" id="cp-email" placeholder="client@email.com" required>
+              <label for="cp-email">Email (optionnel)</label>
+              <input class="cp-input" type="email" id="cp-email" placeholder="client@email.com">
             </div>
           </div>
           <div class="cp-field" style="margin-top:12px;">
@@ -511,24 +511,6 @@
           <div class="cours-rows" id="cours-rows"></div>
           <button class="btn-add-cours" id="btn-add-cours" type="button">+ Ajouter une ligne</button>
           <div class="cp-total-line">Total : <span id="cp-grand-total">0,00 €</span></div>
-
-          <p class="cp-section-label">Paiement</p>
-          <div class="cp-grid-2">
-            <div class="cp-field">
-              <label for="cp-pay-date">Date de paiement *</label>
-              <input class="cp-input" type="date" id="cp-pay-date" required>
-            </div>
-            <div class="cp-field">
-              <label for="cp-pay-method">Moyen de paiement *</label>
-              <select class="cp-input" id="cp-pay-method">
-                <option value="Virement bancaire">Virement bancaire</option>
-                <option value="Espèces">Espèces</option>
-                <option value="Chèque">Chèque</option>
-                <option value="Carte bancaire">Carte bancaire</option>
-                <option value="PayPal">PayPal</option>
-              </select>
-            </div>
-          </div>
 
           <div class="cp-error" id="cp-error"></div>
           <div style="margin-top:20px;">
@@ -946,8 +928,10 @@
           'Paiement reçu par ' + payMethodLabel + ' le <span id="inv-payment-date-text">' + data.payment_date + '</span>.';
 
         document.getElementById('inv-client-name').textContent = data.customer.name;
-        let details = data.customer.email;
-        if (data.customer.address) details += '<br>' + data.customer.address.replace(/\n/g, '<br>');
+        let details = data.customer.email || '';
+        if (data.customer.address) {
+          details += (details ? '<br>' : '') + data.customer.address.replace(/\n/g, '<br>');
+        }
         document.getElementById('inv-client-details').innerHTML = details;
 
         const itemsTbody = document.getElementById('inv-items');
@@ -958,8 +942,15 @@
           const lineTotal = item.quantity * item.unit_price;
           subtotal += lineTotal;
           const tr = document.createElement('tr');
+          let description = item.description;
+          if (item.payment_date || item.payment_method) {
+            description += '<br><small>Paiement';
+            if (item.payment_method) description += ' : ' + item.payment_method;
+            if (item.payment_date) description += ' le ' + item.payment_date;
+            description += '</small>';
+          }
           tr.innerHTML =
-            '<td>' + item.description + '</td>' +
+            '<td>' + description + '</td>' +
             '<td>' + item.quantity + '</td>' +
             '<td>' + fmtInvoicePrice(item.unit_price) + '</td>' +
             '<td>' + fmtInvoicePrice(lineTotal) + '</td>';
@@ -1086,12 +1077,6 @@
           cpFormWrap.style.display = 'block';
           btnCpToggle.textContent = '− Fermer';
           if (cpRowsContainer.children.length === 0) addCoursRow();
-          // Pré-remplir la date d'aujourd'hui
-          var todayInput = document.getElementById('cp-pay-date');
-          if (!todayInput.value) {
-            var today = new Date();
-            todayInput.value = today.toISOString().slice(0, 10);
-          }
         } else {
           cpFormWrap.style.display = 'none';
           btnCpToggle.textContent = '+ Nouvelle facture';
@@ -1139,6 +1124,20 @@
             '<input class="cp-input cp-rate" type="number" min="1" step="0.01" placeholder="25" required>' +
           '</div>' +
           '<div class="cp-field">' +
+            '<label>Date paiement *</label>' +
+            '<input class="cp-input cp-pay-date" type="date" required>' +
+          '</div>' +
+          '<div class="cp-field">' +
+            '<label>Moyen paiement *</label>' +
+            '<select class="cp-input cp-pay-method">' +
+              '<option value="Virement bancaire">Virement bancaire</option>' +
+              '<option value="Espèces">Espèces</option>' +
+              '<option value="Chèque">Chèque</option>' +
+              '<option value="Stancer">Stancer</option>' +
+              '<option value="Wero">Wero</option>' +
+            '</select>' +
+          '</div>' +
+          '<div class="cp-field">' +
             '<label>Total</label>' +
             '<div class="cours-row-total">0,00 €</div>' +
           '</div>' +
@@ -1154,6 +1153,9 @@
         });
 
         cpRowsContainer.appendChild(row);
+
+        var today = new Date();
+        row.querySelector('.cp-pay-date').value = today.toISOString().slice(0, 10);
       }
 
       document.getElementById('btn-add-cours').addEventListener('click', addCoursRow);
@@ -1164,11 +1166,9 @@
         var name = document.getElementById('cp-name').value.trim();
         var email = document.getElementById('cp-email').value.trim();
         var address = document.getElementById('cp-address').value.trim();
-        var payDate = document.getElementById('cp-pay-date').value;
-        var payMethod = document.getElementById('cp-pay-method').value;
 
-        if (!name || !email || !payDate) {
-          cpError.textContent = 'Merci de remplir les champs obligatoires (nom, email, date de paiement).';
+        if (!name) {
+          cpError.textContent = 'Merci de remplir le nom du client.';
           cpError.style.display = 'block';
           return;
         }
@@ -1181,12 +1181,22 @@
           var date = row.querySelector('.cp-date').value;
           var hours = parseFloat(row.querySelector('.cp-hours').value);
           var rate = parseFloat(row.querySelector('.cp-rate').value);
-          if (!nature || !date || !hours || !rate) { valid = false; return; }
-          items.push({ nature: nature, date: date, hours: hours, hourly_rate: rate, total: Math.round(hours * rate * 100) / 100 });
+          var payDate = row.querySelector('.cp-pay-date').value;
+          var payMethod = row.querySelector('.cp-pay-method').value;
+          if (!nature || !date || !hours || !rate || !payDate || !payMethod) { valid = false; return; }
+          items.push({
+            nature: nature,
+            date: date,
+            hours: hours,
+            hourly_rate: rate,
+            total: Math.round(hours * rate * 100) / 100,
+            payment_date: payDate,
+            payment_method: payMethod
+          });
         });
 
         if (!valid || items.length === 0) {
-          cpError.textContent = 'Merci de compléter toutes les lignes de cours.';
+          cpError.textContent = 'Merci de compléter toutes les lignes de cours, paiement inclus.';
           cpError.style.display = 'block';
           return;
         }
@@ -1198,7 +1208,7 @@
           var res = await fetch(BACKEND + '/api/admin/cours-particuliers?key=' + encodeURIComponent(adminKey), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ customerName: name, customerEmail: email, customerAddress: address, items: items, paymentDate: payDate, paymentMethod: payMethod }),
+            body: JSON.stringify({ customerName: name, customerEmail: email, customerAddress: address, items: items }),
           });
           var data = await res.json();
           if (!res.ok) throw new Error(data.error || 'Erreur serveur');
@@ -1207,7 +1217,6 @@
           document.getElementById('cp-name').value = '';
           document.getElementById('cp-email').value = '';
           document.getElementById('cp-address').value = '';
-          document.getElementById('cp-pay-date').value = '';
           cpRowsContainer.innerHTML = '';
           cpRowCount = 0;
           cpGrandTotal.textContent = '0,00 €';
