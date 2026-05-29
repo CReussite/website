@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  <title>Lever une indétermination : les 4 méthodes pour la limite d'une suite au bac | C'Réussite</title>
+  <meta name="description" content="Les 4 méthodes pour lever une indétermination sur la limite d'une suite au bac maths Terminale : factorisation, conjugué, théorème des gendarmes, théorème de comparaison. Méthode complète avec exemples résolus et pièges classiques.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-maths-terminale/indetermination-limite-suite-bac-terminale/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-maths-terminale/indetermination-limite-suite-bac-terminale/">
+  <meta property="og:title" content="Lever une indétermination — limite d'une suite au bac | C'Réussite">
+  <meta property="og:description" content="4 méthodes : factorisation par le terme dominant, expression conjuguée, théorèmes des gendarmes et de comparaison. Exemples résolus et pièges classiques.">
+  <meta property="og:site_name" content="C'Réussite">
+  <meta property="article:published_time" content="2026-05-29">
+  <meta property="article:author" content="Camille Reinhardt">
+  <meta property="article:section" content="Maths Terminale Spécialité">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Lever une indétermination — limite d'une suite au bac">
+  <meta name="twitter:description" content="4 méthodes : factorisation, conjugué, gendarmes, comparaison. Exemples et pièges classiques.">
+
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Lever une indétermination : les 4 méthodes pour la limite d'une suite au bac de maths",
+        "description": "Les 4 méthodes pour lever une indétermination sur la limite d'une suite au bac maths Terminale Spé : factorisation par le terme dominant, expression conjuguée, théorème des gendarmes, théorème de comparaison.",
+        "datePublished": "2026-05-29",
+        "dateModified": "2026-05-29",
+        "author": { "@type": "Person", "name": "Camille Reinhardt", "url": "https://c-reussite.fr/a-propos/" },
+        "publisher": { "@type": "Organization", "name": "C'Réussite", "url": "https://c-reussite.fr" },
+        "mainEntityOfPage": "https://c-reussite.fr/fiches-maths-terminale/indetermination-limite-suite-bac-terminale/",
+        "articleSection": "Maths Terminale Spécialité",
+        "educationalLevel": "Terminale",
+        "keywords": "lever une indétermination, limite suite bac terminale, forme indéterminée, théorème des gendarmes, expression conjuguée, factorisation limite, maths terminale spé"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://c-reussite.fr/" },
+          { "@type": "ListItem", "position": 2, "name": "Maths Terminale", "item": "https://c-reussite.fr/fiches-maths-terminale/" },
+          { "@type": "ListItem", "position": 3, "name": "Lever une indétermination", "item": "https://c-reussite.fr/fiches-maths-terminale/indetermination-limite-suite-bac-terminale/" }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Comment savoir si une expression est une forme indéterminée avant de calculer ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Il faut calculer séparément la limite de chaque morceau de l'expression. Si l'application naïve des règles d'opération donne l'un des quatre cas (∞ − ∞, ∞/∞, 0/0, 0×∞), c'est une forme indéterminée. Si le calcul donne un résultat sans ambiguïté (par exemple 3/+∞ = 0), ce n'est pas une FI : on conclut directement." }
+          },
+          {
+            "@type": "Question",
+            "name": "Peut-on avoir plusieurs méthodes valides pour lever la même indétermination ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Oui. Pour n − 3√n, on peut factoriser par n (méthode 1) ou écrire √n(√n − 3) en passant par une factorisation par √n. Les deux aboutissent au même résultat. Ce qui compte au bac, c'est que la rédaction soit rigoureuse et la conclusion justifiée, pas qu'une méthode précise soit utilisée." }
+          },
+          {
+            "@type": "Question",
+            "name": "Les suites géométriques peuvent-elles générer des formes indéterminées ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Oui, notamment dans des formes de type 0×∞ (par exemple n·q^n avec 0 < q < 1). Dans ce cas, on utilise le résultat admis en Terminale : lim(n→+∞) n·q^n = 0 pour tout q appartenant à ]0 ; 1[. Le terme exponentiel l'emporte toujours sur le terme polynomial." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px;background:var(--swan-wing);color:var(--sapphire);margin-bottom:12px}
+    .article-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+    .article-header h1{font-size:clamp(1.45rem,3.5vw,1.95rem);line-height:1.25;margin-bottom:10px;color:var(--royal-blue)}
+    .article-meta{font-size:.85rem;color:#5C6475}
+    .article-intro{font-size:1.02rem;color:var(--text-mid);line-height:1.75;margin:20px 0 28px}
+    .article-body h2{font-size:1.2rem;margin-top:36px;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body h3{font-size:1.02rem;font-weight:700;margin-top:24px;margin-bottom:9px;color:var(--royal-blue)}
+    .article-body p{margin-bottom:14px;line-height:1.7;color:var(--text-mid)}
+    .article-body ul,.article-body ol{margin:0 0 14px 22px}
+    .article-body li{margin-bottom:6px;color:var(--text-mid);line-height:1.65}
+    .article-body table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.88rem}
+    .article-body th{background:var(--swan-wing);font-weight:600;text-align:left;padding:9px 12px;border:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body td{padding:9px 12px;border:1px solid #e5e7eb;vertical-align:top;color:var(--text-mid)}
+    .article-body tr:nth-child(even) td{background:#fafafa}
+    .article-body strong{color:var(--royal-blue);font-weight:700}
+    .callout{background:var(--swan-wing);border-left:3px solid var(--sapphire);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .callout p{margin:0;color:var(--text-mid)}
+    .formula-block{background:#f0f4ff;border-left:4px solid var(--royal-blue);border-radius:0 8px 8px 0;padding:10px 18px;margin:12px 0 16px;overflow-x:auto}
+    .katex-display{margin:0!important;overflow-x:auto}
+    .example-block{background:#f8f9fa;border-radius:8px;padding:14px 18px;margin:12px 0;border-left:3px solid var(--quicksand)}
+    .example-block p{margin:0 0 6px;color:var(--text-mid);font-size:.92rem}
+    .example-block p:last-child{margin:0}
+    .piege-list{background:#fff3f3;border-left:3px solid #e53e3e;border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .piege-list p{margin:0 0 10px;color:var(--text-mid);font-size:.9rem}
+    .piege-list p:last-child{margin:0}
+    .piege-list strong{color:#c0392b}
+    .step-row{display:flex;align-items:flex-start;gap:12px;margin:12px 0}
+    .step-row-num{display:flex;align-items:center;justify-content:center;width:28px;height:28px;min-width:28px;background:var(--royal-blue);color:var(--quicksand);font-weight:700;font-size:.85rem;border-radius:50%;margin-top:2px}
+    .step-row-body p{margin:0 0 4px;color:var(--text-mid);line-height:1.7}
+    .step-row-body p:last-child{margin:0}
+    .faq-section{margin-top:40px;padding-top:28px;border-top:2px solid #e5e7eb}
+    .faq-section>h2{font-size:1.15rem;margin-bottom:20px;padding-bottom:0;border-bottom:none}
+    .faq-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-item h3{font-size:.97rem;margin-top:0;margin-bottom:7px}
+    .faq-item p{margin:0}
+    .read-next{margin-top:36px;padding-top:24px;border-top:1px solid #e5e7eb}
+    .read-next h2{font-size:1rem;margin-bottom:12px;color:var(--royal-blue);border:none;padding:0;margin-top:0}
+    .read-next ul{list-style:none;padding:0;margin:0}
+    .read-next li{padding:6px 0;border-bottom:1px solid #f5f5f5}
+    .read-next li:last-child{border-bottom:none}
+    .read-next a{color:var(--sapphire);text-decoration:underline;font-size:.9rem}
+    .author-box{background:var(--swan-wing);border-radius:10px;padding:16px 20px;margin-top:28px;font-size:.86rem;color:var(--text-mid)}
+    .author-box strong{display:block;margin-bottom:5px;color:var(--royal-blue);font-size:.9rem}
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-maths-terminale/">Maths Terminale</a><span class="bc-sep">›</span>
+      <span>Lever une indétermination</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Maths · Terminale</span>
+        <h1>Lever une indétermination : les 4 méthodes pour la limite d'une suite au bac</h1>
+        <div class="article-meta">Publié le 29 mai 2026 · Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">Les formes indéterminées (FI) sont les situations où les règles habituelles sur les limites ne permettent pas de conclure directement. On ne peut pas savoir immédiatement si $\infty - \infty$ vaut $0$, $+\infty$ ou une valeur finie. Il faut transformer l'expression pour faire apparaître une forme dont on connaît la limite. Cette page recense les quatre méthodes qui permettent de le faire, avec le mode d'emploi complet pour chacune.</p>
+
+      <div class="article-body">
+
+        <h2 id="formes">Les 4 formes indéterminées à reconnaître</h2>
+
+        <p>Avant de choisir une méthode, il faut identifier la forme indéterminée en présence.</p>
+
+        <table>
+          <thead>
+            <tr><th>Forme</th><th>Situation</th><th>Exemple type</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>$\infty - \infty$</td>
+              <td>Différence de deux suites qui tendent vers $+\infty$</td>
+              <td>$n^2 - 3n$, $\sqrt{n+1} - \sqrt{n}$</td>
+            </tr>
+            <tr>
+              <td>$\dfrac{\infty}{\infty}$</td>
+              <td>Quotient dont numérateur et dénominateur tendent tous deux vers $\infty$</td>
+              <td>$\dfrac{3n^2 + 1}{5n^2 - n}$</td>
+            </tr>
+            <tr>
+              <td>$\dfrac{0}{0}$</td>
+              <td>Quotient dont numérateur et dénominateur tendent tous deux vers $0$</td>
+              <td>$\dfrac{1 - q^n}{n}$ avec $|q| &lt; 1$</td>
+            </tr>
+            <tr>
+              <td>$0 \times \infty$</td>
+              <td>Produit d'une suite tendant vers $0$ par une suite tendant vers $\infty$</td>
+              <td>$n \cdot q^n$ avec $0 &lt; q &lt; 1$</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <p><strong>Comment savoir si c'est une FI ?</strong> Calculer naïvement les limites de chaque morceau. Si le résultat est l'une des quatre formes ci-dessus, les règles des opérations ne s'appliquent pas : il faut transformer l'expression.</p>
+        </div>
+
+        <h2 id="methode1">Méthode 1 : factoriser par le terme de plus haut degré</h2>
+
+        <p><strong>Quand l'utiliser :</strong> pour les FI de type $\infty - \infty$ ou $\dfrac{\infty}{\infty}$ faisant intervenir des polynômes ou des expressions en puissances de $n$.</p>
+
+        <p><strong>La logique :</strong> on met en facteur le terme qui "domine" (celui qui tend le plus vite vers l'infini). Tous les autres termes, divisés par ce terme dominant, tendent vers $0$, et l'indétermination disparaît.</p>
+
+        <p><strong>Ordre de grandeur à retenir</strong> (du plus fort au plus faible) :</p>
+        <div class="formula-block">
+          $$n^p \gg \sqrt{n} \gg \ln(n) \gg 1 \quad \text{quand } n \to +\infty$$
+        </div>
+
+        <div class="example-block">
+          <p><strong>Exemple 1 — FI de type $\infty - \infty$ :</strong> calculer $\displaystyle\lim_{n \to +\infty} (3n^2 - 4n + 1)$</p>
+          <p>Sans factorisation, on obtient $+\infty - \infty$ : forme indéterminée. On factorise par $n^2$ :</p>
+          <p>$$3n^2 - 4n + 1 = n^2\!\left(3 - \dfrac{4}{n} + \dfrac{1}{n^2}\right)$$</p>
+          <p>Quand $n \to +\infty$ : $\dfrac{4}{n} \to 0$ et $\dfrac{1}{n^2} \to 0$, donc la parenthèse tend vers $3$. Par produit : $n^2 \times 3 \to +\infty$.</p>
+          <p><strong>Conclusion :</strong> $\displaystyle\lim_{n \to +\infty} (3n^2 - 4n + 1) = +\infty$</p>
+        </div>
+
+        <div class="example-block">
+          <p><strong>Exemple 2 — FI de type $\dfrac{\infty}{\infty}$ :</strong> calculer $\displaystyle\lim_{n \to +\infty} \dfrac{5n^2 + 4}{4n^2 + 3n}$</p>
+          <p>On factorise $n^2$ au numérateur et au dénominateur :</p>
+          <p>$$\dfrac{5n^2 + 4}{4n^2 + 3n} = \dfrac{n^2\!\left(5 + \dfrac{4}{n^2}\right)}{n^2\!\left(4 + \dfrac{3}{n}\right)} = \dfrac{5 + \dfrac{4}{n^2}}{4 + \dfrac{3}{n}}$$</p>
+          <p>Quand $n \to +\infty$ : les fractions tendent vers $0$, et il reste $\dfrac{5}{4}$.</p>
+          <p><strong>Conclusion :</strong> $\displaystyle\lim_{n \to +\infty} \dfrac{5n^2 + 4}{4n^2 + 3n} = \dfrac{5}{4}$</p>
+        </div>
+
+        <div class="callout">
+          <p><strong>Règle pratique pour un quotient de polynômes :</strong> la limite est toujours le rapport des coefficients des termes de plus haut degré. Cette règle ne dispense pas de rédiger la factorisation au bac, mais elle permet de vérifier le résultat en quelques secondes.</p>
+        </div>
+
+        <h2 id="methode2">Méthode 2 : utiliser l'expression conjuguée</h2>
+
+        <p><strong>Quand l'utiliser :</strong> pour les FI de type $\infty - \infty$ où les deux termes sont des racines carrées.</p>
+
+        <p><strong>La logique :</strong> on multiplie l'expression par son conjugué (même expression avec $+$ à la place du $-$). L'identité $(A-B)(A+B) = A^2 - B^2$ supprime les racines au numérateur et transforme la différence en un quotient calculable.</p>
+
+        <div class="example-block">
+          <p><strong>Exemple :</strong> calculer $\displaystyle\lim_{n \to +\infty} (\sqrt{n+2} - \sqrt{n})$</p>
+          <p>Naïvement : $+\infty - \infty$. On multiplie et divise par le conjugué $(\sqrt{n+2} + \sqrt{n})$ :</p>
+          <p>$$\sqrt{n+2} - \sqrt{n} = \dfrac{(\sqrt{n+2} - \sqrt{n})(\sqrt{n+2} + \sqrt{n})}{\sqrt{n+2} + \sqrt{n}} = \dfrac{(n+2) - n}{\sqrt{n+2} + \sqrt{n}} = \dfrac{2}{\sqrt{n+2} + \sqrt{n}}$$</p>
+          <p>Quand $n \to +\infty$ : le numérateur vaut $2$ (constante), le dénominateur $\to +\infty$.</p>
+          <p><strong>Conclusion :</strong> $\displaystyle\lim_{n \to +\infty} (\sqrt{n+2} - \sqrt{n}) = 0$</p>
+        </div>
+
+        <div class="callout">
+          <p><strong>Factorisation ou conjugué ?</strong> Si la racine est seule face à une puissance de $n$ (ex : $n - 3\sqrt{n}$), la <strong>factorisation</strong> par $n$ est souvent plus rapide. Si la soustraction oppose deux racines de force comparable (ex : $\sqrt{n+2} - \sqrt{n}$), le <strong>conjugué</strong> est la méthode adaptée.</p>
+        </div>
+
+        <h2 id="methode3">Méthode 3 : théorème des gendarmes (limite finie)</h2>
+
+        <p><strong>Quand l'utiliser :</strong> quand la suite contient une fonction oscillante comme $\sin$ ou $\cos$, et que la limite semble être une valeur finie.</p>
+
+        <p><strong>La logique :</strong> on encadre la suite entre deux suites qui convergent toutes les deux vers la même limite $L$. Par le théorème des gendarmes, la suite encadrée converge aussi vers $L$.</p>
+
+        <p><strong>Structure de la rédaction :</strong></p>
+
+        <div class="step-row">
+          <div class="step-row-num">1</div>
+          <div class="step-row-body"><p>Poser l'inégalité de départ (ex : $-1 \leq \sin(n) \leq 1$).</p></div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">2</div>
+          <div class="step-row-body"><p>Transformer chaque membre pour faire apparaître la suite.</p></div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">3</div>
+          <div class="step-row-body"><p>Calculer les limites des suites encadrantes.</p></div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">4</div>
+          <div class="step-row-body"><p>Conclure explicitement : <em>"D'après le théorème des gendarmes..."</em></p></div>
+        </div>
+
+        <div class="example-block">
+          <p><strong>Exemple :</strong> calculer $\displaystyle\lim_{n \to +\infty} \dfrac{\sin(n)}{n}$</p>
+          <p>On part de $-1 \leq \sin(n) \leq 1$. Pour $n &gt; 0$, on divise par $n$ (inégalité conservée) :</p>
+          <p>$$-\dfrac{1}{n} \leq \dfrac{\sin(n)}{n} \leq \dfrac{1}{n}$$</p>
+          <p>$\displaystyle\lim_{n \to +\infty} \left(-\dfrac{1}{n}\right) = 0$ et $\displaystyle\lim_{n \to +\infty} \dfrac{1}{n} = 0$.</p>
+          <p>D'après le <strong>théorème des gendarmes</strong> : $\displaystyle\lim_{n \to +\infty} \dfrac{\sin(n)}{n} = 0$.</p>
+        </div>
+
+        <h2 id="methode4">Méthode 4 : théorème de comparaison (limite infinie)</h2>
+
+        <p><strong>Quand l'utiliser :</strong> quand la suite contient une fonction oscillante, mais que la limite est clairement $+\infty$ ou $-\infty$.</p>
+
+        <p><strong>La logique :</strong> il suffit de trouver une seule inégalité : une suite minorante qui tend elle-même vers $+\infty$ (ou majorante vers $-\infty$). On n'a pas besoin d'encadrer des deux côtés.</p>
+
+        <div class="example-block">
+          <p><strong>Exemple :</strong> calculer $\displaystyle\lim_{n \to +\infty} (n^2 + \cos(n))$</p>
+          <p>On sait que $\cos(n) \geq -1$ pour tout $n$, donc :</p>
+          <p>$$n^2 + \cos(n) \geq n^2 - 1$$</p>
+          <p>Or $\displaystyle\lim_{n \to +\infty} (n^2 - 1) = +\infty$.</p>
+          <p>D'après le <strong>théorème de comparaison</strong> : $\displaystyle\lim_{n \to +\infty} (n^2 + \cos(n)) = +\infty$.</p>
+        </div>
+
+        <h2 id="synthese">Tableau de synthèse</h2>
+
+        <table>
+          <thead>
+            <tr><th>Forme indéterminée</th><th>Type d'expression</th><th>Méthode à utiliser</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>$\infty - \infty$</td><td>Polynômes ou puissances de $n$</td><td>Factorisation par le terme dominant</td></tr>
+            <tr><td>$\dfrac{\infty}{\infty}$</td><td>Quotient de polynômes</td><td>Factorisation par le terme dominant</td></tr>
+            <tr><td>$\infty - \infty$</td><td>Soustraction de racines carrées</td><td>Expression conjuguée</td></tr>
+            <tr><td>Limite finie suspectée</td><td>Avec $\sin(n)$ ou $\cos(n)$</td><td>Théorème des gendarmes</td></tr>
+            <tr><td>Limite infinie suspectée</td><td>Avec $\sin(n)$ ou $\cos(n)$</td><td>Théorème de comparaison</td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="pieges">Les 3 pièges classiques</h2>
+
+        <div class="piege-list">
+          <p><strong>Piège 1 : ne pas nommer le théorème.</strong> Écrire "donc la limite est 0" sans citer le théorème des gendarmes ne rapporte pas les points de rédaction. La conclusion doit être explicite : <em>"D'après le théorème des gendarmes..."</em></p>
+          <p><strong>Piège 2 : diviser par $n$ sans préciser que $n &gt; 0$.</strong> Quand on divise une inégalité par $n$, il faut préciser que $n &gt; 0$ (ce qui est toujours le cas quand $n \to +\infty$, mais le mentionner est attendu en rédaction).</p>
+          <p><strong>Piège 3 : factoriser seulement au numérateur.</strong> Pour une FI $\dfrac{\infty}{\infty}$, on factorise par le terme dominant du numérateur <strong>et</strong> du dénominateur, puis on simplifie. Factoriser seulement l'un des deux ne lève pas l'indétermination.</p>
+        </div>
+
+      </div><!-- /article-body -->
+
+      <!-- CTA avant FAQ -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Maths Terminale</p>
+            <p class="cta-strip-heading">20 fiches PDF — cours, formules et méthodes sur une page par chapitre</p>
+          </div>
+          <a href="/maths-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Maths en ligne — 30 €/h, avec une polytechnicienne</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="faq-section">
+        <h2 id="faq">FAQ — Lever une indétermination</h2>
+
+        <div class="faq-item">
+          <h3>Comment savoir si une expression est une forme indéterminée avant de calculer ?</h3>
+          <p>Il faut calculer séparément la limite de chaque morceau de l'expression. Si l'application naïve des règles d'opération donne l'un des quatre cas ($\infty - \infty$, $\frac{\infty}{\infty}$, $\frac{0}{0}$, $0 \times \infty$), c'est une forme indéterminée. Si le calcul donne un résultat sans ambiguïté (par exemple $\frac{3}{+\infty} = 0$), ce n'est pas une FI : on conclut directement.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>Peut-on avoir plusieurs méthodes valides pour lever la même indétermination ?</h3>
+          <p>Oui. Pour $n - 3\sqrt{n}$, on peut factoriser par $n$ (méthode 1) ou écrire $\sqrt{n}(\sqrt{n} - 3)$ en passant par une factorisation par $\sqrt{n}$. Les deux aboutissent au même résultat. Ce qui compte au bac, c'est que la rédaction soit rigoureuse et la conclusion justifiée.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>Les suites géométriques $q^n$ peuvent-elles générer des formes indéterminées ?</h3>
+          <p>Oui, notamment dans des formes de type $0 \times \infty$ (par exemple $n \cdot q^n$ avec $0 &lt; q &lt; 1$). Dans ce cas, on utilise le résultat admis en Terminale : $\displaystyle\lim_{n \to +\infty} n \cdot q^n = 0$ pour tout $q \in {]0\,;\,1[}$. Le terme exponentiel l'emporte toujours sur le terme polynomial.</p>
+        </div>
+      </div>
+
+      <!-- CTA fin -->
+      <div class="cta-strip">
+        <div class="cta-strip-text">
+          <p class="cta-strip-eyebrow">C'Réussite · Terminale Spé</p>
+          <p class="cta-strip-heading">20 fiches Maths PDF — cours, formules et méthodes sur une page par chapitre</p>
+        </div>
+        <a href="/maths-terminale/" class="btn">Découvrir l'ebook →</a>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/fiches-maths-terminale/geometrie-espace-bac-terminale/">Géométrie dans l'espace : représentation paramétrique, équation de plan, distances</a></li>
+          <li><a href="/fiches-maths-terminale/loi-binomiale-bac-terminale/">Loi binomiale : formule, espérance, variance, méthode calculatrice</a></li>
+          <li><a href="/fiches-maths-terminale/arbre-probabilites-bac-terminale/">Arbre de probabilités : règle du produit, probabilités totales, conditionnelle inversée</a></li>
+          <li><a href="/fiches-maths-terminale/formules-derivation-bac-terminale/">Formules de dérivation : fonctions usuelles, composées, équation de la tangente</a></li>
+          <li><a href="/blog/chapitres-bac-maths-spe/">Bac maths spé 2026 : les chapitres qui tombent vraiment (308 exercices analysés)</a></li>
+          <li><a href="/fiches-maths-terminale/">Tous les guides maths Terminale</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt est diplômée de l'École polytechnique, docteure en sciences, et fondatrice de C'Réussite. Elle conçoit des fiches de révision structurées pour les élèves de Terminale spé maths et physique-chimie, et accompagne des élèves de la 6e au Master depuis plusieurs années. <a href="/a-propos/" style="color:var(--sapphire);font-weight:700;">En savoir plus →</a>
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>

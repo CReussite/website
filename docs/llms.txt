@@ -33,6 +33,8 @@
 ### Réviser les maths en Terminale Spécialité
 
 - [Hub maths](https://c-reussite.fr/fiches-maths-terminale/): Index des guides gratuits par chapitre.
+- [Lever une indétermination — limite d'une suite](https://c-reussite.fr/fiches-maths-terminale/indetermination-limite-suite-bac-terminale/): Les 4 méthodes : factorisation par le terme dominant, expression conjuguée, théorème des gendarmes (limite finie), théorème de comparaison (limite infinie). Exemples résolus et pièges classiques.
+- [Géométrie dans l'espace](https://c-reussite.fr/fiches-maths-terminale/geometrie-espace-bac-terminale/): Représentation paramétrique des droites, équation cartésienne des plans, positions relatives (tableau produit scalaire), intersection droite-plan, projeté orthogonal et distances (formule directe point-plan). Présent dans 99 % des sessions bac 2022-2025.
 - [Loi binomiale au bac](https://c-reussite.fr/fiches-maths-terminale/loi-binomiale-bac-terminale/): Formule $P(X=k)=\binom{n}{k}p^k(1-p)^{n-k}$, espérance E(X)=np, variance V(X)=np(1-p), calcul avec la calculatrice (binomFDP/binomFRép), exemples chiffrés et 4 pièges classiques.
 - [Arbre de probabilités au bac](https://c-reussite.fr/fiches-maths-terminale/arbre-probabilites-bac-terminale/): Règle du produit $P(A\cap B)=P(A)P_A(B)$, probabilités totales, conditionnelle inversée, exemple complet usine A/B, liens avec la loi binomiale. 4 pièges et méthode en 3 étapes.
 - [Formules de dérivation](https://c-reussite.fr/fiches-maths-terminale/formules-derivation-bac-terminale/): Tableau complet des dérivées (fonctions usuelles, règles opératoires, fonctions composées), équation de la tangente, utilisation de la dérivée pour les variations. Méthode en 3 étapes pour les composées.

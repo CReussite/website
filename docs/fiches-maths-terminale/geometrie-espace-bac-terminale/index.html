@@ -14,15 +14,21 @@
   <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Géométrie dans l'espace bac maths Terminale | C'Réussite</title>
-  <meta name="description" content="Représentation paramétrique, équation de plan, positions relatives, projeté orthogonal et distances. Méthode complète pour le bac maths Terminale Spé.">
+  <title>Géométrie dans l'espace au bac de maths : droites, plans et distances | C'Réussite</title>
+  <meta name="description" content="Représentation paramétrique des droites, équation cartésienne de plan, positions relatives, projeté orthogonal et distances : méthode complète pour le bac maths Terminale Spé. Présent dans 99 % des sessions.">
   <meta name="author" content="Camille Reinhardt">
   <link rel="canonical" href="https://c-reussite.fr/fiches-maths-terminale/geometrie-espace-bac-terminale/">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://c-reussite.fr/fiches-maths-terminale/geometrie-espace-bac-terminale/">
-  <meta property="og:title" content="Géométrie dans l'espace au bac : droites, plans, distances | C'Réussite">
-  <meta property="og:description" content="Représentation paramétrique, équation cartésienne de plan, projeté orthogonal et distances : méthode complète pour le bac maths Terminale Spé.">
+  <meta property="og:title" content="Géométrie dans l'espace au bac de maths : droites, plans et distances | C'Réussite">
+  <meta property="og:description" content="Représentation paramétrique, équation cartésienne de plan, projeté orthogonal et distances : méthode complète pour le bac maths Terminale Spé. Présent dans 99 % des sessions 2022-2025.">
   <meta property="og:site_name" content="C'Réussite">
+  <meta property="article:published_time" content="2026-05-09">
+  <meta property="article:author" content="Camille Reinhardt">
+  <meta property="article:section" content="Maths Terminale Spécialité">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Géométrie dans l'espace au bac : droites, plans et distances">
+  <meta name="twitter:description" content="Représentation paramétrique, équation de plan, projeté orthogonal, distances. Méthode complète — 99 % des sessions bac.">
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
@@ -30,7 +36,7 @@
     onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@graph":[
-    {"@type":"Article","headline":"Géométrie dans l'espace au bac de maths : droites, plans, distances","datePublished":"2026-05-09","dateModified":"2026-05-14","author":{"@type":"Person","name":"Camille Reinhardt","url":"https://c-reussite.fr/a-propos/"},"publisher":{"@type":"Organization","name":"C'Réussite","url":"https://c-reussite.fr"},"mainEntityOfPage":"https://c-reussite.fr/fiches-maths-terminale/geometrie-espace-bac-terminale/"},
+    {"@type":"Article","headline":"Géométrie dans l'espace au bac de maths : droites, plans et distances","datePublished":"2026-05-09","dateModified":"2026-05-29","author":{"@type":"Person","name":"Camille Reinhardt","url":"https://c-reussite.fr/a-propos/"},"publisher":{"@type":"Organization","name":"C'Réussite","url":"https://c-reussite.fr"},"mainEntityOfPage":"https://c-reussite.fr/fiches-maths-terminale/geometrie-espace-bac-terminale/","articleSection":"Maths Terminale Spécialité","educationalLevel":"Terminale","keywords":"géométrie dans l'espace bac terminale, représentation paramétrique droite, équation cartésienne plan, projeté orthogonal, distance point plan, vecteur normal, intersection droite plan"},
     {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://c-reussite.fr/"},{"@type":"ListItem","position":2,"name":"Maths Terminale","item":"https://c-reussite.fr/fiches-maths-terminale/"},{"@type":"ListItem","position":3,"name":"Géométrie dans l'espace","item":"https://c-reussite.fr/fiches-maths-terminale/geometrie-espace-bac-terminale/"}]},
     {"@type":"FAQPage","mainEntity":[
       {"@type":"Question","name":"Comment savoir si deux droites sont sécantes ou non coplanaires ?","acceptedAnswer":{"@type":"Answer","text":"Si leurs vecteurs directeurs ne sont pas colinéaires, chercher s'il existe des valeurs des deux paramètres qui donnent le même point. Si le système n'a pas de solution, elles sont non coplanaires."}},
@@ -57,6 +63,10 @@
     .article-body strong { color:var(--royal-blue); font-weight:700; }
     .callout { background:var(--swan-wing); border-left:3px solid var(--sapphire); border-radius:0 8px 8px 0; padding:14px 18px; margin:18px 0; }
     .callout p { margin:0; color:var(--text-mid); }
+    .piege-list{background:#fff3f3;border-left:3px solid #e53e3e;border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .piege-list p{margin:0 0 10px;color:var(--text-mid);font-size:.9rem}
+    .piege-list p:last-child{margin:0}
+    .piege-list strong{color:#c0392b}
     .faq-section { margin-top:40px; padding-top:28px; border-top:2px solid #e5e7eb; }
     .faq-section>h2 { font-size:1.15rem; margin-bottom:20px; padding-bottom:0; border-bottom:none; }
     .faq-item { margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid #f0f0f0; }
@@ -98,8 +108,8 @@
 
       <div class="article-body">
 
-        <h2>1. Modéliser une droite : la représentation paramétrique</h2>
-        <p>Une droite dans l'espace ne peut pas s'écrire comme une seule équation — il en faut trois, liées par un paramètre $t$. Il faut deux éléments : <strong>un point</strong> $A(x_A ; y_A ; z_A)$ sur la droite, et <strong>un vecteur directeur</strong> $\vec{u}(a ; b ; c)$.</p>
+        <h2 id="droite">1. Modéliser une droite : la représentation paramétrique</h2>
+        <p>Une droite dans l'espace ne peut pas s'écrire comme une seule équation : il en faut trois, liées par un paramètre $t$. Il faut deux éléments : <strong>un point</strong> $A(x_A ; y_A ; z_A)$ sur la droite, et <strong>un vecteur directeur</strong> $\vec{u}(a ; b ; c)$.</p>
         $$\begin{cases} x = x_A + at \\ y = y_A + bt \\ z = z_A + ct \end{cases} \quad (t \in \mathbb{R})$$
         <p><strong>Deux situations au bac :</strong></p>
         <ul>
@@ -112,7 +122,7 @@
           <p>Il existe une infinité de représentations paramétriques pour une même droite (selon le point de départ choisi). Toutes sont équivalentes.</p>
         </div>
 
-        <h2>2. Modéliser un plan : l'équation cartésienne</h2>
+        <h2 id="plan">2. Modéliser un plan : l'équation cartésienne</h2>
         <p>Un plan s'écrit toujours sous la forme $ax + by + cz + d = 0$, où $(a ; b ; c)$ sont les coordonnées du <strong>vecteur normal</strong> $\vec{n}$ au plan. Connaître $\vec{n}$, c'est connaître la direction perpendiculaire au plan.</p>
         <p><strong>Comment trouver l'équation d'un plan défini par trois points $A$, $B$, $C$ :</strong></p>
         <ol>
@@ -124,7 +134,7 @@
         $$2(0) + 3(2) - (2) + d = 0 \implies d = -4$$
         <p>Équation finale : $2x + 3y - z - 4 = 0$.</p>
 
-        <h2>3. Positions relatives : le tableau de référence</h2>
+        <h2 id="positions">3. Positions relatives : le tableau de référence</h2>
         <p>C'est la question la plus fréquente en début d'exercice. Le raisonnement repose entièrement sur les produits scalaires entre les vecteurs caractéristiques : $\vec{u}$ est un vecteur directeur d'une droite, $\vec{n}$ est un vecteur normal d'un plan.</p>
         <table>
           <thead><tr><th>Objets</th><th>Condition</th><th>Conclusion</th></tr></thead>
@@ -142,7 +152,7 @@
         <p><strong>Rappel produit scalaire</strong> dans un repère orthonormé : pour $\vec{u}(x ; y ; z)$ et $\vec{v}(x' ; y' ; z')$,</p>
         $$\vec{u} \cdot \vec{v} = xx' + yy' + zz'$$
 
-        <h2>4. Trouver un point d'intersection (droite à plan)</h2>
+        <h2 id="intersection">4. Trouver un point d'intersection (droite à plan)</h2>
         <p>C'est la compétence mécanique par excellence. Elle vaut 2 à 3 points dans la majorité des exercices.</p>
         <p><strong>Méthode en 3 étapes :</strong></p>
         <ol>
@@ -158,7 +168,7 @@
           <strong>Vérifier qu'un point appartient à un plan :</strong> remplacer $x, y, z$ dans l'équation cartésienne. Le résultat doit être égal à zéro.</p>
         </div>
 
-        <h2>5. Projeté orthogonal et distances</h2>
+        <h2 id="distances">5. Projeté orthogonal et distances</h2>
         <p>C'est la partie qui différencie les copies à 14 de celles à 18. Elle apparaît dans la dernière question de l'exercice.</p>
         <p><strong>Principe :</strong> le projeté orthogonal de $A$ sur un objet (droite ou plan) est le point $H$ de cet objet le plus proche de $A$. La distance cherchée est $AH$.</p>
         $$AH = \sqrt{(x_H - x_A)^2 + (y_H - y_A)^2 + (z_H - z_A)^2}$$
@@ -179,10 +189,12 @@
           <li>Calculer $AH$ avec la formule des distances.</li>
         </ol>
 
-        <h2>6. Les 3 pièges classiques</h2>
-        <p><strong>Piège 1 — Confondre vecteur directeur et vecteur normal.</strong> Le vecteur directeur est parallèle à la droite. Le vecteur normal est perpendiculaire au plan. Quand une droite est perpendiculaire à un plan, son vecteur directeur est le vecteur normal du plan. C'est là que se fait la confusion.</p>
-        <p><strong>Piège 2 — Vecteur directeur des droites "parallèles".</strong> Deux droites à vecteurs directeurs colinéaires sont parallèles <em>ou confondues</em>. Si l'énoncé demande de justifier qu'elles sont strictement parallèles, il faut vérifier qu'un point de l'une n'appartient pas à l'autre.</p>
-        <p><strong>Piège 3 — Oublier la valeur absolue dans la formule de distance.</strong> La formule $d(M, P) = |ax_M + by_M + cz_M + d| / \sqrt{a^2 + b^2 + c^2}$ exige la valeur absolue au numérateur. Sans elle, le résultat peut être négatif, ce qui n'a aucun sens pour une distance.</p>
+        <h2 id="pieges">6. Les 3 pièges classiques</h2>
+        <div class="piege-list">
+          <p><strong>Piège 1 : confondre vecteur directeur et vecteur normal.</strong> Le vecteur directeur est parallèle à la droite. Le vecteur normal est perpendiculaire au plan. Quand une droite est perpendiculaire à un plan, son vecteur directeur est le vecteur normal du plan. C'est là que se fait la confusion.</p>
+          <p><strong>Piège 2 : vecteur directeur des droites "parallèles".</strong> Deux droites à vecteurs directeurs colinéaires sont parallèles <em>ou confondues</em>. Si l'énoncé demande de justifier qu'elles sont strictement parallèles, il faut vérifier qu'un point de l'une n'appartient pas à l'autre.</p>
+          <p><strong>Piège 3 : oublier la valeur absolue dans la formule de distance.</strong> La formule $d(M, P) = |ax_M + by_M + cz_M + d| / \sqrt{a^2 + b^2 + c^2}$ exige la valeur absolue au numérateur. Sans elle, le résultat peut être négatif, ce qui n'a aucun sens pour une distance.</p>
+        </div>
 
       </div><!-- /article-body -->
 
@@ -206,7 +218,7 @@
 
       <!-- FAQ -->
       <div class="faq-section">
-        <h2>FAQ — Géométrie dans l'espace</h2>
+        <h2 id="faq">Questions fréquentes</h2>
         <div class="faq-item">
           <h3>Comment savoir si deux droites sont sécantes ou non coplanaires ?</h3>
           <p>Deux droites qui ne sont pas parallèles peuvent être sécantes (elles se croisent en un point) ou non coplanaires (elles ne sont dans aucun plan commun). Pour trancher : si leurs vecteurs directeurs ne sont pas colinéaires, chercher s'il existe des valeurs des deux paramètres qui donnent le même point. Si le système n'a pas de solution, elles sont non coplanaires.</p>
@@ -233,11 +245,12 @@
       <div class="read-next">
         <h2>À lire ensuite</h2>
         <ul>
+          <li><a href="/fiches-maths-terminale/indetermination-limite-suite-bac-terminale/">Lever une indétermination : les 4 méthodes pour la limite d'une suite</a></li>
+          <li><a href="/fiches-maths-terminale/loi-binomiale-bac-terminale/">Loi binomiale : formule, espérance, variance, méthode calculatrice</a></li>
           <li><a href="/blog/chapitres-bac-maths-spe/">Bac maths spé 2026 : les chapitres qui tombent vraiment (308 exercices analysés)</a></li>
-          <li><a href="/fiches-maths-terminale/formules-derivation-bac-terminale/">Formules de dérivation : toutes les formules et la méthode</a></li>
+          <li><a href="/fiches-maths-terminale/formules-derivation-bac-terminale/">Formules de dérivation : fonctions usuelles, composées, équation de la tangente</a></li>
           <li><a href="/fiches-maths-terminale/primitives-bac-terminale/">Primitives au bac : tableau complet et méthode</a></li>
-          <li><a href="/fiches-maths-terminale/integration-par-parties-bac-terminale/">Calculer une intégrale par parties : formule, règle ALPES, méthode</a></li>
-          <li><a href="/blog/annales-bac-physique-chimie-programme-complet/">Annales physique-chimie 2026 : les 15 exercices essentiels</a></li>
+          <li><a href="/fiches-maths-terminale/integration-par-parties-bac-terminale/">Intégration par parties : formule, règle ALPES, méthode</a></li>
         </ul>
       </div>      <div class="author-box">
         <strong>À propos de l'auteure</strong>
