@@ -243,4 +243,139 @@ function generateInvoice({ invoiceNumber, email, productName, amount, date, paym
   });
 }
 
-module.exports = { generateInvoice };
+/**
+ * Génère un PDF de facture cours particuliers en mémoire.
+ * Retourne une Promise<Buffer>.
+ * @param {object} params
+ * @param {string} params.invoiceNumber
+ * @param {string} params.customerName
+ * @param {string} params.customerAddress
+ * @param {Array}  params.items - [{ description, hours, hourlyRate }]
+ * @param {Date}   params.invoiceDate
+ * @param {string} params.paymentDate   - ex: "07/05/2026"
+ * @param {string} params.paymentMethod - ex: "Wero"
+ */
+function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items, invoiceDate, paymentDate, paymentMethod }) {
+  return new Promise((resolve, reject) => {
+    const doc = new PDFDocument({ size: 'A4', margin: 0 });
+    const chunks = [];
+    doc.on('data', (chunk) => chunks.push(chunk));
+    doc.on('end', () => resolve(Buffer.concat(chunks)));
+    doc.on('error', reject);
+
+    const total = items.reduce((sum, item) => sum + item.hours * item.hourlyRate, 0);
+    const totalStr = total.toFixed(2).replace('.', ',');
+    const dateStr = invoiceDate.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+    const pageWidth = 595.28;
+    const margin = 48;
+    const contentWidth = pageWidth - margin * 2;
+
+    // ── En-tête ──────────────────────────────────────────────
+    doc.rect(0, 0, pageWidth, 90).fill(ROYAL_BLUE);
+    try {
+      const logoPath = path.join(__dirname, '../assets/logo.jpeg');
+      doc.image(logoPath, margin, 15, { width: 60, height: 60 });
+    } catch (_) {}
+    doc.fontSize(20).font('Helvetica-Bold').fillColor('#FFFFFF').text("C'Réussite", margin + 72, 38);
+    doc.fontSize(24).font('Helvetica-Bold').fillColor(QUICKSAND).text('FACTURE', pageWidth - margin - 150, 30, { width: 150, align: 'right' });
+
+    // ── Barre meta ───────────────────────────────────────────
+    doc.rect(0, 90, pageWidth, 52).fill(SWAN_WING);
+    doc.rect(0, 90, pageWidth, 2).fill(QUICKSAND);
+    doc.fontSize(9).font('Helvetica').fillColor(SAPPHIRE);
+    doc.font('Helvetica-Bold').text('N° facture :', margin, 98, { continued: true }).font('Helvetica').text(' ' + invoiceNumber);
+    doc.font('Helvetica-Bold').text("Date d'émission :", margin + 250, 98, { continued: true }).font('Helvetica').text(' ' + dateStr);
+    doc.font('Helvetica-Bold').text('Mode de paiement :', margin, 114, { continued: true }).font('Helvetica').text(' ' + (paymentMethod || '—'));
+    doc.font('Helvetica-Bold').text('Date de paiement :', margin + 250, 114, { continued: true }).font('Helvetica').text(' ' + (paymentDate || dateStr));
+
+    // ── Vendeur / Client ─────────────────────────────────────
+    const partiesY = 164;
+    doc.fontSize(8).font('Helvetica-Bold').fillColor(QUICKSAND).text('VENDEUR', margin, partiesY);
+    doc.moveTo(margin, partiesY + 12).lineTo(margin + 60, partiesY + 12).lineWidth(1.5).strokeColor(QUICKSAND).stroke();
+    doc.fontSize(12).font('Helvetica-Bold').fillColor(ROYAL_BLUE).text('Camille Reinhardt EI', margin, partiesY + 20);
+    doc.fontSize(9).font('Helvetica').fillColor(TEXT_MID)
+      .text("C'Réussite", margin, partiesY + 36)
+      .text('54A Rue des Écoles', margin, partiesY + 48)
+      .text('57700 Neufchef', margin, partiesY + 60)
+      .text('SIRET : 103 644 050 00017', margin, partiesY + 72)
+      .text('APE : 4791B', margin, partiesY + 84)
+      .text('c-reussite.fr', margin, partiesY + 96);
+
+    const clientX = pageWidth / 2 + 20;
+    doc.fontSize(8).font('Helvetica-Bold').fillColor(QUICKSAND).text('CLIENT', clientX, partiesY);
+    doc.moveTo(clientX, partiesY + 12).lineTo(clientX + 50, partiesY + 12).lineWidth(1.5).strokeColor(QUICKSAND).stroke();
+    doc.fontSize(12).font('Helvetica-Bold').fillColor(ROYAL_BLUE).text(customerName, clientX, partiesY + 20);
+    if (customerAddress) {
+      const addressLines = customerAddress.split(/\n|(?<=\D),\s*(?=\d{5})/);
+      doc.fontSize(9).font('Helvetica').fillColor(TEXT_MID);
+      addressLines.forEach((line, i) => doc.text(line.trim(), clientX, partiesY + 36 + i * 14));
+    }
+
+    // ── Tableau ──────────────────────────────────────────────
+    const tableTop = partiesY + 130;
+    const colDesignation = margin;
+    const colHeures      = margin + contentWidth * 0.55;
+    const colTarif       = margin + contentWidth * 0.68;
+    const colTotal       = margin + contentWidth * 0.85;
+
+    doc.rect(margin, tableTop, contentWidth, 24).fill(SAPPHIRE);
+    doc.fontSize(8).font('Helvetica-Bold').fillColor('#FFFFFF');
+    doc.text('DÉSIGNATION', colDesignation + 8, tableTop + 7);
+    doc.text('HEURES', colHeures, tableTop + 7, { width: 40, align: 'right' });
+    doc.text('TARIF HORAIRE', colTarif, tableTop + 7, { width: 70, align: 'right' });
+    doc.text('TOTAL HT', colTotal, tableTop + 7, { width: 70, align: 'right' });
+
+    let rowY = tableTop + 24;
+    items.forEach((item) => {
+      const lineTotal = item.hours * item.hourlyRate;
+      doc.fontSize(9).font('Helvetica').fillColor('#1A1A2E');
+      doc.text(item.description, colDesignation + 8, rowY + 8);
+      doc.text(String(item.hours), colHeures, rowY + 8, { width: 40, align: 'right' });
+      doc.text(item.hourlyRate.toFixed(2).replace('.', ',') + ' €', colTarif, rowY + 8, { width: 70, align: 'right' });
+      doc.text(lineTotal.toFixed(2).replace('.', ',') + ' €', colTotal, rowY + 8, { width: 70, align: 'right' });
+      doc.moveTo(margin, rowY + 26).lineTo(margin + contentWidth, rowY + 26).lineWidth(0.5).strokeColor(SHELLSTONE).stroke();
+      rowY += 30;
+    });
+
+    // ── Totaux ───────────────────────────────────────────────
+    const totalsX = margin + contentWidth - 200;
+    const totalsY = rowY + 14;
+    doc.fontSize(9).font('Helvetica').fillColor(TEXT_MID);
+    doc.text('Sous-total HT', totalsX, totalsY);
+    doc.text(totalStr + ' €', totalsX + 100, totalsY, { width: 100, align: 'right' });
+    doc.text('TVA', totalsX, totalsY + 18);
+    doc.text('0,00 €', totalsX + 100, totalsY + 18, { width: 100, align: 'right' });
+    doc.moveTo(totalsX, totalsY + 36).lineTo(totalsX + 200, totalsY + 36).lineWidth(1.5).strokeColor(ROYAL_BLUE).stroke();
+    doc.fontSize(12).font('Helvetica-Bold').fillColor(ROYAL_BLUE);
+    doc.text('Total TTC', totalsX, totalsY + 44);
+    doc.text(totalStr + ' €', totalsX + 100, totalsY + 44, { width: 100, align: 'right' });
+
+    // ── Badge paiement ───────────────────────────────────────
+    const payY = totalsY + 76;
+    doc.roundedRect(margin, payY, contentWidth, 34, 4).fill(SWAN_WING);
+    doc.roundedRect(margin + 12, payY + 8, 42, 18, 10).fill('#2e7d4f');
+    doc.fontSize(8).font('Helvetica-Bold').fillColor('#FFFFFF').text('Payé', margin + 17, payY + 12);
+    doc.fontSize(9).font('Helvetica').fillColor(SAPPHIRE)
+      .text('Paiement reçu par ' + (paymentMethod || '—') + ' le ' + (paymentDate || dateStr) + '.', margin + 62, payY + 11);
+
+    // ── Mentions légales ─────────────────────────────────────
+    const legalY = payY + 50;
+    doc.moveTo(margin, legalY).lineTo(margin + contentWidth, legalY).lineWidth(0.5).strokeColor(SHELLSTONE).stroke();
+    doc.fontSize(7.5).font('Helvetica').fillColor(TEXT_MID).text(
+      'TVA non applicable, article 293 B du CGI.\n' +
+      'Médiation de la consommation : CM2C — 49 rue de Ponthieu, 75 008 Paris — cm2c.net — litiges@cm2c.net',
+      margin, legalY + 8, { width: contentWidth, lineGap: 2 }
+    );
+
+    // ── Pied de page ─────────────────────────────────────────
+    doc.rect(0, 780, pageWidth, 62).fill(ROYAL_BLUE);
+    doc.fontSize(7.5).font('Helvetica').fillColor('#FFFFFF').opacity(0.7);
+    doc.text('Camille Reinhardt — Entrepreneur individuel — SIRET 103 644 050 00017 — APE 4791B', 0, 794, { width: pageWidth, align: 'center' });
+    doc.text('54A Rue des Écoles, 57700 Neufchef — c-reussite.fr', 0, 808, { width: pageWidth, align: 'center' });
+
+    doc.end();
+  });
+}
+
+module.exports = { generateInvoice, generateCpInvoice };
