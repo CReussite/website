@@ -4,6 +4,13 @@ const { generateInvoice, generateCpInvoice } = require('../services/invoice');
 
 const router = express.Router();
 
+// Convertit "2026-05-10" → "10/05/2026" ; laisse intact si déjà formaté (ex: "03/05/2026")
+function fmtDate(d) {
+  if (!d) return d;
+  const iso = d.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  return iso ? `${iso[3]}/${iso[2]}/${iso[1]}` : d;
+}
+
 // ── Middleware auth ───────────────────────────────────────────────────────────
 function requireAdminKey(req, res, next) {
   const adminKey = process.env.ADMIN_KEY;
@@ -110,7 +117,7 @@ router.get('/invoice/:invoiceNumber', requireAdminKey, async (req, res) => {
     if (cpInvoice) {
       const cpItems = Array.isArray(cpInvoice.items) && cpInvoice.items.length > 0
         ? cpInvoice.items.map(item => ({
-            description: `${item.nature} — ${item.date}`,
+            description: `${item.nature} — ${fmtDate(item.date)}`,
             hours: Number(item.hours),
             hourlyRate: Number(item.hourly_rate),
           }))
@@ -171,7 +178,7 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
       const items = (Array.isArray(cpInvoice.items) && cpInvoice.items.length > 0)
         ? cpInvoice.items.map(function (item) {
             return {
-              description: `${item.nature} — ${item.date}`,
+              description: `${item.nature} — ${fmtDate(item.date)}`,
               quantity: Number(item.hours),
               unit_price: Number(item.hourly_rate),
               payment_date: item.payment_date || '',
