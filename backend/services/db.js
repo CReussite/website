@@ -220,7 +220,7 @@ async function saveInvoicePath(paymentSessionId, invoicePath) {
 
 /**
  * Crée une facture de cours particuliers dans la table cp_invoices.
- * Numérotation indépendante CP-YYYY-NNNNN, sans impact sur le compteur ebooks.
+ * Numérotation indépendante CRE-YYYY-NNNNN, sans impact sur le compteur ebooks.
  */
 async function insertCoursParticuliersInvoice({
   customerName,
@@ -236,10 +236,10 @@ async function insertCoursParticuliersInvoice({
   const { count } = await supabase
     .from('cp_invoices')
     .select('*', { count: 'exact', head: true })
-    .like('invoice_number', `CP-${year}-%`);
+    .like('invoice_number', `CRE-${year}-%`);
 
   const seq = String((count || 0) + 1).padStart(5, '0');
-  const invoiceNumber = `CP-${year}-${seq}`;
+  const invoiceNumber = `CRE-${year}-${seq}`;
 
   const totalEur = items.reduce((sum, item) => sum + Number(item.total), 0);
   const totalCents = Math.round(totalEur * 100);

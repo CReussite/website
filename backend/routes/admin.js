@@ -1,6 +1,6 @@
 const express = require('express');
 const { getOrders, getAdminStats, getExtractRequests, insertCoursParticuliersInvoice, getCoursParticuliersInvoice } = require('../services/db');
-const { generateInvoice }  = require('../services/invoice');
+const { generateInvoice, generateCpInvoice } = require('../services/invoice');
 
 const router = express.Router();
 
@@ -105,18 +105,25 @@ router.get('/invoice/:invoiceNumber', requireAdminKey, async (req, res) => {
   try {
     const { invoiceNumber } = req.params;
 
-    // Facture cours particuliers → table cp_invoices
-    if (invoiceNumber.startsWith('CP-')) {
-      const cpInvoice = await getCoursParticuliersInvoice(invoiceNumber);
-      if (!cpInvoice) return res.status(404).json({ error: 'Facture introuvable.' });
+    // Essaie cp_invoices d'abord (préfixe CRE- ou CP- legacy), sinon ebooks
+    const cpInvoice = await getCoursParticuliersInvoice(invoiceNumber);
+    if (cpInvoice) {
+      const cpItems = Array.isArray(cpInvoice.items) && cpInvoice.items.length > 0
+        ? cpInvoice.items.map(item => ({
+            description: `${item.nature} — ${item.date}`,
+            hours: Number(item.hours),
+            hourlyRate: Number(item.hourly_rate),
+          }))
+        : [{ description: 'Cours particuliers', hours: 1, hourlyRate: cpInvoice.amount / 100 }];
 
-      const pdfBuffer = await generateInvoice({
-        invoiceNumber: cpInvoice.invoice_number,
-        email:         cpInvoice.email,
-        productName:   'Cours particuliers',
-        amount:        cpInvoice.amount,
-        date:          new Date(cpInvoice.created_at),
-        paymentRef:    '—',
+      const pdfBuffer = await generateCpInvoice({
+        invoiceNumber:   cpInvoice.invoice_number,
+        customerName:    cpInvoice.customer_name || cpInvoice.email || '—',
+        customerAddress: cpInvoice.customer_address || '',
+        items:           cpItems,
+        invoiceDate:     new Date(cpInvoice.created_at),
+        paymentDate:     cpInvoice.payment_date || '',
+        paymentMethod:   cpInvoice.payment_method || '—',
       });
 
       res.setHeader('Content-Type', 'application/pdf');
@@ -154,10 +161,9 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
   try {
     const { invoiceNumber } = req.params;
 
-    // ── Cours particuliers : données dans cp_invoices ─────────────────────────
-    if (invoiceNumber.startsWith('CP-')) {
-      const cpInvoice = await getCoursParticuliersInvoice(invoiceNumber);
-      if (!cpInvoice) return res.status(404).json({ error: 'Facture introuvable.' });
+    // ── Cours particuliers : essaie cp_invoices d'abord (CRE- ou CP- legacy) ───
+    const cpInvoice = await getCoursParticuliersInvoice(invoiceNumber);
+    if (cpInvoice) {
 
       const dateObj = new Date(cpInvoice.created_at);
       const dateStr = dateObj.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
