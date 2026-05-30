@@ -13,6 +13,12 @@ backend/node_modules/
 # PDFs produit — stockés dans Supabase Storage, ne pas commiter
 backend/assets/*.pdf
 
+# PDFs générés localement (factures, tests)
+*.pdf
+
+# Scripts utilitaires locaux (génération manuelle de factures, etc.)
+backend/scripts/
+
 # Dossier source des PDFs
 pdf/
 
