@@ -233,12 +233,12 @@ async function insertCoursParticuliersInvoice({
   const supabase = getClient();
 
   const year = new Date().getFullYear();
-  const { count } = await supabase
-    .from('cp_invoices')
-    .select('*', { count: 'exact', head: true })
-    .like('invoice_number', `CRE-${year}-%`);
+  const [{ count: cpCount }, { count: ebookCount }] = await Promise.all([
+    supabase.from('cp_invoices').select('*', { count: 'exact', head: true }).like('invoice_number', `CRE-${year}-%`),
+    supabase.from('orders').select('*', { count: 'exact', head: true }).like('invoice_number', `CRE-${year}-%`),
+  ]);
 
-  const seq = String((count || 0) + 1).padStart(5, '0');
+  const seq = String((cpCount || 0) + (ebookCount || 0) + 1).padStart(5, '0');
   const invoiceNumber = `CRE-${year}-${seq}`;
 
   const totalEur = items.reduce((sum, item) => sum + Number(item.total), 0);
