@@ -346,11 +346,19 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
     doc.text('TARIF HORAIRE', colTarif, tableTop + 7, { width: 70, align: 'right' });
     doc.text('TOTAL HT', colTotal, tableTop + 7, { width: 70, align: 'right' });
 
+    // Calcul dynamique de la hauteur de ligne pour tenir sur une page
+    // Espace dispo pour les lignes : footer(780) - tableTop - header(24) - totalHeures(22) - sections bas(≈230)
+    const MAX_ROW_AREA = 780 - tableTop - 24 - 22 - 230;
+    const maxRowH = Math.floor(MAX_ROW_AREA / items.length);
+    const BASE_ROW_H = Math.min(30, maxRowH);
+    const PMT_ROW_H  = Math.min(36, maxRowH);
+    const showSubText = maxRowH >= 28;
+
     let rowY = tableTop + 24;
     items.forEach((item) => {
       const lineTotal = item.hours * item.hourlyRate;
-      const hasPmt = !!(item.paymentMethod && item.paymentDate);
-      const rowHeight = hasPmt ? 42 : 30;
+      const hasPmt = showSubText && !!(item.paymentMethod && item.paymentDate);
+      const rowHeight = hasPmt ? PMT_ROW_H : BASE_ROW_H;
 
       doc.fontSize(9).font('Helvetica').fillColor('#1A1A2E');
       doc.text(item.description, colDesignation + 8, rowY + 8);
@@ -386,7 +394,7 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
     doc.text(totalStr + ' €', totalsX + 100, totalsY + 44, { width: 100, align: 'right' });
 
     // ── Badge paiement ───────────────────────────────────────
-    const payY = totalsY + 76;
+    const payY = totalsY + 56;
     const badgeW = paymentText ? contentWidth : 80;
     doc.roundedRect(margin, payY, badgeW, 30, 4).fill(SWAN_WING);
     doc.roundedRect(margin + 12, payY + 6, 42, 18, 10).fill('#2e7d4f');
@@ -397,15 +405,15 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
     }
 
     // ── Mentions légales ─────────────────────────────────────
-    const legalY = payY + 44;
+    const legalY = payY + 38;
     doc.moveTo(margin, legalY).lineTo(margin + contentWidth, legalY).lineWidth(0.5).strokeColor(SHELLSTONE).stroke();
-    doc.fontSize(7.5).font('Helvetica').fillColor(TEXT_MID).text(
+    doc.fontSize(6.5).font('Helvetica').fillColor(TEXT_MID).text(
       'TVA non applicable, article 293 B du CGI.\n' +
       'Médiation de la consommation : CM2C — 49 rue de Ponthieu, 75 008 Paris — cm2c.net — litiges@cm2c.net\n' +
       "Date d'échéance : à réception de facture.\n" +
       "Pas d'escompte pour paiement anticipé.\n" +
       "Tout retard de paiement (au-delà d'une semaine) entraîne des pénalités de retard au taux de 3 fois le taux d'intérêt légal en vigueur, exigibles le jour suivant la date d'échéance, ainsi qu'une indemnité forfaitaire pour frais de recouvrement de 40 €.",
-      margin, legalY + 8, { width: contentWidth, lineGap: 2 }
+      margin, legalY + 6, { width: contentWidth, lineGap: 1 }
     );
 
     // ── Pied de page ─────────────────────────────────────────
