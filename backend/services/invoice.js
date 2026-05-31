@@ -301,15 +301,17 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
     doc.fontSize(24).font('Helvetica-Bold').fillColor(QUICKSAND).text('FACTURE', pageWidth - margin - 150, 30, { width: 150, align: 'right' });
 
     // ── Barre meta ───────────────────────────────────────────
-    doc.rect(0, 90, pageWidth, 52).fill(SWAN_WING);
+    const clientX = pageWidth / 2 + 20;
+    doc.rect(0, 90, pageWidth, 34).fill(SWAN_WING);
     doc.rect(0, 90, pageWidth, 2).fill(QUICKSAND);
     doc.fontSize(9).font('Helvetica').fillColor(SAPPHIRE);
-    doc.font('Helvetica-Bold').text('N° facture :', margin, 98, { continued: true }).font('Helvetica').text(' ' + invoiceNumber);
-    doc.font('Helvetica-Bold').text("Date d'émission :", margin + 250, 98, { continued: true }).font('Helvetica').text(' ' + dateStr);
-    doc.font('Helvetica-Bold').text('Mode de paiement :', margin, 114, { continued: true }).font('Helvetica').text(' ' + (paymentMethod || '—'));
+    // N° facture aligné avec VENDEUR (gauche), Date d'émission aligné avec CLIENT (droite)
+    doc.font('Helvetica-Bold').text('N° facture :', margin, 103, { continued: true }).font('Helvetica').text(' ' + invoiceNumber);
+    doc.font('Helvetica-Bold').text("Date d'émission :", clientX, 103, { continued: true }).font('Helvetica').text(' ' + dateStr);
 
     // ── Vendeur / Client ─────────────────────────────────────
     const partiesY = 164;
+
     doc.fontSize(8).font('Helvetica-Bold').fillColor(QUICKSAND).text('VENDEUR', margin, partiesY);
     doc.moveTo(margin, partiesY + 12).lineTo(margin + 60, partiesY + 12).lineWidth(1.5).strokeColor(QUICKSAND).stroke();
     doc.fontSize(12).font('Helvetica-Bold').fillColor(ROYAL_BLUE).text('Camille Reinhardt EI', margin, partiesY + 20);
@@ -321,7 +323,6 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
       .text('APE : 4791B', margin, partiesY + 84)
       .text('c-reussite.fr', margin, partiesY + 96);
 
-    const clientX = pageWidth / 2 + 20;
     doc.fontSize(8).font('Helvetica-Bold').fillColor(QUICKSAND).text('CLIENT', clientX, partiesY);
     doc.moveTo(clientX, partiesY + 12).lineTo(clientX + 50, partiesY + 12).lineWidth(1.5).strokeColor(QUICKSAND).stroke();
     doc.fontSize(12).font('Helvetica-Bold').fillColor(ROYAL_BLUE).text(customerName, clientX, partiesY + 20);
