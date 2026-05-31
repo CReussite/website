@@ -310,30 +310,30 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
     doc.font('Helvetica-Bold').text("Date d'émission :", clientX, 103, { continued: true }).font('Helvetica').text(' ' + dateStr);
 
     // ── Vendeur / Client ─────────────────────────────────────
-    const partiesY = 164;
+    const partiesY = 148;
 
     doc.fontSize(8).font('Helvetica-Bold').fillColor(QUICKSAND).text('VENDEUR', margin, partiesY);
     doc.moveTo(margin, partiesY + 12).lineTo(margin + 60, partiesY + 12).lineWidth(1.5).strokeColor(QUICKSAND).stroke();
     doc.fontSize(12).font('Helvetica-Bold').fillColor(ROYAL_BLUE).text('Camille Reinhardt EI', margin, partiesY + 20);
-    doc.fontSize(9).font('Helvetica').fillColor(TEXT_MID)
-      .text("C'Réussite", margin, partiesY + 36)
-      .text('54A Rue des Écoles', margin, partiesY + 48)
-      .text('57700 Neufchef', margin, partiesY + 60)
-      .text('SIRET : 103 644 050 00017', margin, partiesY + 72)
-      .text('APE : 4791B', margin, partiesY + 84)
-      .text('c-reussite.fr', margin, partiesY + 96);
+    doc.fontSize(8).font('Helvetica').fillColor(TEXT_MID)
+      .text("C'Réussite", margin, partiesY + 34)
+      .text('54A Rue des Écoles', margin, partiesY + 44)
+      .text('57700 Neufchef', margin, partiesY + 54)
+      .text('SIRET : 103 644 050 00017', margin, partiesY + 64)
+      .text('APE : 4791B', margin, partiesY + 74)
+      .text('c-reussite.fr', margin, partiesY + 84);
 
     doc.fontSize(8).font('Helvetica-Bold').fillColor(QUICKSAND).text('CLIENT', clientX, partiesY);
     doc.moveTo(clientX, partiesY + 12).lineTo(clientX + 50, partiesY + 12).lineWidth(1.5).strokeColor(QUICKSAND).stroke();
     doc.fontSize(12).font('Helvetica-Bold').fillColor(ROYAL_BLUE).text(customerName, clientX, partiesY + 20);
     if (customerAddress) {
       const addressLines = customerAddress.split(/\n|(?<=\D),\s*(?=\d{5})/);
-      doc.fontSize(9).font('Helvetica').fillColor(TEXT_MID);
-      addressLines.forEach((line, i) => doc.text(line.trim(), clientX, partiesY + 36 + i * 14));
+      doc.fontSize(8).font('Helvetica').fillColor(TEXT_MID);
+      addressLines.forEach((line, i) => doc.text(line.trim(), clientX, partiesY + 34 + i * 11));
     }
 
     // ── Tableau ──────────────────────────────────────────────
-    const tableTop = partiesY + 130;
+    const tableTop = partiesY + 112;
     const colDesignation = margin;
     const colHeures      = margin + contentWidth * 0.55;
     const colTarif       = margin + contentWidth * 0.68;
@@ -347,24 +347,25 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
     doc.text('TOTAL HT', colTotal, tableTop + 7, { width: 70, align: 'right' });
 
     // Calcul dynamique de la hauteur de ligne pour tenir sur une page
-    // Espace dispo pour les lignes : footer(780) - tableTop - header(24) - totalHeures(22) - sections bas(≈230)
-    const MAX_ROW_AREA = 780 - tableTop - 24 - 22 - 230;
-    const maxRowH = Math.floor(MAX_ROW_AREA / items.length);
+    // Sections fixes en bas : totaux(~60) + gap(76) + badge(30) + gap(38) + mentions(~70) + gaps = ~204px
+    const MAX_ROW_AREA = 780 - tableTop - 24 - 22 - 204;
+    const maxRowH = Math.max(24, Math.floor(MAX_ROW_AREA / items.length));
     const BASE_ROW_H = Math.min(30, maxRowH);
     const PMT_ROW_H  = Math.min(36, maxRowH);
-    const showSubText = maxRowH >= 28;
 
     let rowY = tableTop + 24;
     items.forEach((item) => {
       const lineTotal = item.hours * item.hourlyRate;
-      const hasPmt = showSubText && !!(item.paymentMethod && item.paymentDate);
+      const hasPmt = !!(item.paymentMethod && item.paymentDate);
       const rowHeight = hasPmt ? PMT_ROW_H : BASE_ROW_H;
+      // Position sous-texte adaptée à la hauteur de ligne disponible
+      const pmtY = rowY + Math.min(20, rowHeight - 10);
 
       doc.fontSize(9).font('Helvetica').fillColor('#1A1A2E');
-      doc.text(item.description, colDesignation + 8, rowY + 8);
+      doc.text(item.description, colDesignation + 8, rowY + Math.min(8, rowHeight - 16));
       if (hasPmt) {
-        doc.fontSize(7.5).font('Helvetica').fillColor(SAPPHIRE)
-          .text('Paiement : ' + item.paymentMethod + ' le ' + item.paymentDate, colDesignation + 8, rowY + 21);
+        doc.fontSize(7).font('Helvetica').fillColor(SAPPHIRE)
+          .text('Paiement : ' + item.paymentMethod + ' le ' + item.paymentDate, colDesignation + 8, pmtY);
       }
       doc.fontSize(9).font('Helvetica').fillColor('#1A1A2E');
       doc.text(String(item.hours), colHeures, rowY + 8, { width: 40, align: 'right' });
