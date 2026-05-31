@@ -394,7 +394,7 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
     doc.text(totalStr + ' €', totalsX + 100, totalsY + 44, { width: 100, align: 'right' });
 
     // ── Badge paiement ───────────────────────────────────────
-    const payY = totalsY + 56;
+    const payY = totalsY + 76;
     const badgeW = paymentText ? contentWidth : 80;
     doc.roundedRect(margin, payY, badgeW, 30, 4).fill(SWAN_WING);
     doc.roundedRect(margin + 12, payY + 6, 42, 18, 10).fill('#2e7d4f');
