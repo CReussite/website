@@ -1060,7 +1060,12 @@
       document.getElementById('btn-inv-dl').addEventListener('click', function () {
         if (!currentInvoiceNumber) return;
         var url = BACKEND + '/api/admin/invoice/' + encodeURIComponent(currentInvoiceNumber) + '?key=' + encodeURIComponent(adminKey);
-        window.open(url, '_blank');
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'facture-' + currentInvoiceNumber + '.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
       });
 
       // ─── COURS PARTICULIERS ──────────────────────────────────────────────────

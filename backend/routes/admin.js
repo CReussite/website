@@ -120,6 +120,8 @@ router.get('/invoice/:invoiceNumber', requireAdminKey, async (req, res) => {
             description: `${item.nature} — ${fmtDate(item.date)}`,
             hours: Number(item.hours),
             hourlyRate: Number(item.hourly_rate),
+            paymentDate: fmtDate(item.payment_date || ''),
+            paymentMethod: item.payment_method || '',
           }))
         : [{ description: 'Cours particuliers', hours: 1, hourlyRate: cpInvoice.amount / 100 }];
 
@@ -129,7 +131,7 @@ router.get('/invoice/:invoiceNumber', requireAdminKey, async (req, res) => {
         customerAddress: cpInvoice.customer_address || '',
         items:           cpItems,
         invoiceDate:     new Date(cpInvoice.created_at),
-        paymentDate:     cpInvoice.payment_date || '',
+        paymentDate:     fmtDate(cpInvoice.payment_date || ''),
         paymentMethod:   cpInvoice.payment_method || '—',
       });
 

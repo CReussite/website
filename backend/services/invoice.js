@@ -265,7 +265,27 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
 
     const total = items.reduce((sum, item) => sum + item.hours * item.hourlyRate, 0);
     const totalStr = total.toFixed(2).replace('.', ',');
+    const totalHours = items.reduce((sum, item) => sum + item.hours, 0);
     const dateStr = invoiceDate.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+    // Résumé des paiements : regroupe par méthode, déduplique les dates
+    const paymentsByMethod = {};
+    items.forEach(item => {
+      const m = item.paymentMethod || '';
+      const d = item.paymentDate || '';
+      if (m && d && !paymentsByMethod[m]) paymentsByMethod[m] = [];
+      if (m && d && !paymentsByMethod[m].includes(d)) paymentsByMethod[m].push(d);
+    });
+    // Fallback sur les infos au niveau de la facture
+    if (Object.keys(paymentsByMethod).length === 0 && paymentMethod) {
+      paymentsByMethod[paymentMethod] = paymentDate ? [paymentDate] : [];
+    }
+    const paymentText = Object.entries(paymentsByMethod).map(([method, dates]) => {
+      if (dates.length === 0) return `Paiement reçu par ${method}.`;
+      if (dates.length === 1) return `Paiement reçu par ${method} le ${dates[0]}.`;
+      return `Paiements reçus par ${method} les ${dates.join(', ')}.`;
+    }).join(' ');
+
 
     const pageWidth = 595.28;
     const margin = 48;
@@ -287,7 +307,6 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
     doc.font('Helvetica-Bold').text('N° facture :', margin, 98, { continued: true }).font('Helvetica').text(' ' + invoiceNumber);
     doc.font('Helvetica-Bold').text("Date d'émission :", margin + 250, 98, { continued: true }).font('Helvetica').text(' ' + dateStr);
     doc.font('Helvetica-Bold').text('Mode de paiement :', margin, 114, { continued: true }).font('Helvetica').text(' ' + (paymentMethod || '—'));
-    doc.font('Helvetica-Bold').text('Date de paiement :', margin + 250, 114, { continued: true }).font('Helvetica').text(' ' + (paymentDate || dateStr));
 
     // ── Vendeur / Client ─────────────────────────────────────
     const partiesY = 164;
@@ -338,6 +357,12 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
       rowY += 30;
     });
 
+    // ── Ligne récapitulatif heures ────────────────────────────
+    doc.rect(margin, rowY, contentWidth, 22).fill(SWAN_WING);
+    doc.fontSize(8).font('Helvetica').fillColor(SAPPHIRE).text('Total heures :', colDesignation + 8, rowY + 7);
+    doc.font('Helvetica-Bold').text(totalHours + ' h', colHeures, rowY + 7, { width: 40, align: 'right' });
+    rowY += 22;
+
     // ── Totaux ───────────────────────────────────────────────
     const totalsX = margin + contentWidth - 200;
     const totalsY = rowY + 14;
@@ -353,18 +378,24 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
 
     // ── Badge paiement ───────────────────────────────────────
     const payY = totalsY + 76;
-    doc.roundedRect(margin, payY, contentWidth, 34, 4).fill(SWAN_WING);
-    doc.roundedRect(margin + 12, payY + 8, 42, 18, 10).fill('#2e7d4f');
-    doc.fontSize(8).font('Helvetica-Bold').fillColor('#FFFFFF').text('Payé', margin + 17, payY + 12);
-    doc.fontSize(9).font('Helvetica').fillColor(SAPPHIRE)
-      .text('Paiement reçu par ' + (paymentMethod || '—') + ' le ' + (paymentDate || dateStr) + '.', margin + 62, payY + 11);
+    const badgeW = paymentText ? contentWidth : 80;
+    doc.roundedRect(margin, payY, badgeW, 30, 4).fill(SWAN_WING);
+    doc.roundedRect(margin + 12, payY + 6, 42, 18, 10).fill('#2e7d4f');
+    doc.fontSize(8).font('Helvetica-Bold').fillColor('#FFFFFF').text('Payé', margin + 17, payY + 10);
+    if (paymentText) {
+      doc.fontSize(9).font('Helvetica').fillColor(SAPPHIRE)
+        .text(paymentText, margin + 62, payY + 10, { width: contentWidth - 74, lineBreak: false });
+    }
 
     // ── Mentions légales ─────────────────────────────────────
-    const legalY = payY + 50;
+    const legalY = payY + 44;
     doc.moveTo(margin, legalY).lineTo(margin + contentWidth, legalY).lineWidth(0.5).strokeColor(SHELLSTONE).stroke();
     doc.fontSize(7.5).font('Helvetica').fillColor(TEXT_MID).text(
       'TVA non applicable, article 293 B du CGI.\n' +
-      'Médiation de la consommation : CM2C — 49 rue de Ponthieu, 75 008 Paris — cm2c.net — litiges@cm2c.net',
+      'Médiation de la consommation : CM2C — 49 rue de Ponthieu, 75 008 Paris — cm2c.net — litiges@cm2c.net\n' +
+      "Date d'échéance : à réception de facture.\n" +
+      "Pas d'escompte pour paiement anticipé.\n" +
+      "Tout retard de paiement (au-delà d'une semaine) entraîne des pénalités de retard au taux de 3 fois le taux d'intérêt légal en vigueur, exigibles le jour suivant la date d'échéance, ainsi qu'une indemnité forfaitaire pour frais de recouvrement de 40 €.",
       margin, legalY + 8, { width: contentWidth, lineGap: 2 }
     );
 
