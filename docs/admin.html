@@ -916,19 +916,40 @@
       }
 
       function renderInvoiceModal(data) {
+        var isCp = data.invoice_type === 'cp';
+
         document.getElementById('inv-number').textContent = data.invoice_number;
         document.getElementById('inv-date').textContent = data.date;
         document.getElementById('inv-payref').textContent = data.payment_ref;
         document.getElementById('inv-paydate').textContent = data.payment_date;
-        document.getElementById('inv-payment-date-text').textContent = data.payment_date;
-        var payMethodLabel = (data.payment_method && data.payment_method !== 'Carte bancaire')
-          ? data.payment_method
-          : 'carte bancaire via Stancer';
-        document.getElementById('inv-payment-text').innerHTML =
-          'Paiement reçu par ' + payMethodLabel + ' le <span id="inv-payment-date-text">' + data.payment_date + '</span>.';
+
+        // Badge paiement : multi-dates pour CP, date unique pour ebooks
+        if (isCp) {
+          var pmtByMethod = {};
+          data.items.forEach(function (item) {
+            var m = item.payment_method || '';
+            var d = item.payment_date || '';
+            if (m && d) {
+              if (!pmtByMethod[m]) pmtByMethod[m] = [];
+              if (pmtByMethod[m].indexOf(d) === -1) pmtByMethod[m].push(d);
+            }
+          });
+          var pmtLines = Object.keys(pmtByMethod).map(function (method) {
+            var dates = pmtByMethod[method];
+            if (dates.length === 0) return 'Paiement reçu par ' + method + '.';
+            if (dates.length === 1) return 'Paiement reçu par ' + method + ' le ' + dates[0] + '.';
+            return 'Paiements reçus par ' + method + ' les ' + dates.join(', ') + '.';
+          });
+          document.getElementById('inv-payment-text').textContent = pmtLines.join(' ') || ('Payé par ' + (data.payment_method || '—'));
+        } else {
+          var payMethodLabel = (data.payment_method && data.payment_method !== 'Carte bancaire')
+            ? data.payment_method : 'carte bancaire via Stancer';
+          document.getElementById('inv-payment-text').textContent =
+            'Paiement reçu par ' + payMethodLabel + ' le ' + data.payment_date + '.';
+        }
 
         document.getElementById('inv-client-name').textContent = data.customer.name;
-        let details = data.customer.email || '';
+        var details = data.customer.email || '';
         if (data.customer.address) {
           details += (details ? '<br>' : '') + data.customer.address.replace(/\n/g, '<br>');
         }
@@ -936,29 +957,53 @@
 
         const itemsTbody = document.getElementById('inv-items');
         itemsTbody.innerHTML = '';
-        let subtotal = 0;
+        var subtotal = 0;
+        var totalQty = 0;
 
         data.items.forEach(function (item) {
           const lineTotal = item.quantity * item.unit_price;
           subtotal += lineTotal;
+          totalQty += item.quantity;
           const tr = document.createElement('tr');
-          let description = item.description;
-          if (item.payment_date || item.payment_method) {
-            description += '<br><small>Paiement';
-            if (item.payment_method) description += ' : ' + item.payment_method;
-            if (item.payment_date) description += ' le ' + item.payment_date;
-            description += '</small>';
-          }
           tr.innerHTML =
-            '<td>' + description + '</td>' +
+            '<td>' + item.description + '</td>' +
             '<td>' + item.quantity + '</td>' +
             '<td>' + fmtInvoicePrice(item.unit_price) + '</td>' +
             '<td>' + fmtInvoicePrice(lineTotal) + '</td>';
           itemsTbody.appendChild(tr);
         });
 
+        // Ligne total heures pour les CP
+        if (isCp && totalQty > 0) {
+          var trTotal = document.createElement('tr');
+          trTotal.style.background = 'var(--swan-wing, #F5F0E9)';
+          trTotal.style.fontWeight = '600';
+          trTotal.style.color = 'var(--sapphire, #3C5070)';
+          trTotal.innerHTML = '<td>Total heures :</td><td>' + totalQty + ' h</td><td></td><td></td>';
+          itemsTbody.appendChild(trTotal);
+        }
+
         document.getElementById('inv-subtotal').textContent = fmtInvoicePrice(subtotal);
         document.getElementById('inv-total').textContent = fmtInvoicePrice(subtotal);
+
+        // Mentions légales selon le type de facture
+        var legalEl = document.querySelector('#inv-content .inv-legal');
+        if (legalEl) {
+          if (isCp) {
+            legalEl.innerHTML =
+              "TVA non applicable, article 293 B du CGI.<br>" +
+              "Médiation de la consommation : CM2C — 49 rue de Ponthieu, 75 008 Paris — cm2c.net — litiges@cm2c.net<br>" +
+              "Date d'échéance : à réception de facture.<br>" +
+              "Pas d'escompte pour paiement anticipé.<br>" +
+              "Tout retard de paiement (au-delà d'une semaine) entraîne des pénalités de retard au taux de 3 fois le taux d'intérêt légal en vigueur, exigibles le jour suivant la date d'échéance, ainsi qu'une indemnité forfaitaire pour frais de recouvrement de 40 €.";
+          } else {
+            legalEl.innerHTML =
+              "TVA non applicable, article 293 B du CGI.<br>" +
+              "Le droit de rétractation ne s'applique pas aux produits numériques dont l'exécution a commencé après accord préalable exprès du consommateur (article L. 221-28 du Code de la consommation).<br>" +
+              "Livraison : immédiate (téléchargement numérique).<br>" +
+              'Médiation de la consommation : CM2C — 49 rue de Ponthieu, 75 008 Paris — <a href="https://www.cm2c.net/declarer-un-litige.php" style="color:var(--sapphire,#3C5070);">cm2c.net</a> — litiges@cm2c.net';
+          }
+        }
       }
 
       async function openInvoiceModal(invoiceNumber, autoPrint) {

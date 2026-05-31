@@ -183,7 +183,7 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
               description: `${item.nature} — ${fmtDate(item.date)}`,
               quantity: Number(item.hours),
               unit_price: Number(item.hourly_rate),
-              payment_date: item.payment_date || '',
+              payment_date: fmtDate(item.payment_date || ''),
               payment_method: item.payment_method || '',
             };
           })
@@ -195,8 +195,9 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
 
       return res.json({
         invoice_number: cpInvoice.invoice_number,
+        invoice_type: 'cp',
         date: dateStr,
-        payment_date: cpInvoice.payment_date || firstPaidItem?.payment_date || dateStr,
+        payment_date: fmtDate(cpInvoice.payment_date || firstPaidItem?.payment_date || ''),
         payment_ref: '—',
         payment_method: cpInvoice.payment_method || firstPaidItem?.payment_method || '—',
         customer: {
