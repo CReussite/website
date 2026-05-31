@@ -348,13 +348,21 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
     let rowY = tableTop + 24;
     items.forEach((item) => {
       const lineTotal = item.hours * item.hourlyRate;
+      const hasPmt = !!(item.paymentMethod && item.paymentDate);
+      const rowHeight = hasPmt ? 42 : 30;
+
       doc.fontSize(9).font('Helvetica').fillColor('#1A1A2E');
       doc.text(item.description, colDesignation + 8, rowY + 8);
+      if (hasPmt) {
+        doc.fontSize(7.5).font('Helvetica').fillColor(SAPPHIRE)
+          .text('Paiement : ' + item.paymentMethod + ' le ' + item.paymentDate, colDesignation + 8, rowY + 21);
+      }
+      doc.fontSize(9).font('Helvetica').fillColor('#1A1A2E');
       doc.text(String(item.hours), colHeures, rowY + 8, { width: 40, align: 'right' });
       doc.text(item.hourlyRate.toFixed(2).replace('.', ',') + ' €', colTarif, rowY + 8, { width: 70, align: 'right' });
       doc.text(lineTotal.toFixed(2).replace('.', ',') + ' €', colTotal, rowY + 8, { width: 70, align: 'right' });
-      doc.moveTo(margin, rowY + 26).lineTo(margin + contentWidth, rowY + 26).lineWidth(0.5).strokeColor(SHELLSTONE).stroke();
-      rowY += 30;
+      doc.moveTo(margin, rowY + rowHeight - 4).lineTo(margin + contentWidth, rowY + rowHeight - 4).lineWidth(0.5).strokeColor(SHELLSTONE).stroke();
+      rowY += rowHeight;
     });
 
     // ── Ligne récapitulatif heures ────────────────────────────
