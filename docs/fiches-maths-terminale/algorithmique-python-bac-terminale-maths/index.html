@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  <title>Python au bac de maths Terminale : algorithmes, syntaxe et erreurs classiques | C'Réussite</title>
+  <meta name="description" content="Les 3 types d'exercices Python au bac maths spé, la syntaxe indispensable, les algorithmes de seuil et de somme, et les 4 erreurs qui font perdre des points. Présent dans 25-32 % des sujets.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-maths-terminale/algorithmique-python-bac-terminale-maths/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-maths-terminale/algorithmique-python-bac-terminale-maths/">
+  <meta property="og:title" content="Python au bac de maths Terminale : algorithmes, syntaxe et erreurs classiques | C'Réussite">
+  <meta property="og:description" content="3 types d'exercices, syntaxe essentielle, algorithmes de seuil et de somme. Présent dans 25-32 % des sujets bac — l'un des meilleurs rapports effort/points de l'épreuve.">
+  <meta property="og:site_name" content="C'Réussite">
+  <meta property="article:published_time" content="2026-06-03">
+  <meta property="article:author" content="Camille Reinhardt">
+  <meta property="article:section" content="Maths Terminale Spécialité">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Python au bac de maths Terminale : algorithmes, syntaxe et erreurs classiques">
+  <meta name="twitter:description" content="3 types d'exercices, algorithmes de seuil et de somme, 4 erreurs classiques. 25-32 % des sujets bac.">
+
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Python et algorithmique au bac de maths Terminale : les 3 types d'exercices et comment réussir",
+        "description": "Les 3 types d'exercices Python au bac maths Terminale Spé, la syntaxe indispensable, les algorithmes de seuil et de somme, et les 4 erreurs classiques. Fondé sur l'analyse de 77 sessions 2022-2025.",
+        "datePublished": "2026-06-03",
+        "dateModified": "2026-06-03",
+        "author": { "@type": "Person", "name": "Camille Reinhardt", "url": "https://c-reussite.fr/a-propos/" },
+        "publisher": { "@type": "Organization", "name": "C'Réussite", "url": "https://c-reussite.fr" },
+        "mainEntityOfPage": "https://c-reussite.fr/fiches-maths-terminale/algorithmique-python-bac-terminale-maths/",
+        "articleSection": "Maths Terminale Spécialité",
+        "educationalLevel": "Terminale",
+        "keywords": "algorithmique Python bac maths terminale, python bac maths, algorithme seuil bac, compléter programme Python bac, boucle while bac maths, algorithmique terminale spé"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://c-reussite.fr/" },
+          { "@type": "ListItem", "position": 2, "name": "Maths Terminale", "item": "https://c-reussite.fr/fiches-maths-terminale/" },
+          { "@type": "ListItem", "position": 3, "name": "Python et algorithmique", "item": "https://c-reussite.fr/fiches-maths-terminale/algorithmique-python-bac-terminale-maths/" }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "L'algorithmique tombe-t-il à chaque bac de maths ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Non, pas systématiquement. Sur 77 sessions analysées entre 2022 et 2025, Python ou l'algorithmique apparaissent dans 25 à 32 % des sujets selon les années. C'est donc probable, mais pas certain. Quand cela tombe, les questions sont courtes (1 à 2 points) et ciblées sur les algorithmes de seuil ou de calcul de termes, presque toujours dans l'exercice sur les suites." }
+          },
+          {
+            "@type": "Question",
+            "name": "Faut-il savoir écrire un programme Python de zéro au bac de maths ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Rarement. L'immense majorité des questions demandent de compléter un programme partiellement rédigé ou d'indiquer ce que renvoie un programme donné. Savoir écrire un programme complet est utile pour environ 1 question sur 5, et la structure attendue est toujours l'une des deux structures classiques (seuil ou somme)." }
+          },
+          {
+            "@type": "Question",
+            "name": "Python et pseudo-code sont-ils tous les deux acceptés au bac de maths ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Oui. Le programme officiel de Terminale spé accepte les deux. En pratique, les sujets récents utilisent quasi exclusivement Python. Maîtriser la syntaxe Python est donc plus utile que le pseudo-code, même si la logique algorithmique est identique dans les deux cas." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px;background:var(--swan-wing);color:var(--sapphire);margin-bottom:12px}
+    .article-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+    .article-header h1{font-size:clamp(1.45rem,3.5vw,1.95rem);line-height:1.25;margin-bottom:10px;color:var(--royal-blue)}
+    .article-meta{font-size:.85rem;color:#5C6475}
+    .article-intro{font-size:1.02rem;color:var(--text-mid);line-height:1.75;margin:20px 0 28px}
+    .article-body h2{font-size:1.2rem;margin-top:36px;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body h3{font-size:1.02rem;font-weight:700;margin-top:24px;margin-bottom:9px;color:var(--royal-blue)}
+    .article-body p{margin-bottom:14px;line-height:1.7;color:var(--text-mid)}
+    .article-body ul,.article-body ol{margin:0 0 14px 22px}
+    .article-body li{margin-bottom:6px;color:var(--text-mid);line-height:1.65}
+    .article-body table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.86rem}
+    .article-body th{background:var(--swan-wing);font-weight:600;text-align:left;padding:9px 12px;border:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body td{padding:9px 12px;border:1px solid #e5e7eb;vertical-align:top;color:var(--text-mid)}
+    .article-body tr:nth-child(even) td{background:#fafafa}
+    .article-body strong{color:var(--royal-blue);font-weight:700}
+    .callout{background:var(--swan-wing);border-left:3px solid var(--sapphire);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .callout p{margin:0;color:var(--text-mid)}
+    .katex-display{margin:0!important;overflow-x:auto}
+    .example-block{background:#f8f9fa;border-radius:8px;padding:14px 18px;margin:12px 0;border-left:3px solid var(--quicksand)}
+    .example-block p{margin:0 0 6px;color:var(--text-mid);font-size:.92rem}
+    .example-block p:last-child{margin:0}
+    .piege-list{background:#fff3f3;border-left:3px solid #e53e3e;border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .piege-list p{margin:0 0 10px;color:var(--text-mid);font-size:.9rem}
+    .piege-list p:last-child{margin:0}
+    .piege-list strong{color:#c0392b}
+    .step-row{display:flex;align-items:flex-start;gap:12px;margin:12px 0}
+    .step-row-num{display:flex;align-items:center;justify-content:center;width:28px;height:28px;min-width:28px;background:var(--royal-blue);color:var(--quicksand);font-weight:700;font-size:.85rem;border-radius:50%;margin-top:2px}
+    .step-row-body p{margin:0 0 4px;color:var(--text-mid);line-height:1.7}
+    .step-row-body p:last-child{margin:0}
+    .faq-section{margin-top:40px;padding-top:28px;border-top:2px solid #e5e7eb}
+    .faq-section>h2{font-size:1.15rem;margin-bottom:20px;padding-bottom:0;border-bottom:none}
+    .faq-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-item h3{font-size:.97rem;margin-top:0;margin-bottom:7px}
+    .faq-item p{margin:0}
+    .read-next{margin-top:36px;padding-top:24px;border-top:1px solid #e5e7eb}
+    .read-next h2{font-size:1rem;margin-bottom:12px;color:var(--royal-blue);border:none;padding:0;margin-top:0}
+    .read-next ul{list-style:none;padding:0;margin:0}
+    .read-next li{padding:6px 0;border-bottom:1px solid #f5f5f5}
+    .read-next li:last-child{border-bottom:none}
+    .read-next a{color:var(--sapphire);text-decoration:underline;font-size:.9rem}
+    .author-box{background:var(--swan-wing);border-radius:10px;padding:16px 20px;margin-top:28px;font-size:.86rem;color:var(--text-mid)}
+    .author-box strong{display:block;margin-bottom:5px;color:var(--royal-blue);font-size:.9rem}
+    pre{background:#1e293b;border-radius:8px;padding:16px 20px;overflow-x:auto;margin:12px 0 18px}
+    pre code{font-family:'Courier New',Courier,monospace;font-size:.87rem;color:#e2e8f0;line-height:1.7}
+    code{font-family:'Courier New',Courier,monospace;background:#f1f5f9;padding:2px 6px;border-radius:3px;font-size:.87rem;color:#1e293b}
+    pre code{background:transparent;padding:0}
+    .type-badge{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 10px;border-radius:12px;background:var(--royal-blue);color:var(--quicksand);margin-bottom:8px}
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-maths-terminale/">Maths Terminale</a><span class="bc-sep">›</span>
+      <span>Python et algorithmique</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Maths · Terminale</span>
+        <h1>Python et algorithmique au bac de maths : ce qui tombe vraiment et comment réussir</h1>
+        <div class="article-meta">Publié le 3 juin 2026 &middot; Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">Sur 77 sessions d'examen analysées entre 2022 et 2025, l'algorithmique et Python apparaissent dans 25 à 32 % des sujets. La question vaut en général 1 à 2 points et demande de compléter 2 ou 3 lignes de code. C'est l'un des meilleurs rapports effort/points du bac maths spé : une heure de préparation ciblée suffit à sécuriser ces points presque à coup sûr.</p>
+
+      <div class="article-body">
+
+        <h2 id="types">Ce que le bac demande vraiment en Python</h2>
+
+        <p>Le correcteur n'attend pas que vous sachiez programmer. Il attend que vous compreniez la logique d'un algorithme et que vous puissiez compléter ou lire un programme court. En pratique, trois types de questions reviennent systématiquement.</p>
+
+        <div class="example-block">
+          <p><span class="type-badge">Type 1</span> <strong>Compléter un programme à trous.</strong> Le plus fréquent. On vous donne un programme partiellement rédigé, avec des lignes vides matérialisées par des pointillés. Il faut identifier ce qui manque : une condition de boucle, une ligne de mise à jour, un <code>return</code>. La logique est toujours guidée par le contexte mathématique (la relation de récurrence, le seuil à atteindre, la somme à calculer).</p>
+        </div>
+
+        <div class="example-block">
+          <p><span class="type-badge">Type 2</span> <strong>Lire et interpréter un programme.</strong> On vous demande ce que renvoie le programme pour une valeur donnée, ou ce que calcule une variable à la fin de l'exécution. Il faut simuler mentalement l'exécution, tour de boucle par tour de boucle.</p>
+        </div>
+
+        <div class="example-block">
+          <p><span class="type-badge">Type 3</span> <strong>Écrire un programme court.</strong> Plus rare. On vous demande de rédiger un algorithme de seuil ou de somme, souvent après une question de cours sur la suite concernée. La structure est toujours la même, seuls les paramètres changent.</p>
+        </div>
+
+        <div class="callout">
+          <p>La grande majorité des questions relève du type 1 ou 2. Comprendre la structure des deux algorithmes classiques (seuil et somme) couvre l'essentiel de ce qui peut tomber.</p>
+        </div>
+
+        <h2 id="syntaxe">La syntaxe indispensable</h2>
+
+        <p>Le tableau suivant couvre l'intégralité de la syntaxe utile pour le bac. Aucune bibliothèque complexe, aucune notion avancée n'est attendue au-delà de ce périmètre.</p>
+
+        <table>
+          <thead>
+            <tr><th>Élément</th><th>Syntaxe Python</th><th>Point de vigilance</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Affectation</td><td><code>u = 5</code></td><td>Le signe <code>=</code> affecte, il n'exprime pas une égalité mathématique</td></tr>
+            <tr><td>Puissance</td><td><code>u**2</code></td><td>Jamais <code>^</code> — c'est une erreur de syntaxe en Python</td></tr>
+            <tr><td>Multiplication</td><td><code>2*u</code></td><td>L'astérisque est obligatoire, <code>2u</code> provoque une erreur</td></tr>
+            <tr><td>Nombre décimal</td><td><code>0.92</code></td><td>Toujours un point, jamais une virgule</td></tr>
+            <tr><td>Racine carrée</td><td><code>sqrt(u)</code></td><td>Nécessite <code>from math import *</code> en début de programme</td></tr>
+            <tr><td>Valeur absolue</td><td><code>abs(u - limite)</code></td><td>Utile pour les seuils de précision</td></tr>
+            <tr><td>Boucle bornée</td><td><code>for i in range(n):</code></td><td><code>range(n)</code> va de 0 à n&minus;1 ; pour aller jusqu'à n, écrire <code>range(n+1)</code></td></tr>
+            <tr><td>Boucle non bornée</td><td><code>while condition:</code></td><td>La condition est celle qui <em>maintient</em> la boucle, pas celle qu'on cherche</td></tr>
+            <tr><td>Ajouter à une liste</td><td><code>L.append(x)</code></td><td>Ajoute x à la fin de la liste L</td></tr>
+            <tr><td>Longueur d'une liste</td><td><code>len(L)</code></td><td>Retourne le nombre d'éléments</td></tr>
+            <tr><td>Définir une fonction</td><td><code>def f(x):</code></td><td>Le bloc doit être indenté ; se termine par <code>return</code></td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <p>Une seule erreur de syntaxe invalide un programme entier. Les deux erreurs les plus fréquentes : l'oubli des deux-points (<code>:</code>) en fin de ligne <code>def</code>, <code>for</code> ou <code>while</code>, et l'utilisation d'une virgule à la place d'un point pour les décimaux.</p>
+        </div>
+
+        <h2 id="algorithmes">Les deux algorithmes classiques à maîtriser</h2>
+
+        <h3>L'algorithme de seuil</h3>
+
+        <p>C'est l'algorithme le plus fréquent au bac. Son but : trouver le premier rang $n$ à partir duquel les termes d'une suite $u_n$ dépassent (ou passent en dessous de) une valeur limite.</p>
+
+        <p>La logique centrale est une inversion : si on cherche quand $u_n$ dépasse 20, on écrit <code>while u &lt;= 20:</code>, c'est-à-dire "tant que la condition n'est pas atteinte, continue". Dès que la condition cherchée devient vraie, la boucle s'arrête.</p>
+
+        <p><strong>Structure type :</strong></p>
+        <pre><code>def seuil():
+    u = u0          # valeur initiale (premier terme)
+    n = 0           # rang initial
+    while u &lt;= 20: # condition inverse de ce qu'on cherche
+        u = f(u)    # relation de récurrence
+        n = n + 1   # on passe au rang suivant
+    return n        # renvoie le premier rang qui dépasse 20</code></pre>
+
+        <p>Pour compléter ce type de programme à l'examen, il faut identifier trois éléments dans l'énoncé :</p>
+        <ul>
+          <li>La valeur initiale $u_0$ (initialisation de <code>u</code>)</li>
+          <li>La relation de récurrence (ligne <code>u = f(u)</code>)</li>
+          <li>Le seuil à atteindre (condition du <code>while</code>)</li>
+        </ul>
+        <p>Ces trois informations sont toujours données dans le contexte mathématique de l'exercice.</p>
+
+        <h3>L'algorithme de somme</h3>
+
+        <p>Moins fréquent que le seuil, mais présent régulièrement dans les exercices de suites. Il s'agit de calculer $S = u_0 + u_1 + \cdots + u_n$.</p>
+
+        <p>La logique repose sur une variable d'accumulation. On initialise $S$ à $u_0$, puis on ajoute chaque terme au fur et à mesure.</p>
+
+        <p><strong>Structure type :</strong></p>
+        <pre><code>def calcul_somme(n):
+    u = u0                    # premier terme
+    S = u0                    # on commence la somme avec u0
+    for i in range(1, n + 1): # on calcule u1 jusqu'à un
+        u = f(u)              # terme suivant
+        S = S + u             # on l'ajoute à la somme
+    return S</code></pre>
+
+        <div class="callout">
+          <p><strong>Point de vigilance sur <code>range()</code> :</strong> <code>range(1, n+1)</code> fait varier i de 1 à n inclus. Si on écrit <code>range(1, n)</code>, le terme $u_n$ est exclu — erreur classique qui fausse le résultat sans message d'erreur.</p>
+        </div>
+
+        <h2 id="erreurs">Les 4 erreurs qui font perdre des points</h2>
+
+        <div class="piege-list">
+          <p><strong>Erreur 1 : la condition du <code>while</code> à l'envers.</strong> Si on cherche le rang $n$ tel que $u_n > 100$, il faut écrire <code>while u &lt;= 100:</code> et non <code>while u &gt; 100:</code>. La boucle exprime la condition de continuation, pas la condition d'arrêt. Lire mentalement "tant que..." avant d'écrire la condition.</p>
+          <p><strong>Erreur 2 : l'ordre des instructions dans la boucle.</strong> Pour un algorithme de seuil, la mise à jour du terme doit précéder l'incrémentation du compteur. Si on inverse les deux lignes, le rang retourné est décalé de 1. Vérifier systématiquement l'ordre en simulant le premier tour.</p>
+          <p><strong>Erreur 3 : la borne de <code>range()</code>.</strong> <code>range(n)</code> exclut n. Pour calculer jusqu'au rang n inclus quand on a déjà initialisé $u_0$, il faut <code>range(1, n+1)</code>. Choisir la mauvaise borne décale le calcul sans erreur apparente.</p>
+          <p><strong>Erreur 4 : l'oubli de <code>n = n + 1</code> dans la boucle <code>while</code>.</strong> Contrairement à la boucle <code>for</code>, la boucle <code>while</code> n'incrémente pas automatiquement de compteur. Si on oublie cette ligne, le programme tourne à l'infini (boucle infinie) et le correcteur ne peut pas exécuter le code.</p>
+        </div>
+
+        <h2 id="methode">Méthode de résolution en 4 étapes</h2>
+
+        <p>Quand une question Python apparaît dans un sujet, la démarche suivante permet de traiter la question en 3 à 5 minutes.</p>
+
+        <div class="step-row">
+          <div class="step-row-num">1</div>
+          <div class="step-row-body"><p><strong>Identifier le type d'algorithme</strong> (seuil, somme, calcul de terme) à partir du contexte mathématique et du verbe de la question : "trouver le premier rang", "calculer la valeur", "compléter le programme".</p></div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">2</div>
+          <div class="step-row-body"><p><strong>Repérer les valeurs dans l'énoncé</strong> : valeur initiale $u_0$, relation de récurrence, seuil ou nombre de termes. Ces informations figurent toujours dans les questions précédentes de l'exercice.</p></div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">3</div>
+          <div class="step-row-body"><p><strong>Associer chaque information à sa ligne dans le programme</strong> : $u_0$ à l'initialisation de <code>u</code>, la relation au corps de boucle, le seuil à la condition du <code>while</code>.</p></div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">4</div>
+          <div class="step-row-body"><p><strong>Vérifier mentalement</strong> en simulant les 2 premiers tours de boucle. Si les valeurs obtenues correspondent à ce que la suite doit faire, la réponse est correcte. Cette vérification prend 30 secondes et évite la plupart des erreurs.</p></div>
+        </div>
+
+      </div><!-- /article-body -->
+
+      <!-- CTA avant FAQ -->
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Maths Terminale</p>
+            <p class="cta-strip-heading">20 fiches PDF — cours, formules et méthodes sur une page par chapitre</p>
+          </div>
+          <a href="/maths-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Maths en ligne — 30 €/h, avec une polytechnicienne</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="faq-section">
+        <h2 id="faq">Questions fréquentes</h2>
+
+        <div class="faq-item">
+          <h3>L'algorithmique tombe-t-il à chaque bac de maths ?</h3>
+          <p>Non, pas systématiquement. Sur 77 sessions analysées entre 2022 et 2025, Python ou l'algorithmique apparaissent dans 25 à 32 % des sujets selon les années. Quand cela tombe, les questions sont courtes (1 à 2 points) et ciblées sur les algorithmes de seuil ou de calcul de termes, presque toujours dans l'exercice sur les suites.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>Faut-il savoir écrire un programme Python de zéro au bac de maths ?</h3>
+          <p>Rarement. L'immense majorité des questions demandent de compléter un programme partiellement rédigé ou d'indiquer ce que renvoie un programme donné. Savoir écrire un programme complet est utile pour environ 1 question sur 5, et la structure attendue est toujours l'une des deux structures classiques : seuil ou somme.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>Python et pseudo-code sont-ils tous les deux acceptés au bac ?</h3>
+          <p>Oui. Le programme officiel de Terminale spé accepte les deux. En pratique, les sujets récents utilisent quasi exclusivement Python. Maîtriser la syntaxe Python est donc plus utile que le pseudo-code, même si la logique algorithmique est identique dans les deux cas.</p>
+        </div>
+      </div>
+
+      <!-- CTA fin -->
+      <div class="cta-strip">
+        <div class="cta-strip-text">
+          <p class="cta-strip-eyebrow">C'Réussite · Terminale Spé</p>
+          <p class="cta-strip-heading">20 fiches Maths PDF — cours, formules et méthodes sur une page par chapitre</p>
+        </div>
+        <a href="/maths-terminale/" class="btn">Découvrir l'ebook →</a>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/blog/chapitres-bac-maths-spe/">Bac maths spé 2026 : les chapitres qui tombent vraiment (308 exercices analysés)</a></li>
+          <li><a href="/blog/demonstrations-exigibles-bac-maths/">Démonstrations exigibles au bac de maths : liste complète et méthode</a></li>
+          <li><a href="/fiches-maths-terminale/indetermination-limite-suite-bac-terminale/">Lever une indétermination : les 4 méthodes pour la limite d'une suite</a></li>
+          <li><a href="/fiches-maths-terminale/loi-binomiale-bac-terminale/">Loi binomiale : formule, espérance, variance, méthode calculatrice</a></li>
+          <li><a href="/blog/evolution-sujets-bac-maths-spe-2024-2025/">Bac maths spé 2024 vs 2025 : ce qui a changé pour 2026</a></li>
+          <li><a href="/fiches-maths-terminale/">Tous les guides maths Terminale</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt est diplômée de l'École polytechnique, docteure en sciences, et fondatrice de C'Réussite. Elle conçoit des fiches de révision structurées pour les élèves de Terminale spé maths et physique-chimie, et accompagne des élèves de la 6e au Master depuis plusieurs années. <a href="/a-propos/" style="color:var(--sapphire);font-weight:700;">En savoir plus →</a>
+      </div>
+
+      <p style="font-size:0.78rem;color:var(--shellstone);margin-top:24px;font-style:italic;">Contenu fondé sur l'analyse de 308 exercices issus de 77 sessions d'examen (2022-2025).</p>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>
