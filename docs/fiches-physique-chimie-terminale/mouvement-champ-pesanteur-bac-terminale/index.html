@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  <title>Mouvement dans un champ de pesanteur au bac : équations horaires et méthode complète | C'Réussite</title>
+  <meta name="description" content="Présent dans 20 % des exercices bac physique-chimie. Méthode complète : bilan des forces, Newton, équations horaires x(t) et z(t), énergie mécanique. Exercice type résolu et 3 erreurs classiques.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-physique-chimie-terminale/mouvement-champ-pesanteur-bac-terminale/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-physique-chimie-terminale/mouvement-champ-pesanteur-bac-terminale/">
+  <meta property="og:title" content="Mouvement dans un champ de pesanteur au bac : équations horaires et méthode | C'Réussite">
+  <meta property="og:description" content="20 % des exercices bac PC. Méthode en 3 étapes : Newton, équations horaires, exploitation. Exercice type complet, 3 erreurs classiques.">
+  <meta property="og:site_name" content="C'Réussite">
+  <meta property="article:published_time" content="2026-06-04">
+  <meta property="article:author" content="Camille Reinhardt">
+  <meta property="article:section" content="Physique-Chimie Terminale Spécialité">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Mouvement dans un champ de pesanteur au bac : équations horaires et méthode">
+  <meta name="twitter:description" content="20 % des exercices bac physique-chimie. Newton, équations horaires, énergie mécanique. Méthode en 3 étapes et exercice type.">
+
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Équations horaires et mouvement dans un champ de pesanteur : méthode bac physique-chimie",
+        "description": "Méthode complète en 3 étapes pour les exercices de projectile au bac physique-chimie Terminale : bilan des forces, Newton, équations horaires, énergie mécanique. Présent dans 20 % des exercices.",
+        "datePublished": "2026-06-04",
+        "dateModified": "2026-06-04",
+        "author": { "@type": "Person", "name": "Camille Reinhardt", "url": "https://c-reussite.fr/a-propos/" },
+        "publisher": { "@type": "Organization", "name": "C'Réussite", "url": "https://c-reussite.fr" },
+        "mainEntityOfPage": "https://c-reussite.fr/fiches-physique-chimie-terminale/mouvement-champ-pesanteur-bac-terminale/",
+        "articleSection": "Physique-Chimie Terminale Spécialité",
+        "educationalLevel": "Terminale",
+        "keywords": "équations horaires bac physique chimie, mouvement champ de pesanteur terminale, projectile bac physique, chute libre bac, Newton énergie mécanique terminale, mouvement parabolique bac"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://c-reussite.fr/" },
+          { "@type": "ListItem", "position": 2, "name": "Physique-Chimie Terminale", "item": "https://c-reussite.fr/fiches-physique-chimie-terminale/" },
+          { "@type": "ListItem", "position": 3, "name": "Mouvement dans un champ de pesanteur", "item": "https://c-reussite.fr/fiches-physique-chimie-terminale/mouvement-champ-pesanteur-bac-terminale/" }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Faut-il connaître les équations horaires par cœur au bac de physique-chimie ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Oui. Elles ne figurent pas dans le formulaire distribué au bac : elles doivent être retrouvées par l'intégration de l'accélération. En pratique, il est plus fiable de les rétablir par le raisonnement (bilan des forces, deuxième loi de Newton, intégration) que de les réciter de mémoire." }
+          },
+          {
+            "@type": "Question",
+            "name": "Que faire quand l'énoncé mentionne des frottements dans un exercice de projectile ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Si les frottements ne sont pas négligés, l'accélération n'est plus égale à g seul. Il faut inclure la force de frottement dans le bilan, ce qui modifie les équations du mouvement. La conservation de l'énergie mécanique ne s'applique plus : on utilise le théorème de l'énergie cinétique. L'énoncé précise toujours si les frottements sont négligés ou non." }
+          },
+          {
+            "@type": "Question",
+            "name": "Comment trouver la portée d'un projectile au bac ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "La portée est la valeur de x quand z = 0 à nouveau (après le lancement). On résout z(t) = 0 pour trouver la date d'impact, puis on calcule x(t_impact). Sans frottements, t_impact = 2t* (la trajectoire est symétrique autour du sommet)." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px;background:var(--swan-wing);color:var(--sapphire);margin-bottom:12px}
+    .article-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+    .article-header h1{font-size:clamp(1.45rem,3.5vw,1.95rem);line-height:1.25;margin-bottom:10px;color:var(--royal-blue)}
+    .article-meta{font-size:.85rem;color:#5C6475}
+    .article-intro{font-size:1.02rem;color:var(--text-mid);line-height:1.75;margin:20px 0 28px}
+    .article-body h2{font-size:1.2rem;margin-top:36px;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body h3{font-size:1.02rem;font-weight:700;margin-top:24px;margin-bottom:9px;color:var(--royal-blue)}
+    .article-body p{margin-bottom:14px;line-height:1.7;color:var(--text-mid)}
+    .article-body ul,.article-body ol{margin:0 0 14px 22px}
+    .article-body li{margin-bottom:6px;color:var(--text-mid);line-height:1.65}
+    .article-body table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.86rem}
+    .article-body th{background:var(--swan-wing);font-weight:600;text-align:left;padding:9px 12px;border:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body td{padding:9px 12px;border:1px solid #e5e7eb;vertical-align:top;color:var(--text-mid)}
+    .article-body tr:nth-child(even) td{background:#fafafa}
+    .article-body strong{color:var(--royal-blue);font-weight:700}
+    .callout{background:var(--swan-wing);border-left:3px solid var(--sapphire);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .callout p{margin:0;color:var(--text-mid)}
+    .formula-block{background:#f0f4ff;border-left:4px solid var(--royal-blue);border-radius:0 8px 8px 0;padding:10px 18px;margin:12px 0 16px;overflow-x:auto}
+    .katex-display{margin:0!important;overflow-x:auto}
+    .example-block{background:#f8f9fa;border-radius:8px;padding:14px 18px;margin:12px 0;border-left:3px solid var(--quicksand)}
+    .example-block p{margin:0 0 6px;color:var(--text-mid);font-size:.92rem}
+    .example-block p:last-child{margin:0}
+    .piege-list{background:#fff3f3;border-left:3px solid #e53e3e;border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .piege-list p{margin:0 0 10px;color:var(--text-mid);font-size:.9rem}
+    .piege-list p:last-child{margin:0}
+    .piege-list strong{color:#c0392b}
+    .step-row{display:flex;align-items:flex-start;gap:12px;margin:12px 0}
+    .step-row-num{display:flex;align-items:center;justify-content:center;width:28px;height:28px;min-width:28px;background:var(--royal-blue);color:var(--quicksand);font-weight:700;font-size:.85rem;border-radius:50%;margin-top:2px}
+    .step-row-body p{margin:0 0 4px;color:var(--text-mid);line-height:1.7}
+    .step-row-body p:last-child{margin:0}
+    .faq-section{margin-top:40px;padding-top:28px;border-top:2px solid #e5e7eb}
+    .faq-section>h2{font-size:1.15rem;margin-bottom:20px;padding-bottom:0;border-bottom:none}
+    .faq-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-item h3{font-size:.97rem;margin-top:0;margin-bottom:7px}
+    .faq-item p{margin:0}
+    .read-next{margin-top:36px;padding-top:24px;border-top:1px solid #e5e7eb}
+    .read-next h2{font-size:1rem;margin-bottom:12px;color:var(--royal-blue);border:none;padding:0;margin-top:0}
+    .read-next ul{list-style:none;padding:0;margin:0}
+    .read-next li{padding:6px 0;border-bottom:1px solid #f5f5f5}
+    .read-next li:last-child{border-bottom:none}
+    .read-next a{color:var(--sapphire);text-decoration:underline;font-size:.9rem}
+    .author-box{background:var(--swan-wing);border-radius:10px;padding:16px 20px;margin-top:28px;font-size:.86rem;color:var(--text-mid)}
+    .author-box strong{display:block;margin-bottom:5px;color:var(--royal-blue);font-size:.9rem}
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-physique-chimie-terminale/">Physique-Chimie Terminale</a><span class="bc-sep">›</span>
+      <span>Mouvement dans un champ de pesanteur</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Physique-Chimie · Terminale</span>
+        <h1>Équations horaires et mouvement dans un champ de pesanteur : méthode bac physique-chimie</h1>
+        <div class="article-meta">Publié le 4 juin 2026 &middot; Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">Entre 2021 et 2025, la mécanique du projectile est apparue dans <strong>20 % des exercices du bac physique-chimie</strong>, et dans 9 sujets sur 19 en 2023. Ce n'est pas un thème parmi d'autres : c'est l'un des deux piliers de la mécanique au bac, avec l'énergie mécanique. Les deux apparaissent ensemble dans la majorité des exercices concernés. Cette page présente la méthode complète en trois étapes, les trois erreurs classiques, et une application sur un exercice type.</p>
+
+      <div class="article-body">
+
+        <h2 id="methode">La méthode en 3 étapes</h2>
+
+        <h3 id="newton">Étape 1 : bilan des forces et deuxième loi de Newton</h3>
+
+        <p>Un projectile en mouvement dans un champ de pesanteur uniforme, sans frottements, n'est soumis qu'à une seule force : son poids $\vec{P} = m\vec{g}$.</p>
+
+        <p>On applique la deuxième loi de Newton :</p>
+        <div class="formula-block">
+          $$\sum \vec{F} = m\vec{a} \implies m\vec{g} = m\vec{a} \implies \vec{a} = \vec{g}$$
+        </div>
+        <p>L'accélération est constante, égale à $\vec{g}$, dirigée vers le bas. En projetant sur les axes (axe $x$ horizontal, axe $z$ vertical orienté vers le haut) :</p>
+        <div class="formula-block">
+          $$a_x = 0 \qquad a_z = -g$$
+        </div>
+
+        <div class="callout">
+          <p><strong>Point de méthode :</strong> indiquer toujours le repère et l'orientation des axes sur la copie. C'est le premier élément que le correcteur vérifie.</p>
+        </div>
+
+        <h3 id="equations">Étape 2 : établir les équations horaires</h3>
+
+        <p>On intègre les composantes de l'accélération pour obtenir la vitesse, puis on intègre à nouveau pour les coordonnées. Les constantes d'intégration sont les conditions initiales.</p>
+
+        <table>
+          <thead><tr><th>Grandeur</th><th>Axe horizontal ($x$)</th><th>Axe vertical ($z$)</th></tr></thead>
+          <tbody>
+            <tr><td>Accélération</td><td>$a_x = 0$</td><td>$a_z = -g$</td></tr>
+            <tr><td>Vitesse</td><td>$v_x(t) = v_0 \cos\alpha$</td><td>$v_z(t) = -gt + v_0 \sin\alpha$</td></tr>
+            <tr><td>Position</td><td>$x(t) = v_0 \cos\alpha \cdot t + x_0$</td><td>$z(t) = -\dfrac{1}{2}gt^2 + v_0 \sin\alpha \cdot t + z_0$</td></tr>
+          </tbody>
+        </table>
+
+        <p>avec $v_0$ la vitesse initiale, $\alpha$ l'angle de lancement par rapport à l'horizontale, et $(x_0, z_0)$ les coordonnées initiales du projectile.</p>
+
+        <h3 id="exploitation">Étape 3 : exploiter les équations</h3>
+
+        <p>Une fois les équations établies, les questions posées se regroupent en trois catégories :</p>
+        <ol>
+          <li><strong>Trouver la date ou la position d'un événement</strong> (impact au sol, passage à une hauteur donnée) : résoudre l'équation correspondante.</li>
+          <li><strong>Calculer la portée ou la hauteur maximale :</strong> la hauteur est maximale quand $v_z(t) = 0$ ; la portée est la valeur de $x$ quand $z = 0$.</li>
+          <li><strong>Bilan énergétique :</strong> calculer $E_c = \dfrac{1}{2}mv^2$ et $E_{pp} = mgh$ à différentes dates. Sans frottements, $E_m = E_c + E_{pp} = \text{cste}$.</li>
+        </ol>
+
+        <h2 id="pieges">Les 3 erreurs qui coûtent des points</h2>
+
+        <div class="piege-list">
+          <p><strong>Erreur 1 : inverser le signe de l'accélération gravitationnelle.</strong> $\vec{g}$ est dirigé vers le bas. Si l'axe $z$ est orienté vers le haut, alors $a_z = -g = -9{,}81\;\text{m/s}^2$. Écrire $a_z = +g$ produit une trajectoire qui monte indéfiniment. Vérifier toujours que les équations horaires donnent un $z$ qui décroît après le sommet.</p>
+          <p><strong>Erreur 2 : oublier les conditions initiales.</strong> La constante d'intégration n'est pas toujours nulle. Si le projectile est lancé depuis une hauteur $z_0 \neq 0$ (falaise, bâtiment), il faut l'inclure dans l'équation. Un exercice qui place le lancement en hauteur teste précisément ce réflexe.</p>
+          <p><strong>Erreur 3 : confondre $E_c$ et $E_{pp}$ sur les graphes.</strong> L'énergie cinétique est maximale en bas (vitesse maximale) ; l'énergie potentielle est maximale en haut (hauteur maximale). Les deux varient en sens opposés et leur somme est constante sans frottements. Un tableau de valeurs intermédiaires aide à ne pas se tromper sur la forme des courbes.</p>
+        </div>
+
+        <h2 id="application">Application : exercice type</h2>
+
+        <p>Un ballon est lancé depuis le sol avec une vitesse initiale $v_0 = 15\;\text{m/s}$ à $\alpha = 30°$ de l'horizontale. On néglige les frottements. On prend $g = 10\;\text{m/s}^2$.</p>
+
+        <div class="example-block">
+          <p><strong>Question 1 : établir les équations horaires.</strong></p>
+          <p>Conditions initiales : $x_0 = 0$, $z_0 = 0$.</p>
+          <p>$$x(t) = 15\cos 30° \cdot t = 15 \times \dfrac{\sqrt{3}}{2} \cdot t \approx 13{,}0\,t$$</p>
+          <p>$$z(t) = -\dfrac{1}{2}\times 10 \times t^2 + 15\sin 30° \cdot t = -5t^2 + 7{,}5t$$</p>
+        </div>
+
+        <div class="example-block">
+          <p><strong>Question 2 : hauteur maximale.</strong></p>
+          <p>$v_z(t) = 0 \implies -10t + 7{,}5 = 0 \implies t^* = 0{,}75\;\text{s}$</p>
+          <p>$$z_{\max} = -5 \times (0{,}75)^2 + 7{,}5 \times 0{,}75 = -2{,}81 + 5{,}63 = \mathbf{2{,}81\;\text{m}}$$</p>
+        </div>
+
+        <div class="example-block">
+          <p><strong>Question 3 : bilan énergétique au sommet</strong> ($m = 0{,}5\;\text{kg}$).</p>
+          <p>Au sommet, $v_z = 0$ donc $v = v_x = 13{,}0\;\text{m/s}$ :</p>
+          <p>$$E_c = \dfrac{1}{2} \times 0{,}5 \times (13{,}0)^2 = 42{,}3\;\text{J}$$</p>
+          <p>$$E_{pp} = 0{,}5 \times 10 \times 2{,}81 = 14{,}1\;\text{J} \qquad E_m = 56{,}4\;\text{J}$$</p>
+          <p>Vérification à $t = 0$ : $E_m = \frac{1}{2} \times 0{,}5 \times 15^2 = 56{,}3\;\text{J}$. Écart de 0,1 J dû aux arrondis : l'énergie mécanique est bien conservée.</p>
+        </div>
+
+      </div><!-- /article-body -->
+
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Physique-Chimie Terminale</p>
+            <p class="cta-strip-heading">32 fiches PDF — cours, formules et méthodes sur une page par chapitre</p>
+          </div>
+          <a href="/physique-chimie-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Physique-chimie en ligne — 30 €/h, avec une polytechnicienne</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2 id="faq">Questions fréquentes</h2>
+        <div class="faq-item">
+          <h3>Faut-il connaître les équations horaires par cœur au bac de physique-chimie ?</h3>
+          <p>Oui. Elles ne figurent pas dans le formulaire distribué au bac : elles doivent être retrouvées par l'intégration de l'accélération. En pratique, il est plus fiable de les rétablir par le raisonnement (bilan des forces, deuxième loi de Newton, intégration) que de les réciter de mémoire.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Que faire quand l'énoncé mentionne des frottements ?</h3>
+          <p>Si les frottements ne sont pas négligés, l'accélération n'est plus égale à $\vec{g}$ seul. Il faut inclure la force de frottement dans le bilan, ce qui modifie les équations du mouvement. La conservation de l'énergie mécanique ne s'applique plus : on utilise le théorème de l'énergie cinétique. L'énoncé précise toujours si les frottements sont négligés ou non.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Comment trouver la portée du projectile ?</h3>
+          <p>La portée est la valeur de $x$ au moment où $z = 0$ à nouveau (après le lancement). On résout $z(t) = 0$ pour trouver la date d'impact $t_{\text{impact}}$, puis on calcule $x(t_{\text{impact}})$. Sans frottements, $t_{\text{impact}} = 2t^*$ (la trajectoire est symétrique autour du sommet).</p>
+        </div>
+      </div>
+
+      <div class="cta-strip">
+        <div class="cta-strip-text">
+          <p class="cta-strip-eyebrow">C'Réussite · Terminale Spé</p>
+          <p class="cta-strip-heading">32 fiches Physique-Chimie PDF — cours, formules et méthodes sur une page par chapitre</p>
+        </div>
+        <a href="/physique-chimie-terminale/" class="btn">Découvrir l'ebook →</a>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/blog/chapitres-bac-physique-chimie/">Bac physique-chimie 2026 : les chapitres qui tombent vraiment (79 sessions analysées)</a></li>
+          <li><a href="/blog/evolution-sujets-bac-physique-chimie-2024-2025/">Physique-chimie bac 2024 vs 2025 : ce qui a changé et ce que ça prédit pour 2026</a></li>
+          <li><a href="/blog/formules-physique-chimie-bac/">Les formules de physique-chimie qui tombent chaque année au bac</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/radioactivite-bac-terminale/">Radioactivité : loi de décroissance, désintégrations et datation</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/">Tous les guides physique-chimie Terminale</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt est diplômée de l'École polytechnique, docteure en sciences, et fondatrice de C'Réussite. Elle conçoit des fiches de révision structurées pour les élèves de Terminale spé maths et physique-chimie, et accompagne des élèves de la 6e au Master depuis plusieurs années. <a href="/a-propos/" style="color:var(--sapphire);font-weight:700;">En savoir plus →</a>
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>
