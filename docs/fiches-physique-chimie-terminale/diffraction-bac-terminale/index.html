@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  <title>Diffraction au bac de physique-chimie : formule, démonstration et calcul type | C'Réussite</title>
+  <meta name="description" content="Écart angulaire θ = λ/a, largeur de la tache centrale L = 2λD/a, démonstration en 3 étapes et exercice résolu de A à Z. Tout ce qu'il faut maîtriser sur la diffraction pour le bac de physique-chimie Terminale.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-physique-chimie-terminale/diffraction-bac-terminale/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-physique-chimie-terminale/diffraction-bac-terminale/">
+  <meta property="og:title" content="Diffraction au bac de physique-chimie : formule, démonstration et calcul type | C'Réussite">
+  <meta property="og:description" content="Les deux formules de la diffraction, la démonstration de L = 2λD/a en 3 étapes, un exercice résolu de A à Z et 4 pièges classiques.">
+  <meta property="og:site_name" content="C'Réussite">
+  <meta property="article:published_time" content="2026-06-08">
+  <meta property="article:author" content="Camille Reinhardt">
+  <meta property="article:section" content="Physique-Chimie Terminale Spécialité">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Diffraction au bac de physique-chimie : formule, démonstration et calcul type">
+  <meta name="twitter:description" content="Formules θ = λ/a et L = 2λD/a, démonstration en 3 étapes, exercice résolu de A à Z et 4 pièges classiques.">
+
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Diffraction au bac de physique-chimie : formule, démonstration et calcul type",
+        "description": "Écart angulaire θ = λ/a, largeur de la tache centrale L = 2λD/a, démonstration en 3 étapes et exercice résolu de A à Z. 4 pièges classiques sur la diffraction au bac.",
+        "datePublished": "2026-06-08",
+        "dateModified": "2026-06-08",
+        "author": { "@type": "Person", "name": "Camille Reinhardt", "url": "https://c-reussite.fr/a-propos/" },
+        "publisher": { "@type": "Organization", "name": "C'Réussite", "url": "https://c-reussite.fr" },
+        "mainEntityOfPage": "https://c-reussite.fr/fiches-physique-chimie-terminale/diffraction-bac-terminale/",
+        "articleSection": "Physique-Chimie Terminale Spécialité",
+        "educationalLevel": "Terminale",
+        "keywords": "diffraction bac physique terminale, écart angulaire diffraction formule, largeur tache centrale diffraction, démonstration L = 2 lambda D sur a, ondes lumineuses bac, physique chimie bac terminale"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://c-reussite.fr/" },
+          { "@type": "ListItem", "position": 2, "name": "Physique-Chimie Terminale", "item": "https://c-reussite.fr/fiches-physique-chimie-terminale/" },
+          { "@type": "ListItem", "position": 3, "name": "Diffraction", "item": "https://c-reussite.fr/fiches-physique-chimie-terminale/diffraction-bac-terminale/" }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Quelle est la condition pour observer la diffraction ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "La diffraction est observable quand la taille de l'ouverture a est du même ordre de grandeur que la longueur d'onde lambda, ou plus petite. Pour la lumière visible, lambda environ 400 à 700 nanomètres, cela correspond à des ouvertures de l'ordre du dixième de millimètre. Pour le son, les obstacles courants comme les portes ou les murs suffisent." }
+          },
+          {
+            "@type": "Question",
+            "name": "La formule theta = lambda/a est-elle toujours donnée dans l'énoncé ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Non. Elle est parfois fournie, mais l'énoncé peut aussi demander de l'utiliser ou de la retrouver par démonstration. Il faut la connaître par coeur, au même titre que les formules d'énergie cinétique ou de pH." }
+          },
+          {
+            "@type": "Question",
+            "name": "Comment mesurer la largeur d'un cheveu grâce à la diffraction ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "On utilise le cheveu comme obstacle : il produit une figure de diffraction identique à celle d'une fente de même largeur a. On mesure L et D, puis on isole a dans la formule : a = 2 lambda D / L. C'est une application classique qui montre qu'on comprend le sens physique du phénomène." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px;background:var(--swan-wing);color:var(--sapphire);margin-bottom:12px}
+    .article-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+    .article-header h1{font-size:clamp(1.45rem,3.5vw,1.95rem);line-height:1.25;margin-bottom:10px;color:var(--royal-blue)}
+    .article-meta{font-size:.85rem;color:#5C6475}
+    .article-intro{font-size:1.02rem;color:var(--text-mid);line-height:1.75;margin:20px 0 28px}
+    .article-body h2{font-size:1.2rem;margin-top:36px;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body h3{font-size:1.02rem;font-weight:700;margin-top:24px;margin-bottom:9px;color:var(--royal-blue)}
+    .article-body p{margin-bottom:14px;line-height:1.7;color:var(--text-mid)}
+    .article-body ul,.article-body ol{margin:0 0 14px 22px}
+    .article-body li{margin-bottom:6px;color:var(--text-mid);line-height:1.65}
+    .article-body table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.86rem}
+    .article-body th{background:var(--swan-wing);font-weight:600;text-align:left;padding:9px 12px;border:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body td{padding:9px 12px;border:1px solid #e5e7eb;vertical-align:top;color:var(--text-mid)}
+    .article-body tr:nth-child(even) td{background:#fafafa}
+    .article-body strong{color:var(--royal-blue);font-weight:700}
+    .callout{background:var(--swan-wing);border-left:3px solid var(--sapphire);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .callout p{margin:0;color:var(--text-mid)}
+    .formula-block{background:#f0f4ff;border-left:4px solid var(--royal-blue);border-radius:0 8px 8px 0;padding:10px 18px;margin:12px 0 16px;overflow-x:auto}
+    .katex-display{margin:0!important;overflow-x:auto}
+    .example-block{background:#f8f9fa;border-radius:8px;padding:14px 18px;margin:12px 0;border-left:3px solid var(--quicksand)}
+    .example-block p{margin:0 0 8px;color:var(--text-mid);font-size:.92rem}
+    .example-block p:last-child{margin:0}
+    .piege-list{background:#fff3f3;border-left:3px solid #e53e3e;border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .piege-list p{margin:0 0 10px;color:var(--text-mid);font-size:.9rem}
+    .piege-list p:last-child{margin:0}
+    .piege-list strong{color:#c0392b}
+    .step-row{display:flex;gap:14px;margin:16px 0}
+    .step-row-num{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--royal-blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem}
+    .step-row-body p{margin:0;font-size:.92rem}
+    .faq-section{margin-top:40px;padding-top:28px;border-top:2px solid #e5e7eb}
+    .faq-section>h2{font-size:1.15rem;margin-bottom:20px;padding-bottom:0;border-bottom:none}
+    .faq-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-item h3{font-size:.97rem;margin-top:0;margin-bottom:7px}
+    .faq-item p{margin:0}
+    .read-next{margin-top:36px;padding-top:24px;border-top:1px solid #e5e7eb}
+    .read-next h2{font-size:1rem;margin-bottom:12px;color:var(--royal-blue);border:none;padding:0;margin-top:0}
+    .read-next ul{list-style:none;padding:0;margin:0}
+    .read-next li{padding:6px 0;border-bottom:1px solid #f5f5f5}
+    .read-next li:last-child{border-bottom:none}
+    .read-next a{color:var(--sapphire);text-decoration:underline;font-size:.9rem}
+    .author-box{background:var(--swan-wing);border-radius:10px;padding:16px 20px;margin-top:28px;font-size:.86rem;color:var(--text-mid)}
+    .author-box strong{display:block;margin-bottom:5px;color:var(--royal-blue);font-size:.9rem}
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-physique-chimie-terminale/">Physique-Chimie Terminale</a><span class="bc-sep">›</span>
+      <span>Diffraction</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Physique-Chimie · Terminale</span>
+        <h1>Diffraction au bac : formule, démonstration et calcul type</h1>
+        <div class="article-meta">Publié le 8 juin 2026 &middot; Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">La diffraction tombe de façon cyclique au bac : forte en 2021, quasi absente en 2023, de retour depuis. Sur les sessions analysées entre 2021 et 2025, le thème apparaît dans environ 3 exercices par an en moyenne. Ce n'est pas le chapitre le plus fréquent, mais quand il tombe, les questions sont étonnamment répétitives. Deux formules, une démonstration, un calcul numérique : c'est à peu près tout ce que l'examen demande. Cette page couvre exactement cela.</p>
+
+      <div class="article-body">
+
+        <h2 id="phenomene">Ce qu'est la diffraction (et pourquoi c'est une preuve ondulatoire)</h2>
+
+        <p>Une onde se diffracte lorsqu'elle traverse une ouverture ou contourne un obstacle dont la taille est comparable à sa longueur d'onde. Au lieu de continuer en ligne droite, elle s'étale. Une onde rectiligne devient circulaire après une fente étroite : c'est le comportement clé à retenir.</p>
+
+        <p>Ce phénomène est important pour une raison précise : il prouve la nature ondulatoire d'un phénomène. La lumière se diffracte, donc la lumière est une onde. Les sons se diffractent, donc les sons sont des ondes. Si un énoncé demande de justifier que la lumière a un comportement ondulatoire, la diffraction est la réponse attendue.</p>
+
+        <div class="callout">
+          <p>Le phénomène est d'autant plus marqué que la largeur de l'ouverture (notée $a$) est petite devant la longueur d'onde $\lambda$. Si $a$ est très grande devant $\lambda$, la diffraction est négligeable et la lumière se propage en ligne droite : c'est le domaine de l'optique géométrique.</p>
+        </div>
+
+        <h2 id="formules">Les deux formules à maîtriser</h2>
+
+        <p>Tout exercice de diffraction au bac s'appuie sur les mêmes deux relations. Les connaître par cœur est non négociable.</p>
+
+        <table>
+          <thead><tr><th>Relation</th><th>Signification</th><th>Paramètres</th></tr></thead>
+          <tbody>
+            <tr><td>$\theta = \dfrac{\lambda}{a}$</td><td>Écart angulaire de la figure de diffraction</td><td>$\theta$ en rad, $\lambda$ en m, $a$ en m</td></tr>
+            <tr><td>$\theta = \dfrac{L}{2D}$</td><td>Géométrie de l'expérience (approximation des petits angles)</td><td>$L$ : largeur de la tache centrale (m), $D$ : distance fente-écran (m)</td></tr>
+          </tbody>
+        </table>
+
+        <p>En combinant les deux, on obtient la relation fondamentale :</p>
+        <div class="formula-block">$$\boxed{L = \dfrac{2\lambda D}{a}}$$</div>
+
+        <p>Cette formule relie la largeur de la tache centrale $L$ à la longueur d'onde $\lambda$, à la distance fente-écran $D$ et à la largeur de l'ouverture $a$. Elle n'est pas toujours donnée dans l'énoncé : il faut savoir la retrouver.</p>
+
+        <p><strong>Ce que la formule dit qualitativement :</strong></p>
+        <ul>
+          <li>Si $a$ diminue, $L$ augmente : une fente plus étroite donne une tache plus large</li>
+          <li>Si $\lambda$ augmente, $L$ augmente : la lumière rouge ($\lambda$ grande) se diffracte plus que la lumière bleue ($\lambda$ petite)</li>
+          <li>Si $D$ augmente, $L$ augmente : s'éloigner de l'écran étale la tache</li>
+        </ul>
+        <p>Ces trois effets sont souvent testés sous forme de questions qualitatives. Il faut pouvoir les justifier avec la formule.</p>
+
+        <h2 id="demonstration">Démontrer la formule $L = \frac{2\lambda D}{a}$ : la méthode en 3 étapes</h2>
+
+        <p>Au bac, on peut vous demander de retrouver cette expression. La démonstration suit toujours le même chemin.</p>
+
+        <div class="step-row">
+          <div class="step-row-num">1</div>
+          <div class="step-row-body"><p><strong>La géométrie.</strong> Dans le triangle rectangle formé par le faisceau entre la fente et l'écran, le côté opposé à l'angle $\theta$ vaut $L/2$ (la moitié de la tache centrale), et le côté adjacent est $D$. On a donc $\tan(\theta) = \dfrac{L/2}{D} = \dfrac{L}{2D}$.</p></div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">2</div>
+          <div class="step-row-body"><p><strong>L'approximation des petits angles.</strong> En diffraction, les angles rencontrés sont toujours très faibles. Pour de petits angles exprimés en radians, $\tan(\theta) \approx \theta$. On obtient $\theta = \dfrac{L}{2D}$.</p></div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">3</div>
+          <div class="step-row-body"><p><strong>La combinaison.</strong> On dispose de deux expressions pour $\theta$ : $\theta = \lambda/a$ (relation de diffraction) et $\theta = L/(2D)$ (géométrie). On les égalise :</p></div>
+        </div>
+
+        <div class="formula-block">$$\dfrac{\lambda}{a} = \dfrac{L}{2D} \implies L = \dfrac{2\lambda D}{a}$$</div>
+
+        <div class="callout">
+          <p>Deux points à ne pas oublier dans la rédaction : préciser que l'approximation des petits angles est justifiée car $\theta$ est faible, et s'assurer que toutes les grandeurs sont en mètres avant d'écrire la formule finale.</p>
+        </div>
+
+        <h2 id="calcul">Calcul type : un exercice complet de A à Z</h2>
+
+        <p><strong>Énoncé.</strong> Un laser rouge émet une lumière de longueur d'onde $\lambda = 635\;\text{nm}$. Il éclaire une fente verticale de largeur $a = 0{,}15\;\text{mm}$. Un écran est placé à $D = 2{,}00\;\text{m}$ de la fente. On observe une figure de diffraction et on mesure la largeur de la tache centrale : $L = 16{,}9\;\text{mm}$.</p>
+
+        <div class="example-block">
+          <p><strong>Question 1 : calculer la largeur théorique de la tache centrale et comparer à la mesure.</strong></p>
+          <p>On commence par convertir toutes les données en mètres, c'est l'étape que les copies négligent le plus souvent : $\lambda = 6{,}35 \times 10^{-7}\;\text{m}$, $a = 1{,}5 \times 10^{-4}\;\text{m}$, $D = 2{,}00\;\text{m}$.</p>
+          <p>$$L = \dfrac{2\lambda D}{a} = \dfrac{2 \times 6{,}35 \times 10^{-7} \times 2{,}00}{1{,}5 \times 10^{-4}} = 1{,}69 \times 10^{-2}\;\text{m} = \mathbf{16{,}9\;\text{mm}}$$</p>
+          <p>La valeur calculée coïncide avec la mesure expérimentale. Les résultats sont cohérents.</p>
+        </div>
+
+        <div class="example-block">
+          <p><strong>Question 2 : calculer l'écart angulaire $\theta$.</strong></p>
+          <p>On utilise l'une ou l'autre des deux expressions : elles donnent le même résultat.</p>
+          <p>$$\theta = \dfrac{\lambda}{a} = \dfrac{6{,}35 \times 10^{-7}}{1{,}5 \times 10^{-4}} = 4{,}2 \times 10^{-3}\;\text{rad}$$</p>
+          <p>Cet angle est bien petit (4,2 milliradians), ce qui valide a posteriori l'utilisation de l'approximation des petits angles.</p>
+        </div>
+
+        <div class="example-block">
+          <p><strong>Question 3 : qu'observe-t-on si on remplace le laser rouge par un laser vert ($\lambda \approx 530\;\text{nm}$) en gardant la même fente ?</strong></p>
+          <p>La longueur d'onde diminue (530 nm < 635 nm). D'après la formule $L = 2\lambda D/a$, si $\lambda$ diminue et que $a$ et $D$ restent constants, alors $L$ diminue. La tache centrale est donc plus étroite avec le laser vert.</p>
+        </div>
+
+        <h2 id="pieges">Les pièges qui coûtent des points</h2>
+
+        <div class="piege-list">
+          <p><strong>Erreur 1 : les unités.</strong> La longueur d'onde est presque toujours donnée en nanomètres dans l'énoncé, la largeur de fente en millimètres, la distance en mètres. Tout doit être converti en mètres avant le calcul. Un résultat aberrant vient presque toujours de là.</p>
+          <p><strong>Erreur 2 : confondre $a$ (la fente) et $L$ (la tache).</strong> Dans l'énoncé, $a$ est la grandeur qu'on contrôle (la fente) ; $L$ est ce qu'on observe (la tache). Les confondre dans la formule inverse tout le raisonnement.</p>
+          <p><strong>Erreur 3 : oublier le facteur 2.</strong> La relation $\theta = L/(2D)$ contient un 2 parce que $\theta$ est le demi-angle, du centre de la tache vers la première extinction. Oublier ce facteur donne un résultat deux fois trop petit.</p>
+          <p><strong>Erreur 4 : confondre diffraction et interférences.</strong> La diffraction, c'est l'étalement d'une onde à travers une ouverture unique (formule $\theta = \lambda/a$). Les interférences, c'est la superposition de deux ondes cohérentes (formule $i = \lambda D/b$). Ces deux phénomènes coexistent dans le dispositif de Young, mais les formules ne sont pas interchangeables.</p>
+        </div>
+
+      </div><!-- /article-body -->
+
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Physique-Chimie Terminale</p>
+            <p class="cta-strip-heading">32 fiches PDF — cours, formules et méthodes sur une page par chapitre</p>
+          </div>
+          <a href="/physique-chimie-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Physique-chimie en ligne — 30 €/h, avec une polytechnicienne</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2 id="faq">Questions fréquentes</h2>
+        <div class="faq-item">
+          <h3>Quelle est la condition pour observer la diffraction ?</h3>
+          <p>La diffraction est observable quand la taille de l'ouverture $a$ est du même ordre de grandeur que la longueur d'onde $\lambda$, ou plus petite. Pour la lumière visible ($\lambda \approx 400$ à $700\;\text{nm}$), cela signifie des ouvertures de l'ordre du dixième de millimètre. Pour le son ($\lambda \approx 0{,}1$ à $10\;\text{m}$), les obstacles courants (portes, murs) suffisent, ce qui explique qu'on entend un son derrière une porte ouverte sans en voir la source.</p>
+        </div>
+        <div class="faq-item">
+          <h3>La formule $\theta = \lambda/a$ est-elle toujours donnée dans l'énoncé ?</h3>
+          <p>Non. Il arrive qu'elle soit fournie, mais il arrive aussi qu'on vous demande de l'utiliser ou de la retrouver. Il faut la connaître par cœur, au même titre que les formules d'énergie cinétique ou de pH. C'est une des relations qui reviennent de façon cyclique au bac.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Comment mesurer la largeur d'un cheveu avec la diffraction ?</h3>
+          <p>On utilise le cheveu comme obstacle : il produit une figure de diffraction identique à celle d'une fente de même largeur $a$. On mesure $L$ et $D$, puis on isole $a$ dans la formule : $a = \dfrac{2\lambda D}{L}$. C'est une application classique et appréciée des examinateurs : elle montre qu'on comprend le sens physique du phénomène, pas seulement les calculs.</p>
+        </div>
+      </div>
+
+      <div class="cta-strip">
+        <div class="cta-strip-text">
+          <p class="cta-strip-eyebrow">C'Réussite · Terminale Spé</p>
+          <p class="cta-strip-heading">32 fiches Physique-Chimie PDF — cours, formules et méthodes sur une page par chapitre</p>
+        </div>
+        <a href="/physique-chimie-terminale/" class="btn">Découvrir l'ebook →</a>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/fiches-physique-chimie-terminale/interferences-ondes-bac-terminale/">Interférences et fentes d'Young : différence de marche, interfrange et exercice type</a></li>
+          <li><a href="/blog/formules-physique-chimie-bac/">Les formules de physique-chimie qui tombent chaque année au bac (données réelles)</a></li>
+          <li><a href="/blog/chapitres-bac-physique-chimie/">Bac physique-chimie 2026 : les chapitres qui tombent vraiment (79 sessions)</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/">Tous les guides physique-chimie Terminale</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt est diplômée de l'École polytechnique, docteure en sciences, et fondatrice de C'Réussite. Elle conçoit des fiches de révision structurées pour les élèves de Terminale spé maths et physique-chimie, et accompagne des élèves de la 6e au Master depuis plusieurs années. <a href="/a-propos/" style="color:var(--sapphire);font-weight:700;">En savoir plus →</a>
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  <title>Mécanique des fluides au bac : Bernoulli, débit, Archimède | C'Réussite</title>
+  <meta name="description" content="Conservation du débit, relation de Bernoulli, poussée d'Archimède : les 3 formules de la mécanique des fluides au bac, la démarche en 3 étapes et les 3 pièges classiques. Méthode complète pour Terminale spé physique-chimie.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-physique-chimie-terminale/mecanique-fluides-bac-terminale/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-physique-chimie-terminale/mecanique-fluides-bac-terminale/">
+  <meta property="og:title" content="Mécanique des fluides au bac : Bernoulli, débit, Archimède | C'Réussite">
+  <meta property="og:description" content="Les 3 formules de la mécanique des fluides au bac : conservation du débit, Bernoulli, Archimède. Démarche en 3 étapes et 3 pièges classiques sur les copies.">
+  <meta property="og:site_name" content="C'Réussite">
+  <meta property="article:published_time" content="2026-06-08">
+  <meta property="article:author" content="Camille Reinhardt">
+  <meta property="article:section" content="Physique-Chimie Terminale Spécialité">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Mécanique des fluides au bac : Bernoulli, débit, Archimède">
+  <meta name="twitter:description" content="Conservation du débit, Bernoulli, Archimède : les 3 formules, la démarche en 3 étapes et 3 pièges classiques.">
+
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Mécanique des fluides au bac : Bernoulli, débit, Archimède, méthode complète",
+        "description": "Conservation du débit, relation de Bernoulli, poussée d'Archimède : les 3 formules, la démarche en 3 étapes pour résoudre un exercice type, et les 3 pièges classiques sur les copies.",
+        "datePublished": "2026-06-08",
+        "dateModified": "2026-06-08",
+        "author": { "@type": "Person", "name": "Camille Reinhardt", "url": "https://c-reussite.fr/a-propos/" },
+        "publisher": { "@type": "Organization", "name": "C'Réussite", "url": "https://c-reussite.fr" },
+        "mainEntityOfPage": "https://c-reussite.fr/fiches-physique-chimie-terminale/mecanique-fluides-bac-terminale/",
+        "articleSection": "Physique-Chimie Terminale Spécialité",
+        "educationalLevel": "Terminale",
+        "keywords": "mécanique des fluides bac terminale, relation de Bernoulli bac, conservation du débit physique chimie, poussée d'Archimède terminale, fluide incompressible bac, physique chimie bac terminale"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://c-reussite.fr/" },
+          { "@type": "ListItem", "position": 2, "name": "Physique-Chimie Terminale", "item": "https://c-reussite.fr/fiches-physique-chimie-terminale/" },
+          { "@type": "ListItem", "position": 3, "name": "Mécanique des fluides", "item": "https://c-reussite.fr/fiches-physique-chimie-terminale/mecanique-fluides-bac-terminale/" }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Pourquoi la pression chute-t-elle au niveau d'une sténose dans une artère ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Une sténose est un rétrécissement de l'artère. La conservation du débit impose que la vitesse augmente là où la section diminue. Or d'après la relation de Bernoulli, si la vitesse augmente, la pression doit diminuer pour que la somme P + un demi rho v carré reste constante. C'est ce mécanisme qui peut provoquer un effondrement de la paroi artérielle dans les cas pathologiques." }
+          },
+          {
+            "@type": "Question",
+            "name": "Comment un poisson règle-t-il sa flottaison grâce à sa vessie natatoire ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "La vessie natatoire est une poche de gaz dont le poisson peut ajuster le volume. En la gonflant, le volume immergé de son corps augmente, donc la poussée d'Archimède augmente, et le poisson monte. En la dégonflant, il descend. C'est un exemple direct de pilotage de l'équilibre entre poids et poussée." }
+          },
+          {
+            "@type": "Question",
+            "name": "La relation de Bernoulli s'applique-t-elle à l'air ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Oui, dans les conditions du bac. L'air se comporte comme un fluide incompressible tant que sa vitesse reste faible devant la vitesse du son, environ 340 mètres par seconde. Dans les exercices de terminale, les vitesses considérées sont très largement en dessous de ce seuil, donc la relation de Bernoulli s'applique." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px;background:var(--swan-wing);color:var(--sapphire);margin-bottom:12px}
+    .article-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+    .article-header h1{font-size:clamp(1.45rem,3.5vw,1.95rem);line-height:1.25;margin-bottom:10px;color:var(--royal-blue)}
+    .article-meta{font-size:.85rem;color:#5C6475}
+    .article-intro{font-size:1.02rem;color:var(--text-mid);line-height:1.75;margin:20px 0 28px}
+    .article-body h2{font-size:1.2rem;margin-top:36px;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body h3{font-size:1.02rem;font-weight:700;margin-top:24px;margin-bottom:9px;color:var(--royal-blue)}
+    .article-body p{margin-bottom:14px;line-height:1.7;color:var(--text-mid)}
+    .article-body ul,.article-body ol{margin:0 0 14px 22px}
+    .article-body li{margin-bottom:6px;color:var(--text-mid);line-height:1.65}
+    .article-body table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.86rem}
+    .article-body th{background:var(--swan-wing);font-weight:600;text-align:left;padding:9px 12px;border:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body td{padding:9px 12px;border:1px solid #e5e7eb;vertical-align:top;color:var(--text-mid)}
+    .article-body tr:nth-child(even) td{background:#fafafa}
+    .article-body strong{color:var(--royal-blue);font-weight:700}
+    .callout{background:var(--swan-wing);border-left:3px solid var(--sapphire);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .callout p{margin:0;color:var(--text-mid)}
+    .formula-block{background:#f0f4ff;border-left:4px solid var(--royal-blue);border-radius:0 8px 8px 0;padding:10px 18px;margin:12px 0 16px;overflow-x:auto}
+    .katex-display{margin:0!important;overflow-x:auto}
+    .example-block{background:#f8f9fa;border-radius:8px;padding:14px 18px;margin:12px 0;border-left:3px solid var(--quicksand)}
+    .example-block p{margin:0 0 8px;color:var(--text-mid);font-size:.92rem}
+    .example-block p:last-child{margin:0}
+    .piege-list{background:#fff3f3;border-left:3px solid #e53e3e;border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .piege-list p{margin:0 0 10px;color:var(--text-mid);font-size:.9rem}
+    .piege-list p:last-child{margin:0}
+    .piege-list strong{color:#c0392b}
+    .step-row{display:flex;gap:14px;margin:16px 0}
+    .step-row-num{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--royal-blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem}
+    .step-row-body p{margin:0;font-size:.92rem}
+    .faq-section{margin-top:40px;padding-top:28px;border-top:2px solid #e5e7eb}
+    .faq-section>h2{font-size:1.15rem;margin-bottom:20px;padding-bottom:0;border-bottom:none}
+    .faq-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-item h3{font-size:.97rem;margin-top:0;margin-bottom:7px}
+    .faq-item p{margin:0}
+    .read-next{margin-top:36px;padding-top:24px;border-top:1px solid #e5e7eb}
+    .read-next h2{font-size:1rem;margin-bottom:12px;color:var(--royal-blue);border:none;padding:0;margin-top:0}
+    .read-next ul{list-style:none;padding:0;margin:0}
+    .read-next li{padding:6px 0;border-bottom:1px solid #f5f5f5}
+    .read-next li:last-child{border-bottom:none}
+    .read-next a{color:var(--sapphire);text-decoration:underline;font-size:.9rem}
+    .author-box{background:var(--swan-wing);border-radius:10px;padding:16px 20px;margin-top:28px;font-size:.86rem;color:var(--text-mid)}
+    .author-box strong{display:block;margin-bottom:5px;color:var(--royal-blue);font-size:.9rem}
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-physique-chimie-terminale/">Physique-Chimie Terminale</a><span class="bc-sep">›</span>
+      <span>Mécanique des fluides</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Physique-Chimie · Terminale</span>
+        <h1>Mécanique des fluides au bac : Bernoulli, débit, Archimède</h1>
+        <div class="article-meta">Publié le 8 juin 2026 &middot; Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">En 2024, la mécanique des fluides n'a donné lieu qu'à un seul exercice au bac. En 2025, ce chiffre est passé à six, soit l'un des chapitres les plus traités de la session. Ce bond a surpris une partie des candidats, qui avaient relégué ce chapitre au rang du "à voir si j'ai le temps". Les contextes variaient : sang dans une artère sténosée, dirigeable, aérateur de robinet, prise de tension artérielle, poisson et sa vessie natatoire, débit d'eau dans une centrale. Mais dans tous les cas, les formules mobilisées étaient les mêmes trois. C'est sur ces trois formules, et sur leur ordre d'utilisation, que cette page est construite.</p>
+
+      <div class="article-body">
+
+        <h2 id="cadre">Le cadre du chapitre : ce qu'il faut avoir en tête</h2>
+
+        <p>La mécanique des fluides au bac repose sur un modèle simplifié : le <strong>fluide parfait, incompressible, en régime permanent</strong>. Ces trois conditions sont presque toujours vérifiées implicitement dans les énoncés, inutile de les justifier à chaque fois, mais il faut savoir ce qu'elles signifient si la question est posée.</p>
+
+        <table>
+          <thead><tr><th>Condition</th><th>Signification</th><th>En pratique</th></tr></thead>
+          <tbody>
+            <tr><td>Fluide parfait</td><td>Viscosité négligeable (pas de frottements internes)</td><td>Eau, air dans les contextes de bac</td></tr>
+            <tr><td>Incompressible</td><td>Masse volumique $\rho$ constante</td><td>Tous les liquides ; les gaz à faible vitesse</td></tr>
+            <tr><td>Régime permanent</td><td>La vitesse en un point donné ne varie pas dans le temps</td><td>Écoulement stable, pas de turbulences</td></tr>
+          </tbody>
+        </table>
+
+        <p>Ces conditions sont les conditions d'application de la relation de Bernoulli. Dès qu'un exercice parle de fluide en mouvement dans une conduite, c'est ce cadre qui s'applique.</p>
+
+        <h2 id="debit">Formule 1 : la conservation du débit</h2>
+
+        <p>C'est la première formule à mobiliser dans presque tous les exercices de mécanique des fluides. Elle précède Bernoulli, parce qu'elle permet de calculer des vitesses, et Bernoulli a besoin des vitesses.</p>
+
+        <p>Le débit volumique $D_V$ est le volume de fluide qui traverse une section par unité de temps.</p>
+        <div class="formula-block">$$D_V = S \times v$$</div>
+        <p>avec $S$ la section du conduit en m², $v$ la vitesse du fluide en m/s, et $D_V$ en m³/s.</p>
+
+        <p><strong>Conservation du débit.</strong> Pour un fluide incompressible en régime permanent, le débit se conserve tout le long de la conduite. Si la section rétrécit, la vitesse augmente, et inversement.</p>
+        <div class="formula-block">$$\boxed{S_1 \times v_1 = S_2 \times v_2}$$</div>
+        <p>C'est l'équation de continuité. Elle explique pourquoi l'eau sort plus vite quand on pince l'extrémité d'un tuyau d'arrosage, pourquoi le sang accélère dans une artère rétrécie, pourquoi l'air s'emballe dans le col d'un aérateur de robinet.</p>
+
+        <table>
+          <thead><tr><th>Unité donnée</th><th>Conversion</th></tr></thead>
+          <tbody>
+            <tr><td>1 L</td><td>$10^{-3}\;\text{m}^3$</td></tr>
+            <tr><td>1 cm²</td><td>$10^{-4}\;\text{m}^2$</td></tr>
+            <tr><td>1 L/min</td><td>$\dfrac{1}{60} \times 10^{-3} \approx 1{,}67 \times 10^{-5}\;\text{m}^3/\text{s}$</td></tr>
+          </tbody>
+        </table>
+        <p>Pour une section circulaire de diamètre $d$ : $S = \pi \left(\dfrac{d}{2}\right)^2$. Cela revient fréquemment quand l'énoncé donne le diamètre d'une artère ou d'une conduite.</p>
+
+        <h2 id="bernoulli">Formule 2 : la relation de Bernoulli</h2>
+
+        <p>Une fois les vitesses connues, Bernoulli permet de calculer des pressions, ou de justifier pourquoi une pression change quand une vitesse change.</p>
+
+        <p>Pour un fluide parfait, incompressible, en régime permanent, la somme suivante est constante le long d'une ligne de courant :</p>
+        <div class="formula-block">$$P + \dfrac{1}{2}\rho v^2 + \rho g z = \text{constante}$$</div>
+
+        <p>Pour deux points A et B d'une même ligne de courant :</p>
+        <div class="formula-block">$$P_A + \dfrac{1}{2}\rho v_A^2 + \rho g z_A = P_B + \dfrac{1}{2}\rho v_B^2 + \rho g z_B$$</div>
+
+        <table>
+          <thead><tr><th>Terme</th><th>Nom</th><th>Ce qu'il représente</th><th>Unité</th></tr></thead>
+          <tbody>
+            <tr><td>$P$</td><td>Pression statique</td><td>Énergie potentielle des forces pressantes</td><td>Pa</td></tr>
+            <tr><td>$\frac{1}{2}\rho v^2$</td><td>Pression dynamique</td><td>Énergie cinétique volumique</td><td>Pa</td></tr>
+            <tr><td>$\rho g z$</td><td>Pression hydrostatique</td><td>Énergie potentielle de pesanteur volumique</td><td>Pa</td></tr>
+          </tbody>
+        </table>
+
+        <p><strong>Cas courant : conduite horizontale.</strong> Quand les deux points sont à la même altitude ($z_A = z_B$), les termes $\rho g z$ se simplifient et Bernoulli se réduit à :</p>
+        <div class="formula-block">$$P_A + \dfrac{1}{2}\rho v_A^2 = P_B + \dfrac{1}{2}\rho v_B^2$$</div>
+        <p>C'est l'effet Venturi : si la vitesse augmente (section rétrécie), la pression diminue. C'est ce phénomène qui est mobilisé dans les exercices sur les artères sténosées, les aérateurs de robinet, ou la portance d'une aile.</p>
+
+        <div class="callout">
+          <p><strong>La formule de Torricelli.</strong> Un cas particulier de Bernoulli apparaît quand on calcule la vitesse de sortie d'un réservoir ouvert à l'atmosphère, avec une ouverture petite par rapport à la surface libre. En posant $v_{\text{surface}} \approx 0$, $P_A = P_B = P_{\text{atm}}$ et $z_A - z_B = h$ : $$v_{\text{sortie}} = \sqrt{2gh}$$ où $h$ est la hauteur de fluide au-dessus de l'orifice.</p>
+        </div>
+
+        <h2 id="archimede">Formule 3 : la poussée d'Archimède</h2>
+
+        <p>La poussée d'Archimède relève de la statique des fluides (fluide au repos), pas de la dynamique. Elle apparaît dans les exercices sur les dirigeables, les sous-marins, les poissons et leur vessie natatoire, les ballons-sondes.</p>
+
+        <p>Tout corps plongé dans un fluide subit une force verticale dirigée vers le haut, appelée poussée d'Archimède, dont l'intensité est égale au poids du volume de fluide déplacé.</p>
+        <div class="formula-block">$$\Pi = \rho_{\text{fluide}} \times V_{\text{immergé}} \times g$$</div>
+        <p>avec $\rho_{\text{fluide}}$ en kg/m³, $V_{\text{immergé}}$ en m³, $g = 9{,}81\;\text{m/s}^2$, et $\Pi$ en newtons.</p>
+
+        <p><strong>Conditions de flottaison.</strong> Le comportement d'un objet dans un fluide dépend de la comparaison entre son poids $P = \rho_{\text{objet}} V g$ et la poussée $\Pi = \rho_{\text{fluide}} V g$.</p>
+
+        <table>
+          <thead><tr><th>Situation</th><th>Condition</th><th>Résultat</th></tr></thead>
+          <tbody>
+            <tr><td>L'objet coule</td><td>$\rho_{\text{objet}} > \rho_{\text{fluide}}$</td><td>Poids supérieur à la poussée</td></tr>
+            <tr><td>L'objet est en équilibre</td><td>$\rho_{\text{objet}} = \rho_{\text{fluide}}$</td><td>Poids égal à la poussée</td></tr>
+            <tr><td>L'objet flotte (ou monte)</td><td>$\rho_{\text{objet}} < \rho_{\text{fluide}}$</td><td>Poussée supérieure au poids</td></tr>
+          </tbody>
+        </table>
+
+        <p>Pour un objet partiellement immergé (bateau, iceberg), l'équilibre impose que le poids total soit égal au poids du volume de fluide déplacé par la partie immergée seulement : $P_{\text{objet}} = \rho_{\text{fluide}} \times V_{\text{immergé}} \times g$.</p>
+
+        <h2 id="demarche">La démarche type d'un exercice de bac</h2>
+
+        <p>Les exercices de mécanique des fluides suivent presque toujours le même enchaînement. Voici l'ordre dans lequel mobiliser les outils.</p>
+
+        <div class="step-row">
+          <div class="step-row-num">1</div>
+          <div class="step-row-body"><p><strong>Lire le débit, calculer les vitesses avec la conservation du débit.</strong> Si l'énoncé donne $D_V$ et deux sections $S_1$ et $S_2$, calculer $v_1 = D_V / S_1$ et $v_2 = D_V / S_2$. Attention aux conversions d'unités.</p></div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">2</div>
+          <div class="step-row-body"><p><strong>Calculer des pressions avec Bernoulli.</strong> Identifier les deux points à comparer. Vérifier si les altitudes sont égales (ce qui simplifie le calcul). Écrire l'équation de Bernoulli entre ces deux points, puis isoler l'inconnue.</p></div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">3</div>
+          <div class="step-row-body"><p><strong>Analyser la flottaison avec Archimède si le problème implique un objet immergé.</strong> Écrire le bilan des forces (poids, poussée, éventuelles autres forces). Poser l'équation d'équilibre si l'objet est statique.</p></div>
+        </div>
+
+        <p>Ces trois étapes couvrent la structure de la quasi-totalité des exercices de mécanique des fluides publiés ces dernières années.</p>
+
+        <h2 id="pieges">Les trois pièges que les correcteurs voient le plus souvent</h2>
+
+        <div class="piege-list">
+          <p><strong>Piège 1 : oublier de convertir les unités avant de calculer.</strong> L'équation de Bernoulli exige des Pa, des kg/m³, des m/s et des mètres. Un débit donné en L/min et une section en cm² non convertis donnent un résultat faux, même si la démarche est juste. C'est l'erreur la plus fréquente et la plus coûteuse.</p>
+          <p><strong>Piège 2 : appliquer Bernoulli à des points qui ne sont pas sur la même ligne de courant.</strong> La relation n'est valide qu'entre deux points que la même particule fluide peut atteindre. En pratique au bac, cela signifie : deux points dans la même conduite, sur le même trajet d'écoulement.</p>
+          <p><strong>Piège 3 : confondre volume immergé et volume total pour Archimède.</strong> Si l'objet n'est qu'à moitié immergé, c'est le volume immergé qui entre dans le calcul, pas le volume total de l'objet. L'énoncé le précise généralement, mais il faut le lire attentivement.</p>
+        </div>
+
+      </div><!-- /article-body -->
+
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Physique-Chimie Terminale</p>
+            <p class="cta-strip-heading">32 fiches PDF — cours, formules et méthodes sur une page par chapitre</p>
+          </div>
+          <a href="/physique-chimie-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Physique-chimie en ligne — 30 €/h, avec une polytechnicienne</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2 id="faq">Questions fréquentes</h2>
+        <div class="faq-item">
+          <h3>Pourquoi la pression chute-t-elle au niveau d'une sténose dans une artère ?</h3>
+          <p>Une sténose est un rétrécissement de l'artère. La conservation du débit impose que la vitesse augmente là où la section diminue ($S_1 v_1 = S_2 v_2$). Or, d'après Bernoulli, si la vitesse augmente, la pression doit diminuer pour que la somme $P + \frac{1}{2}\rho v^2$ reste constante. C'est précisément ce mécanisme qui peut provoquer un effondrement de la paroi artérielle dans les cas pathologiques.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Comment un poisson règle-t-il sa flottaison grâce à sa vessie natatoire ?</h3>
+          <p>La vessie natatoire est une poche de gaz dont le poisson peut ajuster le volume. Quand il gonfle sa vessie, le volume immergé de son corps augmente : la chair reste la même, mais la poche de gaz remplace du fluide dense, donc la poussée d'Archimède $\Pi = \rho_{\text{eau}} V_{\text{immergé}} g$ augmente, et le poisson monte. En dégonflant, il descend.</p>
+        </div>
+        <div class="faq-item">
+          <h3>La relation de Bernoulli s'applique-t-elle à l'air ?</h3>
+          <p>Oui, dans les conditions du bac. L'air se comporte comme un fluide incompressible tant que sa vitesse reste faible devant la vitesse du son (environ 340 m/s). Dans les exercices de Terminale, les vitesses considérées sont très largement en dessous de ce seuil : Bernoulli s'applique donc, ce qui permet de traiter les exercices sur les dirigeables, les ailes d'avion ou les aérateurs.</p>
+        </div>
+      </div>
+
+      <div class="cta-strip">
+        <div class="cta-strip-text">
+          <p class="cta-strip-eyebrow">C'Réussite · Terminale Spé</p>
+          <p class="cta-strip-heading">32 fiches Physique-Chimie PDF — cours, formules et méthodes sur une page par chapitre</p>
+        </div>
+        <a href="/physique-chimie-terminale/" class="btn">Découvrir l'ebook →</a>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/fiches-physique-chimie-terminale/energies-cinetique-potentielle-mecanique-bac-terminale/">Énergie cinétique, potentielle et mécanique : formules et méthode</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/mouvement-champ-pesanteur-bac-terminale/">Mouvement dans un champ de pesanteur : équations horaires et méthode</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/charge-decharge-condensateur-bac-terminale/">Charge et décharge d'un condensateur : équation différentielle et méthode</a></li>
+          <li><a href="/blog/formules-physique-chimie-bac/">Les formules de physique-chimie qui tombent chaque année au bac (données réelles)</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/">Tous les guides physique-chimie Terminale</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt est diplômée de l'École polytechnique, docteure en sciences, et fondatrice de C'Réussite. Elle conçoit des fiches de révision structurées pour les élèves de Terminale spé maths et physique-chimie, et accompagne des élèves de la 6e au Master depuis plusieurs années. <a href="/a-propos/" style="color:var(--sapphire);font-weight:700;">En savoir plus →</a>
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>
