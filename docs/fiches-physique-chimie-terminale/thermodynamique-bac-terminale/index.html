@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  <title>Thermodynamique au bac : premier principe, résistance thermique et flux | C'Réussite</title>
+  <meta name="description" content="Premier principe, énergie interne, résistance thermique et flux thermique : les 3 formules du bac, la méthode en 3 étapes, un exercice résolu sur un mur composite et 3 pièges classiques.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-physique-chimie-terminale/thermodynamique-bac-terminale/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-physique-chimie-terminale/thermodynamique-bac-terminale/">
+  <meta property="og:title" content="Thermodynamique au bac : premier principe, résistance thermique et flux | C'Réussite">
+  <meta property="og:description" content="Les 3 formules de la thermodynamique au bac, la méthode en 3 étapes pour les parois, un exercice résolu sur un mur composite et 3 pièges classiques.">
+  <meta property="og:site_name" content="C'Réussite">
+  <meta property="article:published_time" content="2026-06-10">
+  <meta property="article:author" content="Camille Reinhardt">
+  <meta property="article:section" content="Physique-Chimie Terminale Spécialité">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Thermodynamique au bac : premier principe, résistance thermique et flux">
+  <meta name="twitter:description" content="Les 3 formules de la thermodynamique, méthode en 3 étapes, exercice résolu sur un mur composite, 3 pièges classiques.">
+
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Thermodynamique au bac : premier principe, résistance thermique et flux thermique",
+        "description": "Premier principe, énergie interne, résistance thermique Rth = e/(λS), flux Φ = ΔT/Rth : les 3 formules de la thermodynamique au bac, la méthode en 3 étapes, un exercice résolu et 3 pièges classiques.",
+        "datePublished": "2026-06-10",
+        "dateModified": "2026-06-10",
+        "author": { "@type": "Person", "name": "Camille Reinhardt", "url": "https://c-reussite.fr/a-propos/" },
+        "publisher": { "@type": "Organization", "name": "C'Réussite", "url": "https://c-reussite.fr" },
+        "mainEntityOfPage": "https://c-reussite.fr/fiches-physique-chimie-terminale/thermodynamique-bac-terminale/",
+        "articleSection": "Physique-Chimie Terminale Spécialité",
+        "educationalLevel": "Terminale",
+        "keywords": "thermodynamique bac terminale, premier principe thermodynamique bac, résistance thermique formule, flux thermique terminale, énergie interne calcul, bilan énergie physique chimie bac"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://c-reussite.fr/" },
+          { "@type": "ListItem", "position": 2, "name": "Physique-Chimie Terminale", "item": "https://c-reussite.fr/fiches-physique-chimie-terminale/" },
+          { "@type": "ListItem", "position": 3, "name": "Thermodynamique", "item": "https://c-reussite.fr/fiches-physique-chimie-terminale/thermodynamique-bac-terminale/" }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Peut-on exprimer ΔT en degrés Celsius ou faut-il des kelvins ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Pour un écart de température comme dans ΔU = mcΔT ou Φ = ΔT/Rth, les deux unités sont équivalentes : une variation de 1 °C correspond exactement à une variation de 1 K. En revanche, pour la loi de Stefan-Boltzmann, c'est la température absolue en kelvins qui entre dans la formule. La conversion est T(K) = θ(°C) + 273,15." }
+          },
+          {
+            "@type": "Question",
+            "name": "Comment interpréter physiquement la résistance thermique ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "La résistance thermique mesure l'opposition d'une paroi au passage du flux de chaleur. Plus Rth est grande, plus la paroi isole bien. L'analogie avec la loi d'Ohm est exacte : ΔT joue le rôle de la tension, Φ celui du courant, Rth celui de la résistance électrique. Cela permet de traiter les parois composites comme des résistances en série." }
+          },
+          {
+            "@type": "Question",
+            "name": "Qu'est-ce qu'une pompe à chaleur et comment la thermodynamique s'applique ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Une pompe à chaleur transfère de l'énergie thermique d'un milieu froid vers un milieu chaud en fournissant du travail électrique. Le bilan d'énergie s'écrit : Q chaud = Q froid + W. Le coefficient de performance est COP = Q chaud / W : c'est ce rapport que le bac demande souvent de calculer et d'interpréter." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px;background:var(--swan-wing);color:var(--sapphire);margin-bottom:12px}
+    .article-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+    .article-header h1{font-size:clamp(1.45rem,3.5vw,1.95rem);line-height:1.25;margin-bottom:10px;color:var(--royal-blue)}
+    .article-meta{font-size:.85rem;color:#5C6475}
+    .article-intro{font-size:1.02rem;color:var(--text-mid);line-height:1.75;margin:20px 0 28px}
+    .article-body h2{font-size:1.2rem;margin-top:36px;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body h3{font-size:1.02rem;font-weight:700;margin-top:24px;margin-bottom:9px;color:var(--royal-blue)}
+    .article-body p{margin-bottom:14px;line-height:1.7;color:var(--text-mid)}
+    .article-body ul,.article-body ol{margin:0 0 14px 22px}
+    .article-body li{margin-bottom:6px;color:var(--text-mid);line-height:1.65}
+    .article-body table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.86rem}
+    .article-body th{background:var(--swan-wing);font-weight:600;text-align:left;padding:9px 12px;border:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body td{padding:9px 12px;border:1px solid #e5e7eb;vertical-align:top;color:var(--text-mid)}
+    .article-body tr:nth-child(even) td{background:#fafafa}
+    .article-body strong{color:var(--royal-blue);font-weight:700}
+    .callout{background:var(--swan-wing);border-left:3px solid var(--sapphire);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .callout p{margin:0;color:var(--text-mid)}
+    .formula-block{background:#f0f4ff;border-left:4px solid var(--royal-blue);border-radius:0 8px 8px 0;padding:10px 18px;margin:12px 0 16px;overflow-x:auto}
+    .katex-display{margin:0!important;overflow-x:auto}
+    .example-block{background:#f8f9fa;border-radius:8px;padding:14px 18px;margin:12px 0;border-left:3px solid var(--quicksand)}
+    .example-block p{margin:0 0 8px;color:var(--text-mid);font-size:.92rem}
+    .example-block p:last-child{margin:0}
+    .piege-list{background:#fff3f3;border-left:3px solid #e53e3e;border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .piege-list p{margin:0 0 10px;color:var(--text-mid);font-size:.9rem}
+    .piege-list p:last-child{margin:0}
+    .piege-list strong{color:#c0392b}
+    .step-row{display:flex;gap:14px;margin:16px 0}
+    .step-row-num{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--royal-blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem}
+    .step-row-body p{margin:0;font-size:.92rem}
+    .faq-section{margin-top:40px;padding-top:28px;border-top:2px solid #e5e7eb}
+    .faq-section>h2{font-size:1.15rem;margin-bottom:20px;padding-bottom:0;border-bottom:none}
+    .faq-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-item h3{font-size:.97rem;margin-top:0;margin-bottom:7px}
+    .faq-item p{margin:0}
+    .read-next{margin-top:36px;padding-top:24px;border-top:1px solid #e5e7eb}
+    .read-next h2{font-size:1rem;margin-bottom:12px;color:var(--royal-blue);border:none;padding:0;margin-top:0}
+    .read-next ul{list-style:none;padding:0;margin:0}
+    .read-next li{padding:6px 0;border-bottom:1px solid #f5f5f5}
+    .read-next li:last-child{border-bottom:none}
+    .read-next a{color:var(--sapphire);text-decoration:underline;font-size:.9rem}
+    .author-box{background:var(--swan-wing);border-radius:10px;padding:16px 20px;margin-top:28px;font-size:.86rem;color:var(--text-mid)}
+    .author-box strong{display:block;margin-bottom:5px;color:var(--royal-blue);font-size:.9rem}
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-physique-chimie-terminale/">Physique-Chimie Terminale</a><span class="bc-sep">›</span>
+      <span>Thermodynamique</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Physique-Chimie · Terminale</span>
+        <h1>Thermodynamique au bac : bilan d'énergie, résistance thermique et flux</h1>
+        <div class="article-meta">Publié le 10 juin 2026 &middot; Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">La thermodynamique est passée de 4 exercices au bac en 2024 à 6 en 2025. Le chapitre coche toutes les cases d'un exercice bien construit : contextes applicatifs variés (isolation d'une maison, chauffe-eau solaire, pompe à chaleur, centrale thermique), calculs linéaires, pas d'équation différentielle. Un exercice complet vaut 4 à 6 points, et les formules mobilisées sont toujours les mêmes trois. C'est l'un des meilleurs rapports investissement/rendement du programme. Cette page les détaille dans l'ordre dans lequel un exercice de bac les mobilise.</p>
+
+      <div class="article-body">
+
+        <h2 id="formules">Les formules à connaître : récapitulatif</h2>
+
+        <p>Avant d'entrer dans la méthode, voici les trois formules qui couvrent la quasi-totalité des exercices du chapitre. Elles sont courtes. Le vrai travail, c'est de savoir laquelle utiliser à quel moment.</p>
+
+        <table>
+          <thead><tr><th>Formule</th><th>Nom</th><th>Ce qu'elle calcule</th><th>Unités</th></tr></thead>
+          <tbody>
+            <tr><td>$\Delta U = m \cdot c \cdot \Delta T$</td><td>Variation d'énergie interne</td><td>L'énergie absorbée ou perdue par un solide/liquide</td><td>J</td></tr>
+            <tr><td>$R_{th} = \dfrac{e}{\lambda \cdot S}$</td><td>Résistance thermique</td><td>L'opposition d'une paroi au passage de la chaleur</td><td>K&middot;W<sup>-1</sup></td></tr>
+            <tr><td>$\Phi = \dfrac{\Delta T}{R_{th}}$</td><td>Flux thermique</td><td>La puissance thermique échangée à travers une paroi</td><td>W</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <p>La relation $\Delta U = W + Q$ (premier principe) s'ajoute à ces trois formules pour les exercices qui demandent un bilan d'énergie complet. Dans la plupart des cas au bac, $W = 0$ (système incompressible, pas de travail mécanique), donc $\Delta U = Q$.</p>
+        </div>
+
+        <h2 id="premier-principe">Le premier principe et l'énergie interne</h2>
+
+        <p>L'énergie interne $U$ est l'énergie stockée à l'échelle microscopique : agitation des molécules, interactions entre entités. Elle ne se confond pas avec l'énergie mécanique (cinétique, potentielle) : un verre d'eau posé immobile sur une table a une énergie mécanique nulle et une énergie interne non nulle.</p>
+
+        <p>Le premier principe dit que la variation d'énergie interne d'un système fermé au repos est égale à la somme des échanges d'énergie avec l'extérieur :</p>
+
+        <div class="formula-block">$$\Delta U = W + Q$$</div>
+
+        <p>avec $W$ le travail reçu (énergie électrique, mécanique...) et $Q$ le transfert thermique reçu. La convention est : positif = reçu par le système, négatif = cédé.</p>
+
+        <p>Pour les <strong>solides et les liquides</strong> (systèmes incompressibles), le volume ne varie pas, donc $W = 0$. La variation d'énergie interne se réduit à :</p>
+
+        <div class="formula-block">$$\Delta U = m \cdot c \cdot \Delta T$$</div>
+
+        <p>avec $m$ la masse en kg, $c$ la capacité thermique massique en J&middot;kg<sup>-1</sup>&middot;K<sup>-1</sup> (donnée dans l'énoncé), et $\Delta T = T_f - T_i$ en °C ou en K (les deux sont équivalents pour un écart de température).</p>
+
+        <div class="callout">
+          <p><strong>Ce que le correcteur attend :</strong> si $\Delta U > 0$, conclure que le système a reçu de l'énergie et que son agitation microscopique a augmenté. Si $\Delta U < 0$, il a cédé de l'énergie.</p>
+        </div>
+
+        <h2 id="resistance-flux">Résistance thermique et flux : la méthode pour les parois</h2>
+
+        <p>Les exercices sur l'isolation d'un bâtiment, le vitrage ou un chauffe-eau solaire mobilisent systématiquement la même paire de formules.</p>
+
+        <div class="step-row">
+          <div class="step-row-num">1</div>
+          <div class="step-row-body"><p><strong>Calculer la résistance thermique de la paroi.</strong> $R_{th} = \dfrac{e}{\lambda \cdot S}$, avec $e$ l'épaisseur en m, $\lambda$ la conductivité thermique du matériau en W&middot;m<sup>-1</sup>&middot;K<sup>-1</sup>, et $S$ la surface en m². Plus $\lambda$ est faible, plus le matériau est isolant : la laine de verre ($\lambda \approx 0{,}04$) isole bien davantage que le béton ($\lambda \approx 1{,}75$).</p></div>
+        </div>
+
+        <div class="step-row">
+          <div class="step-row-num">2</div>
+          <div class="step-row-body"><p><strong>Calculer le flux thermique.</strong> $\Phi = \dfrac{\Delta T}{R_{th}} = \dfrac{T_{\text{chaud}} - T_{\text{froid}}}{R_{th}}$. Le flux est une puissance (en watts) : il mesure la vitesse à laquelle la chaleur traverse la paroi.</p></div>
+        </div>
+
+        <div class="step-row">
+          <div class="step-row-num">3</div>
+          <div class="step-row-body"><p><strong>Calculer l'énergie échangée sur une durée $\Delta t$.</strong> $Q = \Phi \cdot \Delta t$, avec $\Delta t$ en secondes et $Q$ en joules.</p></div>
+        </div>
+
+        <p><strong>Cas des parois composites (couches successives).</strong> Quand une paroi est constituée de plusieurs matériaux superposés, les résistances thermiques s'additionnent, comme des résistances électriques en série :</p>
+
+        <div class="formula-block">$$R_{th,\text{totale}} = R_{th,1} + R_{th,2} + R_{th,3} + \ldots$$</div>
+
+        <p>L'analogie avec la loi d'Ohm est exacte : $\Delta T$ joue le rôle de la tension, $\Phi$ celui du courant, $R_{th}$ celui de la résistance électrique.</p>
+
+        <h2 id="exemple">Exemple résolu : isolation d'un mur composite</h2>
+
+        <p><strong>Énoncé.</strong> Un mur de béton ($\lambda = 1{,}75$ W&middot;m<sup>-1</sup>&middot;K<sup>-1</sup>) d'épaisseur $e_1 = 20\;\text{cm}$ est recouvert d'une couche de laine de verre ($\lambda = 0{,}040$ W&middot;m<sup>-1</sup>&middot;K<sup>-1</sup>) d'épaisseur $e_2 = 10\;\text{cm}$. La surface totale est $S = 15\;\text{m}^2$. La température intérieure est $T_{int} = 20\;°C$ et la température extérieure $T_{ext} = 0\;°C$. Calculer le flux thermique perdu.</p>
+
+        <div class="example-block">
+          <p><strong>Résistance du béton :</strong></p>
+          <p>$$R_{th,1} = \dfrac{0{,}20}{1{,}75 \times 15} = 7{,}6 \times 10^{-3}\;\text{K}\cdot\text{W}^{-1}$$</p>
+        </div>
+
+        <div class="example-block">
+          <p><strong>Résistance de la laine de verre :</strong></p>
+          <p>$$R_{th,2} = \dfrac{0{,}10}{0{,}040 \times 15} = 0{,}167\;\text{K}\cdot\text{W}^{-1}$$</p>
+        </div>
+
+        <div class="example-block">
+          <p><strong>Résistance totale et flux :</strong></p>
+          <p>$$R_{th} = 7{,}6 \times 10^{-3} + 0{,}167 \approx 0{,}175\;\text{K}\cdot\text{W}^{-1}$$</p>
+          <p>$$\Phi = \dfrac{20 - 0}{0{,}175} \approx \mathbf{114\;\text{W}}$$</p>
+          <p>Sans la couche isolante, $R_{th} = 7{,}6 \times 10^{-3}$ K&middot;W<sup>-1</sup> et le flux serait $\Phi \approx 2\,600\;\text{W}$. L'isolant divise les pertes par plus de 20.</p>
+        </div>
+
+        <h2 id="pieges">Les 3 erreurs qui font perdre des points</h2>
+
+        <div class="piege-list">
+          <p><strong>Erreur 1 : oublier de convertir les unités.</strong> L'épaisseur doit être en mètres (pas en cm), la surface en m², la masse en kg. C'est l'erreur la plus fréquente, et elle fausse tous les calculs qui suivent. La vérification dimensionnelle à la fin de chaque calcul intermédiaire prend 10 secondes et évite la catastrophe.</p>
+          <p><strong>Erreur 2 : utiliser $\Delta U = m \cdot c \cdot \Delta T$ pour un gaz.</strong> Cette formule s'applique aux solides et aux liquides (systèmes incompressibles). Pour un gaz, le volume varie, le travail $W$ n'est plus nul, et cette formule ne suffit plus. Au bac, si l'exercice parle d'un gaz, c'est le premier principe complet $\Delta U = W + Q$ qu'il faut mobiliser.</p>
+          <p><strong>Erreur 3 : confondre $c$ et $C$.</strong> Si l'énoncé donne une capacité thermique $C$ en J&middot;K<sup>-1</sup> (propriété du système entier), on utilise $\Delta U = C \cdot \Delta T$. Si c'est une capacité thermique massique $c$ en J&middot;kg<sup>-1</sup>&middot;K<sup>-1</sup> (propriété du matériau), on utilise $\Delta U = m \cdot c \cdot \Delta T$. Les deux sont reliés par $C = m \cdot c$, mais les confondre sur la copie coûte des points.</p>
+        </div>
+
+      </div><!-- /article-body -->
+
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Physique-Chimie Terminale</p>
+            <p class="cta-strip-heading">32 fiches PDF — cours, formules et méthodes sur une page par chapitre</p>
+          </div>
+          <a href="/physique-chimie-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Physique-chimie en ligne — 30 €/h, avec une polytechnicienne</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2 id="faq">Questions fréquentes</h2>
+        <div class="faq-item">
+          <h3>Peut-on exprimer $\Delta T$ en degrés Celsius ou faut-il obligatoirement des kelvins ?</h3>
+          <p>Pour un écart de température (comme dans $\Delta U = m \cdot c \cdot \Delta T$ ou $\Phi = \Delta T / R_{th}$), les deux unités sont équivalentes : une variation de 1 °C correspond exactement à une variation de 1 K. En revanche, pour la loi de Stefan-Boltzmann ($\Phi = \sigma T^4$), c'est la température absolue en kelvins qui entre dans la formule. La conversion est $T(\text{K}) = \theta(°C) + 273{,}15$.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Comment interpréter physiquement la résistance thermique ?</h3>
+          <p>La résistance thermique mesure l'opposition d'une paroi au passage du flux de chaleur. Plus $R_{th}$ est grande, plus la paroi isole bien. L'analogie avec la loi d'Ohm est exacte : $\Delta T$ joue le rôle de la tension, $\Phi$ celui du courant, $R_{th}$ celui de la résistance électrique. Ce cadre permet de traiter les parois composites exactement comme des résistances en série.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Qu'est-ce qu'une pompe à chaleur et comment la thermodynamique s'applique ?</h3>
+          <p>Une pompe à chaleur transfère de l'énergie thermique d'un milieu froid vers un milieu chaud en fournissant du travail électrique. Le bilan d'énergie s'écrit : $Q_{\text{chaud}} = Q_{\text{froid}} + W$, où $Q_{\text{chaud}}$ est l'énergie fournie au logement, $Q_{\text{froid}}$ l'énergie prélevée à l'extérieur, et $W$ le travail électrique consommé. Le coefficient de performance est $COP = Q_{\text{chaud}} / W$ : c'est ce rapport que les exercices de bac demandent souvent de calculer et d'interpréter.</p>
+        </div>
+      </div>
+
+      <div class="cta-strip">
+        <div class="cta-strip-text">
+          <p class="cta-strip-eyebrow">C'Réussite · Terminale Spé</p>
+          <p class="cta-strip-heading">32 fiches Physique-Chimie PDF — cours, formules et méthodes sur une page par chapitre</p>
+        </div>
+        <a href="/physique-chimie-terminale/" class="btn">Découvrir l'ebook →</a>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/fiches-physique-chimie-terminale/energies-cinetique-potentielle-mecanique-bac-terminale/">Énergie cinétique, potentielle et mécanique : formules et méthode</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/mecanique-fluides-bac-terminale/">Mécanique des fluides : Bernoulli, débit, Archimède</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/charge-decharge-condensateur-bac-terminale/">Charge et décharge d'un condensateur : équation différentielle et méthode</a></li>
+          <li><a href="/blog/formules-physique-chimie-bac/">Les formules de physique-chimie qui tombent chaque année au bac (données réelles)</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/">Tous les guides physique-chimie Terminale</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt est diplômée de l'École polytechnique, docteure en sciences, et fondatrice de C'Réussite. Elle conçoit des fiches de révision structurées pour les élèves de Terminale spé maths et physique-chimie, et accompagne des élèves de la 6e au Master depuis plusieurs années. <a href="/a-propos/" style="color:var(--sapphire);font-weight:700;">En savoir plus →</a>
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>

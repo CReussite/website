@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  <title>Lois de Kepler au bac : démonstration, satellite géostationnaire et exercice type | C'Réussite</title>
+  <meta name="description" content="Les 3 lois de Kepler, la démonstration complète de la 3e loi en 5 étapes, la vitesse orbitale, le satellite géostationnaire et 3 erreurs classiques au bac de physique-chimie Terminale.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-physique-chimie-terminale/lois-de-kepler-bac-terminale/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-physique-chimie-terminale/lois-de-kepler-bac-terminale/">
+  <meta property="og:title" content="Lois de Kepler au bac : démonstration, satellite géostationnaire et exercice type | C'Réussite">
+  <meta property="og:description" content="Les 3 lois de Kepler, démonstration de la 3e loi en 5 étapes, vitesse orbitale, satellite géostationnaire (altitude ~36 000 km) et 3 erreurs classiques.">
+  <meta property="og:site_name" content="C'Réussite">
+  <meta property="article:published_time" content="2026-06-10">
+  <meta property="article:author" content="Camille Reinhardt">
+  <meta property="article:section" content="Physique-Chimie Terminale Spécialité">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Lois de Kepler au bac : démonstration, satellite géostationnaire et exercice type">
+  <meta name="twitter:description" content="Les 3 lois de Kepler, démonstration de la 3e loi en 5 étapes, satellite géostationnaire, exercice type résolu et 3 erreurs classiques.">
+
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Lois de Kepler au bac : démonstration complète, satellite géostationnaire et exercice type",
+        "description": "Les 3 lois de Kepler, démonstration de la 3e loi en 5 étapes (Newton, vitesse orbitale, période), satellite géostationnaire, exercice type résolu et 3 erreurs classiques au bac de physique-chimie Terminale.",
+        "datePublished": "2026-06-10",
+        "dateModified": "2026-06-10",
+        "author": { "@type": "Person", "name": "Camille Reinhardt", "url": "https://c-reussite.fr/a-propos/" },
+        "publisher": { "@type": "Organization", "name": "C'Réussite", "url": "https://c-reussite.fr" },
+        "mainEntityOfPage": "https://c-reussite.fr/fiches-physique-chimie-terminale/lois-de-kepler-bac-terminale/",
+        "articleSection": "Physique-Chimie Terminale Spécialité",
+        "educationalLevel": "Terminale",
+        "keywords": "lois de Kepler bac terminale, troisième loi de Kepler formule, satellite géostationnaire bac, vitesse orbitale terminale, démonstration loi des périodes, constante de Kepler"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://c-reussite.fr/" },
+          { "@type": "ListItem", "position": 2, "name": "Physique-Chimie Terminale", "item": "https://c-reussite.fr/fiches-physique-chimie-terminale/" },
+          { "@type": "ListItem", "position": 3, "name": "Lois de Kepler", "item": "https://c-reussite.fr/fiches-physique-chimie-terminale/lois-de-kepler-bac-terminale/" }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "La 3e loi de Kepler s'applique-t-elle aux orbites elliptiques ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Oui. Dans le cas général, la formule s'écrit T² / a³ = K où a est le demi-grand axe de l'ellipse. Pour une orbite circulaire, a = r et les deux formules coïncident. Au bac terminale, la quasi-totalité des exercices se ramène au cas circulaire." }
+          },
+          {
+            "@type": "Question",
+            "name": "La masse du satellite apparaît-elle dans les formules ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Non. Elle disparaît lors de l'application de la 2e loi de Newton, quand on divise les deux membres par m. C'est pourquoi une balle de tennis et un astéroïde sur la même orbite auraient exactement la même vitesse et la même période. Ce résultat contre-intuitif est précisément ce que la démonstration doit mettre en évidence." }
+          },
+          {
+            "@type": "Question",
+            "name": "Comment exploiter un graphique T² en fonction de a³ ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Ce graphique est une droite passant par l'origine dont le coefficient directeur est la constante de Kepler K = 4π² / (GM). En lisant la pente sur le graphe, on peut déduire la masse de l'astre attracteur M = 4π² / (G × pente). C'est une question fréquente dans les exercices sur les exoplanètes." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px;background:var(--swan-wing);color:var(--sapphire);margin-bottom:12px}
+    .article-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+    .article-header h1{font-size:clamp(1.45rem,3.5vw,1.95rem);line-height:1.25;margin-bottom:10px;color:var(--royal-blue)}
+    .article-meta{font-size:.85rem;color:#5C6475}
+    .article-intro{font-size:1.02rem;color:var(--text-mid);line-height:1.75;margin:20px 0 28px}
+    .article-body h2{font-size:1.2rem;margin-top:36px;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body h3{font-size:1.02rem;font-weight:700;margin-top:24px;margin-bottom:9px;color:var(--royal-blue)}
+    .article-body p{margin-bottom:14px;line-height:1.7;color:var(--text-mid)}
+    .article-body ul,.article-body ol{margin:0 0 14px 22px}
+    .article-body li{margin-bottom:6px;color:var(--text-mid);line-height:1.65}
+    .article-body table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.86rem}
+    .article-body th{background:var(--swan-wing);font-weight:600;text-align:left;padding:9px 12px;border:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body td{padding:9px 12px;border:1px solid #e5e7eb;vertical-align:top;color:var(--text-mid)}
+    .article-body tr:nth-child(even) td{background:#fafafa}
+    .article-body strong{color:var(--royal-blue);font-weight:700}
+    .callout{background:var(--swan-wing);border-left:3px solid var(--sapphire);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .callout p{margin:0;color:var(--text-mid)}
+    .formula-block{background:#f0f4ff;border-left:4px solid var(--royal-blue);border-radius:0 8px 8px 0;padding:10px 18px;margin:12px 0 16px;overflow-x:auto}
+    .katex-display{margin:0!important;overflow-x:auto}
+    .example-block{background:#f8f9fa;border-radius:8px;padding:14px 18px;margin:12px 0;border-left:3px solid var(--quicksand)}
+    .example-block p{margin:0 0 8px;color:var(--text-mid);font-size:.92rem}
+    .example-block p:last-child{margin:0}
+    .piege-list{background:#fff3f3;border-left:3px solid #e53e3e;border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .piege-list p{margin:0 0 10px;color:var(--text-mid);font-size:.9rem}
+    .piege-list p:last-child{margin:0}
+    .piege-list strong{color:#c0392b}
+    .step-row{display:flex;gap:14px;margin:16px 0}
+    .step-row-num{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--royal-blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem}
+    .step-row-body p{margin:0;font-size:.92rem}
+    .step-row-body p+p{margin-top:6px}
+    .faq-section{margin-top:40px;padding-top:28px;border-top:2px solid #e5e7eb}
+    .faq-section>h2{font-size:1.15rem;margin-bottom:20px;padding-bottom:0;border-bottom:none}
+    .faq-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-item h3{font-size:.97rem;margin-top:0;margin-bottom:7px}
+    .faq-item p{margin:0}
+    .read-next{margin-top:36px;padding-top:24px;border-top:1px solid #e5e7eb}
+    .read-next h2{font-size:1rem;margin-bottom:12px;color:var(--royal-blue);border:none;padding:0;margin-top:0}
+    .read-next ul{list-style:none;padding:0;margin:0}
+    .read-next li{padding:6px 0;border-bottom:1px solid #f5f5f5}
+    .read-next li:last-child{border-bottom:none}
+    .read-next a{color:var(--sapphire);text-decoration:underline;font-size:.9rem}
+    .author-box{background:var(--swan-wing);border-radius:10px;padding:16px 20px;margin-top:28px;font-size:.86rem;color:var(--text-mid)}
+    .author-box strong{display:block;margin-bottom:5px;color:var(--royal-blue);font-size:.9rem}
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-physique-chimie-terminale/">Physique-Chimie Terminale</a><span class="bc-sep">›</span>
+      <span>Lois de Kepler</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Physique-Chimie · Terminale</span>
+        <h1>Lois de Kepler au bac : méthode complète pour la Terminale spécialité</h1>
+        <div class="article-meta">Publié le 10 juin 2026 &middot; Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">Entre 2021 et 2025, un exercice sur les satellites avec la 3e loi de Kepler est apparu dans plus de 80 % des sessions du bac physique-chimie. Ce n'est pas un thème parmi d'autres : c'est l'un des rares thèmes dont la présence au bac est quasi certaine chaque année. Cette page présente les trois lois dans leur ordre logique, la démonstration complète à maîtriser en 5 étapes, et les trois erreurs qui font perdre des points.</p>
+
+      <div class="article-body">
+
+        <h2 id="trois-lois">Les trois lois : ce que l'on doit savoir énoncer</h2>
+
+        <p>Les correcteurs attendent des énoncés précis. Une formulation approximative, même si la suite du calcul est juste, peut coûter 1 à 2 points sur les questions d'ouverture, qui sont par ailleurs les plus accessibles de l'exercice.</p>
+
+        <p><strong>Première loi : loi des orbites.</strong> Dans le référentiel héliocentrique (supposé galiléen), la trajectoire de chaque planète est une ellipse dont le Soleil occupe l'un des foyers.</p>
+
+        <p><strong>Deuxième loi : loi des aires.</strong> Le segment reliant le centre du Soleil au centre de la planète (rayon vecteur) balaie des aires égales pendant des durées égales. Conséquence directe : la vitesse d'une planète est maximale au périhélie (point le plus proche du Soleil) et minimale à l'aphélie (point le plus éloigné).</p>
+
+        <p><strong>Troisième loi : loi des périodes.</strong> Le carré de la période de révolution $T$ est proportionnel au cube du demi-grand axe $a$ de l'orbite :</p>
+
+        <div class="formula-block">$$\dfrac{T^2}{a^3} = K$$</div>
+
+        <div class="callout">
+          <p>Cette constante $K$ ne dépend pas de la masse du corps en orbite. Elle dépend uniquement de la masse de l'astre attracteur $M$. Si l'astre central change (système solaire vs système d'exoplanètes), la constante change.</p>
+        </div>
+
+        <h2 id="demonstration">Démonstration de la 3e loi dans le cas circulaire</h2>
+
+        <p>C'est la démonstration la plus fréquemment demandée au bac. Elle suit toujours les mêmes cinq étapes.</p>
+
+        <div class="step-row">
+          <div class="step-row-num">1</div>
+          <div class="step-row-body">
+            <p><strong>Cadre d'étude.</strong> Système : corps de masse $m$ (planète ou satellite). Référentiel : astrocentrique, supposé galiléen. Hypothèse : trajectoire circulaire de rayon $r$. Force unique : gravitation $\vec{F} = G\dfrac{Mm}{r^2}\vec{n}$ dirigée vers le centre.</p>
+          </div>
+        </div>
+
+        <div class="step-row">
+          <div class="step-row-num">2</div>
+          <div class="step-row-body">
+            <p><strong>Newton dans le repère de Frenet.</strong> L'accélération s'écrit $\vec{a} = \dfrac{dv}{dt}\vec{t} + \dfrac{v^2}{r}\vec{n}$. La gravitation est purement radiale (aucune composante tangentielle). Sur l'axe tangentiel : $m\dfrac{dv}{dt} = 0$, donc $v$ est constante. Le mouvement est <strong>circulaire uniforme</strong>.</p>
+          </div>
+        </div>
+
+        <div class="step-row">
+          <div class="step-row-num">3</div>
+          <div class="step-row-body">
+            <p><strong>Vitesse orbitale.</strong> Sur l'axe normal, on égalise force gravitationnelle et terme centripète : $m\dfrac{v^2}{r} = G\dfrac{Mm}{r^2}$. On simplifie par $m$ et par $r$ :</p>
+            <p>$$\boxed{v = \sqrt{\dfrac{GM}{r}}}$$</p>
+          </div>
+        </div>
+
+        <div class="step-row">
+          <div class="step-row-num">4</div>
+          <div class="step-row-body">
+            <p><strong>Expression de la période.</strong> La période $T$ est le temps pour parcourir la circonférence $2\pi r$ à vitesse $v$ :</p>
+            <p>$$T = \dfrac{2\pi r}{v} = \dfrac{2\pi r}{\sqrt{GM/r}} = 2\pi\sqrt{\dfrac{r^3}{GM}}$$</p>
+          </div>
+        </div>
+
+        <div class="step-row">
+          <div class="step-row-num">5</div>
+          <div class="step-row-body">
+            <p><strong>Troisième loi de Kepler.</strong> En élevant $T$ au carré :</p>
+            <p>$$\boxed{\dfrac{T^2}{r^3} = \dfrac{4\pi^2}{GM}}$$</p>
+            <p>Ce rapport est bien une constante qui ne dépend que de $G$ et de $M$, la masse de l'astre central.</p>
+          </div>
+        </div>
+
+        <h2 id="formules">Formules à connaître par coeur</h2>
+
+        <table>
+          <thead><tr><th>Grandeur</th><th>Formule</th><th>Unités</th></tr></thead>
+          <tbody>
+            <tr><td>Vitesse orbitale</td><td>$v = \sqrt{GM/r}$</td><td>m/s</td></tr>
+            <tr><td>Période de révolution</td><td>$T = 2\pi\sqrt{r^3/(GM)}$</td><td>s</td></tr>
+            <tr><td>Constante de Kepler</td><td>$K = T^2/r^3 = 4\pi^2/(GM)$</td><td>s²/m³</td></tr>
+            <tr><td>Constante gravitationnelle</td><td>$G = 6{,}67 \times 10^{-11}$ N&middot;m²/kg²</td><td>donnée au bac</td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="geostationnaire">Cas particulier : le satellite géostationnaire</h2>
+
+        <p>C'est un classique du bac, présent dans la grande majorité des exercices sur les satellites. Un satellite géostationnaire est immobile par rapport à un point fixe de l'équateur terrestre. Pour cela, trois conditions doivent être simultanément satisfaites :</p>
+
+        <ul>
+          <li>Sa période de révolution est égale à la période de rotation de la Terre, soit le <strong>jour sidéral</strong> : $T = 23\,\text{h}\,56\,\text{min}\,04\,\text{s} \approx 86\,164\,\text{s}$</li>
+          <li>Son orbite est circulaire dans le <strong>plan équatorial</strong></li>
+          <li>Il tourne dans le <strong>même sens</strong> que la Terre</li>
+        </ul>
+
+        <p>En appliquant la 3e loi de Kepler avec $M_T = 5{,}97 \times 10^{24}\;\text{kg}$ et $T = 86\,164\;\text{s}$ :</p>
+
+        <div class="formula-block">$$r = \left(\dfrac{GM_T T^2}{4\pi^2}\right)^{1/3} \approx 42\,100\;\text{km}$$</div>
+
+        <p>L'altitude est obtenue en soustrayant le rayon terrestre $R_T = 6\,370\;\text{km}$ :</p>
+
+        <div class="formula-block">$$h = r - R_T \approx 35\,700\;\text{km}$$</div>
+
+        <p>Cette valeur d'environ 36 000 km est à connaître : certains exercices la donnent, d'autres demandent de la retrouver par le calcul.</p>
+
+        <h2 id="exemple">Exercice type : altitude d'un satellite d'observation</h2>
+
+        <p><strong>Énoncé.</strong> Un satellite d'observation est en orbite circulaire autour de la Terre. Sa période de révolution est $T = 1\,\text{h}\,32\,\text{min}$. Calculer son altitude. Données : $M_T = 5{,}97 \times 10^{24}\;\text{kg}$, $G = 6{,}67 \times 10^{-11}\;\text{N}\cdot\text{m}^2\cdot\text{kg}^{-2}$, $R_T = 6{,}37 \times 10^6\;\text{m}$.</p>
+
+        <div class="example-block">
+          <p><strong>Conversion de la période :</strong> $T = 1 \times 3600 + 32 \times 60 = 5520\;\text{s}$</p>
+        </div>
+
+        <div class="example-block">
+          <p><strong>Application de la 3e loi :</strong></p>
+          <p>$$r^3 = \dfrac{GM_T T^2}{4\pi^2} = \dfrac{6{,}67 \times 10^{-11} \times 5{,}97 \times 10^{24} \times 5520^2}{4\pi^2} \approx 3{,}07 \times 10^{20}\;\text{m}^3$$</p>
+          <p>$$r = (3{,}07 \times 10^{20})^{1/3} \approx 6{,}75 \times 10^6\;\text{m}$$</p>
+        </div>
+
+        <div class="example-block">
+          <p><strong>Altitude :</strong></p>
+          <p>$$h = r - R_T = 6{,}75 \times 10^6 - 6{,}37 \times 10^6 = 3{,}8 \times 10^5\;\text{m} \approx \mathbf{380\;\text{km}}$$</p>
+          <p>Ce résultat est cohérent avec l'altitude de l'ISS (environ 400 km), ce qui valide l'ordre de grandeur.</p>
+        </div>
+
+        <h2 id="pieges">Les trois erreurs qui coûtent le plus de points</h2>
+
+        <div class="piege-list">
+          <p><strong>Erreur 1 : utiliser $T$ en heures ou en jours.</strong> La formule $T^2/r^3 = 4\pi^2/(GM)$ n'est valide qu'avec $T$ en secondes et $r$ en mètres. Utiliser des unités astronomiques (ua) ou des jours sans conversion produit des résultats faux d'un facteur de plusieurs puissances de dix. Convertissez toujours avant de calculer.</p>
+          <p><strong>Erreur 2 : croire que la constante de Kepler est universelle.</strong> Elle est constante pour un astre attracteur donné, pas pour tous les systèmes. La constante autour du Soleil est différente de la constante autour de la Terre. Si un exercice mélange les deux systèmes, il faut utiliser deux constantes distinctes.</p>
+          <p><strong>Erreur 3 : oublier de définir le système et le référentiel.</strong> La démonstration sans ces précisions perd 1 à 2 points, même si les calculs sont corrects. Le correcteur vérifie systématiquement ces éléments en début de question. Trois lignes suffisent : système, référentiel, bilan des forces.</p>
+        </div>
+
+      </div><!-- /article-body -->
+
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Physique-Chimie Terminale</p>
+            <p class="cta-strip-heading">32 fiches PDF — cours, formules et méthodes sur une page par chapitre</p>
+          </div>
+          <a href="/physique-chimie-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Physique-chimie en ligne — 30 €/h, avec une polytechnicienne</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2 id="faq">Questions fréquentes</h2>
+        <div class="faq-item">
+          <h3>La 3e loi de Kepler s'applique-t-elle aux orbites elliptiques ?</h3>
+          <p>Oui. Dans le cas général, la formule s'écrit $T^2/a^3 = K$ où $a$ est le demi-grand axe de l'ellipse. Pour une orbite circulaire, $a = r$ et les deux formules coïncident. Au bac Terminale, la quasi-totalité des exercices se ramène au cas circulaire : la démonstration avec l'ellipse complète est hors programme.</p>
+        </div>
+        <div class="faq-item">
+          <h3>La masse du satellite apparaît-elle dans les formules ?</h3>
+          <p>Non. Elle disparaît lors de l'application de la 2e loi de Newton, en divisant les deux membres par $m$. C'est pourquoi une balle de tennis et un astéroïde sur la même orbite auraient exactement la même vitesse et la même période. Ce résultat contre-intuitif est précisément ce que la démonstration doit mettre en évidence.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Comment exploiter un graphique $T^2$ en fonction de $a^3$ ?</h3>
+          <p>Ce graphique est une droite passant par l'origine dont le coefficient directeur est la constante de Kepler $K = 4\pi^2/(GM)$. En lisant la pente sur le graphe, on peut déduire la masse de l'astre attracteur : $M = 4\pi^2/(G \times \text{pente})$. C'est une question fréquente dans les exercices sur les exoplanètes.</p>
+        </div>
+      </div>
+
+      <div class="cta-strip">
+        <div class="cta-strip-text">
+          <p class="cta-strip-eyebrow">C'Réussite · Terminale Spé</p>
+          <p class="cta-strip-heading">32 fiches Physique-Chimie PDF — cours, formules et méthodes sur une page par chapitre</p>
+        </div>
+        <a href="/physique-chimie-terminale/" class="btn">Découvrir l'ebook →</a>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/fiches-physique-chimie-terminale/mouvement-champ-pesanteur-bac-terminale/">Mouvement dans un champ de pesanteur : équations horaires et méthode</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/energies-cinetique-potentielle-mecanique-bac-terminale/">Énergie cinétique, potentielle et mécanique : formules et méthode</a></li>
+          <li><a href="/blog/chapitres-bac-physique-chimie/">Bac physique-chimie 2026 : les chapitres qui tombent vraiment (79 sessions)</a></li>
+          <li><a href="/blog/formules-physique-chimie-bac/">Les formules de physique-chimie qui tombent chaque année au bac (données réelles)</a></li>
+          <li><a href="/fiches-physique-chimie-terminale/">Tous les guides physique-chimie Terminale</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt est diplômée de l'École polytechnique, docteure en sciences, et fondatrice de C'Réussite. Elle conçoit des fiches de révision structurées pour les élèves de Terminale spé maths et physique-chimie, et accompagne des élèves de la 6e au Master depuis plusieurs années. <a href="/a-propos/" style="color:var(--sapphire);font-weight:700;">En savoir plus →</a>
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>
