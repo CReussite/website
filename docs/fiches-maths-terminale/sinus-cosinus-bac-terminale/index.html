@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKJVF7FL');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../img/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+
+  <title>Sinus et cosinus au bac de maths : cercle trigo, valeurs, dérivées et équations | C'Réussite</title>
+  <meta name="description" content="Cercle trigonométrique, valeurs remarquables, parité, dérivées de sin et cos, résolution d'équations et inéquations, théorème des gendarmes. Méthode complète avec exemples résolus et 4 pièges classiques.">
+  <meta name="author" content="Camille Reinhardt">
+  <link rel="canonical" href="https://c-reussite.fr/fiches-maths-terminale/sinus-cosinus-bac-terminale/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://c-reussite.fr/fiches-maths-terminale/sinus-cosinus-bac-terminale/">
+  <meta property="og:title" content="Sinus et cosinus au bac de maths : cercle trigo, valeurs, dérivées et équations | C'Réussite">
+  <meta property="og:description" content="Cercle trigonométrique, valeurs remarquables, dérivées de sin et cos, équations et théorème des gendarmes. Méthode complète et 4 pièges classiques.">
+  <meta property="og:site_name" content="C'Réussite">
+  <meta property="article:published_time" content="2026-06-11">
+  <meta property="article:author" content="Camille Reinhardt">
+  <meta property="article:section" content="Maths Terminale Spécialité">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Sinus et cosinus au bac de maths : cercle trigo, valeurs, dérivées et équations">
+  <meta name="twitter:description" content="Cercle trigonométrique, valeurs remarquables, dérivées, équations et gendarmes. Méthode complète et 4 pièges classiques.">
+
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Sinus et cosinus au bac de maths : comprendre, mémoriser et appliquer",
+        "description": "Cercle trigonométrique, valeurs remarquables, parité, périodicité, dérivées de sin et cos, résolution d'équations et inéquations, théorème des gendarmes. Méthode complète avec exemples et 4 pièges classiques.",
+        "datePublished": "2026-06-11",
+        "dateModified": "2026-06-11",
+        "author": { "@type": "Person", "name": "Camille Reinhardt", "url": "https://c-reussite.fr/a-propos/" },
+        "publisher": { "@type": "Organization", "name": "C'Réussite", "url": "https://c-reussite.fr" },
+        "mainEntityOfPage": "https://c-reussite.fr/fiches-maths-terminale/sinus-cosinus-bac-terminale/",
+        "articleSection": "Maths Terminale Spécialité",
+        "educationalLevel": "Terminale",
+        "keywords": "sinus cosinus bac terminale, cercle trigonométrique terminale, valeurs remarquables sinus cosinus, dérivée sinus cosinus terminale, équation trigonométrique bac, théorème des gendarmes, maths terminale spé"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://c-reussite.fr/" },
+          { "@type": "ListItem", "position": 2, "name": "Maths Terminale", "item": "https://c-reussite.fr/fiches-maths-terminale/" },
+          { "@type": "ListItem", "position": 3, "name": "Sinus et cosinus", "item": "https://c-reussite.fr/fiches-maths-terminale/sinus-cosinus-bac-terminale/" }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Quelle est la différence entre sin(π/3) et sin(60°) ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Ce sont deux notations pour la même valeur. En Terminale, on travaille exclusivement en radians : π/3 = 60°, π/2 = 90°, π = 180°. La conversion est : radians = degrés × π / 180. Sur calculatrice, il faut vérifier que le mode RAD est activé, sinon tous les résultats sont faux." }
+          },
+          {
+            "@type": "Question",
+            "name": "Comment savoir si une fonction trigonométrique est paire ou impaire ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "On calcule f(-x) et on simplifie en utilisant cos(-x) = cos(x) et sin(-x) = -sin(x). Si f(-x) = f(x), la fonction est paire. Si f(-x) = -f(x), elle est impaire. L'étape clé est de remplacer -x partout dans l'expression et de ne rien simplifier avant d'avoir tout réécrit." }
+          },
+          {
+            "@type": "Question",
+            "name": "Peut-on avoir cos(x) = 1,5 ?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Non. Pour tout réel x, on a -1 ≤ cos(x) ≤ 1. Si un calcul aboutit à cos(x) = a avec |a| > 1, l'équation n'a pas de solution : c'est la bonne réponse. Le bac peut poser ce type de piège pour tester si l'élève connaît l'encadrement." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .article-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px;background:var(--swan-wing);color:var(--sapphire);margin-bottom:12px}
+    .article-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+    .article-header h1{font-size:clamp(1.45rem,3.5vw,1.95rem);line-height:1.25;margin-bottom:10px;color:var(--royal-blue)}
+    .article-meta{font-size:.85rem;color:#5C6475}
+    .article-intro{font-size:1.02rem;color:var(--text-mid);line-height:1.75;margin:20px 0 28px}
+    .article-body h2{font-size:1.2rem;margin-top:36px;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body h3{font-size:1.02rem;font-weight:700;margin-top:24px;margin-bottom:9px;color:var(--royal-blue)}
+    .article-body p{margin-bottom:14px;line-height:1.7;color:var(--text-mid)}
+    .article-body ul,.article-body ol{margin:0 0 14px 22px}
+    .article-body li{margin-bottom:6px;color:var(--text-mid);line-height:1.65}
+    .article-body table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.88rem}
+    .article-body th{background:var(--swan-wing);font-weight:600;text-align:left;padding:9px 12px;border:1px solid #e5e7eb;color:var(--royal-blue)}
+    .article-body th[style*="center"]{text-align:center}
+    .article-body td{padding:9px 12px;border:1px solid #e5e7eb;vertical-align:middle;color:var(--text-mid);text-align:center}
+    .article-body td:first-child{text-align:left}
+    .article-body tr:nth-child(even) td{background:#fafafa}
+    .article-body strong{color:var(--royal-blue);font-weight:700}
+    .callout{background:var(--swan-wing);border-left:3px solid var(--sapphire);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .callout p{margin:0;color:var(--text-mid)}
+    .formula-block{background:#f0f4ff;border-left:4px solid var(--royal-blue);border-radius:0 8px 8px 0;padding:10px 18px;margin:12px 0 16px;overflow-x:auto}
+    .katex-display{margin:0!important;overflow-x:auto}
+    .example-block{background:#f8f9fa;border-radius:8px;padding:14px 18px;margin:12px 0;border-left:3px solid var(--quicksand)}
+    .example-block p{margin:0 0 6px;color:var(--text-mid);font-size:.92rem}
+    .example-block p:last-child{margin:0}
+    .piege-list{background:#fff3f3;border-left:3px solid #e53e3e;border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0}
+    .piege-list p{margin:0 0 10px;color:var(--text-mid);font-size:.9rem}
+    .piege-list p:last-child{margin:0}
+    .piege-list strong{color:#c0392b}
+    .step-row{display:flex;align-items:flex-start;gap:12px;margin:12px 0}
+    .step-row-num{display:flex;align-items:center;justify-content:center;width:28px;height:28px;min-width:28px;background:var(--royal-blue);color:var(--quicksand);font-weight:700;font-size:.85rem;border-radius:50%;margin-top:2px}
+    .step-row-body p{margin:0 0 4px;color:var(--text-mid);line-height:1.7}
+    .step-row-body p:last-child{margin:0}
+    .faq-section{margin-top:40px;padding-top:28px;border-top:2px solid #e5e7eb}
+    .faq-section>h2{font-size:1.15rem;margin-bottom:20px;padding-bottom:0;border-bottom:none}
+    .faq-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f0f0f0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-item h3{font-size:.97rem;margin-top:0;margin-bottom:7px}
+    .faq-item p{margin:0}
+    .read-next{margin-top:36px;padding-top:24px;border-top:1px solid #e5e7eb}
+    .read-next h2{font-size:1rem;margin-bottom:12px;color:var(--royal-blue);border:none;padding:0;margin-top:0}
+    .read-next ul{list-style:none;padding:0;margin:0}
+    .read-next li{padding:6px 0;border-bottom:1px solid #f5f5f5}
+    .read-next li:last-child{border-bottom:none}
+    .read-next a{color:var(--sapphire);text-decoration:underline;font-size:.9rem}
+    .author-box{background:var(--swan-wing);border-radius:10px;padding:16px 20px;margin-top:28px;font-size:.86rem;color:var(--text-mid)}
+    .author-box strong{display:block;margin-bottom:5px;color:var(--royal-blue);font-size:.9rem}
+    .td-center{text-align:center!important}
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKJVF7FL" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+
+  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+
+  <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-band-inner">
+      <a href="/">Accueil</a><span class="bc-sep">›</span>
+      <a href="/fiches-maths-terminale/">Maths Terminale</a><span class="bc-sep">›</span>
+      <span>Sinus et cosinus</span>
+    </div>
+  </nav>
+
+  <div class="article-layout">
+    <div class="article-page">
+
+      <div class="article-header">
+        <span class="article-tag">Maths · Terminale</span>
+        <h1>Sinus et cosinus au bac de maths : comprendre, mémoriser et appliquer</h1>
+        <div class="article-meta">Publié le 11 juin 2026 &middot; Camille Reinhardt, polytechnicienne, docteure en sciences</div>
+      </div>
+
+      <p class="article-intro">La trigonométrie est l'un des chapitres qui polarisent le plus : certains élèves la trouvent limpide, d'autres la trouvent opaque jusqu'au bout. La source de la confusion est presque toujours la même : on apprend les formules sans comprendre ce qu'elles représentent. Cette page repart de la définition géométrique, explique la logique derrière chaque propriété, et donne la méthode pour les quatre types de questions qui tombent au bac.</p>
+
+      <div class="article-body">
+
+        <h2 id="definition">Ce que sont vraiment le sinus et le cosinus</h2>
+
+        <p>Avant le lycée, la trigonométrie se limitait aux triangles rectangles. En Terminale, la définition s'étend à tous les réels via le <strong>cercle trigonométrique</strong> : un cercle de centre l'origine et de rayon 1, parcouru dans le sens inverse des aiguilles d'une montre.</p>
+
+        <p>À tout réel $x$, on associe un point $M$ sur ce cercle. Les coordonnées de $M$ définissent directement :</p>
+        <ul>
+          <li>$\cos(x)$ = <strong>abscisse</strong> de $M$ (position sur l'axe horizontal)</li>
+          <li>$\sin(x)$ = <strong>ordonnée</strong> de $M$ (position sur l'axe vertical)</li>
+        </ul>
+
+        <p>Le rayon vaut 1 : les formules "adjacent/hypoténuse" et "opposé/hypoténuse" du triangle rectangle donnent directement l'abscisse et l'ordonnée sans division. C'est la condition pour que les coordonnées <em>soient</em> le sinus et le cosinus.</p>
+
+        <p>Deux conséquences immédiates, à connaître par réflexe :</p>
+
+        <div class="formula-block">
+          $$-1 \leq \cos(x) \leq 1 \quad \text{et} \quad -1 \leq \sin(x) \leq 1 \quad \text{pour tout } x \in \mathbb{R}$$
+        </div>
+
+        <div class="formula-block">
+          $$\cos^2(x) + \sin^2(x) = 1 \quad \text{(relation fondamentale)}$$
+        </div>
+
+        <div class="callout">
+          <p>La relation fondamentale est utilisée dans presque tous les exercices de trigonométrie. Si on connaît $\cos(x)$ et le quadrant, on peut calculer $\sin(x)$, et inversement.</p>
+        </div>
+
+        <h2 id="valeurs">Valeurs remarquables, parité et signe</h2>
+
+        <h3>Tableau des valeurs remarquables</h3>
+        <p>Ces valeurs se lisent directement sur le cercle trigonométrique. Les mémoriser évite de bloquer en plein calcul.</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>$x$</th>
+              <th style="text-align:center">$0$</th>
+              <th style="text-align:center">$\dfrac{\pi}{6}$</th>
+              <th style="text-align:center">$\dfrac{\pi}{4}$</th>
+              <th style="text-align:center">$\dfrac{\pi}{3}$</th>
+              <th style="text-align:center">$\dfrac{\pi}{2}$</th>
+              <th style="text-align:center">$\pi$</th>
+              <th style="text-align:center">$\dfrac{3\pi}{2}$</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>$\cos(x)$</td>
+              <td>$1$</td>
+              <td>$\dfrac{\sqrt{3}}{2}$</td>
+              <td>$\dfrac{\sqrt{2}}{2}$</td>
+              <td>$\dfrac{1}{2}$</td>
+              <td>$0$</td>
+              <td>$-1$</td>
+              <td>$0$</td>
+            </tr>
+            <tr>
+              <td>$\sin(x)$</td>
+              <td>$0$</td>
+              <td>$\dfrac{1}{2}$</td>
+              <td>$\dfrac{\sqrt{2}}{2}$</td>
+              <td>$\dfrac{\sqrt{3}}{2}$</td>
+              <td>$1$</td>
+              <td>$0$</td>
+              <td>$-1$</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <p><strong>Astuce de mémorisation pour la ligne $\cos$ :</strong> les valeurs de $0$ à $\pi/2$ sont $\frac{\sqrt{4}}{2}$, $\frac{\sqrt{3}}{2}$, $\frac{\sqrt{2}}{2}$, $\frac{\sqrt{1}}{2}$, $\frac{\sqrt{0}}{2}$ : les racines descendent de 4 à 0. La ligne $\sin$ suit le même motif dans l'autre sens.</p>
+        </div>
+
+        <h3>Parité et périodicité</h3>
+        <p>Ces deux propriétés permettent de réduire l'intervalle d'étude, compétence explicitement attendue au bac.</p>
+
+        <table>
+          <thead><tr><th>Propriété</th><th style="text-align:center">Cosinus</th><th style="text-align:center">Sinus</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Parité</strong></td><td>Pair : $\cos(-x) = \cos(x)$</td><td>Impair : $\sin(-x) = -\sin(x)$</td></tr>
+            <tr><td><strong>Symétrie graphique</strong></td><td>Axe des ordonnées</td><td>Origine du repère</td></tr>
+            <tr><td><strong>Périodicité</strong></td><td>$2\pi$-périodique</td><td>$2\pi$-périodique</td></tr>
+          </tbody>
+        </table>
+
+        <p>Si $f$ est paire et $2\pi$-périodique, il suffit d'étudier $f$ sur $[0\,;\,\pi]$. Le reste de la courbe se reconstruit par symétrie axiale puis par translation de $2\pi$.</p>
+
+        <h3>Signe selon le quadrant</h3>
+        <table>
+          <thead><tr><th>Quadrant</th><th style="text-align:center">$\cos(x)$</th><th style="text-align:center">$\sin(x)$</th></tr></thead>
+          <tbody>
+            <tr><td>1er : $\left[0\,;\,\dfrac{\pi}{2}\right]$</td><td>$+$</td><td>$+$</td></tr>
+            <tr><td>2e : $\left[\dfrac{\pi}{2}\,;\,\pi\right]$</td><td>$-$</td><td>$+$</td></tr>
+            <tr><td>3e : $\left[\pi\,;\,\dfrac{3\pi}{2}\right]$</td><td>$-$</td><td>$-$</td></tr>
+            <tr><td>4e : $\left[\dfrac{3\pi}{2}\,;\,2\pi\right]$</td><td>$+$</td><td>$-$</td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="derivees">Les dérivées et leurs applications</h2>
+
+        <h3>Formules de dérivation</h3>
+        <table>
+          <thead><tr><th>Fonction</th><th style="text-align:center">Dérivée</th><th>Forme composée</th><th style="text-align:center">Dérivée</th></tr></thead>
+          <tbody>
+            <tr><td>$\sin(x)$</td><td>$\cos(x)$</td><td>$\sin(u)$</td><td>$u'\cos(u)$</td></tr>
+            <tr><td>$\cos(x)$</td><td>$-\sin(x)$</td><td>$\cos(u)$</td><td>$-u'\sin(u)$</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <p>Le signe moins sur la dérivée de $\cos$ est l'erreur la plus fréquente du chapitre. Pour ne plus l'oublier : la dérivée "descend", cosinus donne moins sinus, mais sinus remonte vers cosinus sans signe.</p>
+        </div>
+
+        <h3>Étudier le signe de la dérivée sur un intervalle</h3>
+        <p>C'est là que le bac teste réellement la maîtrise du chapitre. La démarche est toujours la même.</p>
+
+        <div class="step-row">
+          <div class="step-row-num">1</div>
+          <div class="step-row-body"><p>Calculer $f'(x)$ en appliquant les règles de dérivation (produit, composée).</p></div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">2</div>
+          <div class="step-row-body"><p>Encadrer ou factoriser. Sur un intervalle donné, utiliser les encadrements $-1 \leq \cos(x) \leq 1$ et $-1 \leq \sin(x) \leq 1$ pour conclure sans résoudre une équation.</p></div>
+        </div>
+        <div class="step-row">
+          <div class="step-row-num">3</div>
+          <div class="step-row-body"><p>Résoudre une inéquation si l'encadrement ne suffit pas. Chercher où $f'(x) = 0$ change de signe en utilisant le cercle trigonométrique.</p></div>
+        </div>
+
+        <div class="example-block">
+          <p><strong>Exemple.</strong> Étudier le signe de $f'(x) = 2\cos(x) - \sqrt{3}$ sur $[0\,;\,\pi]$.</p>
+          <p>$f'(x) = 0 \Leftrightarrow \cos(x) = \dfrac{\sqrt{3}}{2} \Leftrightarrow x = \dfrac{\pi}{6}$ (seule solution sur $[0\,;\,\pi]$, car $\cos$ est décroissant sur $[0\,;\,\pi]$).</p>
+          <p>Sur $\left[0\,;\,\dfrac{\pi}{6}\right]$ : $\cos(x) \geq \dfrac{\sqrt{3}}{2}$, donc $f'(x) \geq 0$. Sur $\left[\dfrac{\pi}{6}\,;\,\pi\right]$ : $f'(x) \leq 0$.</p>
+        </div>
+
+        <h2 id="equations">Résoudre équations et inéquations trigonométriques</h2>
+
+        <h3>Équations : $\cos(x) = a$ et $\sin(x) = a$</h3>
+        <p>La solution générale (sur $\mathbb{R}$) suit toujours le même modèle :</p>
+
+        <div class="formula-block">
+          $$\cos(x) = a \Leftrightarrow \begin{cases} x = \alpha + 2k\pi \\ x = -\alpha + 2k\pi \end{cases} \quad k \in \mathbb{Z}$$
+        </div>
+
+        <div class="formula-block">
+          $$\sin(x) = a \Leftrightarrow \begin{cases} x = \alpha + 2k\pi \\ x = \pi - \alpha + 2k\pi \end{cases} \quad k \in \mathbb{Z}$$
+        </div>
+
+        <p>où $\alpha$ est la valeur remarquable identifiée sur le cercle trigonométrique.</p>
+
+        <p><strong>La règle de symétrie à retenir :</strong></p>
+        <ul>
+          <li>Pour $\cos$ : les deux solutions sont symétriques par rapport à l'axe horizontal ($\alpha$ et $-\alpha$).</li>
+          <li>Pour $\sin$ : les deux solutions sont symétriques par rapport à l'axe vertical ($\alpha$ et $\pi - \alpha$).</li>
+        </ul>
+
+        <div class="example-block">
+          <p><strong>Exemple.</strong> Résoudre $\sin(x) = \dfrac{1}{2}$ sur $[0\,;\,2\pi]$.</p>
+          <p>On reconnaît $\sin\!\left(\dfrac{\pi}{6}\right) = \dfrac{1}{2}$, donc $\alpha = \dfrac{\pi}{6}$.</p>
+          <p>Les deux solutions sur $[0\,;\,2\pi]$ sont : $x = \dfrac{\pi}{6}$ et $x = \pi - \dfrac{\pi}{6} = \dfrac{5\pi}{6}$.</p>
+        </div>
+
+        <h3>Inéquations : lire sur le cercle</h3>
+        <p>Pour $\sin(x) \geq a$ ou $\cos(x) \leq a$ sur un intervalle, la méthode est géométrique :</p>
+        <ol>
+          <li>Identifier la valeur $\alpha$ telle que $\sin(\alpha) = a$ (ou $\cos(\alpha) = a$).</li>
+          <li>Repérer sur le cercle les arcs où le sinus (ou cosinus) est supérieur (ou inférieur) à $a$.</li>
+          <li>Écrire l'ensemble solution en intervalles.</li>
+        </ol>
+        <p>Ne jamais résoudre une inéquation trigonométrique par algèbre pure sans passer par le cercle. La géométrie est ici l'outil adapté.</p>
+
+        <h2 id="gendarmes">Limites et théorème des gendarmes</h2>
+
+        <p>Les fonctions $\sin$ et $\cos$ <strong>n'ont pas de limite en $\pm\infty$</strong> : elles oscillent indéfiniment entre $-1$ et $1$. Le bac exploite ce point de deux façons.</p>
+
+        <p><strong>Cas 1 : limite d'un produit $f(x) \cdot \sin(x)$.</strong> Si $f(x) \to 0$, on encadre :</p>
+        <div class="formula-block">$$-|f(x)| \leq f(x) \cdot \sin(x) \leq |f(x)|$$</div>
+        <p>Par le théorème des gendarmes, si les deux membres tendent vers $0$, le produit aussi. Exemple classique : $e^{-x}\cos(x) \to 0$ quand $x \to +\infty$.</p>
+
+        <p><strong>Cas 2 : limite remarquable.</strong> Le résultat suivant est admis en Terminale :</p>
+        <div class="formula-block">$$\lim_{x \to 0} \frac{\sin(x)}{x} = 1$$</div>
+        <p>Il n'est pas exigible seul au bac, mais peut apparaître dans une question guidée.</p>
+
+        <h2 id="pieges">Les 4 pièges classiques</h2>
+
+        <div class="piege-list">
+          <p><strong>Piège 1 : confondre $\cos(-x) = \cos(x)$ et $\sin(-x) = \sin(x)$.</strong> Le cosinus est pair (pas de changement de signe), le sinus est impair (signe qui change). Confondre les deux fait perdre des points sur les questions de parité et sur les équations.</p>
+          <p><strong>Piège 2 : oublier le signe moins dans $(\cos(x))' = -\sin(x)$.</strong> La dérivée du cosinus est moins sinus. Pour les formes composées, c'est $(\cos(u))' = -u'\sin(u)$. Ce signe disparaît régulièrement dans les copies.</p>
+          <p><strong>Piège 3 : écrire une seule solution à une équation trigonométrique.</strong> $\cos(x) = \frac{1}{2}$ a deux familles de solutions : $\frac{\pi}{3} + 2k\pi$ et $-\frac{\pi}{3} + 2k\pi$. Oublier la seconde est l'erreur la plus fréquente sur ce type de question.</p>
+          <p><strong>Piège 4 : travailler en degrés au lieu de radians.</strong> Dès que le programme de Terminale est concerné, l'unité est le radian. Travailler en radians dès le départ évite les erreurs de conversion.</p>
+        </div>
+
+      </div><!-- /article-body -->
+
+      <div class="cta-pair">
+        <div class="cta-strip">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Ebook Maths Terminale</p>
+            <p class="cta-strip-heading">20 fiches PDF — cours, formules et méthodes sur une page par chapitre</p>
+          </div>
+          <a href="/maths-terminale/" class="btn">Voir l'ebook →</a>
+        </div>
+        <div class="cta-strip cta-strip-dark">
+          <div class="cta-strip-text">
+            <p class="cta-strip-eyebrow">Cours particuliers</p>
+            <p class="cta-strip-heading">Maths en ligne — 30 €/h, avec une polytechnicienne</p>
+          </div>
+          <a href="/cours-particuliers/" class="btn">Prendre contact →</a>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2 id="faq">Questions fréquentes</h2>
+        <div class="faq-item">
+          <h3>Quelle est la différence entre $\sin(\pi/3)$ et $\sin(60°)$ ?</h3>
+          <p>Ce sont deux notations pour la même valeur. En Terminale, on travaille exclusivement en radians : $\pi/3 = 60°$, $\pi/2 = 90°$, $\pi = 180°$. La conversion est $\text{radians} = \frac{\text{degrés} \times \pi}{180}$. Sur calculatrice, vérifier que le mode RAD est activé : sinon tous les résultats sont faux.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Comment savoir si une fonction trigonométrique est paire ou impaire ?</h3>
+          <p>On calcule $f(-x)$ et on simplifie en utilisant $\cos(-x) = \cos(x)$ et $\sin(-x) = -\sin(x)$. Si $f(-x) = f(x)$, la fonction est paire. Si $f(-x) = -f(x)$, elle est impaire. L'étape clé est de remplacer $-x$ partout dans l'expression sans simplifier prématurément.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Peut-on avoir $\cos(x) = 1{,}5$ ?</h3>
+          <p>Non. Pour tout réel $x$, on a $-1 \leq \cos(x) \leq 1$. Si un calcul aboutit à $\cos(x) = a$ avec $|a| > 1$, l'équation n'a pas de solution : c'est la bonne réponse. Le bac peut poser ce type de piège pour tester si l'élève connaît l'encadrement.</p>
+        </div>
+      </div>
+
+      <div class="cta-strip">
+        <div class="cta-strip-text">
+          <p class="cta-strip-eyebrow">C'Réussite · Terminale Spé</p>
+          <p class="cta-strip-heading">20 fiches Maths PDF — cours, formules et méthodes sur une page par chapitre</p>
+        </div>
+        <a href="/maths-terminale/" class="btn">Découvrir l'ebook →</a>
+      </div>
+
+      <div class="read-next">
+        <h2>À lire ensuite</h2>
+        <ul>
+          <li><a href="/fiches-maths-terminale/formules-derivation-bac-terminale/">Formules de dérivation : fonctions usuelles, composées, équation de la tangente</a></li>
+          <li><a href="/fiches-maths-terminale/indetermination-limite-suite-bac-terminale/">Lever une indétermination : les 4 méthodes pour la limite d'une suite</a></li>
+          <li><a href="/fiches-maths-terminale/integration-par-parties-bac-terminale/">Intégration par parties : formule, règle ALPES, méthode</a></li>
+          <li><a href="/blog/chapitres-bac-maths-spe/">Bac maths spé 2026 : les chapitres qui tombent vraiment (308 exercices analysés)</a></li>
+          <li><a href="/fiches-maths-terminale/">Tous les guides maths Terminale</a></li>
+        </ul>
+      </div>
+
+      <div class="author-box">
+        <strong>À propos de l'auteure</strong>
+        Camille Reinhardt est diplômée de l'École polytechnique, docteure en sciences, et fondatrice de C'Réussite. Elle conçoit des fiches de révision structurées pour les élèves de Terminale spé maths et physique-chimie, et accompagne des élèves de la 6e au Master depuis plusieurs années. <a href="/a-propos/" style="color:var(--sapphire);font-weight:700;">En savoir plus →</a>
+      </div>
+
+    </div><!-- /article-page -->
+    <aside class="toc-sidebar" id="toc-sidebar" aria-label="Sommaire de l'article"></aside>
+  </div><!-- /article-layout -->
+
+  <div id="footer-placeholder"></div>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/footer.js"></script>
+  <script src="../../js/toc.js"></script>
+</body>
+</html>
