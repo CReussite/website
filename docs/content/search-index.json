@@ -1,0 +1,299 @@
+[
+  {
+    "type": "blog",
+    "title": "Grand oral bac 2026 : la méthode complète pour spé maths et physique-chimie",
+    "excerpt": "Déroulé officiel, grille d'évaluation, comment choisir un bon sujet, structure de l'exposé en 4 temps, gérer l'échange et 7 erreurs à éviter. Coefficient 10.",
+    "url": "/blog/grand-oral-bac-2026/",
+    "keywords": ["grand oral", "exposé", "jury", "oral", "coefficient 10", "bac", "méthode"]
+  },
+  {
+    "type": "blog",
+    "title": "Burnout scolaire en Terminale : reconnaître les signes avant que ça devienne une urgence",
+    "excerpt": "Fatigue chronique, décrochage émotionnel, somatisation : comment distinguer le coup de mou saisonnier du burnout scolaire installé.",
+    "url": "/blog/burnout-scolaire-terminale-signes/",
+    "keywords": ["burnout", "fatigue", "épuisement", "stress", "santé", "terminale"]
+  },
+  {
+    "type": "blog",
+    "title": "Démonstrations exigibles au bac de maths : liste complète et méthode",
+    "excerpt": "18 démonstrations classées par chapitre. Méthode pour les apprendre sans par cœur stérile et pièges à éviter.",
+    "url": "/blog/demonstrations-exigibles-bac-maths/",
+    "keywords": ["démonstrations", "preuves", "récurrence", "calcul direct", "bac maths", "exigibles"]
+  },
+  {
+    "type": "blog",
+    "title": "Bac maths spé 2024 vs 2025 : ce qui a changé pour 2026",
+    "excerpt": "Intégrales, équations différentielles, combinatoire en forte hausse. Ce que la tendance prédit pour le bac maths 2026.",
+    "url": "/blog/evolution-sujets-bac-maths-spe-2024-2025/",
+    "keywords": ["bac maths", "sujets", "tendances", "2026", "intégrales", "équations différentielles"]
+  },
+  {
+    "type": "blog",
+    "title": "Physique-chimie bac 2024 vs 2025 : ce qui a changé pour 2026",
+    "excerpt": "Spectroscopie et fluides en hausse. Radioactivité installée depuis 2025. Prédiction par chapitre.",
+    "url": "/blog/evolution-sujets-bac-physique-chimie-2024-2025/",
+    "keywords": ["bac physique chimie", "sujets", "tendances", "2026", "spectroscopie", "radioactivité"]
+  },
+  {
+    "type": "blog",
+    "title": "Bac physique-chimie 2026 : les chapitres qui tombent vraiment (5 ans de sujets analysés)",
+    "excerpt": "Chimie analytique ~28 %, mécanique ~21 %, synthèse organique ~21 %. Données réelles sur 79 sessions 2021-2025.",
+    "url": "/blog/chapitres-bac-physique-chimie/",
+    "keywords": ["chapitres", "physique", "chimie", "bac", "probabilités", "mécanique", "synthèse"]
+  },
+  {
+    "type": "blog",
+    "title": "Bac maths spé 2026 : les chapitres qui tombent vraiment (308 exercices analysés)",
+    "excerpt": "Probabilités 26,6 %, géométrie 25,6 %, suites 24,7 %. Chapitres en forte hausse.",
+    "url": "/blog/chapitres-bac-maths-spe/",
+    "keywords": ["chapitres", "maths", "bac", "probabilités", "géométrie", "suites", "exercices"]
+  },
+  {
+    "type": "blog",
+    "title": "Les formules de physique-chimie qui tombent chaque année au bac",
+    "excerpt": "pH, Newton, Beer-Lambert, cinétique, RC, Bernoulli. Données réelles sur 79 sessions (5 ans).",
+    "url": "/blog/formules-physique-chimie-bac/",
+    "keywords": ["formules", "physique", "chimie", "pH", "Newton", "Beer-Lambert", "Bernoulli", "bac"]
+  },
+  {
+    "type": "blog",
+    "title": "Bac physique-chimie 2026 : les 15 annales à faire pour couvrir tout le programme",
+    "excerpt": "15 exercices classés par rentabilité pour couvrir les 23 chapitres. Analyse de 90 sujets officiels.",
+    "url": "/blog/annales-bac-physique-chimie-programme-complet/",
+    "keywords": ["annales", "exercices", "bac physique chimie", "révisions", "programme"]
+  },
+  {
+    "type": "blog",
+    "title": "Stress du bac : ce que la science dit vraiment (et ce qu'elle ne dit pas)",
+    "excerpt": "Mémoire de travail saturée, sommeil perturbé, révisions inefficaces : la science explique et propose des solutions documentées.",
+    "url": "/blog/stress-bac-anxiete-scolaire/",
+    "keywords": ["stress", "anxiété", "bac", "sommeil", "mémoire", "révisions"]
+  },
+  {
+    "type": "blog",
+    "title": "ECE physique-chimie 2026 : quels chapitres tombent vraiment",
+    "excerpt": "Analyse des 90 sujets de la banque ECE. Top 5 chapitres, compétences dominantes, outils numériques.",
+    "url": "/blog/chapitres-ece-physique-chimie-2026/",
+    "keywords": ["ECE", "physique chimie", "chapitres", "expérimental", "TP"]
+  },
+  {
+    "type": "blog",
+    "title": "Comment se préparer aux ECE physique-chimie 2026 : plan en 4 semaines",
+    "excerpt": "Déroulé officiel, 8 gestes qui rapportent des points, plan de révision en 4 semaines et 5 erreurs à éviter.",
+    "url": "/blog/comment-se-preparer-aux-ece-physique-chimie/",
+    "keywords": ["ECE", "préparation", "plan", "physique chimie", "méthode", "semaines"]
+  },
+  {
+    "type": "ressource",
+    "title": "Réviser les maths Terminale — tous les guides par chapitre",
+    "excerpt": "Guides gratuits pour réviser les maths Terminale Spé : dérivation, intégrales, probabilités, géométrie dans l'espace.",
+    "url": "/fiches-maths-terminale/",
+    "keywords": ["maths", "terminale", "révision", "guides", "cours", "gratuit", "chapitres"]
+  },
+  {
+    "type": "ressource",
+    "title": "Réviser la physique-chimie Terminale — tous les guides par chapitre",
+    "excerpt": "Guides gratuits pour réviser la physique-chimie Terminale Spé : mécanique, thermodynamique, chimie organique.",
+    "url": "/fiches-physique-chimie-terminale/",
+    "keywords": ["physique", "chimie", "terminale", "révision", "guides", "cours", "gratuit", "chapitres"]
+  },
+  {
+    "type": "ressource",
+    "title": "Formules de dérivation bac Terminale : guide méthode",
+    "excerpt": "Toutes les formules de dérivation au programme : dérivées usuelles, règles de composition, applications.",
+    "url": "/fiches-maths-terminale/formules-derivation-bac-terminale/",
+    "keywords": ["dérivation", "formules", "dérivées", "maths", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Primitives au bac Terminale : méthodes et formules",
+    "excerpt": "Primitives des fonctions usuelles, techniques d'intégration et exercices types.",
+    "url": "/fiches-maths-terminale/primitives-bac-terminale/",
+    "keywords": ["primitives", "intégration", "intégrales", "maths", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Intégration par parties bac Terminale",
+    "excerpt": "Méthode de l'intégration par parties : formule, conditions d'application et exercices résolus.",
+    "url": "/fiches-maths-terminale/integration-par-parties-bac-terminale/",
+    "keywords": ["intégration par parties", "intégrales", "maths", "terminale", "méthode"]
+  },
+  {
+    "type": "ressource",
+    "title": "Loi binomiale bac Terminale : guide complet",
+    "excerpt": "Définition, formule, espérance et variance de la loi binomiale. Exercices types au bac.",
+    "url": "/fiches-maths-terminale/loi-binomiale-bac-terminale/",
+    "keywords": ["loi binomiale", "probabilités", "espérance", "variance", "maths", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Arbre des probabilités bac Terminale",
+    "excerpt": "Construire et lire un arbre des probabilités : probabilités conditionnelles, formule des probabilités totales.",
+    "url": "/fiches-maths-terminale/arbre-probabilites-bac-terminale/",
+    "keywords": ["probabilités", "arbre", "probabilités conditionnelles", "maths", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Géométrie dans l'espace bac Terminale",
+    "excerpt": "Vecteurs dans l'espace, plans, droites, produit scalaire et distances. Méthodes pour le bac.",
+    "url": "/fiches-maths-terminale/geometrie-espace-bac-terminale/",
+    "keywords": ["géométrie", "espace", "vecteurs", "plans", "droites", "maths", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Limites et suites bac Terminale : lever les indéterminations",
+    "excerpt": "Techniques pour lever les formes indéterminées des limites de suites et de fonctions.",
+    "url": "/fiches-maths-terminale/indetermination-limite-suite-bac-terminale/",
+    "keywords": ["limites", "suites", "indéterminations", "maths", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Sinus et cosinus bac Terminale",
+    "excerpt": "Cercle trigonométrique, valeurs remarquables, formules et équations trigonométriques.",
+    "url": "/fiches-maths-terminale/sinus-cosinus-bac-terminale/",
+    "keywords": ["sinus", "cosinus", "trigonométrie", "maths", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Algorithmique et Python maths Terminale",
+    "excerpt": "Algorithmes au programme de maths : boucles, fonctions, simulation de probabilités en Python.",
+    "url": "/fiches-maths-terminale/algorithmique-python-bac-terminale-maths/",
+    "keywords": ["algorithmique", "Python", "programmation", "maths", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Calculer un pH bac Terminale : méthode et formules",
+    "excerpt": "pH des acides forts, bases fortes, acides faibles. Formules, exemples et pièges à éviter.",
+    "url": "/fiches-physique-chimie-terminale/calculer-ph/",
+    "keywords": ["pH", "acide", "base", "chimie", "terminale", "calculer"]
+  },
+  {
+    "type": "ressource",
+    "title": "Cinétique chimique bac Terminale",
+    "excerpt": "Vitesse de réaction, loi de vitesse, temps de demi-réaction. Méthodes et exercices.",
+    "url": "/fiches-physique-chimie-terminale/cinetique-chimique/",
+    "keywords": ["cinétique", "vitesse de réaction", "chimie", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Équilibre chimique bac Terminale",
+    "excerpt": "Constante d'équilibre, quotient de réaction, état d'équilibre. Méthode du tableau d'avancement.",
+    "url": "/fiches-physique-chimie-terminale/equilibre-chimique/",
+    "keywords": ["équilibre chimique", "constante", "quotient réaction", "chimie", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Tableau d'avancement bac Terminale",
+    "excerpt": "Construire un tableau d'avancement : taux d'avancement, avancement maximal, état final.",
+    "url": "/fiches-physique-chimie-terminale/tableau-avancement/",
+    "keywords": ["tableau avancement", "avancement", "chimie", "terminale", "stœchiométrie"]
+  },
+  {
+    "type": "ressource",
+    "title": "Synthèse organique bac Terminale",
+    "excerpt": "Stratégie de synthèse, groupes fonctionnels, réactifs courants. Guide méthode pour le bac.",
+    "url": "/fiches-physique-chimie-terminale/synthese-organique/",
+    "keywords": ["synthèse organique", "chimie organique", "groupes fonctionnels", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Titrage conductimétrique bac Terminale",
+    "excerpt": "Principe, conductivité, point équivalent. Méthode pour les titrages au bac.",
+    "url": "/fiches-physique-chimie-terminale/titrage-conductimetrique-bac-terminale/",
+    "keywords": ["titrage", "conductimétrique", "conductivité", "chimie", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Radioactivité bac Terminale",
+    "excerpt": "Désintégration radioactive, loi de décroissance, demi-vie. Exercices types au bac.",
+    "url": "/fiches-physique-chimie-terminale/radioactivite-bac-terminale/",
+    "keywords": ["radioactivité", "désintégration", "demi-vie", "physique", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Mécanique des fluides bac Terminale",
+    "excerpt": "Pression, poussée d'Archimède, théorème de Bernoulli. Guide complet avec exercices.",
+    "url": "/fiches-physique-chimie-terminale/mecanique-fluides-bac-terminale/",
+    "keywords": ["fluides", "Bernoulli", "Archimède", "pression", "physique", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Thermodynamique bac Terminale",
+    "excerpt": "Premier et deuxième principe, échanges thermiques, machines thermiques. Méthodes.",
+    "url": "/fiches-physique-chimie-terminale/thermodynamique-bac-terminale/",
+    "keywords": ["thermodynamique", "chaleur", "énergie", "physique", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Charge et décharge d'un condensateur bac Terminale",
+    "excerpt": "Circuit RC : équation différentielle, constante de temps, courbes. Guide méthode.",
+    "url": "/fiches-physique-chimie-terminale/charge-decharge-condensateur-bac-terminale/",
+    "keywords": ["condensateur", "RC", "charge", "décharge", "constante de temps", "physique", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Lois de Kepler bac Terminale",
+    "excerpt": "Trois lois de Kepler, troisième loi et applications numériques. Exercices types.",
+    "url": "/fiches-physique-chimie-terminale/lois-de-kepler-bac-terminale/",
+    "keywords": ["Kepler", "gravitation", "orbite", "physique", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Mouvement dans un champ de pesanteur bac Terminale",
+    "excerpt": "Chute libre, mouvement parabolique, équations horaires. Méthode et exercices.",
+    "url": "/fiches-physique-chimie-terminale/mouvement-champ-pesanteur-bac-terminale/",
+    "keywords": ["chute libre", "mouvement parabolique", "pesanteur", "physique", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Diffraction bac Terminale",
+    "excerpt": "Phénomène de diffraction, figure de diffraction, calcul de l'angle. Méthode.",
+    "url": "/fiches-physique-chimie-terminale/diffraction-bac-terminale/",
+    "keywords": ["diffraction", "ondes", "lumière", "physique", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Interférences et ondes bac Terminale",
+    "excerpt": "Interférences constructives et destructives, différence de marche, calcul.",
+    "url": "/fiches-physique-chimie-terminale/interferences-ondes-bac-terminale/",
+    "keywords": ["interférences", "ondes", "lumière", "physique", "terminale"]
+  },
+  {
+    "type": "ressource",
+    "title": "Régression linéaire et tableur ECE physique-chimie",
+    "excerpt": "Méthode de régression linéaire, utilisation du tableur, modélisation. Pour les ECE.",
+    "url": "/fiches-physique-chimie-terminale/regression-lineaire-tableur-ece/",
+    "keywords": ["régression linéaire", "tableur", "ECE", "modélisation", "physique chimie"]
+  },
+  {
+    "type": "ressource",
+    "title": "Quantité de matière et concentration bac Terminale",
+    "excerpt": "Mole, concentration molaire, calculs stœchiométriques. Base de la chimie au bac.",
+    "url": "/fiches-physique-chimie-terminale/quantite-matiere-concentration-bac-terminale/",
+    "keywords": ["quantité de matière", "mole", "concentration", "chimie", "terminale", "stœchiométrie"]
+  },
+  {
+    "type": "produit",
+    "title": "Fiches Maths Terminale Spécialité — 20 fiches PDF Bac 2026",
+    "excerpt": "20 fiches PDF couvrant 100 % du programme officiel de Maths Terminale Spé Bac 2026 : cours condensé, formules clés et méthodes.",
+    "url": "/maths-terminale/",
+    "price": "14,99 €",
+    "keywords": ["fiches", "maths", "terminale", "PDF", "révision", "bac", "achat", "20 fiches"]
+  },
+  {
+    "type": "produit",
+    "title": "Fiches Physique-Chimie Terminale Spécialité — 32 fiches PDF Bac 2026",
+    "excerpt": "32 fiches PDF couvrant 100 % du programme officiel de Physique-Chimie Terminale Spé Bac 2026 : définitions, formules et méthodes.",
+    "url": "/physique-chimie-terminale/",
+    "price": "14,99 €",
+    "keywords": ["fiches", "physique", "chimie", "terminale", "PDF", "révision", "bac", "achat", "32 fiches"]
+  },
+  {
+    "type": "produit",
+    "title": "Pack Maths + Physique-Chimie Terminale — 52 fiches PDF Bac 2026",
+    "excerpt": "Pack de 52 fiches PDF : Maths + Physique-Chimie Terminale. 100 % des deux programmes officiels Bac 2026. Livraison immédiate.",
+    "url": "/pack-maths-physique-chimie/",
+    "price": "24,99 €",
+    "keywords": ["pack", "fiches", "maths", "physique", "chimie", "terminale", "PDF", "révision", "bac", "achat", "52 fiches"]
+  }
+]
