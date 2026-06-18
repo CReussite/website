@@ -2,11 +2,11 @@
   var sidebar = document.getElementById('toc-sidebar');
   if (!sidebar) return;
 
-  // Collecte les h2 et h3 du corps de l'article
+  // Collecte les h2 du corps de l'article (data-toc-skip = exclusion)
   var headings = Array.prototype.slice.call(
-    document.querySelectorAll('.article-body h2, .article-body h3')
-  );
-  if (headings.length < 3) { sidebar.style.display = 'none'; return; }
+    document.querySelectorAll('.article-body h2')
+  ).filter(function (h) { return !h.hasAttribute('data-toc-skip'); });
+  if (headings.length < 2) { sidebar.style.display = 'none'; return; }
 
   // Ajoute un id à chaque heading s'il n'en a pas
   headings.forEach(function (h, i) {

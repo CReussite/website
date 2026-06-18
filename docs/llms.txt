@@ -54,6 +54,8 @@
 
 ## Blog — Méthode, révisions, orientation
 
+- [Grand oral bac 2026 : méthode complète pour spé maths et physique-chimie](https://c-reussite.fr/blog/grand-oral-bac-2026/): Déroulé officiel (22 juin - 1er juillet, coeff 10), 3 critères pour choisir un bon sujet, 10 sujets transversaux maths et physique-chimie (modélisation), structure exposé en 4 temps (intro 1 min, partie 1+2, conclusion), 3 types de questions à l'échange, plan de préparation de 6 semaines à J-14, 7 erreurs à éviter. 9 FAQ. Sources : Eduscol, BO Éducation nationale.
+
 - [Blog C'Réussite](https://c-reussite.fr/blog/): Articles sur la méthode de révision, les examens, l'orientation post-bac et la vie lycéenne.
 - [Burnout scolaire en Terminale : reconnaître les signes](https://c-reussite.fr/blog/burnout-scolaire-terminale-signes/): Fatigue chronique, décrochage émotionnel, somatisation, sentiment de futilité : les quatre signes cliniques du burnout scolaire. Distinction avec le coup de mou saisonnier. Quoi faire pour l'élève et pour les parents. Catégorie : Méthode &amp; organisation.
 - [Démonstrations exigibles au bac de maths : liste complète](https://c-reussite.fr/blog/demonstrations-exigibles-bac-maths/): 18 démonstrations classées par chapitre (algèbre, analyse, probabilités) et par famille de méthode (récurrence, calcul direct, dénombrement). Méthode d'apprentissage en 5 étapes, 3 pièges classiques, lien avec le Grand oral. Catégorie : Maths &amp; Physique-Chimie.

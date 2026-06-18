@@ -1446,7 +1446,14 @@ footer a:hover { color: var(--quicksand); }
   top: 120px;
   padding-top: 4px;
   order: -1;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
 }
+.toc-sidebar::-webkit-scrollbar { width: 4px; }
+.toc-sidebar::-webkit-scrollbar-track { background: transparent; }
+.toc-sidebar::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
 .toc-title {
   font-size: 0.68rem;
   font-weight: 700;
