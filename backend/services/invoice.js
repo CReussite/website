@@ -280,11 +280,16 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
     if (Object.keys(paymentsByMethod).length === 0 && paymentMethod) {
       paymentsByMethod[paymentMethod] = paymentDate ? [paymentDate] : [];
     }
-    const paymentText = Object.entries(paymentsByMethod).map(([method, dates]) => {
-      if (dates.length === 0) return `Paiement reçu par ${method}.`;
-      if (dates.length === 1) return `Paiement reçu par ${method} le ${dates[0]}.`;
-      return `Paiements reçus par ${method} les ${dates.join(', ')}.`;
-    }).join(' ');
+    const isUnpaid = paymentMethod === 'À payer' || items.some(item => item.status === 'a_payer' || item.paymentMethod === 'À payer');
+    const bankIban = process.env.CP_INVOICE_IBAN || '';
+    const bankAccountHolder = process.env.CP_INVOICE_ACCOUNT_HOLDER || '';
+    const paymentText = isUnpaid
+      ? 'Règlement par virement bancaire à réception de facture.'
+      : Object.entries(paymentsByMethod).map(([method, dates]) => {
+          if (dates.length === 0) return `Paiement reçu par ${method}.`;
+          if (dates.length === 1) return `Paiement reçu par ${method} le ${dates[0]}.`;
+          return `Paiements reçus par ${method} les ${dates.join(', ')}.`;
+        }).join(' ');
 
 
     const pageWidth = 595.28;
@@ -314,7 +319,7 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
 
     doc.fontSize(8).font('Helvetica-Bold').fillColor(QUICKSAND).text('VENDEUR', margin, partiesY);
     doc.moveTo(margin, partiesY + 12).lineTo(margin + 60, partiesY + 12).lineWidth(1.5).strokeColor(QUICKSAND).stroke();
-    doc.fontSize(12).font('Helvetica-Bold').fillColor(ROYAL_BLUE).text('Camille Reinhardt EI', margin, partiesY + 20);
+    doc.fontSize(12).font('Helvetica-Bold').fillColor(ROYAL_BLUE).text('Camille Reinhardt', margin, partiesY + 20);
     doc.fontSize(8).font('Helvetica').fillColor(TEXT_MID)
       .text("C'Réussite", margin, partiesY + 34)
       .text('54A Rue des Écoles', margin, partiesY + 44)
@@ -342,7 +347,7 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
     doc.rect(margin, tableTop, contentWidth, 24).fill(SAPPHIRE);
     doc.fontSize(8).font('Helvetica-Bold').fillColor('#FFFFFF');
     doc.text('DÉSIGNATION', colDesignation + 8, tableTop + 7);
-    doc.text('HEURES', colHeures, tableTop + 7, { width: 40, align: 'right' });
+    doc.text(totalHours === 1 ? 'HEURE' : 'HEURES', colHeures, tableTop + 7, { width: 40, align: 'right' });
     doc.text('TARIF HORAIRE', colTarif, tableTop + 7, { width: 70, align: 'right' });
     doc.text('TOTAL HT', colTotal, tableTop + 7, { width: 70, align: 'right' });
 
@@ -377,7 +382,7 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
 
     // ── Ligne récapitulatif heures ────────────────────────────
     doc.rect(margin, rowY, contentWidth, 22).fill(SWAN_WING);
-    doc.fontSize(8).font('Helvetica').fillColor(SAPPHIRE).text('Total heures :', colDesignation + 8, rowY + 7);
+    doc.fontSize(8).font('Helvetica').fillColor(SAPPHIRE).text(totalHours === 1 ? 'Total heure :' : 'Total heures :', colDesignation + 8, rowY + 7);
     doc.font('Helvetica-Bold').text(totalHours + ' h', colHeures, rowY + 7, { width: 40, align: 'right' });
     rowY += 22;
 
@@ -396,17 +401,28 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
 
     // ── Badge paiement ───────────────────────────────────────
     const payY = totalsY + 76;
+    const payBoxH = isUnpaid ? 58 : 30;
     const badgeW = paymentText ? contentWidth : 80;
-    doc.roundedRect(margin, payY, badgeW, 30, 4).fill(SWAN_WING);
-    doc.roundedRect(margin + 12, payY + 6, 42, 18, 10).fill('#2e7d4f');
-    doc.fontSize(8).font('Helvetica-Bold').fillColor('#FFFFFF').text('Payé', margin + 17, payY + 10);
+    doc.roundedRect(margin, payY, badgeW, payBoxH, 4).fill(SWAN_WING);
+    doc.roundedRect(margin + 12, payY + 6, isUnpaid ? 54 : 42, 18, 10).fill(isUnpaid ? '#B45309' : '#2e7d4f');
+    doc.fontSize(8).font('Helvetica-Bold').fillColor('#FFFFFF').text(isUnpaid ? 'À payer' : 'Payé', margin + 17, payY + 10);
     if (paymentText) {
       doc.fontSize(9).font('Helvetica').fillColor(SAPPHIRE)
-        .text(paymentText, margin + 62, payY + 10, { width: contentWidth - 74, lineBreak: false });
+        .text(paymentText, margin + (isUnpaid ? 78 : 62), payY + 10, { width: contentWidth - (isUnpaid ? 90 : 74), lineBreak: false });
+    }
+    if (isUnpaid) {
+      doc.fontSize(8).font('Helvetica-Bold').fillColor(ROYAL_BLUE).text('RIB', margin + 78, payY + 30);
+      doc.fontSize(8).font('Helvetica').fillColor(SAPPHIRE);
+      if (bankIban) {
+        doc.text('Code I.B.A.N : ' + bankIban, margin + 112, payY + 30);
+      }
+      if (bankAccountHolder) {
+        doc.text('Titulaire du compte : ' + bankAccountHolder, margin + 112, payY + 42);
+      }
     }
 
     // ── Mentions légales ─────────────────────────────────────
-    const legalY = payY + 38;
+    const legalY = payY + (isUnpaid ? 72 : 38);
     doc.moveTo(margin, legalY).lineTo(margin + contentWidth, legalY).lineWidth(0.5).strokeColor(SHELLSTONE).stroke();
     doc.fontSize(6.5).font('Helvetica').fillColor(TEXT_MID).text(
       'TVA non applicable, article 293 B du CGI.\n' +

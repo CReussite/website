@@ -25,5 +25,9 @@ services:
         sync: false
       - key: FROM_NAME
         sync: false
+      - key: CP_INVOICE_IBAN
+        sync: false
+      - key: CP_INVOICE_ACCOUNT_HOLDER
+        sync: false
       - key: ADMIN_KEY
         sync: false

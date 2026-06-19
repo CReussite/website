@@ -601,7 +601,7 @@
             <div class="inv-parties">
               <div class="inv-party">
                 <div class="inv-party-label">Vendeur</div>
-                <div class="inv-party-name">Camille Reinhardt EI</div>
+                <div class="inv-party-name">Camille Reinhardt</div>
                 <div class="inv-party-details">
                   C'Réussite<br>
                   54A Rue des Écoles<br>
@@ -924,23 +924,41 @@
         document.getElementById('inv-paydate').textContent = data.payment_date;
 
         // Badge paiement : multi-dates pour CP, date unique pour ebooks
+        var paymentBadge = document.querySelector('#inv-content .inv-payment-badge');
+        if (paymentBadge) {
+          paymentBadge.textContent = isCp && data.payment_status === 'a_payer' ? 'À payer' : 'Payé';
+          paymentBadge.style.background = isCp && data.payment_status === 'a_payer' ? '#B45309' : '#2e7d4f';
+        }
         if (isCp) {
-          var pmtByMethod = {};
-          data.items.forEach(function (item) {
-            var m = item.payment_method || '';
-            var d = item.payment_date || '';
-            if (m && d) {
-              if (!pmtByMethod[m]) pmtByMethod[m] = [];
-              if (pmtByMethod[m].indexOf(d) === -1) pmtByMethod[m].push(d);
+          if (data.payment_status === 'a_payer') {
+            var paymentDetails = data.payment_details || {};
+            var ribLines = '';
+            if (paymentDetails.iban) {
+              ribLines += '<br>RIB : Code I.B.A.N : ' + paymentDetails.iban;
             }
-          });
-          var pmtLines = Object.keys(pmtByMethod).map(function (method) {
-            var dates = pmtByMethod[method];
-            if (dates.length === 0) return 'Paiement reçu par ' + method + '.';
-            if (dates.length === 1) return 'Paiement reçu par ' + method + ' le ' + dates[0] + '.';
-            return 'Paiements reçus par ' + method + ' les ' + dates.join(', ') + '.';
-          });
-          document.getElementById('inv-payment-text').textContent = pmtLines.join(' ') || ('Payé par ' + (data.payment_method || '—'));
+            if (paymentDetails.account_holder) {
+              ribLines += '<br>Titulaire du compte : ' + paymentDetails.account_holder;
+            }
+            document.getElementById('inv-payment-text').innerHTML =
+              'Règlement par virement bancaire à réception de facture.' + ribLines;
+          } else {
+            var pmtByMethod = {};
+            data.items.forEach(function (item) {
+              var m = item.payment_method || '';
+              var d = item.payment_date || '';
+              if (m && d) {
+                if (!pmtByMethod[m]) pmtByMethod[m] = [];
+                if (pmtByMethod[m].indexOf(d) === -1) pmtByMethod[m].push(d);
+              }
+            });
+            var pmtLines = Object.keys(pmtByMethod).map(function (method) {
+              var dates = pmtByMethod[method];
+              if (dates.length === 0) return 'Paiement reçu par ' + method + '.';
+              if (dates.length === 1) return 'Paiement reçu par ' + method + ' le ' + dates[0] + '.';
+              return 'Paiements reçus par ' + method + ' les ' + dates.join(', ') + '.';
+            });
+            document.getElementById('inv-payment-text').textContent = pmtLines.join(' ') || ('Payé par ' + (data.payment_method || '—'));
+          }
         } else {
           var payMethodLabel = (data.payment_method && data.payment_method !== 'Carte bancaire')
             ? data.payment_method : 'carte bancaire via Stancer';
@@ -979,7 +997,7 @@
           trTotal.style.background = 'var(--swan-wing, #F5F0E9)';
           trTotal.style.fontWeight = '600';
           trTotal.style.color = 'var(--sapphire, #3C5070)';
-          trTotal.innerHTML = '<td>Total heures :</td><td>' + totalQty + ' h</td><td></td><td></td>';
+          trTotal.innerHTML = '<td>' + (totalQty === 1 ? 'Total heure :' : 'Total heures :') + '</td><td>' + totalQty + ' h</td><td></td><td></td>';
           itemsTbody.appendChild(trTotal);
         }
 
@@ -1174,13 +1192,14 @@
             '<input class="cp-input cp-rate" type="number" min="1" step="0.01" placeholder="25" required>' +
           '</div>' +
           '<div class="cp-field">' +
-            '<label>Date paiement *</label>' +
+            '<label>Date paiement</label>' +
             '<input class="cp-input cp-pay-date" type="date" required>' +
           '</div>' +
           '<div class="cp-field">' +
             '<label>Moyen paiement *</label>' +
             '<select class="cp-input cp-pay-method">' +
               '<option value="Virement bancaire">Virement bancaire</option>' +
+              '<option value="À payer">À payer</option>' +
               '<option value="Espèces">Espèces</option>' +
               '<option value="Chèque">Chèque</option>' +
               '<option value="Stancer">Stancer</option>' +
@@ -1195,6 +1214,9 @@
 
         row.querySelector('.cp-hours').addEventListener('input', recalcTotals);
         row.querySelector('.cp-rate').addEventListener('input', recalcTotals);
+        row.querySelector('.cp-pay-method').addEventListener('change', function () {
+          syncCpPaymentState(row);
+        });
         row.querySelector('.btn-rm-cours').addEventListener('click', function () {
           if (cpRowsContainer.children.length > 1) {
             row.remove();
@@ -1206,6 +1228,16 @@
 
         var today = new Date();
         row.querySelector('.cp-pay-date').value = today.toISOString().slice(0, 10);
+        syncCpPaymentState(row);
+      }
+
+      function syncCpPaymentState(row) {
+        var payDate = row.querySelector('.cp-pay-date');
+        var payMethod = row.querySelector('.cp-pay-method').value;
+        var unpaid = payMethod === 'À payer';
+        payDate.disabled = unpaid;
+        payDate.required = !unpaid;
+        if (unpaid) payDate.value = '';
       }
 
       document.getElementById('btn-add-cours').addEventListener('click', addCoursRow);
@@ -1233,7 +1265,8 @@
           var rate = parseFloat(row.querySelector('.cp-rate').value);
           var payDate = row.querySelector('.cp-pay-date').value;
           var payMethod = row.querySelector('.cp-pay-method').value;
-          if (!nature || !date || !hours || !rate || !payDate || !payMethod) { valid = false; return; }
+          var status = payMethod === 'À payer' ? 'a_payer' : 'paid';
+          if (!nature || !date || !hours || !rate || !payMethod || (status !== 'a_payer' && !payDate)) { valid = false; return; }
           items.push({
             nature: nature,
             date: date,
@@ -1241,12 +1274,13 @@
             hourly_rate: rate,
             total: Math.round(hours * rate * 100) / 100,
             payment_date: payDate,
-            payment_method: payMethod
+            payment_method: payMethod,
+            status: status
           });
         });
 
         if (!valid || items.length === 0) {
-          cpError.textContent = 'Merci de compléter toutes les lignes de cours, paiement inclus.';
+          cpError.textContent = 'Merci de compléter toutes les lignes de cours, avec paiement ou statut À payer.';
           cpError.style.display = 'block';
           return;
         }

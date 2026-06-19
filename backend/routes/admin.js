@@ -11,6 +11,13 @@ function fmtDate(d) {
   return iso ? `${iso[3]}/${iso[2]}/${iso[1]}` : d;
 }
 
+function getCpPaymentDetails() {
+  return {
+    iban: process.env.CP_INVOICE_IBAN || '',
+    account_holder: process.env.CP_INVOICE_ACCOUNT_HOLDER || '',
+  };
+}
+
 // ── Middleware auth ───────────────────────────────────────────────────────────
 function requireAdminKey(req, res, next) {
   const adminKey = process.env.ADMIN_KEY;
@@ -122,6 +129,7 @@ router.get('/invoice/:invoiceNumber', requireAdminKey, async (req, res) => {
             hourlyRate: Number(item.hourly_rate),
             paymentDate: fmtDate(item.payment_date || ''),
             paymentMethod: item.payment_method || '',
+            status: item.status || '',
           }))
         : [{ description: 'Cours particuliers', hours: 1, hourlyRate: cpInvoice.amount / 100 }];
 
@@ -185,6 +193,7 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
               unit_price: Number(item.hourly_rate),
               payment_date: fmtDate(item.payment_date || ''),
               payment_method: item.payment_method || '',
+              status: item.status || '',
             };
           })
         : [{ description: 'Cours particuliers', quantity: 1, unit_price: cpInvoice.amount / 100 }];
@@ -196,6 +205,8 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
       return res.json({
         invoice_number: cpInvoice.invoice_number,
         invoice_type: 'cp',
+        payment_status: cpInvoice.payment_method === 'À payer' || firstPaidItem?.status === 'a_payer' ? 'a_payer' : 'paid',
+        payment_details: getCpPaymentDetails(),
         date: dateStr,
         payment_date: fmtDate(cpInvoice.payment_date || firstPaidItem?.payment_date || ''),
         payment_ref: '—',
@@ -298,23 +309,27 @@ router.post('/cours-particuliers', express.json(), requireAdminKey, async (req, 
     if (!customerName || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ error: 'Données manquantes (nom, cours).' });
     }
-    const normalizedItems = items.map(item => ({
-      ...item,
-      payment_date: item.payment_date || paymentDate || '',
-      payment_method: item.payment_method || paymentMethod || '',
-    }));
+    const normalizedItems = items.map(item => {
+      const status = item.status || (item.payment_method === 'À payer' ? 'a_payer' : 'paid');
+      return {
+        ...item,
+        status,
+        payment_date: status === 'a_payer' ? '' : (item.payment_date || paymentDate || ''),
+        payment_method: status === 'a_payer' ? 'À payer' : (item.payment_method || paymentMethod || ''),
+      };
+    });
 
     const hasIncompleteItem = normalizedItems.some(item => (
       !item.nature ||
       !item.date ||
       !item.hours ||
       !item.hourly_rate ||
-      !item.payment_date ||
+      (item.status !== 'a_payer' && !item.payment_date) ||
       !item.payment_method
     ));
 
     if (hasIncompleteItem) {
-      return res.status(400).json({ error: 'Cours incomplet (cours, date, montant et paiement requis).' });
+      return res.status(400).json({ error: 'Cours incomplet (cours, date, montant et statut de paiement requis).' });
     }
 
     const { invoiceNumber } = await insertCoursParticuliersInvoice({
