@@ -11,12 +11,6 @@ function fmtDate(d) {
   return iso ? `${iso[3]}/${iso[2]}/${iso[1]}` : d;
 }
 
-function getCpPaymentDetails() {
-  return {
-    iban: process.env.CP_INVOICE_IBAN || '',
-    account_holder: process.env.CP_INVOICE_ACCOUNT_HOLDER || '',
-  };
-}
 
 // ── Middleware auth ───────────────────────────────────────────────────────────
 function requireAdminKey(req, res, next) {
@@ -141,6 +135,7 @@ router.get('/invoice/:invoiceNumber', requireAdminKey, async (req, res) => {
         invoiceDate:     new Date(cpInvoice.created_at),
         paymentDate:     fmtDate(cpInvoice.payment_date || ''),
         paymentMethod:   cpInvoice.payment_method || '—',
+        rib:             cpInvoice.rib || {},
       });
 
       res.setHeader('Content-Type', 'application/pdf');
@@ -206,7 +201,7 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
         invoice_number: cpInvoice.invoice_number,
         invoice_type: 'cp',
         payment_status: cpInvoice.payment_method === 'À payer' || firstPaidItem?.status === 'a_payer' ? 'a_payer' : 'paid',
-        payment_details: getCpPaymentDetails(),
+        payment_details: cpInvoice.rib || {},
         date: dateStr,
         payment_date: fmtDate(cpInvoice.payment_date || firstPaidItem?.payment_date || ''),
         payment_ref: '—',
@@ -304,7 +299,7 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
 // Génère une facture de cours particuliers et la stocke en base.
 router.post('/cours-particuliers', express.json(), requireAdminKey, async (req, res) => {
   try {
-    const { customerName, customerEmail, customerAddress, items, paymentDate, paymentMethod } = req.body;
+    const { customerName, customerEmail, customerAddress, items, paymentDate, paymentMethod, rib } = req.body;
 
     if (!customerName || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ error: 'Données manquantes (nom, cours).' });
@@ -332,6 +327,7 @@ router.post('/cours-particuliers', express.json(), requireAdminKey, async (req, 
       return res.status(400).json({ error: 'Cours incomplet (cours, date, montant et statut de paiement requis).' });
     }
 
+    const hasUnpaid = normalizedItems.some(item => item.status === 'a_payer');
     const { invoiceNumber } = await insertCoursParticuliersInvoice({
       customerName,
       customerEmail: customerEmail || '',
@@ -339,6 +335,7 @@ router.post('/cours-particuliers', express.json(), requireAdminKey, async (req, 
       items: normalizedItems,
       paymentDate: paymentDate || normalizedItems[0].payment_date,
       paymentMethod: paymentMethod || normalizedItems[0].payment_method,
+      rib: hasUnpaid && rib ? rib : null,
     });
 
     res.json({ invoiceNumber });

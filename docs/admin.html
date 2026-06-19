@@ -512,6 +512,20 @@
           <button class="btn-add-cours" id="btn-add-cours" type="button">+ Ajouter une ligne</button>
           <div class="cp-total-line">Total : <span id="cp-grand-total">0,00 €</span></div>
 
+          <div id="cp-rib-section" style="display:none;margin-top:16px;background:#f0f4ff;border-radius:8px;padding:16px;border:1px solid #c7d2fe;">
+            <div style="font-size:.85rem;font-weight:600;color:#112250;margin-bottom:10px;">RIB — affiché sur la facture « À payer »</div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              <div style="flex:2;min-width:200px;">
+                <label style="font-size:.8rem;color:#555;display:block;margin-bottom:4px;">Code I.B.A.N</label>
+                <input id="cp-rib-iban" type="text" placeholder="FR76 XXXX XXXX XXXX XXXX XXXX XXX" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;font-family:inherit;font-size:.85rem;box-sizing:border-box;">
+              </div>
+              <div style="flex:1;min-width:180px;">
+                <label style="font-size:.8rem;color:#555;display:block;margin-bottom:4px;">Titulaire du compte</label>
+                <input id="cp-rib-titulaire" type="text" placeholder="EI Reinhardt Camille" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;font-family:inherit;font-size:.85rem;box-sizing:border-box;">
+              </div>
+            </div>
+          </div>
+
           <div class="cp-error" id="cp-error"></div>
           <div style="margin-top:20px;">
             <button class="btn-cp-submit" id="btn-cp-submit" type="button">Générer la facture</button>
@@ -1238,7 +1252,31 @@
         payDate.disabled = unpaid;
         payDate.required = !unpaid;
         if (unpaid) payDate.value = '';
+        syncRibSection();
       }
+
+      function syncRibSection() {
+        var hasUnpaid = Array.from(cpRowsContainer.querySelectorAll('.cp-pay-method'))
+          .some(function(sel) { return sel.value === 'À payer'; });
+        var section = document.getElementById('cp-rib-section');
+        if (!section) return;
+        if (hasUnpaid) {
+          section.style.display = 'block';
+          var ibanInput = document.getElementById('cp-rib-iban');
+          var titInput = document.getElementById('cp-rib-titulaire');
+          if (!ibanInput.value) ibanInput.value = localStorage.getItem('cp_rib_iban') || '';
+          if (!titInput.value) titInput.value = localStorage.getItem('cp_rib_titulaire') || '';
+        } else {
+          section.style.display = 'none';
+        }
+      }
+
+      document.getElementById('cp-rib-iban').addEventListener('input', function() {
+        localStorage.setItem('cp_rib_iban', this.value);
+      });
+      document.getElementById('cp-rib-titulaire').addEventListener('input', function() {
+        localStorage.setItem('cp_rib_titulaire', this.value);
+      });
 
       document.getElementById('btn-add-cours').addEventListener('click', addCoursRow);
 
@@ -1292,7 +1330,13 @@
           var res = await fetch(BACKEND + '/api/admin/cours-particuliers?key=' + encodeURIComponent(adminKey), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ customerName: name, customerEmail: email, customerAddress: address, items: items }),
+            body: JSON.stringify({
+              customerName: name, customerEmail: email, customerAddress: address, items: items,
+              rib: items.some(function(i) { return i.status === 'a_payer'; }) ? {
+                iban: document.getElementById('cp-rib-iban').value.trim(),
+                account_holder: document.getElementById('cp-rib-titulaire').value.trim(),
+              } : null,
+            }),
           });
           var data = await res.json();
           if (!res.ok) throw new Error(data.error || 'Erreur serveur');

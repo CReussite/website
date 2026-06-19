@@ -255,7 +255,7 @@ function generateInvoice({ invoiceNumber, email, productName, amount, date, paym
  * @param {string} params.paymentDate   - ex: "07/05/2026"
  * @param {string} params.paymentMethod - ex: "Wero"
  */
-function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items, invoiceDate, paymentDate, paymentMethod }) {
+function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items, invoiceDate, paymentDate, paymentMethod, rib = {} }) {
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({ size: 'A4', margin: 0 });
     const chunks = [];
@@ -281,8 +281,8 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
       paymentsByMethod[paymentMethod] = paymentDate ? [paymentDate] : [];
     }
     const isUnpaid = paymentMethod === 'À payer' || items.some(item => item.status === 'a_payer' || item.paymentMethod === 'À payer');
-    const bankIban = process.env.CP_INVOICE_IBAN || '';
-    const bankAccountHolder = process.env.CP_INVOICE_ACCOUNT_HOLDER || '';
+    const bankIban = (rib && rib.iban) || '';
+    const bankAccountHolder = (rib && rib.account_holder) || '';
     const paymentText = isUnpaid
       ? 'Règlement par virement bancaire à réception de facture.'
       : Object.entries(paymentsByMethod).map(([method, dates]) => {

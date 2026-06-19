@@ -229,6 +229,7 @@ async function insertCoursParticuliersInvoice({
   items,
   paymentDate,
   paymentMethod,
+  rib,
 }) {
   const supabase = getClient();
 
@@ -255,6 +256,7 @@ async function insertCoursParticuliersInvoice({
       items,
       payment_date: paymentDate,
       payment_method: paymentMethod,
+      ...(rib ? { rib } : {}),
     })
     .select()
     .single();
