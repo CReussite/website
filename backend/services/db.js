@@ -267,6 +267,33 @@ async function insertCoursParticuliersInvoice({
 }
 
 /**
+ * Marque une facture CP comme payée : met à jour payment_method/date + items, efface le rib.
+ */
+async function markCpInvoicePaid(invoiceNumber, { paymentDate, paymentMethod }) {
+  const supabase = getClient();
+  const { data: current, error: getErr } = await supabase
+    .from('cp_invoices')
+    .select('items, payment_method')
+    .eq('invoice_number', invoiceNumber)
+    .single();
+  if (getErr) throw new Error(`DB markCpInvoicePaid get: ${getErr.message}`);
+  if (current.payment_method !== 'À payer') throw new Error('Cette facture est déjà acquittée.');
+
+  const updatedItems = Array.isArray(current.items)
+    ? current.items.map(item => ({ ...item, status: 'paid', payment_date: paymentDate, payment_method: paymentMethod }))
+    : current.items;
+
+  const { data, error } = await supabase
+    .from('cp_invoices')
+    .update({ payment_method: paymentMethod, payment_date: paymentDate, items: updatedItems, rib: null })
+    .eq('invoice_number', invoiceNumber)
+    .select()
+    .single();
+  if (error) throw new Error(`DB markCpInvoicePaid update: ${error.message}`);
+  return data;
+}
+
+/**
  * Récupère une facture de cours particuliers par son numéro.
  */
 async function getCoursParticuliersInvoice(invoiceNumber) {
@@ -292,4 +319,5 @@ module.exports = {
   saveInvoicePath,
   insertCoursParticuliersInvoice,
   getCoursParticuliersInvoice,
+  markCpInvoicePaid,
 };

@@ -226,6 +226,8 @@
     .btn-invoice-close:hover { border-color: #b91c1c !important; color: #b91c1c; }
     .btn-invoice-pdf { background: #fff; color: var(--royal-blue, #112250); border: 1px solid var(--shellstone, #D9CBC2) !important; }
     .btn-invoice-pdf:hover { background: var(--swan-wing, #F5F0E9); }
+    .btn-invoice-mark-paid { background: #2e7d4f; color: #fff; border: none !important; }
+    .btn-invoice-mark-paid:hover { background: #1f5c39; }
     .invoice-frame {
       background: #fff;
       border-radius: 2px;
@@ -582,7 +584,29 @@
       <div class="invoice-modal-actions">
         <button class="btn-invoice-print" id="btn-inv-print">🖨️ Imprimer</button>
         <button class="btn-invoice-pdf" id="btn-inv-dl">⬇ Enregistrer en PDF</button>
+        <button class="btn-invoice-mark-paid" id="btn-inv-mark-paid" style="display:none;">✓ Marquer comme payé</button>
         <button class="btn-invoice-close" id="btn-inv-close">✕ Fermer</button>
+      </div>
+      <div id="inv-mark-paid-form" style="display:none;padding:12px 20px;background:#f0fdf4;border-bottom:1px solid #bbf7d0;">
+        <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
+          <div>
+            <label style="font-size:.8rem;color:#555;display:block;margin-bottom:4px;">Date de paiement *</label>
+            <input id="inv-paid-date" type="date" style="padding:7px;border:1px solid #ccc;border-radius:6px;font-size:.85rem;font-family:inherit;">
+          </div>
+          <div>
+            <label style="font-size:.8rem;color:#555;display:block;margin-bottom:4px;">Moyen de paiement *</label>
+            <select id="inv-paid-method" style="padding:7px;border:1px solid #ccc;border-radius:6px;font-size:.85rem;font-family:inherit;">
+              <option value="Virement bancaire">Virement bancaire</option>
+              <option value="Espèces">Espèces</option>
+              <option value="Chèque">Chèque</option>
+              <option value="Wero">Wero</option>
+              <option value="Stancer">Stancer</option>
+            </select>
+          </div>
+          <button id="inv-paid-confirm" style="padding:7px 16px;background:#2e7d4f;color:#fff;border:none;border-radius:6px;font-size:.85rem;font-family:inherit;cursor:pointer;font-weight:600;">Confirmer</button>
+          <button id="inv-paid-cancel" style="padding:7px 12px;background:transparent;color:#6b7280;border:1px solid #ccc;border-radius:6px;font-size:.85rem;font-family:inherit;cursor:pointer;">Annuler</button>
+          <span id="inv-paid-error" style="color:#b91c1c;font-size:.8rem;display:none;"></span>
+        </div>
       </div>
       <div class="invoice-frame" id="invoice-frame">
         <div class="inv-loading" id="inv-loading">
@@ -924,6 +948,7 @@
       const invError       = document.getElementById('inv-error');
       const invContent     = document.getElementById('inv-content');
       let currentInvoiceNumber = '';
+      let currentInvoiceIsUnpaidCp = false;
 
       function fmtInvoicePrice(amount) {
         return amount.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
@@ -931,6 +956,9 @@
 
       function renderInvoiceModal(data) {
         var isCp = data.invoice_type === 'cp';
+        currentInvoiceIsUnpaidCp = isCp && data.payment_status === 'a_payer';
+        document.getElementById('btn-inv-mark-paid').style.display = currentInvoiceIsUnpaidCp ? '' : 'none';
+        document.getElementById('inv-mark-paid-form').style.display = 'none';
 
         document.getElementById('inv-number').textContent = data.invoice_number;
         document.getElementById('inv-date').textContent = data.date;
@@ -1070,9 +1098,60 @@
         invoiceOverlay.classList.remove('active');
         document.body.style.overflow = '';
         currentInvoiceNumber = '';
+        currentInvoiceIsUnpaidCp = false;
+        document.getElementById('inv-mark-paid-form').style.display = 'none';
+        document.getElementById('btn-inv-mark-paid').style.display = 'none';
       }
 
       document.getElementById('btn-inv-close').addEventListener('click', closeInvoiceModal);
+
+      document.getElementById('btn-inv-mark-paid').addEventListener('click', function () {
+        var form = document.getElementById('inv-mark-paid-form');
+        form.style.display = 'block';
+        var today = new Date().toISOString().slice(0, 10);
+        document.getElementById('inv-paid-date').value = today;
+        document.getElementById('inv-paid-error').style.display = 'none';
+      });
+
+      document.getElementById('inv-paid-cancel').addEventListener('click', function () {
+        document.getElementById('inv-mark-paid-form').style.display = 'none';
+      });
+
+      document.getElementById('inv-paid-confirm').addEventListener('click', async function () {
+        var btn = this;
+        var payDate = document.getElementById('inv-paid-date').value;
+        var payMethod = document.getElementById('inv-paid-method').value;
+        var errEl = document.getElementById('inv-paid-error');
+        errEl.style.display = 'none';
+        if (!payDate || !payMethod) {
+          errEl.textContent = 'Date et moyen de paiement requis.';
+          errEl.style.display = 'inline';
+          return;
+        }
+        btn.disabled = true;
+        btn.textContent = 'Enregistrement…';
+        try {
+          var res = await fetch(
+            BACKEND + '/api/admin/cours-particuliers/' + encodeURIComponent(currentInvoiceNumber) + '?key=' + encodeURIComponent(adminKey),
+            { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ paymentDate: payDate, paymentMethod: payMethod }) }
+          );
+          var data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Erreur serveur');
+          // Recharger la facture dans la modal
+          await openInvoiceModal(currentInvoiceNumber, false);
+          // Rafraîchir la liste en arrière-plan
+          fetch(BACKEND + '/api/admin/orders?key=' + encodeURIComponent(adminKey))
+            .then(function(r) { return r.json(); })
+            .then(function(orders) { allOrders = orders; populateYearFilter(); renderOrders(getFilteredOrders()); })
+            .catch(function() {});
+        } catch (err) {
+          errEl.textContent = err.message;
+          errEl.style.display = 'inline';
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Confirmer';
+        }
+      });
 
       invoiceOverlay.addEventListener('click', function (e) {
         if (e.target === invoiceOverlay) closeInvoiceModal();

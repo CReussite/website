@@ -1,5 +1,5 @@
 const express = require('express');
-const { getOrders, getAdminStats, getExtractRequests, insertCoursParticuliersInvoice, getCoursParticuliersInvoice } = require('../services/db');
+const { getOrders, getAdminStats, getExtractRequests, insertCoursParticuliersInvoice, getCoursParticuliersInvoice, markCpInvoicePaid, uploadInvoicePdf } = require('../services/db');
 const { generateInvoice, generateCpInvoice } = require('../services/invoice');
 
 const router = express.Router();
@@ -341,6 +341,49 @@ router.post('/cours-particuliers', express.json(), requireAdminKey, async (req, 
     res.json({ invoiceNumber });
   } catch (err) {
     console.error('[admin] cours-particuliers erreur :', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ── PATCH /api/admin/cours-particuliers/:invoiceNumber ────────────────────────
+// Marque une facture CP comme payée, régénère et réarchive le PDF.
+router.patch('/cours-particuliers/:invoiceNumber', express.json(), requireAdminKey, async (req, res) => {
+  try {
+    const { invoiceNumber } = req.params;
+    const { paymentDate, paymentMethod } = req.body;
+    if (!paymentDate || !paymentMethod) {
+      return res.status(400).json({ error: 'Date et moyen de paiement requis.' });
+    }
+
+    const updated = await markCpInvoicePaid(invoiceNumber, { paymentDate, paymentMethod });
+
+    const cpItems = (Array.isArray(updated.items) && updated.items.length > 0)
+      ? updated.items.map(item => ({
+          description: `${item.nature} — ${fmtDate(item.date)}`,
+          hours: Number(item.hours),
+          hourlyRate: Number(item.hourly_rate),
+          paymentDate: fmtDate(item.payment_date || paymentDate),
+          paymentMethod: item.payment_method || paymentMethod,
+          status: 'paid',
+        }))
+      : [{ description: 'Cours particuliers', hours: 1, hourlyRate: updated.amount / 100, paymentDate: fmtDate(paymentDate), paymentMethod }];
+
+    const pdfBuffer = await generateCpInvoice({
+      invoiceNumber:   updated.invoice_number,
+      customerName:    updated.customer_name || updated.email || '—',
+      customerAddress: updated.customer_address || '',
+      items:           cpItems,
+      invoiceDate:     new Date(updated.created_at),
+      paymentDate:     fmtDate(paymentDate),
+      paymentMethod,
+      rib:             {},
+    });
+
+    await uploadInvoicePdf(invoiceNumber, pdfBuffer);
+
+    res.json({ invoiceNumber });
+  } catch (err) {
+    console.error('[admin] mark-paid erreur :', err.message);
     res.status(500).json({ error: err.message });
   }
 });
