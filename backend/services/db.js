@@ -275,9 +275,10 @@ async function markCpInvoicePaid(invoiceNumber, { paymentDate, paymentMethod }) 
     .from('cp_invoices')
     .select('items, payment_method')
     .eq('invoice_number', invoiceNumber)
-    .single();
+    .maybeSingle();
   if (getErr) throw new Error(`DB markCpInvoicePaid get: ${getErr.message}`);
-  if (current.payment_method !== 'À payer') throw new Error('Cette facture est déjà acquittée.');
+  if (!current) { const e = new Error('Facture introuvable.'); e.statusCode = 404; throw e; }
+  if (current.payment_method !== 'À payer') { const e = new Error('Cette facture est déjà acquittée.'); e.statusCode = 409; throw e; }
 
   const updatedItems = Array.isArray(current.items)
     ? current.items.map(item => ({ ...item, status: 'paid', payment_date: paymentDate, payment_method: paymentMethod }))

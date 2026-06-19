@@ -384,7 +384,7 @@ router.patch('/cours-particuliers/:invoiceNumber', express.json(), requireAdminK
     res.json({ invoiceNumber });
   } catch (err) {
     console.error('[admin] mark-paid erreur :', err.message);
-    res.status(500).json({ error: err.message });
+    res.status(err.statusCode || 500).json({ error: err.message });
   }
 });
 
