@@ -118,7 +118,7 @@ router.get('/invoice/:invoiceNumber', requireAdminKey, async (req, res) => {
     if (cpInvoice) {
       const cpItems = Array.isArray(cpInvoice.items) && cpInvoice.items.length > 0
         ? cpInvoice.items.map(item => ({
-            description: `${item.nature} — ${fmtDate(item.date)}`,
+            description: `${item.nature} - ${fmtDate(item.date)}`,
             hours: Number(item.hours),
             hourlyRate: Number(item.hourly_rate),
             paymentDate: fmtDate(item.payment_date || ''),
@@ -183,7 +183,7 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
       const items = (Array.isArray(cpInvoice.items) && cpInvoice.items.length > 0)
         ? cpInvoice.items.map(function (item) {
             return {
-              description: `${item.nature} — ${fmtDate(item.date)}`,
+              description: `${item.nature} - ${fmtDate(item.date)}`,
               quantity: Number(item.hours),
               unit_price: Number(item.hourly_rate),
               payment_date: fmtDate(item.payment_date || ''),
@@ -359,7 +359,7 @@ router.patch('/cours-particuliers/:invoiceNumber', express.json(), requireAdminK
 
     const cpItems = (Array.isArray(updated.items) && updated.items.length > 0)
       ? updated.items.map(item => ({
-          description: `${item.nature} — ${fmtDate(item.date)}`,
+          description: `${item.nature} - ${fmtDate(item.date)}`,
           hours: Number(item.hours),
           hourlyRate: Number(item.hourly_rate),
           paymentDate: fmtDate(item.payment_date || paymentDate),
