@@ -10,6 +10,8 @@ Disallow: /success.html
 Disallow: /cancel.html
 Disallow: /viewer-maths.html
 Disallow: /viewer-physique.html
+# Empêche l'indexation des variantes UTM (ex: liens Scamadviser)
+Disallow: /*?*utm_
 
 # ============================================================
 # Crawlers de CITATION (IA qui citent les sources) — AUTORISÉS
