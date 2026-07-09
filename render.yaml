@@ -7,7 +7,7 @@ services:
     buildCommand: npm ci --omit=dev
     startCommand: node server.js
     plan: free
-    healthCheckPath: /api/healthz
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
