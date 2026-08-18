@@ -1,5 +1,5 @@
 const express = require('express');
-const { getOrders, getAdminStats, getExtractRequests, insertCoursParticuliersInvoice, getCoursParticuliersInvoice, markCpInvoicePaid, uploadInvoicePdf } = require('../services/db');
+const { getOrders, getAdminStats, getExtractRequests, insertCoursParticuliersInvoice, getCoursParticuliersInvoice, markCpInvoicePaid, deleteCoursParticuliersInvoice, uploadInvoicePdf } = require('../services/db');
 const { generateInvoice, generateCpInvoice } = require('../services/invoice');
 
 const router = express.Router();
@@ -385,6 +385,20 @@ router.patch('/cours-particuliers/:invoiceNumber', express.json(), requireAdminK
   } catch (err) {
     console.error('[admin] mark-paid erreur :', err.message);
     res.status(err.statusCode || 500).json({ error: err.message });
+  }
+});
+
+// ── DELETE /api/admin/cours-particuliers/:invoiceNumber ───────────────────────
+// Supprime une facture CP (erreur de saisie, ex. RIB manquant) et son PDF archivé.
+router.delete('/cours-particuliers/:invoiceNumber', requireAdminKey, async (req, res) => {
+  try {
+    const { invoiceNumber } = req.params;
+    const deleted = await deleteCoursParticuliersInvoice(invoiceNumber);
+    if (!deleted) return res.status(404).json({ error: 'Facture introuvable.' });
+    res.json({ invoiceNumber, deleted: true });
+  } catch (err) {
+    console.error('[admin] delete cours-particuliers erreur :', err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 

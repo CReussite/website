@@ -308,6 +308,32 @@ async function getCoursParticuliersInvoice(invoiceNumber) {
   return data;
 }
 
+/**
+ * Supprime une facture de cours particuliers (erreur de saisie, doublon, etc.).
+ * Supprime aussi le PDF archivé dans le storage s'il existe.
+ * Retourne la ligne supprimée, ou null si elle n'existait pas.
+ */
+async function deleteCoursParticuliersInvoice(invoiceNumber) {
+  const supabase = getClient();
+  const { data, error } = await supabase
+    .from('cp_invoices')
+    .delete()
+    .eq('invoice_number', invoiceNumber)
+    .select()
+    .maybeSingle();
+  if (error) throw new Error(`DB deleteCoursParticuliersInvoice failed: ${error.message}`);
+  if (!data) return null;
+
+  const yearMatch = invoiceNumber.match(/(\d{4})/);
+  if (yearMatch) {
+    const filePath = `${yearMatch[1]}/${invoiceNumber}.pdf`;
+    const { error: storageError } = await supabase.storage.from('invoices').remove([filePath]);
+    if (storageError) console.warn(`[storage] Suppression PDF ignorée (${storageError.message})`);
+  }
+
+  return data;
+}
+
 module.exports = {
   getClient,
   insertOrderIdempotent,
@@ -321,4 +347,5 @@ module.exports = {
   insertCoursParticuliersInvoice,
   getCoursParticuliersInvoice,
   markCpInvoicePaid,
+  deleteCoursParticuliersInvoice,
 };
