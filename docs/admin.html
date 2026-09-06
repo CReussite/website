@@ -561,7 +561,7 @@
       <div class="table-card subsection" id="promo-section">
         <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 0;flex-wrap:wrap;gap:12px;">
           <h2 class="section-title" style="margin:0;">Codes promo</h2>
-          <button class="btn btn-primary" onclick="showAddPromoForm()" style="font-size:0.85rem;padding:8px 16px;">+ Nouveau code élève</button>
+          <button class="btn btn-primary" onclick="showAddPromoForm()" style="font-size:0.85rem;padding:8px 16px;margin-right:4px;">+ Nouveau code élève</button>
         </div>
 
         <!-- Formulaire ajout code élève -->
@@ -1497,97 +1497,95 @@
 
     })();
 
-    // ── Codes promo ──────────────────────────────────────────────────────────
-
-    async function loadPromoCodes() {
-      const tbody = document.getElementById('promo-tbody');
-      if (!tbody) return;
-      try {
-        const res = await fetch(BACKEND + '/api/admin/promo', {
-          headers: { 'x-admin-key': adminKey },
-        });
-        if (!res.ok) throw new Error('Erreur ' + res.status);
-        const codes = await res.json();
-        if (!codes.length) {
-          tbody.innerHTML = '<tr><td colspan="9" class="table-empty">Aucun code promo.</td></tr>';
-          return;
+      // ── Codes promo (dans l'IIFE pour accéder à BACKEND et adminKey) ────────
+      async function loadPromoCodes() {
+        const tbody = document.getElementById('promo-tbody');
+        if (!tbody) return;
+        try {
+          const res = await fetch(BACKEND + '/api/admin/promo', {
+            headers: { 'x-admin-key': adminKey },
+          });
+          if (!res.ok) throw new Error('Erreur ' + res.status);
+          const codes = await res.json();
+          if (!codes.length) {
+            tbody.innerHTML = '<tr><td colspan="9" class="table-empty">Aucun code promo.</td></tr>';
+            return;
+          }
+          tbody.innerHTML = codes.map(function (c) {
+            const revEur = c.revenue_cents ? (c.revenue_cents / 100).toFixed(2) + ' €' : '—';
+            const expiry = c.expires_at ? new Date(c.expires_at).toLocaleDateString('fr-FR') : '—';
+            const referral = c.referral_count !== null ? c.referral_count + ' / 5' : '—';
+            const badge = c.active
+              ? '<span style="color:#1a7a3c;font-weight:700;">Actif</span>'
+              : '<span style="color:#c0392b;font-weight:700;">Inactif</span>';
+            const toggleLabel = c.active ? 'Désactiver' : 'Activer';
+            const toggleAction = 'togglePromo('' + c.code + '',' + !c.active + ')';
+            return '<tr>' +
+              '<td><strong>' + c.code + '</strong></td>' +
+              '<td>' + (c.type === 'eleve' ? 'Élève' : 'Public') + '</td>' +
+              '<td>−' + c.discount_percent + ' %</td>' +
+              '<td style="font-size:0.8rem;color:#6b7280;">' + (c.owner_email || '—') + '</td>' +
+              '<td style="text-align:center;">' + referral + '</td>' +
+              '<td style="text-align:right;">' + revEur + '</td>' +
+              '<td>' + expiry + '</td>' +
+              '<td>' + badge + '</td>' +
+              '<td><button class="btn btn-outline" style="font-size:0.78rem;padding:4px 10px;" onclick="' + toggleAction + '">' + toggleLabel + '</button></td>' +
+            '</tr>';
+          }).join('');
+        } catch (err) {
+          tbody.innerHTML = '<tr><td colspan="9" class="table-empty">Erreur : ' + err.message + '</td></tr>';
         }
-        tbody.innerHTML = codes.map(function (c) {
-          const revEur = c.revenue_cents ? (c.revenue_cents / 100).toFixed(2) + ' €' : '—';
-          const expiry = c.expires_at
-            ? new Date(c.expires_at).toLocaleDateString('fr-FR')
-            : '—';
-          const referral = c.referral_count !== null
-            ? c.referral_count + ' / 5'
-            : '—';
-          const badge = c.active
-            ? '<span style="color:#1a7a3c;font-weight:700;">Actif</span>'
-            : '<span style="color:#c0392b;font-weight:700;">Inactif</span>';
-          const toggleLabel = c.active ? 'Désactiver' : 'Activer';
-          const toggleAction = 'togglePromo(\'' + c.code + '\',' + !c.active + ')';
-          return '<tr>' +
-            '<td><strong>' + c.code + '</strong></td>' +
-            '<td>' + (c.type === 'eleve' ? 'Élève' : 'Public') + '</td>' +
-            '<td>−' + c.discount_percent + ' %</td>' +
-            '<td style="font-size:0.8rem;color:#6b7280;">' + (c.owner_email || '—') + '</td>' +
-            '<td style="text-align:center;">' + referral + '</td>' +
-            '<td style="text-align:right;">' + revEur + '</td>' +
-            '<td>' + expiry + '</td>' +
-            '<td>' + badge + '</td>' +
-            '<td><button class="btn btn-outline" style="font-size:0.78rem;padding:4px 10px;" onclick="' + toggleAction + '">' + toggleLabel + '</button></td>' +
-          '</tr>';
-        }).join('');
-      } catch (err) {
-        tbody.innerHTML = '<tr><td colspan="9" class="table-empty">Erreur : ' + err.message + '</td></tr>';
       }
-    }
+      window.loadPromoCodes = loadPromoCodes;
 
-    function showAddPromoForm() {
-      document.getElementById('add-promo-form').style.display = 'block';
-    }
-    function hideAddPromoForm() {
-      document.getElementById('add-promo-form').style.display = 'none';
-      document.getElementById('promo-create-msg').textContent = '';
-    }
+      window.showAddPromoForm = function () {
+        document.getElementById('add-promo-form').style.display = 'block';
+      };
+      window.hideAddPromoForm = function () {
+        document.getElementById('add-promo-form').style.display = 'none';
+        document.getElementById('promo-create-msg').textContent = '';
+      };
 
-    async function createPromoCode() {
-      const prenom = document.getElementById('promo-prenom').value.trim();
-      const email  = document.getElementById('promo-email').value.trim();
-      const msg    = document.getElementById('promo-create-msg');
-      if (!prenom || !email) { msg.style.color = '#c0392b'; msg.textContent = 'Prénom et email requis.'; return; }
-      try {
-        const res = await fetch(BACKEND + '/api/admin/promo', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
-          body: JSON.stringify({ prenom, email }),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Erreur');
-        msg.style.color = '#1a7a3c';
-        msg.textContent = 'Code ' + data.code + ' créé.';
-        document.getElementById('promo-prenom').value = '';
-        document.getElementById('promo-email').value  = '';
-        loadPromoCodes();
-      } catch (err) {
-        msg.style.color = '#c0392b';
-        msg.textContent = err.message;
-      }
-    }
+      window.createPromoCode = async function () {
+        const prenom = document.getElementById('promo-prenom').value.trim();
+        const email  = document.getElementById('promo-email').value.trim();
+        const msg    = document.getElementById('promo-create-msg');
+        if (!prenom || !email) { msg.style.color = '#c0392b'; msg.textContent = 'Prénom et email requis.'; return; }
+        try {
+          const res = await fetch(BACKEND + '/api/admin/promo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
+            body: JSON.stringify({ prenom, email }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Erreur');
+          msg.style.color = '#1a7a3c';
+          msg.textContent = 'Code ' + data.code + ' créé.';
+          document.getElementById('promo-prenom').value = '';
+          document.getElementById('promo-email').value  = '';
+          loadPromoCodes();
+        } catch (err) {
+          msg.style.color = '#c0392b';
+          msg.textContent = err.message;
+        }
+      };
 
-    async function togglePromo(code, active) {
-      try {
-        const res = await fetch(BACKEND + '/api/admin/promo/' + encodeURIComponent(code), {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
-          body: JSON.stringify({ active }),
-        });
-        if (!res.ok) throw new Error('Erreur ' + res.status);
-        loadPromoCodes();
-      } catch (err) {
-        alert('Erreur : ' + err.message);
-      }
-    }
+      window.togglePromo = async function (code, active) {
+        try {
+          const res = await fetch(BACKEND + '/api/admin/promo/' + encodeURIComponent(code), {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
+            body: JSON.stringify({ active }),
+          });
+          if (!res.ok) throw new Error('Erreur ' + res.status);
+          loadPromoCodes();
+        } catch (err) {
+          alert('Erreur : ' + err.message);
+        }
+      };
 
+    })();
   </script>
 </body>
+</html>
 </html>
