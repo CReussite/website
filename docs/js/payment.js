@@ -235,10 +235,33 @@ async function initPayment() {
       console.error('[payment] Erreur :', err.message);
       modalBtn.textContent = 'Procéder au paiement';
       modalBtn.disabled = false;
-      const msg = err.name === 'AbortError'
-        ? 'Le serveur met trop de temps à répondre. Réessaie dans quelques instants.'
-        : 'Une erreur est survenue. Réessaie dans quelques instants.';
-      alert(msg);
+
+      if (err.name === 'AbortError') {
+        alert('Le serveur met trop de temps à répondre. Réessaie dans quelques instants.');
+        return;
+      }
+
+      // Erreur liée au code promo (expiré, invalide, déjà utilisé) :
+      // afficher dans le bandeau promo + réinitialiser sans alert()
+      const isPromoError = err.message && (
+        err.message.includes('promo') ||
+        err.message.includes('expiré') ||
+        err.message.includes('utilisé') ||
+        err.message.includes('invalide')
+      );
+
+      if (isPromoError && promoFeedback) {
+        appliedPromoCode = null;
+        appliedDiscount  = 0;
+        finalPriceCents  = null;
+        updatePriceDisplay();
+        promoFeedback.hidden = false;
+        promoFeedback.style.color = '#c0392b';
+        promoFeedback.textContent = err.message.replace('Code promo invalide : ', '');
+        if (promoInput) promoInput.value = '';
+      } else {
+        alert('Une erreur est survenue. Réessaie dans quelques instants.');
+      }
     }
   });
 }
