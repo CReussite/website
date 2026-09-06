@@ -11,7 +11,7 @@
           <div class="footer-logo">
             <img src="${root}img/logo.jpeg" alt="C'Réussite" class="footer-logo-img">
           </div>
-          <p class="footer-brand-text">Fiches de révision Bac 2026<br>Maths &amp; Physique-Chimie</p>
+          <p class="footer-brand-text">Fiches de révision Bac 2027<br>Maths &amp; Physique-Chimie</p>
           <a href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@c-reussite.fr" target="_blank" rel="noopener" class="footer-brand-email">contact@c-reussite.fr</a>
         </div>
 

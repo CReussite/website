@@ -6,8 +6,8 @@
     <description>Flux produits pour Google Merchant Center</description>
     <item>
       <g:id>maths</g:id>
-      <g:title>Fiches de révision Maths Terminale Spécialité - Bac 2026</g:title>
-      <g:description>20 fiches PDF couvrant 100 % du programme officiel de Maths Terminale Spécialité Bac 2026 : cours condensé, formules clés et méthodes de résolution sur une page par chapitre.</g:description>
+      <g:title>Fiches de révision Maths Terminale Spécialité - Bac 2027</g:title>
+      <g:description>20 fiches PDF couvrant 100 % du programme officiel de Maths Terminale Spécialité Bac 2027 : cours condensé, formules clés et méthodes de résolution sur une page par chapitre.</g:description>
       <g:link>https://c-reussite.fr/maths-terminale/</g:link>
       <g:canonical_link>https://c-reussite.fr/maths-terminale/</g:canonical_link>
       <g:image_link>https://c-reussite.fr/img/cover-maths.jpg</g:image_link>
@@ -18,7 +18,7 @@
       <g:price>14.99 EUR</g:price>
       <g:condition>new</g:condition>
       <g:brand>C&apos;Réussite</g:brand>
-      <g:mpn>MATHS-TERM-2026</g:mpn>
+      <g:mpn>MATHS-TERM-2027</g:mpn>
       <g:google_product_category>Media &gt; Books &gt; E-Books</g:google_product_category>
       <g:product_type>Fiches de révision &gt; Maths Terminale</g:product_type>
       <g:shipping>
@@ -29,8 +29,8 @@
     </item>
     <item>
       <g:id>physique</g:id>
-      <g:title>Fiches de révision Physique-Chimie Terminale Spécialité - Bac 2026</g:title>
-      <g:description>32 fiches PDF couvrant 100 % du programme officiel de Physique-Chimie Terminale Spécialité Bac 2026 : définitions, formules avec unités SI et méthodes sur une page par chapitre.</g:description>
+      <g:title>Fiches de révision Physique-Chimie Terminale Spécialité - Bac 2027</g:title>
+      <g:description>32 fiches PDF couvrant 100 % du programme officiel de Physique-Chimie Terminale Spécialité Bac 2027 : définitions, formules avec unités SI et méthodes sur une page par chapitre.</g:description>
       <g:link>https://c-reussite.fr/physique-chimie-terminale/</g:link>
       <g:canonical_link>https://c-reussite.fr/physique-chimie-terminale/</g:canonical_link>
       <g:image_link>https://c-reussite.fr/img/cover-physique.jpg</g:image_link>
@@ -41,7 +41,7 @@
       <g:price>14.99 EUR</g:price>
       <g:condition>new</g:condition>
       <g:brand>C&apos;Réussite</g:brand>
-      <g:mpn>PC-TERM-2026</g:mpn>
+      <g:mpn>PC-TERM-2027</g:mpn>
       <g:google_product_category>Media &gt; Books &gt; E-Books</g:google_product_category>
       <g:product_type>Fiches de révision &gt; Physique-Chimie Terminale</g:product_type>
       <g:shipping>
@@ -52,8 +52,8 @@
     </item>
     <item>
       <g:id>bundle</g:id>
-      <g:title>Pack fiches Maths + Physique-Chimie Terminale Spécialité - Bac 2026</g:title>
-      <g:description>Pack de 52 fiches PDF : Maths Terminale Spécialité et Physique-Chimie Terminale Spécialité. 100 % des deux programmes officiels Bac 2026, livraison immédiate par email.</g:description>
+      <g:title>Pack fiches Maths + Physique-Chimie Terminale Spécialité - Bac 2027</g:title>
+      <g:description>Pack de 52 fiches PDF : Maths Terminale Spécialité et Physique-Chimie Terminale Spécialité. 100 % des deux programmes officiels Bac 2027, livraison immédiate par email.</g:description>
       <g:link>https://c-reussite.fr/pack-maths-physique-chimie/</g:link>
       <g:canonical_link>https://c-reussite.fr/pack-maths-physique-chimie/</g:canonical_link>
       <g:image_link>https://c-reussite.fr/img/carousel/bundle/ebook-pack-maths-physique-terminale-1.png</g:image_link>
@@ -63,7 +63,7 @@
       <g:price>24.99 EUR</g:price>
       <g:condition>new</g:condition>
       <g:brand>C&apos;Réussite</g:brand>
-      <g:mpn>PACK-TERM-2026</g:mpn>
+      <g:mpn>PACK-TERM-2027</g:mpn>
       <g:google_product_category>Media &gt; Books &gt; E-Books</g:google_product_category>
       <g:product_type>Fiches de révision &gt; Pack Terminale</g:product_type>
       <g:shipping>
