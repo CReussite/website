@@ -11,7 +11,7 @@ test('generateInvoice retourne un Buffer non vide', async () => {
     invoiceNumber: '2025-001',
     email:         'test@example.com',
     productName:   'Fiches Maths Terminale Spécialité',
-    amount:        1499,
+    amount:        1990,
     date:          new Date('2025-01-15'),
   });
 
@@ -21,12 +21,12 @@ test('generateInvoice retourne un Buffer non vide', async () => {
   assert.equal(buf.toString('ascii', 0, 4), '%PDF', 'doit commencer par %PDF');
 });
 
-test('generateInvoice avec bundle (2499 cts) retourne un Buffer valide', async () => {
+test('generateInvoice avec bundle (2990 cts) retourne un Buffer valide', async () => {
   const buf = await generateInvoice({
     invoiceNumber: '2025-002',
     email:         'test@example.com',
     productName:   'Pack Maths + Physique-Chimie',
-    amount:        2499,
+    amount:        2990,
     date:          new Date('2025-01-15'),
   });
   assert.ok(buf instanceof Buffer && buf.length > 1000, 'PDF bundle invalide');

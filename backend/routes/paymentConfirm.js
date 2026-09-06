@@ -5,6 +5,9 @@ const {
   markEmailSent,
   uploadInvoicePdf,
   saveInvoicePath,
+  getPendingPayment,
+  confirmPendingPayment,
+  countReferralSales,
 } = require('../services/db');
 const { generateInvoice } = require('../services/invoice');
 const { sendOrderEmail } = require('../services/mailer');
@@ -16,6 +19,7 @@ const PRODUCTS = require(path.join(__dirname, '../../docs/content/products.json'
 const PRODUCT_MAP = Object.fromEntries(PRODUCTS.map((p) => [p.id, p]));
 
 const STANCER_API = 'https://api.stancer.com/v2';
+const REFERRAL_THRESHOLD = 5;
 
 function stancerAuth() {
   return 'Basic ' + Buffer.from(process.env.STANCER_SECRET_KEY + ':').toString('base64');
@@ -64,19 +68,13 @@ router.get('/', express.json(), async (req, res) => {
   }
 
   console.log('[payment-confirm] Stancer payment.customer:', JSON.stringify(payment.customer));
-  console.log(
-    '[payment-confirm] Stancer payment status:',
-    payment.status,
-    '| amount:',
-    payment.amount,
-  );
+  console.log('[payment-confirm] Stancer payment status:', payment.status, '| amount:', payment.amount);
 
   // Stancer peut retourner customer comme objet { email } ou string (ID)
   let customerEmail = null;
   if (typeof payment.customer === 'object' && payment.customer?.email) {
     customerEmail = payment.customer.email;
   } else if (typeof payment.customer === 'string') {
-    // customer est un ID — récupérer l'email via GET /v2/customers/{id}
     try {
       const custResp = await fetch(`${STANCER_API}/customers/${payment.customer}`, {
         headers: { Authorization: stancerAuth() },
@@ -94,14 +92,10 @@ router.get('/', express.json(), async (req, res) => {
     (typeof payment.customer === 'object' ? payment.customer?.name : null) || customerEmail;
   const amount = payment.amount;
 
-  // product_id passé par le frontend via localStorage (Stancer n'a pas de champ metadata)
   const productId = req.query.product_id;
 
   if (!customerEmail) {
-    console.error(
-      '[payment-confirm] Email client manquant. payment.customer =',
-      JSON.stringify(payment.customer),
-    );
+    console.error('[payment-confirm] Email client manquant. payment.customer =', JSON.stringify(payment.customer));
     return res.status(422).json({
       error: 'Email client introuvable dans le paiement Stancer.',
       debug: `customer=${JSON.stringify(payment.customer)}`,
@@ -118,14 +112,21 @@ router.get('/', express.json(), async (req, res) => {
     return res.status(422).json({ error: `Produit inconnu : ${productId}` });
   }
 
-  // Validation anti-fraude : le montant Stancer doit correspondre au prix catalogue
-  if (amount !== product.price) {
-    console.error('[payment-confirm] Montant incohérent :', { amount, expected: product.price });
+  // Validation anti-fraude : comparer le montant Stancer au montant attendu
+  // On cherche d'abord dans pending_payments (montant exact avec promo éventuelle),
+  // sinon on accepte le prix catalogue (cas sans promo ou si pending absent)
+  const pending = await getPendingPayment(paymentId).catch(() => null);
+  const expectedAmount = pending ? pending.discounted_amount : product.price;
+
+  if (amount !== expectedAmount) {
+    console.error('[payment-confirm] Montant incohérent :', { amount, expected: expectedAmount });
     return res.status(422).json({
       error: 'Montant du paiement incohérent.',
-      debug: `got=${amount} expected=${product.price}`,
+      debug: `got=${amount} expected=${expectedAmount}`,
     });
   }
+
+  const promoCode = pending?.promo_code || null;
 
   try {
     const { invoiceNumber, isNew, order } = await insertOrderIdempotent({
@@ -133,10 +134,12 @@ router.get('/', express.json(), async (req, res) => {
       productId,
       amount,
       paymentSessionId: paymentId,
+      promoCode,
+      discountPercent: pending ? Math.round((1 - pending.discounted_amount / pending.original_amount) * 100) : 0,
+      originalAmount: pending?.original_amount || amount,
     });
 
     if (isNew === false && order.email_sent) {
-      // Déjà traité — on renvoie juste le succès (idempotent)
       return res.json({ success: true, invoiceNumber, alreadySent: true });
     }
 
@@ -160,9 +163,17 @@ router.get('/', express.json(), async (req, res) => {
     });
 
     await markEmailSent(paymentId);
+    await confirmPendingPayment(paymentId).catch(() => {});
 
     const invoicePath = await uploadInvoicePdf(invoiceNumber, invoicePdf);
     if (invoicePath) await saveInvoicePath(paymentId, invoicePath);
+
+    // Vérification parrainage : si code élève, compter les ventes valides
+    if (promoCode) {
+      checkReferralThreshold(promoCode, customerEmail).catch(e =>
+        console.warn('[payment-confirm] Referral check failed:', e.message)
+      );
+    }
 
     console.log(`[payment-confirm] Commande ${invoiceNumber} traitée — ${customerEmail}`);
     res.json({ success: true, invoiceNumber });
@@ -187,5 +198,16 @@ router.get('/', express.json(), async (req, res) => {
     });
   }
 });
+
+async function checkReferralThreshold(promoCode, buyerEmail) {
+  const count = await countReferralSales(promoCode);
+  if (count === REFERRAL_THRESHOLD) {
+    await sendOpsAlert({
+      subject: `Parrainage : ${promoCode} a atteint ${REFERRAL_THRESHOLD} ventes`,
+      message: `Le code élève ${promoCode} vient d'atteindre ${REFERRAL_THRESHOLD} ventes valides. Offrir 1h de cours particulier à l'élève propriétaire du code.`,
+      details: { promo_code: promoCode, last_buyer: buyerEmail, valid_sales: count },
+    });
+  }
+}
 
 module.exports = router;

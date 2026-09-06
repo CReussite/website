@@ -16,7 +16,7 @@ function getClient() {
  * Retourne { order, invoiceNumber, isNew }
  *   - isNew = false si la session était déjà en base (retry Stancer)
  */
-async function insertOrderIdempotent({ email, productId, amount, paymentSessionId }) {
+async function insertOrderIdempotent({ email, productId, amount, paymentSessionId, promoCode, discountPercent, originalAmount }) {
   const supabase = getClient();
 
   // Vérifier si la session existe déjà
@@ -44,10 +44,13 @@ async function insertOrderIdempotent({ email, productId, amount, paymentSessionI
     .from('orders')
     .insert({
       email,
-      product_id: productId,
+      product_id:        productId,
       amount,
       payment_session_id: paymentSessionId,
-      invoice_number: invoiceNumber,
+      invoice_number:    invoiceNumber,
+      promo_code:        promoCode   || null,
+      discount_percent:  discountPercent || 0,
+      original_amount:   originalAmount  || amount,
     })
     .select()
     .single();
@@ -334,6 +337,224 @@ async function deleteCoursParticuliersInvoice(invoiceNumber) {
   return data;
 }
 
+// ── Promo codes ────────────────────────────────────────────────────────────
+
+/**
+ * Valide un code promo et retourne { valid, discountPercent, error }.
+ * Gère : codes 'public' (RENTREE10), codes 'eleve', tokens EXTRAIT15.
+ */
+async function validatePromoCode(code) {
+  const supabase = getClient();
+  const upper = code.trim().toUpperCase();
+
+  // Tokens EXTRAIT15 : chercher dans extrait_tokens (UUID brut)
+  const uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  if (uuidRe.test(code.trim())) {
+    const { data: token } = await supabase
+      .from('extrait_tokens')
+      .select('token, expires_at, used_at')
+      .eq('token', code.trim())
+      .maybeSingle();
+
+    if (!token) return { valid: false, error: 'Code invalide.' };
+    if (token.used_at) return { valid: false, error: 'Ce code a déjà été utilisé.' };
+    if (new Date(token.expires_at) < new Date()) return { valid: false, error: 'Ce code a expiré (valable 24 h).' };
+
+    return { valid: true, discountPercent: 15, type: 'extrait', token: code.trim() };
+  }
+
+  // Codes promo classiques (public ou eleve)
+  const { data: promo } = await supabase
+    .from('promo_codes')
+    .select('code, type, discount_percent, expires_at, active')
+    .eq('code', upper)
+    .maybeSingle();
+
+  if (!promo || !promo.active) return { valid: false, error: 'Code invalide ou désactivé.' };
+  if (promo.expires_at && new Date(promo.expires_at) < new Date()) {
+    return { valid: false, error: 'Ce code a expiré.' };
+  }
+
+  return { valid: true, discountPercent: promo.discount_percent, type: promo.type, code: upper };
+}
+
+/**
+ * Marque un token EXTRAIT15 comme utilisé.
+ */
+async function markExtraitTokenUsed(token) {
+  const supabase = getClient();
+  await supabase
+    .from('extrait_tokens')
+    .update({ used_at: new Date().toISOString() })
+    .eq('token', token);
+}
+
+/**
+ * Crée un token EXTRAIT15 pour un email donné (valable 24h).
+ */
+async function createExtraitToken(email) {
+  const supabase = getClient();
+  const { randomUUID } = require('node:crypto');
+  const token = randomUUID();
+  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+
+  const { error } = await supabase
+    .from('extrait_tokens')
+    .insert({ token, email, expires_at: expiresAt });
+
+  if (error) throw new Error(`DB createExtraitToken failed: ${error.message}`);
+  return token;
+}
+
+// ── Pending payments (réconciliation Stancer) ───────────────────────────────
+
+/**
+ * Enregistre un paiement en attente lors du checkout.
+ */
+async function insertPendingPayment({ paymentId, productId, email, promoCode, originalAmount, discountedAmount }) {
+  const supabase = getClient();
+  const { error } = await supabase
+    .from('pending_payments')
+    .insert({
+      payment_id:        paymentId,
+      product_id:        productId,
+      email,
+      promo_code:        promoCode || null,
+      original_amount:   originalAmount,
+      discounted_amount: discountedAmount,
+    });
+  if (error) throw new Error(`DB insertPendingPayment failed: ${error.message}`);
+}
+
+/**
+ * Marque un paiement comme confirmé.
+ */
+async function confirmPendingPayment(paymentId) {
+  const supabase = getClient();
+  await supabase
+    .from('pending_payments')
+    .update({ confirmed: true, confirmed_at: new Date().toISOString() })
+    .eq('payment_id', paymentId);
+}
+
+/**
+ * Retourne les paiements non confirmés créés il y a plus de 30 minutes.
+ */
+async function getUnconfirmedPayments() {
+  const supabase = getClient();
+  const cutoff = new Date(Date.now() - 30 * 60 * 1000).toISOString();
+  const { data, error } = await supabase
+    .from('pending_payments')
+    .select('*')
+    .eq('confirmed', false)
+    .lt('created_at', cutoff)
+    .limit(50);
+  if (error) throw new Error(`DB getUnconfirmedPayments failed: ${error.message}`);
+  return data || [];
+}
+
+/**
+ * Retourne le montant facturé (discounted_amount) d'un paiement en attente.
+ * Utilisé par paymentConfirm pour la validation anti-fraude.
+ */
+async function getPendingPayment(paymentId) {
+  const supabase = getClient();
+  const { data } = await supabase
+    .from('pending_payments')
+    .select('*')
+    .eq('payment_id', paymentId)
+    .maybeSingle();
+  return data;
+}
+
+// ── Parrainage élèves ────────────────────────────────────────────────────────
+
+/**
+ * Compte les ventes valides d'un code élève :
+ * - emails acheteurs distincts
+ * - exclut l'auto-achat (email = owner_email du code)
+ */
+async function countReferralSales(promoCode) {
+  const supabase = getClient();
+
+  const { data: promoData } = await supabase
+    .from('promo_codes')
+    .select('owner_email')
+    .eq('code', promoCode)
+    .maybeSingle();
+
+  const ownerEmail = promoData?.owner_email?.toLowerCase() || '';
+
+  const { data: orders } = await supabase
+    .from('orders')
+    .select('email')
+    .eq('promo_code', promoCode);
+
+  if (!orders) return 0;
+
+  const distinctEmails = new Set(
+    orders
+      .map(o => (o.email || '').toLowerCase())
+      .filter(e => e && e !== ownerEmail)
+  );
+
+  return distinctEmails.size;
+}
+
+// ── Admin promo ──────────────────────────────────────────────────────────────
+
+async function getPromoCodes() {
+  const supabase = getClient();
+  const { data, error } = await supabase
+    .from('promo_codes')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) throw new Error(`DB getPromoCodes failed: ${error.message}`);
+  return data || [];
+}
+
+async function createPromoCode({ code, ownerEmail }) {
+  const supabase = getClient();
+  const { data, error } = await supabase
+    .from('promo_codes')
+    .insert({ code: code.toUpperCase(), type: 'eleve', discount_percent: 20, owner_email: ownerEmail })
+    .select()
+    .single();
+  if (error) throw new Error(`DB createPromoCode failed: ${error.message}`);
+  return data;
+}
+
+async function togglePromoCode(code, active) {
+  const supabase = getClient();
+  const { data, error } = await supabase
+    .from('promo_codes')
+    .update({ active })
+    .eq('code', code.toUpperCase())
+    .select()
+    .single();
+  if (error) throw new Error(`DB togglePromoCode failed: ${error.message}`);
+  return data;
+}
+
+async function getPromoStats() {
+  const supabase = getClient();
+  const { data: orders } = await supabase
+    .from('orders')
+    .select('promo_code, email, amount')
+    .not('promo_code', 'is', null);
+
+  const stats = {};
+  for (const o of orders || []) {
+    const code = o.promo_code;
+    if (!stats[code]) stats[code] = { sales: 0, revenue: 0, emails: new Set() };
+    stats[code].emails.add((o.email || '').toLowerCase());
+    stats[code].revenue += Number(o.amount || 0);
+  }
+  return Object.fromEntries(
+    Object.entries(stats).map(([code, s]) => [code, { sales: s.emails.size, revenue: s.revenue }])
+  );
+}
+
 module.exports = {
   getClient,
   insertOrderIdempotent,
@@ -348,4 +569,20 @@ module.exports = {
   getCoursParticuliersInvoice,
   markCpInvoicePaid,
   deleteCoursParticuliersInvoice,
+  // Promo
+  validatePromoCode,
+  markExtraitTokenUsed,
+  createExtraitToken,
+  // Pending payments
+  insertPendingPayment,
+  confirmPendingPayment,
+  getUnconfirmedPayments,
+  getPendingPayment,
+  // Parrainage
+  countReferralSales,
+  // Admin promo
+  getPromoCodes,
+  createPromoCode,
+  togglePromoCode,
+  getPromoStats,
 };

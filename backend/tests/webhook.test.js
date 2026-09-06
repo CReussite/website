@@ -11,7 +11,7 @@ const { generateInvoice } = require('../services/invoice');
 function makeSession(overrides = {}) {
   return {
     id:               'cs_test_abc123',
-    amount_total:     1499,
+    amount_total:     1990,
     metadata:         { product_id: 'maths' },
     customer_details: { email: 'acheteur@test.com' },
     customer_email:   null,
@@ -43,7 +43,7 @@ describe('Pipeline invoice + email (mocks)', () => {
     };
 
     const session = makeSession();
-    const product = { id: 'maths', name: 'Fiches Maths Terminale Spécialité', price: 1499, pdf_files: ['fiches-maths.pdf'] };
+    const product = { id: 'maths', name: 'Fiches Maths Terminale Spécialité', price: 1990, pdf_files: ['fiches-maths.pdf'] };
     const email   = session.customer_details.email;
 
     // Simulate webhook business logic (extracted from route)
@@ -94,7 +94,7 @@ describe('Pipeline invoice + email (mocks)', () => {
     // Premier appel
     const r1 = await fakeDb.insertOrderIdempotent({ paymentSessionId: session.id });
     if (r1.isNew) {
-      const pdf = await generateInvoice({ invoiceNumber: r1.invoiceNumber, email: 'x@x.com', productName: 'X', amount: 1499, date: new Date() });
+      const pdf = await generateInvoice({ invoiceNumber: r1.invoiceNumber, email: 'x@x.com', productName: 'X', amount: 1990, date: new Date() });
       await fakeMailer.sendOrderEmail({ toEmail: 'x@x.com', product: {}, invoicePdf: pdf, invoiceNumber: r1.invoiceNumber });
     }
 

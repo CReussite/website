@@ -54,6 +54,12 @@ app.use('/api/contact', require('./routes/contact'));
 // Admin (commandes, export CSV, téléchargement factures)
 app.use('/api/admin', require('./routes/admin'));
 
+// Codes promo : validation publique
+app.use('/api/promo', require('./routes/promo'));
+
+// Codes promo : gestion admin (créer/désactiver codes élève)
+app.use('/api/admin/promo', require('./routes/promoAdmin'));
+
 // Avis clients
 app.use('/api/avis', require('./routes/avis'));
 
@@ -192,4 +198,16 @@ app.get('/api/products', (req, res) => {
 // ── Démarrage ─────────────────────────────────────────
 app.listen(PORT, () => {
   console.log(`[server] C'Réussite démarré sur le port ${PORT}`);
+
+  // Cron de réconciliation Stancer : vérifie les paiements capturés mais non confirmés
+  // (cas où le client ferme l'onglet avant d'arriver sur success.html)
+  const { syncUnconfirmedPayments } = require('./services/stancerSync');
+  const ONE_HOUR = 60 * 60 * 1000;
+  setInterval(() => {
+    syncUnconfirmedPayments().catch(e =>
+      console.error('[stancer-sync] Erreur cron:', e.message)
+    );
+  }, ONE_HOUR);
+  // Première exécution au démarrage (après 5 min pour laisser le serveur s'initialiser)
+  setTimeout(() => syncUnconfirmedPayments().catch(() => {}), 5 * 60 * 1000);
 });

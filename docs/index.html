@@ -307,7 +307,7 @@
           <a href="/maths-terminale/" class="hero-card">
             <div class="hero-card-title">Maths</div>
             <div class="hero-card-count">20 fiches</div>
-            <div class="hero-card-price">14,99 €</div>
+            <div class="hero-card-price">19,90 €</div>
             <div class="hero-card-media" aria-hidden="true">
               <img src="img/cover-maths.jpg" alt="" class="hero-card-img" fetchpriority="high" />
             </div>
@@ -315,7 +315,7 @@
           <a href="/physique-chimie-terminale/" class="hero-card">
             <div class="hero-card-title">Physique-Chimie</div>
             <div class="hero-card-count">32 fiches</div>
-            <div class="hero-card-price">14,99 €</div>
+            <div class="hero-card-price">19,90 €</div>
             <div class="hero-card-media" aria-hidden="true">
               <img src="img/cover-physique.jpg" alt="" class="hero-card-img" />
             </div>
@@ -323,7 +323,7 @@
           <a href="/pack-maths-physique-chimie/" class="hero-card hero-card-pack">
             <div class="hero-card-title">Le Pack</div>
             <div class="hero-card-count">52 fiches</div>
-            <div class="hero-card-price">24,99 € <span class="hero-card-badge">−17 %</span></div>
+            <div class="hero-card-price">29,90 € <span class="hero-card-badge">−25 %</span></div>
             <div class="hero-card-media hero-card-media-pack" aria-hidden="true">
               <img src="img/cover-maths.jpg" alt="" class="hero-card-img" loading="lazy" />
               <img src="img/cover-physique.jpg" alt="" class="hero-card-img" loading="lazy" />
@@ -645,6 +645,11 @@
           required
           autocomplete="email"
         />
+        <div class="payment-promo-row">
+          <input type="text" id="payment-promo" class="payment-modal-email payment-promo-input" placeholder="Code promo (facultatif)" autocomplete="off" style="flex:1;margin-bottom:0;">
+          <button type="button" id="payment-promo-btn" class="btn btn-outline payment-promo-btn" style="white-space:nowrap;">Appliquer</button>
+        </div>
+        <div id="payment-promo-feedback" class="payment-promo-feedback" hidden style="font-size:0.85rem;margin-bottom:8px;"></div>
 
         <div class="payment-modal-checks">
           <label class="payment-check-label">
@@ -688,6 +693,7 @@
     <script src="js/contact.js"></script>
     <script src="js/footer.js"></script>
     <script src="js/payment.js"></script>
+    <script src="js/promo-banner.js"></script>
     <script src="js/extract.js"></script>
     <script src="js/review.js"></script>
     <script src="js/avis.js"></script>
