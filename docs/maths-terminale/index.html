@@ -303,7 +303,14 @@
 height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-  <div class="sticky-top"><div id="nav-placeholder"></div></div>
+  <div class="sticky-top">
+    <div id="bac-countdown" class="bac-countdown" hidden>
+      <div class="container bac-countdown-inner">
+        <span>Rentrée 2026 : <strong>−10 %</strong> sur toutes les fiches avec le code <strong>RENTREE10</strong> — valable jusqu'au 30 septembre.</span>
+      </div>
+    </div>
+    <div id="nav-placeholder"></div>
+  </div>
 
   <nav class="breadcrumb-band" aria-label="Fil d'Ariane">
     <div class="breadcrumb-band-inner">
@@ -550,7 +557,13 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
   <script src="../js/nav.js"></script>
   <script src="../js/footer.js"></script>
   <script src="../js/payment.js"></script>
-  <script src="../js/promo-banner.js"></script>
+  <script>
+    (function () {
+      var expiry = new Date('2026-10-01T00:00:00+02:00');
+      var wrap = document.getElementById('bac-countdown');
+      if (wrap && Date.now() < expiry.getTime()) wrap.hidden = false;
+    })();
+  </script>
   <script src="../js/avis.js"></script>
   <script src="../js/review.js"></script>
   <script>

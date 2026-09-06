@@ -281,10 +281,7 @@
       <!-- ===== BANDEAU BAC COUNTDOWN ===== -->
       <div id="bac-countdown" class="bac-countdown" hidden>
         <div class="container bac-countdown-inner">
-          <span
-            >Bac 2027 : <strong id="bac-days"></strong> — Les ebooks couvrent l'intégralité du
-            programme. Réception immédiate après commande.</span
-          >
+          <span>Rentrée 2026 : <strong>−10 %</strong> sur toutes les fiches avec le code <strong>RENTREE10</strong> — valable jusqu'au 30 septembre.</span>
         </div>
       </div>
 
@@ -693,7 +690,6 @@
     <script src="js/contact.js"></script>
     <script src="js/footer.js"></script>
     <script src="js/payment.js"></script>
-    <script src="js/promo-banner.js"></script>
     <script src="js/extract.js"></script>
     <script src="js/review.js"></script>
     <script src="js/avis.js"></script>
@@ -707,18 +703,12 @@
       });
     </script>
 
-    <!-- Countdown Bac -->
+        <!-- Bandeau promo RENTREE10 -->
     <script>
       (function () {
-        const target = new Date('2027-06-16T08:00:00+02:00');
-        const el = document.getElementById('bac-days');
-        const wrap = document.getElementById('bac-countdown');
-        if (!el || !wrap) return;
-        const diff = target - new Date();
-        if (diff <= 0) return;
-        const d = Math.ceil(diff / 864e5);
-        el.textContent = 'J − ' + d + (d > 1 ? ' jours' : ' jour');
-        wrap.hidden = false;
+        var expiry = new Date('2026-10-01T00:00:00+02:00');
+        var wrap = document.getElementById('bac-countdown');
+        if (wrap && Date.now() < expiry.getTime()) wrap.hidden = false;
       })();
     </script>
   </body>
