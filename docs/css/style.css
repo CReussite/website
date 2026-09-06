@@ -315,6 +315,8 @@ nav {
   gap: 0;
   flex-wrap: wrap;
 }
+.promo-long { display: inline; }
+.promo-short { display: none; }
 .bac-countdown strong {
   font-weight: 800;
   font-size: 1rem;
@@ -1596,9 +1598,11 @@ footer a:hover { color: var(--quicksand); }
 @media (max-width: 600px) {
   section { padding: 40px 0; }
 
-  /* Countdown compact */
+  /* Bandeau promo compact sur mobile */
   .bac-countdown { font-size: 0.75rem; padding: 7px 0; }
   .bac-countdown strong { font-size: 0.8rem; }
+  .promo-long { display: none; }
+  .promo-short { display: inline; }
 
   /* Titres */
   h1 { font-size: 1.25rem; }
