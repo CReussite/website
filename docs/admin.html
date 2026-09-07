@@ -1495,36 +1495,35 @@
         }
       });
 
-    })();
 
-      // ── Codes promo (dans l'IIFE pour accéder à BACKEND et adminKey) ────────
+      // ── Codes promo ──────────────────────────────────────────────────────────
       async function loadPromoCodes() {
-        const tbody = document.getElementById('promo-tbody');
+        var tbody = document.getElementById('promo-tbody');
         if (!tbody) return;
         try {
-          const res = await fetch(BACKEND + '/api/admin/promo', {
+          var res = await fetch(BACKEND + '/api/admin/promo', {
             headers: { 'x-admin-key': adminKey },
           });
           if (!res.ok) throw new Error('Erreur ' + res.status);
-          const codes = await res.json();
+          var codes = await res.json();
           if (!codes.length) {
             tbody.innerHTML = '<tr><td colspan="9" class="table-empty">Aucun code promo.</td></tr>';
             return;
           }
-          tbody.innerHTML = codes.map(function (c) {
-            const revEur = c.revenue_cents ? (c.revenue_cents / 100).toFixed(2) + ' €' : '—';
-            const expiry = c.expires_at ? new Date(c.expires_at).toLocaleDateString('fr-FR') : '—';
-            const referral = c.referral_count !== null ? c.referral_count + ' / 5' : '—';
-            const badge = c.active
+          tbody.innerHTML = codes.map(function (row) {
+            var revEur = row.revenue_cents ? (row.revenue_cents / 100).toFixed(2) + ' €' : '—';
+            var expiry = row.expires_at ? new Date(row.expires_at).toLocaleDateString('fr-FR') : '—';
+            var referral = row.referral_count !== null ? row.referral_count + ' / 5' : '—';
+            var badge = row.active
               ? '<span style="color:#1a7a3c;font-weight:700;">Actif</span>'
               : '<span style="color:#c0392b;font-weight:700;">Inactif</span>';
-            const toggleLabel = c.active ? 'Désactiver' : 'Activer';
-            const toggleAction = 'togglePromo('' + c.code + '',' + !c.active + ')';
+            var toggleLabel = row.active ? 'Désactiver' : 'Activer';
+            var toggleAction = 'togglePromo(' + JSON.stringify(row.code) + ',' + !row.active + ')';
             return '<tr>' +
-              '<td><strong>' + c.code + '</strong></td>' +
-              '<td>' + (c.type === 'eleve' ? 'Élève' : 'Public') + '</td>' +
-              '<td>−' + c.discount_percent + ' %</td>' +
-              '<td style="font-size:0.8rem;color:#6b7280;">' + (c.owner_email || '—') + '</td>' +
+              '<td><strong>' + row.code + '</strong></td>' +
+              '<td>' + (row.type === 'eleve' ? 'Élève' : 'Public') + '</td>' +
+              '<td>−' + row.discount_percent + ' %</td>' +
+              '<td style="font-size:0.8rem;color:#6b7280;">' + (row.owner_email || '—') + '</td>' +
               '<td style="text-align:center;">' + referral + '</td>' +
               '<td style="text-align:right;">' + revEur + '</td>' +
               '<td>' + expiry + '</td>' +
@@ -1547,17 +1546,17 @@
       };
 
       window.createPromoCode = async function () {
-        const prenom = document.getElementById('promo-prenom').value.trim();
-        const email  = document.getElementById('promo-email').value.trim();
-        const msg    = document.getElementById('promo-create-msg');
+        var prenom = document.getElementById('promo-prenom').value.trim();
+        var email  = document.getElementById('promo-email').value.trim();
+        var msg    = document.getElementById('promo-create-msg');
         if (!prenom || !email) { msg.style.color = '#c0392b'; msg.textContent = 'Prénom et email requis.'; return; }
         try {
-          const res = await fetch(BACKEND + '/api/admin/promo', {
+          var res = await fetch(BACKEND + '/api/admin/promo', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
-            body: JSON.stringify({ prenom, email }),
+            body: JSON.stringify({ prenom: prenom, email: email }),
           });
-          const data = await res.json();
+          var data = await res.json();
           if (!res.ok) throw new Error(data.error || 'Erreur');
           msg.style.color = '#1a7a3c';
           msg.textContent = 'Code ' + data.code + ' créé.';
@@ -1572,10 +1571,10 @@
 
       window.togglePromo = async function (code, active) {
         try {
-          const res = await fetch(BACKEND + '/api/admin/promo/' + encodeURIComponent(code), {
+          var res = await fetch(BACKEND + '/api/admin/promo/' + encodeURIComponent(code), {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
-            body: JSON.stringify({ active }),
+            body: JSON.stringify({ active: active }),
           });
           if (!res.ok) throw new Error('Erreur ' + res.status);
           loadPromoCodes();
@@ -1587,5 +1586,3 @@
     })();
   </script>
 </body>
-</html>
-</html>
