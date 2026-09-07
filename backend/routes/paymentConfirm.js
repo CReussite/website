@@ -128,6 +128,12 @@ router.get('/', express.json(), async (req, res) => {
 
   const promoCode = pending?.promo_code || null;
 
+  // Mode test Stancer : ne rien enregistrer en base, ne pas envoyer d'email
+  if (process.env.STANCER_SECRET_KEY?.startsWith('stest_')) {
+    console.log(`[payment-confirm] MODE TEST — paiement ${paymentId} non enregistré (${customerEmail} / ${productId} / ${amount}cts)`);
+    return res.json({ success: true, invoiceNumber: 'TEST-' + Date.now(), testMode: true });
+  }
+
   try {
     const { invoiceNumber, isNew, order } = await insertOrderIdempotent({
       email: customerEmail,
