@@ -128,10 +128,33 @@ router.get('/', express.json(), async (req, res) => {
 
   const promoCode = pending?.promo_code || null;
 
-  // Mode test Stancer : ne rien enregistrer en base, ne pas envoyer d'email
+  // Mode test Stancer : envoyer l'email normalement, mais ne pas enregistrer en base
   if (process.env.STANCER_SECRET_KEY?.startsWith('stest_')) {
-    console.log(`[payment-confirm] MODE TEST — paiement ${paymentId} non enregistré (${customerEmail} / ${productId} / ${amount}cts)`);
-    return res.json({ success: true, invoiceNumber: 'TEST-' + Date.now(), testMode: true });
+    const testInvoiceNumber = 'TEST-' + Date.now();
+    console.log(`[payment-confirm] MODE TEST — envoi email sans enregistrement DB (${customerEmail} / ${productId} / ${amount}cts)`);
+    try {
+      const invoicePdf = await generateInvoice({
+        invoiceNumber: testInvoiceNumber,
+        email: customerEmail,
+        productName: product.name,
+        amount,
+        date: new Date(),
+        paymentRef: paymentId,
+      });
+      await sendOrderEmail({
+        toEmail: customerEmail,
+        customerName,
+        product,
+        invoicePdf,
+        invoiceNumber: testInvoiceNumber,
+        amount,
+        orderDate: new Date(),
+      });
+      console.log(`[payment-confirm] MODE TEST — email envoyé à ${customerEmail}`);
+    } catch (e) {
+      console.error('[payment-confirm] MODE TEST — erreur envoi email :', e.message);
+    }
+    return res.json({ success: true, invoiceNumber: testInvoiceNumber, testMode: true });
   }
 
   try {
