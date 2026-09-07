@@ -89,7 +89,9 @@ router.get('/', express.json(), async (req, res) => {
     }
   }
   const customerName =
-    (typeof payment.customer === 'object' ? payment.customer?.name : null) || customerEmail;
+    (typeof payment.customer === 'object' ? payment.customer?.name : null)
+    || pending?.customer_name
+    || customerEmail;
   const amount = payment.amount;
 
   const productId = req.query.product_id;
@@ -136,6 +138,7 @@ router.get('/', express.json(), async (req, res) => {
       const invoicePdf = await generateInvoice({
         invoiceNumber: testInvoiceNumber,
         email: customerEmail,
+        customerName,
         productName: product.name,
         amount,
         date: new Date(),
@@ -175,6 +178,7 @@ router.get('/', express.json(), async (req, res) => {
     const invoicePdf = await generateInvoice({
       invoiceNumber,
       email: customerEmail,
+      customerName,
       productName: product.name,
       amount,
       date: new Date(order?.created_at || Date.now()),

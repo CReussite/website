@@ -13,7 +13,7 @@ const TEXT_MID = '#3C4A5C';
  * Génère un PDF de facture en mémoire.
  * Retourne une Promise<Buffer>.
  */
-function generateInvoice({ invoiceNumber, email, productName, amount, date, paymentRef }) {
+function generateInvoice({ invoiceNumber, email, customerName, productName, amount, date, paymentRef }) {
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({ size: 'A4', margin: 0 });
     const chunks = [];
@@ -127,7 +127,7 @@ function generateInvoice({ invoiceNumber, email, productName, amount, date, paym
       .fontSize(12)
       .font('Helvetica-Bold')
       .fillColor(ROYAL_BLUE)
-      .text(email, clientX, partiesY + 20);
+      .text(customerName || email, clientX, partiesY + 20);
     doc
       .fontSize(9)
       .font('Helvetica')

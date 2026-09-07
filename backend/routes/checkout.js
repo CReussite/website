@@ -78,6 +78,7 @@ router.post('/', express.json(), async (req, res) => {
       paymentId:        payment.id,
       productId:        product_id,
       email,
+      customerName:     name ? name.trim() : null,
       promoCode:        appliedCode,
       originalAmount:   product.price,
       discountedAmount: finalAmount,

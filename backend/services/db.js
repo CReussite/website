@@ -411,7 +411,7 @@ async function createExtraitToken(email) {
 /**
  * Enregistre un paiement en attente lors du checkout.
  */
-async function insertPendingPayment({ paymentId, productId, email, promoCode, originalAmount, discountedAmount }) {
+async function insertPendingPayment({ paymentId, productId, email, customerName, promoCode, originalAmount, discountedAmount }) {
   const supabase = getClient();
   const { error } = await supabase
     .from('pending_payments')
@@ -419,6 +419,7 @@ async function insertPendingPayment({ paymentId, productId, email, promoCode, or
       payment_id:        paymentId,
       product_id:        productId,
       email,
+      customer_name:     customerName || null,
       promo_code:        promoCode || null,
       original_amount:   originalAmount,
       discounted_amount: discountedAmount,
