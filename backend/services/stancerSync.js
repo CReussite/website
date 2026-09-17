@@ -34,6 +34,13 @@ async function processPendingPayment(pending) {
     const resp = await fetch(`${STANCER_API}/payments/${payment_id}`, {
       headers: { Authorization: stancerAuth() },
     });
+    // 404 = paiement inconnu de Stancer (réseau test, paiement annulé, etc.)
+    // On le marque confirmé pour stopper les retentatives
+    if (resp.status === 404) {
+      console.warn(`[stancer-sync] Paiement ${payment_id} introuvable sur Stancer (404) — marqué abandonné`);
+      await confirmPendingPayment(payment_id);
+      return;
+    }
     if (!resp.ok) throw new Error(`Stancer ${resp.status}`);
     payment = await resp.json();
   } catch (e) {
