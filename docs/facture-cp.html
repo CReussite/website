@@ -656,7 +656,9 @@ ${invEl.outerHTML}
   function addRow() {
     rowId++;
     const id = rowId;
-    rows.push({id, date:'', nature:'', h:'', rate:'', payDate:'', payMethod:'Espèces'});
+    const lastRate = rows.length > 0 ? rows[rows.length - 1].rate : '';
+    const lastNature = rows.length > 0 ? rows[rows.length - 1].nature : '';
+    rows.push({id, date:'', nature:lastNature, h:'', rate:lastRate, payDate:'', payMethod:'Espèces'});
     const el = document.createElement('div');
     el.id = 'row'+id;
     el.className = 'cr ' + type;
