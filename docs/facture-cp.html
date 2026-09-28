@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Générateur de facture — C'Réussite</title>
+  <meta name="robots" content="noindex, nofollow">
   <style>
     :root {
       --royal-blue: #112250;
@@ -199,10 +200,51 @@
       .app { grid-template-columns: 1fr; }
       .form-panel { max-height: none; position: static; }
     }
+
+    /* ── Écran de connexion ── */
+    .login-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--swan-wing);
+      align-items: center; justify-content: center;
+    }
+    .login-overlay.active { display: flex; }
+    .login-card {
+      background: #fff; border-radius: 16px; padding: 40px 32px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.1); text-align: center; width: 320px;
+    }
+    .login-card h1 { font-size: 1.3rem; color: var(--royal-blue); margin-bottom: 6px; }
+    .login-card p { font-size: .85rem; color: #6b7280; margin-bottom: 24px; }
+    .login-card input {
+      width: 100%; padding: 10px 14px; border: 1px solid var(--shellstone);
+      border-radius: 8px; font-family: var(--f); font-size: .95rem;
+      margin-bottom: 12px; color: var(--text-dark);
+    }
+    .login-card input:focus { outline: none; border-color: var(--royal-blue); }
+    .login-card button {
+      width: 100%; padding: 11px; background: var(--royal-blue); color: #fff;
+      border: none; border-radius: 8px; font-family: var(--f); font-size: .95rem;
+      font-weight: 600; cursor: pointer;
+    }
+    .login-card button:hover { background: #1e3a70; }
+    .login-err { color: #b91c1c; font-size: .82rem; margin-top: 10px; display: none; }
   </style>
 </head>
 <body>
-<div class="app">
+<!-- ── Écran de connexion ── -->
+<div class="login-overlay active" id="login-overlay">
+  <div class="login-card">
+    <h1>C'Réussite</h1>
+    <p>Générateur de factures</p>
+    <form id="login-form">
+      <input type="password" id="login-key" placeholder="Clé d'accès" autocomplete="current-password" required>
+      <button type="submit">Accéder</button>
+    </form>
+    <p class="login-err" id="login-err">Clé invalide.</p>
+  </div>
+</div>
+
+<div class="app" id="app" style="display:none">
 
   <!-- ══════════════════ FORMULAIRE ══════════════════ -->
   <div class="form-panel">
@@ -317,12 +359,54 @@
 </div>
 
 <script>
+  const BACKEND = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:3000' : 'https://creussite-backend.onrender.com';
+  const KEY_STORAGE = 'creussite_admin_key';
+
+  // ── Auth ───────────────────────────────────────────────
+  async function verifyKey(key) {
+    try {
+      const res = await fetch(BACKEND + '/api/admin/config?key=' + encodeURIComponent(key));
+      return res.ok;
+    } catch (_) { return false; }
+  }
+
+  async function tryLogin(key) {
+    const ok = await verifyKey(key);
+    if (ok) {
+      localStorage.setItem(KEY_STORAGE, key);
+      document.getElementById('login-overlay').classList.remove('active');
+      document.getElementById('app').style.display = 'grid';
+      initApp();
+    } else {
+      document.getElementById('login-err').style.display = 'block';
+    }
+  }
+
+  document.getElementById('login-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    document.getElementById('login-err').style.display = 'none';
+    tryLogin(document.getElementById('login-key').value.trim());
+  });
+
+  // Clé déjà en mémoire (session partagée avec admin.html)
+  const savedKey = localStorage.getItem(KEY_STORAGE);
+  if (savedKey) {
+    verifyKey(savedKey).then(ok => {
+      if (ok) {
+        document.getElementById('login-overlay').classList.remove('active');
+        document.getElementById('app').style.display = 'grid';
+        initApp();
+      }
+    });
+  }
+
   let type = 'ar';
   let rowId = 0;
   const rows = [];
 
-  // ── Init ───────────────────────────────────────────────
-  (function() {
+  // ── Init (appelé après auth) ───────────────────────────
+  function initApp() {
     const today = new Date().toISOString().slice(0,10);
     document.getElementById('f-date').value = today;
     // Fin de mois comme date limite par défaut
@@ -338,7 +422,7 @@
     if(s('tit'))  document.getElementById('f-tit').value  = s('tit');
     addRow();
     render();
-  })();
+  }
 
   function saveRib() {
     ['iban','bic','tit'].forEach(k => localStorage.setItem('cr_'+k, document.getElementById('f-'+k).value));
