@@ -337,6 +337,34 @@ async function deleteCoursParticuliersInvoice(invoiceNumber) {
   return data;
 }
 
+// ── Admin settings ─────────────────────────────────────────────────────────
+
+async function getAdminSettings() {
+  const supabase = getClient();
+  const { data, error } = await supabase.from('admin_settings').select('key, value');
+  if (error) throw error;
+  return Object.fromEntries((data || []).map(r => [r.key, r.value]));
+}
+
+async function setAdminSetting(key, value) {
+  const supabase = getClient();
+  const { error } = await supabase
+    .from('admin_settings')
+    .upsert({ key, value, updated_at: new Date().toISOString() }, { onConflict: 'key' });
+  if (error) throw error;
+}
+
+async function getNextCpInvoiceNumber() {
+  const supabase = getClient();
+  const year = new Date().getFullYear();
+  const [{ count: ebookCount }, { count: cpCount }] = await Promise.all([
+    supabase.from('orders').select('*', { count: 'exact', head: true }).like('invoice_number', `CRE-${year}-%`),
+    supabase.from('cp_invoices').select('*', { count: 'exact', head: true }).like('invoice_number', `CRE-${year}-%`),
+  ]);
+  const seq = String((ebookCount || 0) + (cpCount || 0) + 1).padStart(5, '0');
+  return `CRE-${year}-${seq}`;
+}
+
 // ── Promo codes ────────────────────────────────────────────────────────────
 
 /**
@@ -586,4 +614,8 @@ module.exports = {
   createPromoCode,
   togglePromoCode,
   getPromoStats,
+  // Admin settings
+  getAdminSettings,
+  setAdminSetting,
+  getNextCpInvoiceNumber,
 };

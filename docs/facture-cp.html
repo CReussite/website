@@ -446,11 +446,26 @@
     // Période = mois courant
     document.getElementById('f-periode').value =
       new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
-    // RIB mémorisé
+    // RIB + numéro depuis la DB (fallback localStorage)
     const s = k => localStorage.getItem('cr_'+k)||'';
     if(s('iban')) document.getElementById('f-iban').value = s('iban');
     if(s('bic'))  document.getElementById('f-bic').value  = s('bic');
     if(s('tit'))  document.getElementById('f-tit').value  = s('tit');
+
+    const adminKey = localStorage.getItem('creussite_admin_key') || '';
+    if (adminKey) {
+      Promise.all([
+        fetch(BACKEND + '/api/admin/settings?key=' + encodeURIComponent(adminKey)).then(r => r.json()).catch(() => ({})),
+        fetch(BACKEND + '/api/admin/next-invoice-number?key=' + encodeURIComponent(adminKey)).then(r => r.json()).catch(() => ({})),
+      ]).then(([settings, inv]) => {
+        if (settings.rib_iban) document.getElementById('f-iban').value = settings.rib_iban;
+        if (settings.rib_bic)  document.getElementById('f-bic').value  = settings.rib_bic;
+        if (settings.rib_titulaire) document.getElementById('f-tit').value = settings.rib_titulaire;
+        if (inv.number) document.getElementById('f-num').value = inv.number;
+        render();
+      });
+    }
+
     addRow();
     render();
   }
@@ -602,7 +617,16 @@ ${invEl.outerHTML}
   }
 
   function saveRib() {
-    ['iban','bic','tit'].forEach(k => localStorage.setItem('cr_'+k, document.getElementById('f-'+k).value));
+    const adminKey = localStorage.getItem('creussite_admin_key') || '';
+    const map = { iban: 'rib_iban', bic: 'rib_bic', tit: 'rib_titulaire' };
+    ['iban','bic','tit'].forEach(k => {
+      const val = document.getElementById('f-'+k).value;
+      localStorage.setItem('cr_'+k, val);
+      if (adminKey) fetch(BACKEND + '/api/admin/settings?key=' + encodeURIComponent(adminKey), {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: map[k], value: val }),
+      }).catch(() => {});
+    });
   }
 
   // ── Type ───────────────────────────────────────────────
@@ -832,7 +856,15 @@ ${invEl.outerHTML}
         <div class="inv-pts">
           <div class="inv-v">
             <div class="pt-name">Camille Reinhardt</div>
-            <div class="pt-det">C'Réussite · 54A Rue des Écoles · 57700 Neufchef<br>SIRET : 103 644 050 00017 · APE : 4791B · c-reussite.fr</div>
+            <div class="pt-det">
+              C'Réussite<br>
+              54A Rue des Écoles<br>
+              57700 Neufchef<br>
+              France<br>
+              SIRET : 103 644 050 00017<br>
+              APE : 4791B<br>
+              c-reussite.fr
+            </div>
           </div>
           <div class="inv-c">
             <div class="pt-lbl">Client</div>

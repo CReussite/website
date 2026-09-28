@@ -1,5 +1,5 @@
 const express = require('express');
-const { getOrders, getAdminStats, getExtractRequests, insertCoursParticuliersInvoice, getCoursParticuliersInvoice, markCpInvoicePaid, deleteCoursParticuliersInvoice, uploadInvoicePdf } = require('../services/db');
+const { getOrders, getAdminStats, getExtractRequests, insertCoursParticuliersInvoice, getCoursParticuliersInvoice, markCpInvoicePaid, deleteCoursParticuliersInvoice, uploadInvoicePdf, getAdminSettings, setAdminSetting, getNextCpInvoiceNumber } = require('../services/db');
 const { generateInvoice, generateCpInvoice } = require('../services/invoice');
 
 const router = express.Router();
@@ -25,6 +25,28 @@ function requireAdminKey(req, res, next) {
 router.get('/config', requireAdminKey, (req, res) => {
   const key = process.env.STANCER_SECRET_KEY || '';
   res.json({ stancer_mode: key.startsWith('sprod_') ? 'live' : 'test' });
+});
+
+// ── GET /api/admin/settings ──────────────────────────────────────────────────
+router.get('/settings', requireAdminKey, async (req, res) => {
+  try { res.json(await getAdminSettings()); }
+  catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// ── POST /api/admin/settings ─────────────────────────────────────────────────
+router.post('/settings', requireAdminKey, async (req, res) => {
+  try {
+    const { key, value } = req.body;
+    if (!key) return res.status(400).json({ error: 'key requis' });
+    await setAdminSetting(key, value || '');
+    res.json({ ok: true });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// ── GET /api/admin/next-invoice-number ───────────────────────────────────────
+router.get('/next-invoice-number', requireAdminKey, async (req, res) => {
+  try { res.json({ number: await getNextCpInvoiceNumber() }); }
+  catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 // ── GET /api/admin/orders ─────────────────────────────────────────────────────
