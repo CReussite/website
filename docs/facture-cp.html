@@ -448,11 +448,19 @@
   function printInvoice() {
     const invEl = document.getElementById('inv');
     if (!invEl) return;
+
+    const clientName = (document.getElementById('f-cname').value || 'client').trim();
+    const lastName = clientName.split(' ').pop().toUpperCase();
+    const invoiceDate = document.getElementById('f-date').value;
+    const [y, m, d] = invoiceDate ? invoiceDate.split('-') : ['','',''];
+    const dateLabel = invoiceDate ? `${d}-${m}-${y}` : new Date().toLocaleDateString('fr-FR').replace(/\//g,'-');
+    const pdfTitle = `Facture_${lastName}_${dateLabel}`;
+
     const pw = window.open('', '_blank', 'width=900,height=700');
     pw.document.write(`<!DOCTYPE html>
 <html lang="fr"><head>
 <meta charset="UTF-8">
-<title>Facture</title>
+<title>${pdfTitle}</title>
 <style>
 @page { size: A4 portrait; margin: 0; }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
