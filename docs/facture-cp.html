@@ -577,9 +577,6 @@
           <td class="r">${r.rate ? money(parseFloat(r.rate)) : '—'}</td>
           <td class="r">${v>0?money(v):'—'}</td></tr>`;
       }).join('');
-      if(remiseOn && remiseAmt>0) tbody += `<tr class="remise">
-        <td>—</td><td class="rl">🎁 ${esc(remiseLbl)}</td>
-        <td class="r">—</td><td class="r">—</td><td class="r">−${money(remiseAmt)}</td></tr>`;
     } else {
       thead = `<tr>
         <th style="width:12%">Date</th><th>Prestation</th>
@@ -597,10 +594,6 @@
           <td class="r">${fmtDate(r.payDate)}</td>
           <td class="r">${r.payMethod||'—'}</td></tr>`;
       }).join('');
-      if(remiseOn && remiseAmt>0) tbody += `<tr class="remise">
-        <td>—</td><td class="rl">🎁 ${esc(remiseLbl)}</td>
-        <td class="r">—</td><td class="r">−${money(remiseAmt)}</td>
-        <td class="r">—</td><td class="r">—</td></tr>`;
     }
 
     const tfoot = type==='ar'
