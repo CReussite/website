@@ -93,6 +93,15 @@
     /* Total résumé */
     .total-line { text-align: right; font-size: .9rem; font-weight: 700; color: var(--royal-blue); margin: 8px 0 2px; }
 
+    /* Bouton réinitialiser */
+    .btn-reset {
+      width: 100%; padding: 8px; margin-bottom: 6px;
+      border: 1px solid var(--shellstone); border-radius: 8px;
+      background: transparent; color: #6b7280; font-family: var(--f);
+      font-size: .82rem; cursor: pointer;
+    }
+    .btn-reset:hover { border-color: #b91c1c; color: #b91c1c; }
+
     /* Bouton générer */
     .btn-gen {
       width: 100%; padding: 11px; border: none; border-radius: 8px;
@@ -366,6 +375,8 @@
 
     <button class="btn-preview" id="btn-preview" onclick="togglePreview()">👁 Prévisualiser la facture</button>
 
+    <button class="btn-reset" onclick="resetForm()">↺ Réinitialiser</button>
+
     <button class="btn-gen ar" id="btn-gen" onclick="printInvoice()">
       🖨 Générer le PDF — Facture à régler
     </button>
@@ -560,6 +571,26 @@ ${invEl.outerHTML}
 </body></html>`);
     pw.document.close();
     pw.onload = function() { pw.focus(); pw.print(); };
+  }
+
+  function resetForm() {
+    if (!confirm('Réinitialiser le formulaire ? Les données saisies seront perdues.')) return;
+    document.getElementById('f-num').value = 'CRE-2026-00044';
+    document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
+    document.getElementById('f-periode').value = new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+    document.getElementById('f-cname').value = '';
+    document.getElementById('f-caddr').value = '';
+    document.getElementById('f-remise').checked = false;
+    document.getElementById('remise-inner').style.display = 'none';
+    document.getElementById('f-rlbl').value = 'Remise fidélité';
+    document.getElementById('f-ramt').value = '';
+    const d = new Date(); d.setMonth(d.getMonth()+1,1); d.setDate(d.getDate()-1);
+    document.getElementById('f-due').value = d.toISOString().slice(0,10);
+    rows.length = 0;
+    rowId = 0;
+    document.getElementById('rows').innerHTML = '';
+    addRow();
+    render();
   }
 
   function togglePreview() {
