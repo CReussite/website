@@ -548,7 +548,7 @@ body {
 }
 </style>
 </head><body>
-${invEl.innerHTML}
+${invEl.outerHTML}
 </body></html>`);
     pw.document.close();
     pw.onload = function() { pw.focus(); pw.print(); };
