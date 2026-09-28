@@ -458,12 +458,20 @@ body {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   background: #fff; color: #1A1A2E;
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  margin: 0; padding: 0;
 }
 :root {
   --royal-blue: #112250; --sapphire: #3C5070; --quicksand: #E0C58F;
   --swan-wing: #F5F0E9; --shellstone: #D9CBC2; --text-mid: #3C4A5C;
 }
-.inv { width: 100%; }
+/* Facture = page A4 entière, pied de page poussé en bas */
+.inv {
+  width: 210mm;
+  min-height: 297mm;
+  display: flex;
+  flex-direction: column;
+}
+.inv-body { flex: 1; }
 .inv-hd {
   background: var(--royal-blue); color: #fff;
   padding: 22px 42px; display: flex; justify-content: space-between; align-items: center;
