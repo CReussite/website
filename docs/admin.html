@@ -491,55 +491,6 @@
         </div>
       </div>
 
-      <!-- ─── Cours particuliers ─── -->
-      <div class="cp-card" id="card-cp">
-        <div class="cp-card-header">
-          <h2>Cours particuliers — Générer une facture</h2>
-          <button class="btn-cp-toggle" id="btn-cp-toggle">+ Nouvelle facture</button>
-        </div>
-        <div id="cp-form-wrap" style="display:none;">
-          <p class="cp-section-label">Informations client</p>
-          <div class="cp-grid-2">
-            <div class="cp-field">
-              <label for="cp-name">Nom complet *</label>
-              <input class="cp-input" type="text" id="cp-name" placeholder="Prénom Nom" required>
-            </div>
-            <div class="cp-field">
-              <label for="cp-email">Email (optionnel)</label>
-              <input class="cp-input" type="email" id="cp-email" placeholder="client@email.com">
-            </div>
-          </div>
-          <div class="cp-field" style="margin-top:12px;">
-            <label for="cp-address">Adresse (optionnel)</label>
-            <textarea class="cp-input" id="cp-address" rows="2" placeholder="Rue, ville, code postal…"></textarea>
-          </div>
-
-          <p class="cp-section-label">Détail des cours</p>
-          <div class="cours-rows" id="cours-rows"></div>
-          <button class="btn-add-cours" id="btn-add-cours" type="button">+ Ajouter une ligne</button>
-          <div class="cp-total-line">Total : <span id="cp-grand-total">0,00 €</span></div>
-
-          <div id="cp-rib-section" style="display:none;margin-top:16px;background:#f0f4ff;border-radius:8px;padding:16px;border:1px solid #c7d2fe;">
-            <div style="font-size:.85rem;font-weight:600;color:#112250;margin-bottom:10px;">RIB — affiché sur la facture « À payer »</div>
-            <div style="display:flex;gap:12px;flex-wrap:wrap;">
-              <div style="flex:2;min-width:200px;">
-                <label style="font-size:.8rem;color:#555;display:block;margin-bottom:4px;">Code I.B.A.N</label>
-                <input id="cp-rib-iban" type="text" placeholder="FR76 XXXX XXXX XXXX XXXX XXXX XXX" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;font-family:inherit;font-size:.85rem;box-sizing:border-box;">
-              </div>
-              <div style="flex:1;min-width:180px;">
-                <label style="font-size:.8rem;color:#555;display:block;margin-bottom:4px;">Titulaire du compte</label>
-                <input id="cp-rib-titulaire" type="text" placeholder="EI Reinhardt Camille" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;font-family:inherit;font-size:.85rem;box-sizing:border-box;">
-              </div>
-            </div>
-          </div>
-
-          <div class="cp-error" id="cp-error"></div>
-          <div style="margin-top:20px;">
-            <button class="btn-cp-submit" id="btn-cp-submit" type="button">Générer la facture</button>
-          </div>
-        </div>
-      </div>
-
       <div class="table-card">
         <h2 class="section-title" style="padding:20px 24px 0;">Commandes</h2>
         <div class="table-scroll">
