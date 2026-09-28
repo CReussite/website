@@ -475,12 +475,8 @@
     const invEl = document.getElementById('inv');
     if (!invEl) return;
 
-    const clientName = (document.getElementById('f-cname').value || 'client').trim();
-    const lastName = clientName.split(' ').pop().toUpperCase();
-    const invoiceDate = document.getElementById('f-date').value;
-    const [y, m, d] = invoiceDate ? invoiceDate.split('-') : ['','',''];
-    const dateLabel = invoiceDate ? `${d}-${m}-${y}` : new Date().toLocaleDateString('fr-FR').replace(/\//g,'-');
-    const pdfTitle = `Facture_${lastName}_${dateLabel}`;
+    const invoiceNumber = document.getElementById('f-num').value || 'CRE';
+    const pdfTitle = `facture-${invoiceNumber}`;
 
     const pw = window.open('', '_blank', 'width=900,height=700');
     pw.document.write(`<!DOCTYPE html>
