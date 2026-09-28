@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Générateur de facture — C'Réussite</title>
+  <style>
+    :root {
+      --royal-blue: #112250;
+      --sapphire: #3C5070;
+      --quicksand: #E0C58F;
+      --swan-wing: #F5F0E9;
+      --shellstone: #D9CBC2;
+      --text-dark: #1A1A2E;
+      --text-mid: #3C4A5C;
+      --f: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--f); background: #eef0f4; color: var(--text-dark); }
+
+    /* ── Mise en page ── */
+    .app { display: grid; grid-template-columns: 430px 1fr; min-height: 100vh; }
+
+    /* ── Panneau formulaire ── */
+    .form-panel {
+      background: #fff; border-right: 1px solid var(--shellstone);
+      padding: 20px; overflow-y: auto; max-height: 100vh; position: sticky; top: 0;
+    }
+    .form-panel h1 { font-size: 1rem; color: var(--royal-blue); margin-bottom: 2px; }
+    .form-hint { font-size: .75rem; color: #6b7280; margin-bottom: 16px; }
+
+    /* Onglets type */
+    .type-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+    .tab {
+      flex: 1; padding: 9px 4px; border: 2px solid var(--shellstone); border-radius: 8px;
+      background: #fff; cursor: pointer; font-family: var(--f); font-size: .85rem;
+      font-weight: 600; color: #6b7280; transition: all .15s;
+    }
+    .tab.on-ar { border-color: #B45309; background: #fffbeb; color: #B45309; }
+    .tab.on-aq { border-color: #2e7d4f; background: #f0fdf4; color: #2e7d4f; }
+
+    /* Champs */
+    .sec { font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: #9ca3af; margin: 14px 0 7px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+    .grid1 { display: grid; grid-template-columns: 1fr; gap: 7px; }
+    .field { display: flex; flex-direction: column; gap: 3px; }
+    .field label { font-size: .74rem; color: var(--sapphire); font-weight: 500; }
+    .fi {
+      padding: 6px 9px; border: 1px solid var(--shellstone); border-radius: 6px;
+      font-family: var(--f); font-size: .84rem; color: var(--text-dark); width: 100%;
+    }
+    .fi:focus { outline: none; border-color: var(--royal-blue); }
+    textarea.fi { resize: vertical; min-height: 50px; }
+
+    /* Lignes cours */
+    .rows-wrap { display: flex; flex-direction: column; gap: 7px; margin-bottom: 6px; }
+    .cr {
+      background: #f8fafc; border: 1px solid var(--shellstone); border-radius: 7px;
+      padding: 9px; display: grid; gap: 5px; align-items: end;
+    }
+    .cr.ar { grid-template-columns: 110px 1fr 60px 62px 28px; }
+    .cr.aq { grid-template-columns: 110px 1fr 60px 62px 110px 90px 28px; }
+    .cr .lbl { font-size: .67rem; color: #9ca3af; margin-bottom: 2px; }
+    .cr input, .cr select {
+      padding: 5px 6px; border: 1px solid var(--shellstone); border-radius: 5px;
+      font-family: var(--f); font-size: .8rem; width: 100%;
+    }
+    .cr input:focus, .cr select:focus { outline: none; border-color: var(--sapphire); }
+    .cr-total { font-size: .8rem; font-weight: 700; color: var(--royal-blue); text-align: right; padding-bottom: 1px; }
+    .btn-rm {
+      background: transparent; border: 1px solid #fca5a5; border-radius: 5px;
+      color: #ef4444; cursor: pointer; font-size: .85rem; padding: 3px 5px;
+    }
+    .btn-rm:hover { background: #fee2e2; }
+    .btn-add {
+      font-size: .78rem; padding: 6px; border: 1px dashed #d1d5db;
+      border-radius: 6px; background: transparent; color: #6b7280; cursor: pointer; width: 100%;
+    }
+    .btn-add:hover { border-color: var(--sapphire); color: var(--sapphire); }
+
+    /* Remise */
+    .remise-box { border: 1px solid var(--shellstone); border-radius: 7px; padding: 10px; }
+    .remise-toggle { display: flex; align-items: center; gap: 7px; cursor: pointer; }
+    .remise-toggle input { width: 15px; height: 15px; cursor: pointer; accent-color: var(--royal-blue); }
+    .remise-toggle span { font-size: .84rem; font-weight: 600; color: var(--sapphire); }
+    .remise-inner { display: grid; grid-template-columns: 2fr 1fr; gap: 7px; margin-top: 9px; }
+
+    /* Paiement à régler */
+    .pay-fields { display: flex; flex-direction: column; gap: 7px; }
+
+    /* Total résumé */
+    .total-line { text-align: right; font-size: .9rem; font-weight: 700; color: var(--royal-blue); margin: 8px 0 2px; }
+
+    /* Bouton générer */
+    .btn-gen {
+      width: 100%; padding: 11px; border: none; border-radius: 8px;
+      font-family: var(--f); font-size: .95rem; font-weight: 700; cursor: pointer; transition: background .15s;
+    }
+    .btn-gen.ar { background: #B45309; color: #fff; }
+    .btn-gen.ar:hover { background: #92400e; }
+    .btn-gen.aq { background: #2e7d4f; color: #fff; }
+    .btn-gen.aq:hover { background: #1a5c38; }
+
+    /* ── Aperçu ── */
+    .preview-panel { padding: 28px; display: flex; flex-direction: column; align-items: center; }
+    .preview-lbl { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: #9ca3af; margin-bottom: 10px; font-weight: 600; }
+
+    /* ── Facture ── */
+    .inv {
+      background: #fff; box-shadow: 0 4px 20px rgba(0,0,0,.14);
+      width: 100%; max-width: 720px;
+    }
+    .inv-hd {
+      background: var(--royal-blue); color: #fff;
+      padding: 22px 42px; display: flex; justify-content: space-between; align-items: center;
+    }
+    .inv-hd .lb { display: flex; align-items: center; gap: 11px; }
+    .inv-hd .logo {
+      width: 52px; height: 52px; border-radius: 8px; overflow: hidden;
+      background: var(--quicksand); display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: .95rem; color: var(--royal-blue); flex-shrink: 0;
+    }
+    .inv-hd .logo img { width: 100%; height: 100%; object-fit: cover; }
+    .inv-hd .brand { font-size: 19px; font-weight: 600; }
+    .inv-hd .title { font-size: 25px; font-weight: 700; color: var(--quicksand); letter-spacing: 1px; }
+    .inv-meta {
+      background: var(--swan-wing); border-top: 2px solid var(--quicksand);
+      padding: 9px 42px; font-size: 11px; color: var(--sapphire);
+      display: flex;
+    }
+    .inv-meta > span { flex: 1; }
+    .inv-meta > span:nth-child(2) { text-align: center; }
+    .inv-meta > span:last-child { text-align: right; }
+    .inv-meta b { font-weight: 600; }
+    .inv-body { padding: 22px 42px 18px; }
+    .inv-pts { display: flex; gap: 26px; margin-bottom: 22px; }
+    .inv-v { flex: 0 0 calc(66.666% - 26px); }
+    .inv-c { flex: 1; }
+    .pt-lbl {
+      font-size: 9px; text-transform: uppercase; letter-spacing: 1.2px;
+      color: var(--quicksand); font-weight: 600; margin-bottom: 4px;
+      border-bottom: 1.5px solid var(--quicksand); padding-bottom: 2px; display: inline-block;
+    }
+    .pt-name { font-size: 13.5px; font-weight: 600; color: var(--royal-blue); margin-bottom: 2px; }
+    .pt-det { font-size: 11px; color: var(--text-mid); line-height: 1.6; }
+    .inv-tbl { width: 100%; border-collapse: collapse; margin-bottom: 14px; }
+    .inv-tbl thead th {
+      background: var(--sapphire); color: #fff; font-size: 10px;
+      text-transform: uppercase; letter-spacing: .8px; padding: 8px 9px;
+      text-align: left; font-weight: 600;
+    }
+    .inv-tbl thead th.r { text-align: right; }
+    .inv-tbl tbody td {
+      padding: 8px 9px; font-size: 11.5px; border-bottom: 1px solid var(--shellstone); color: var(--text-dark);
+    }
+    .inv-tbl tbody td.r { text-align: right; }
+    .inv-tbl tbody tr.remise td { background: #fffbeb; color: #92400e; font-style: italic; }
+    .inv-tbl tbody tr.remise td.rl { font-weight: 600; font-style: normal; }
+    .inv-tbl tfoot td { background: var(--swan-wing); padding: 7px 9px; font-size: 11px; color: var(--sapphire); font-weight: 600; }
+    .inv-tbl tfoot td.r { text-align: right; }
+    .inv-tots { display: flex; justify-content: flex-end; margin-bottom: 14px; }
+    .inv-tots-in { width: 210px; }
+    .inv-tot-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 11.5px; color: var(--text-mid); }
+    .inv-tot-row.disc { color: #92400e; font-style: italic; }
+    .inv-tot-row.total { border-top: 2px solid var(--royal-blue); margin-top: 3px; padding-top: 6px; font-size: 13.5px; font-weight: 700; color: var(--royal-blue); }
+    .inv-ar {
+      background: var(--swan-wing); border-left: 3px solid var(--quicksand);
+      border-radius: 0 6px 6px 0; padding: 11px 14px; margin-bottom: 14px;
+    }
+    .inv-ar-ttl { font-size: 11.5px; font-weight: 700; color: var(--royal-blue); margin-bottom: 4px; }
+    .inv-ar-body { font-size: 11px; color: var(--sapphire); line-height: 1.7; }
+    .inv-aq {
+      background: #f0fdf4; border: 1.5px solid #bbf7d0;
+      border-radius: 8px; padding: 11px 13px; margin-bottom: 14px;
+      display: flex; align-items: center; gap: 9px;
+    }
+    .inv-aq-badge { background: #2e7d4f; color: #fff; font-size: 10px; font-weight: 700; padding: 3px 11px; border-radius: 20px; }
+    .inv-aq-txt { font-size: 11.5px; color: #065f46; font-weight: 600; }
+    .inv-legal {
+      font-size: 9px; color: var(--text-mid); line-height: 1.7;
+      border-top: 1px solid var(--shellstone); padding-top: 10px; margin-bottom: 4px;
+    }
+    .inv-ft {
+      background: var(--royal-blue); color: rgba(255,255,255,.7);
+      text-align: center; padding: 10px 42px; font-size: 9px; line-height: 1.6;
+    }
+
+    /* ── Impression ── */
+    @media print {
+      @page { size: A4 portrait; margin: 0; }
+      .app { display: block; }
+      .form-panel { display: none; }
+      .preview-panel { padding: 0; }
+      .preview-lbl { display: none; }
+      .inv { box-shadow: none; max-width: 100%; width: 100%; }
+    }
+
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 1fr; }
+      .form-panel { max-height: none; position: static; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ══════════════════ FORMULAIRE ══════════════════ -->
+  <div class="form-panel">
+    <h1>Générateur de facture CP</h1>
+    <p class="form-hint">Remplis · aperçu en direct · clique Générer pour imprimer en PDF</p>
+
+    <!-- Type -->
+    <div class="type-tabs">
+      <button class="tab on-ar" id="tab-ar" onclick="setType('ar')">📄 À régler</button>
+      <button class="tab"        id="tab-aq" onclick="setType('aq')">✅ Acquittée</button>
+    </div>
+
+    <!-- Infos facture -->
+    <div class="sec">Informations</div>
+    <div class="grid2">
+      <div class="field">
+        <label>N° facture</label>
+        <input class="fi" id="f-num" type="text" value="CRE-2026-00044" oninput="render()">
+      </div>
+      <div class="field">
+        <label>Date d'émission</label>
+        <input class="fi" id="f-date" type="date" oninput="render()">
+      </div>
+    </div>
+    <div class="grid1" style="margin-top:7px">
+      <div class="field">
+        <label>Période (ex : octobre 2026)</label>
+        <input class="fi" id="f-periode" type="text" oninput="render()">
+      </div>
+    </div>
+
+    <!-- Client -->
+    <div class="sec">Client</div>
+    <div class="grid1">
+      <div class="field">
+        <label>Nom complet *</label>
+        <input class="fi" id="f-cname" type="text" placeholder="Prénom Nom" oninput="render()">
+      </div>
+      <div class="field">
+        <label>Adresse</label>
+        <textarea class="fi" id="f-caddr" placeholder="Rue&#10;Code postal Ville" oninput="render()"></textarea>
+      </div>
+    </div>
+
+    <!-- Cours -->
+    <div class="sec">Cours</div>
+    <div class="rows-wrap" id="rows"></div>
+    <button class="btn-add" onclick="addRow()">+ Ajouter une ligne</button>
+
+    <!-- Remise -->
+    <div class="sec">Remise (optionnel)</div>
+    <div class="remise-box">
+      <label class="remise-toggle">
+        <input type="checkbox" id="f-remise" onchange="toggleRemise()">
+        <span>Inclure une remise</span>
+      </label>
+      <div id="remise-inner" style="display:none" class="remise-inner">
+        <div class="field">
+          <label>Libellé</label>
+          <input class="fi" id="f-rlbl" type="text" value="Remise fidélité" oninput="render()">
+        </div>
+        <div class="field">
+          <label>Montant (€)</label>
+          <input class="fi" id="f-ramt" type="number" min="0" step="0.01" placeholder="30" oninput="render()">
+        </div>
+      </div>
+    </div>
+
+    <!-- Paiement À RÉGLER -->
+    <div id="s-ar">
+      <div class="sec">Paiement — À régler</div>
+      <div class="pay-fields">
+        <div class="field">
+          <label>À régler avant le</label>
+          <input class="fi" id="f-due" type="date" oninput="render()">
+        </div>
+        <div class="field">
+          <label>IBAN</label>
+          <input class="fi" id="f-iban" type="text" placeholder="FR76 XXXX XXXX…" oninput="saveRib(); render()">
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label>BIC</label>
+            <input class="fi" id="f-bic" type="text" placeholder="CMCIFRPP" oninput="saveRib(); render()">
+          </div>
+          <div class="field">
+            <label>Titulaire</label>
+            <input class="fi" id="f-tit" type="text" placeholder="EI Reinhardt Camille" oninput="saveRib(); render()">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paiement ACQUITTÉE -->
+    <div id="s-aq" style="display:none">
+      <div class="sec">Paiement — Acquittée</div>
+      <p style="font-size:.78rem;color:#6b7280;">Date et mode de règlement renseignés sur chaque ligne ci-dessus.</p>
+    </div>
+
+    <div class="total-line" id="total-line">Total TTC : —</div>
+
+    <button class="btn-gen ar" id="btn-gen" onclick="window.print()">
+      🖨 Générer le PDF — Facture à régler
+    </button>
+  </div>
+
+  <!-- ══════════════════ APERÇU ══════════════════ -->
+  <div class="preview-panel">
+    <div class="preview-lbl">Aperçu en temps réel</div>
+    <div class="inv" id="inv"></div>
+  </div>
+</div>
+
+<script>
+  let type = 'ar';
+  let rowId = 0;
+  const rows = [];
+
+  // ── Init ───────────────────────────────────────────────
+  (function() {
+    const today = new Date().toISOString().slice(0,10);
+    document.getElementById('f-date').value = today;
+    // Fin de mois comme date limite par défaut
+    const d = new Date(); d.setMonth(d.getMonth()+1,1); d.setDate(d.getDate()-1);
+    document.getElementById('f-due').value = d.toISOString().slice(0,10);
+    // Période = mois courant
+    document.getElementById('f-periode').value =
+      new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+    // RIB mémorisé
+    const s = k => localStorage.getItem('cr_'+k)||'';
+    if(s('iban')) document.getElementById('f-iban').value = s('iban');
+    if(s('bic'))  document.getElementById('f-bic').value  = s('bic');
+    if(s('tit'))  document.getElementById('f-tit').value  = s('tit');
+    addRow();
+    render();
+  })();
+
+  function saveRib() {
+    ['iban','bic','tit'].forEach(k => localStorage.setItem('cr_'+k, document.getElementById('f-'+k).value));
+  }
+
+  // ── Type ───────────────────────────────────────────────
+  function setType(t) {
+    type = t;
+    document.getElementById('tab-ar').className = 'tab' + (t==='ar' ? ' on-ar' : '');
+    document.getElementById('tab-aq').className = 'tab' + (t==='aq' ? ' on-aq' : '');
+    document.getElementById('s-ar').style.display = t==='ar' ? 'block' : 'none';
+    document.getElementById('s-aq').style.display = t==='aq' ? 'block' : 'none';
+    const btn = document.getElementById('btn-gen');
+    btn.className = 'btn-gen ' + t;
+    btn.textContent = t==='ar'
+      ? '🖨 Générer le PDF — Facture à régler'
+      : '🖨 Générer le PDF — Facture acquittée';
+    reRenderRows();
+    render();
+  }
+
+  // ── Remise ─────────────────────────────────────────────
+  function toggleRemise() {
+    const on = document.getElementById('f-remise').checked;
+    document.getElementById('remise-inner').style.display = on ? 'grid' : 'none';
+    render();
+  }
+
+  // ── Lignes ─────────────────────────────────────────────
+  function addRow() {
+    rowId++;
+    const id = rowId;
+    rows.push({id, date:'', nature:'', h:'', rate:'', payDate:'', payMethod:'Espèces'});
+    const el = document.createElement('div');
+    el.id = 'row'+id;
+    el.className = 'cr ' + type;
+    el.innerHTML = rowHTML(id);
+    document.getElementById('rows').appendChild(el);
+  }
+
+  function rowHTML(id) {
+    const r = rows.find(x=>x.id===id)||{};
+    const opts = ['Espèces','Virement bancaire','Wero','Chèque','CB']
+      .map(m=>`<option${r.payMethod===m?' selected':''}>${m}</option>`).join('');
+    const pay = type==='aq' ? `
+      <div>
+        <div class="lbl">Réglé le</div>
+        <input type="date" value="${r.payDate}" oninput="upd(${id},'payDate',this.value)">
+      </div>
+      <div>
+        <div class="lbl">Mode</div>
+        <select onchange="upd(${id},'payMethod',this.value)">${opts}</select>
+      </div>` : '';
+    return `
+      <div>
+        <div class="lbl">Date</div>
+        <input type="date" value="${r.date}" oninput="upd(${id},'date',this.value)">
+      </div>
+      <div>
+        <div class="lbl">Prestation</div>
+        <input type="text" value="${esc(r.nature)}" placeholder="Maths Terminale" oninput="upd(${id},'nature',this.value)">
+      </div>
+      <div>
+        <div class="lbl">Durée (h)</div>
+        <input type="number" value="${r.h}" min="0.5" step="0.5" placeholder="1.5" oninput="upd(${id},'h',this.value)">
+      </div>
+      <div>
+        <div class="lbl">Prix/h (€)</div>
+        <input type="number" value="${r.rate}" min="1" step="1" placeholder="30" oninput="upd(${id},'rate',this.value)">
+      </div>
+      ${pay}
+      <div class="cr-total" id="rt${id}">${amt(r.h,r.rate)}</div>
+      <button class="btn-rm" onclick="rmRow(${id})">✕</button>`;
+  }
+
+  function upd(id, field, val) {
+    const r = rows.find(x=>x.id===id); if(!r) return;
+    r[field] = val;
+    const el = document.getElementById('rt'+id);
+    if(el) el.textContent = amt(r.h, r.rate);
+    render();
+  }
+
+  function rmRow(id) {
+    const i = rows.findIndex(x=>x.id===id); if(i>-1) rows.splice(i,1);
+    const el = document.getElementById('row'+id); if(el) el.remove();
+    render();
+  }
+
+  function reRenderRows() {
+    document.getElementById('rows').innerHTML = '';
+    rows.forEach(r => {
+      const el = document.createElement('div');
+      el.id = 'row'+r.id; el.className = 'cr '+type;
+      el.innerHTML = rowHTML(r.id);
+      document.getElementById('rows').appendChild(el);
+    });
+  }
+
+  // ── Helpers ────────────────────────────────────────────
+  function amt(h, rate) {
+    const v = (parseFloat(h)||0)*(parseFloat(rate)||0);
+    return v > 0 ? money(v) : '—';
+  }
+  function money(n) {
+    return Number(n).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+  }
+  function fmtDate(iso) {
+    if(!iso) return '—';
+    const [y,m,d] = iso.split('-'); return `${d}/${m}/${y}`;
+  }
+  function fmtH(h) {
+    const n = parseFloat(h)||0;
+    const hh = Math.floor(n), mm = Math.round((n-hh)*60);
+    return mm ? `${hh} h ${String(mm).padStart(2,'0')}` : `${hh} h`;
+  }
+  function esc(s) {
+    return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+  }
+
+  // ── Render aperçu ───────────────────────────────────────
+  function render() {
+    const num = document.getElementById('f-num').value||'—';
+    const dateStr = fmtDate(document.getElementById('f-date').value);
+    const periode = document.getElementById('f-periode').value||'—';
+    const cname = document.getElementById('f-cname').value||'[Nom du client]';
+    const caddr = (document.getElementById('f-caddr').value||'').replace(/\n/g,'<br>');
+
+    const subtotal = rows.reduce((s,r)=>s+(parseFloat(r.h)||0)*(parseFloat(r.rate)||0), 0);
+    const remiseOn = document.getElementById('f-remise').checked;
+    const remiseAmt = remiseOn ? (parseFloat(document.getElementById('f-ramt').value)||0) : 0;
+    const remiseLbl = document.getElementById('f-rlbl').value||'Remise';
+    const totalH = rows.reduce((s,r)=>s+(parseFloat(r.h)||0), 0);
+    const total = Math.max(0, subtotal - remiseAmt);
+
+    document.getElementById('total-line').textContent = 'Total TTC : '+money(total);
+
+    // ── Tableau ──
+    let thead, tbody;
+    if(type==='ar') {
+      thead = `<tr>
+        <th style="width:13%">Date</th><th>Prestation</th>
+        <th class="r" style="width:11%">Durée</th>
+        <th class="r" style="width:12%">Prix/h</th>
+        <th class="r" style="width:13%">Montant</th></tr>`;
+      tbody = rows.map(r => {
+        const v = (parseFloat(r.h)||0)*(parseFloat(r.rate)||0);
+        return `<tr>
+          <td>${fmtDate(r.date)}</td>
+          <td>${esc(r.nature)||'—'}</td>
+          <td class="r">${r.h ? fmtH(r.h) : '—'}</td>
+          <td class="r">${r.rate ? money(parseFloat(r.rate)) : '—'}</td>
+          <td class="r">${v>0?money(v):'—'}</td></tr>`;
+      }).join('');
+      if(remiseOn && remiseAmt>0) tbody += `<tr class="remise">
+        <td>—</td><td class="rl">🎁 ${esc(remiseLbl)}</td>
+        <td class="r">—</td><td class="r">—</td><td class="r">−${money(remiseAmt)}</td></tr>`;
+    } else {
+      thead = `<tr>
+        <th style="width:12%">Date</th><th>Prestation</th>
+        <th class="r" style="width:10%">Durée</th>
+        <th class="r" style="width:12%">Montant</th>
+        <th class="r" style="width:12%">Réglé le</th>
+        <th class="r" style="width:11%">Mode</th></tr>`;
+      tbody = rows.map(r => {
+        const v = (parseFloat(r.h)||0)*(parseFloat(r.rate)||0);
+        return `<tr>
+          <td>${fmtDate(r.date)}</td>
+          <td>${esc(r.nature)||'—'}</td>
+          <td class="r">${r.h ? fmtH(r.h) : '—'}</td>
+          <td class="r">${v>0?money(v):'—'}</td>
+          <td class="r">${fmtDate(r.payDate)}</td>
+          <td class="r">${r.payMethod||'—'}</td></tr>`;
+      }).join('');
+      if(remiseOn && remiseAmt>0) tbody += `<tr class="remise">
+        <td>—</td><td class="rl">🎁 ${esc(remiseLbl)}</td>
+        <td class="r">—</td><td class="r">−${money(remiseAmt)}</td>
+        <td class="r">—</td><td class="r">—</td></tr>`;
+    }
+
+    const tfoot = type==='ar'
+      ? `<td colspan="2">Total heures :</td><td class="r">${totalH>0?fmtH(totalH):'—'}</td><td></td><td class="r">${money(subtotal)}</td>`
+      : `<td colspan="2">Total heures :</td><td class="r">${totalH>0?fmtH(totalH):'—'}</td><td class="r">${money(subtotal)}</td><td colspan="2"></td>`;
+
+    // ── Totaux ──
+    let tots = `<div class="inv-tots"><div class="inv-tots-in">
+      <div class="inv-tot-row"><span>Sous-total HT</span><span>${money(subtotal)}</span></div>`;
+    if(remiseOn && remiseAmt>0)
+      tots += `<div class="inv-tot-row disc"><span>${esc(remiseLbl)}</span><span>−${money(remiseAmt)}</span></div>`;
+    tots += `<div class="inv-tot-row"><span>TVA</span><span>0,00 €</span></div>
+      <div class="inv-tot-row total"><span>Total TTC</span><span>${money(total)}</span></div>
+    </div></div>`;
+
+    // ── Section paiement ──
+    let paySection;
+    if(type==='ar') {
+      const due = fmtDate(document.getElementById('f-due').value);
+      const iban = document.getElementById('f-iban').value||'[IBAN]';
+      const bic  = document.getElementById('f-bic').value;
+      const tit  = document.getElementById('f-tit').value;
+      paySection = `<div class="inv-ar">
+        <div class="inv-ar-ttl">À régler avant le <strong style="color:#B45309">${due}</strong></div>
+        <div class="inv-ar-body">
+          Règlement par virement : IBAN ${esc(iban)}${bic?' · BIC '+esc(bic):''}
+          ${tit?'<br>Titulaire du compte : '+esc(tit):''}
+          <br>Merci d'indiquer le numéro de la facture en référence du virement.
+        </div>
+      </div>`;
+    } else {
+      paySection = `<div class="inv-aq">
+        <span class="inv-aq-badge">Payé</span>
+        <span class="inv-aq-txt">Facture acquittée. Reste dû : 0,00 €</span>
+      </div>`;
+    }
+
+    // ── Assemblage ──
+    document.getElementById('inv').innerHTML = `
+      <div class="inv-hd">
+        <div class="lb">
+          <div class="logo"><img src="img/logo.jpeg" alt="CR" onerror="this.style.display='none';this.parentNode.textContent='CR'"></div>
+          <span class="brand">C'Réussite</span>
+        </div>
+        <span class="title">FACTURE</span>
+      </div>
+      <div class="inv-meta">
+        <span><b>N° facture :</b> ${esc(num)}</span>
+        <span><b>Date d'émission :</b> ${dateStr}</span>
+        <span><b>Période :</b> ${esc(periode)}</span>
+      </div>
+      <div class="inv-body">
+        <div class="inv-pts">
+          <div class="inv-v">
+            <div class="pt-lbl">Vendeur</div>
+            <div class="pt-name">Camille Reinhardt</div>
+            <div class="pt-det">C'Réussite · 54A Rue des Écoles · 57700 Neufchef<br>SIRET : 103 644 050 00017 · APE : 4791B · c-reussite.fr</div>
+          </div>
+          <div class="inv-c">
+            <div class="pt-lbl">Client</div>
+            <div class="pt-name">${esc(cname)}</div>
+            <div class="pt-det">${caddr}</div>
+          </div>
+        </div>
+        <table class="inv-tbl">
+          <thead>${thead}</thead>
+          <tbody>${tbody}</tbody>
+          <tfoot><tr>${tfoot}</tr></tfoot>
+        </table>
+        ${tots}
+        ${paySection}
+        <div class="inv-legal">
+          TVA non applicable, article 293 B du CGI.<br>
+          Médiation de la consommation : CM2C — 49 rue de Ponthieu, 75 008 Paris — cm2c.net — litiges@cm2c.net
+        </div>
+      </div>
+      <div class="inv-ft">
+        Camille Reinhardt — Entrepreneur individuel — SIRET 103 644 050 00017 — APE 4791B<br>
+        54A Rue des Écoles, 57700 Neufchef — c-reussite.fr
+      </div>`;
+  }
+</script>
+</body>
+</html>
