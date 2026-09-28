@@ -54,23 +54,24 @@
     textarea.fi { resize: vertical; min-height: 50px; }
 
     /* Lignes cours */
-    .rows-wrap { display: flex; flex-direction: column; gap: 7px; margin-bottom: 6px; }
+    .rows-wrap { display: flex; flex-direction: column; gap: 8px; margin-bottom: 6px; }
     .cr {
       background: #f8fafc; border: 1px solid var(--shellstone); border-radius: 7px;
-      padding: 9px; display: grid; gap: 5px; align-items: end;
+      padding: 10px; display: flex; flex-direction: column; gap: 7px;
     }
-    .cr.ar { grid-template-columns: 110px 1fr 60px 62px 28px; }
-    .cr.aq { grid-template-columns: 110px 1fr 60px 62px 110px 90px 28px; }
+    .cr-r1 { display: grid; grid-template-columns: 1fr 2fr auto; gap: 6px; align-items: end; }
+    .cr-r2 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; align-items: end; }
+    .cr-r3 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; align-items: end; border-top: 1px dashed var(--shellstone); padding-top: 7px; }
     .cr .lbl { font-size: .67rem; color: #9ca3af; margin-bottom: 2px; }
     .cr input, .cr select {
-      padding: 5px 6px; border: 1px solid var(--shellstone); border-radius: 5px;
-      font-family: var(--f); font-size: .8rem; width: 100%;
+      padding: 6px 8px; border: 1px solid var(--shellstone); border-radius: 5px;
+      font-family: var(--f); font-size: .82rem; width: 100%;
     }
     .cr input:focus, .cr select:focus { outline: none; border-color: var(--sapphire); }
-    .cr-total { font-size: .8rem; font-weight: 700; color: var(--royal-blue); text-align: right; padding-bottom: 1px; }
+    .cr-total { font-size: .82rem; font-weight: 700; color: var(--royal-blue); text-align: right; padding-bottom: 3px; }
     .btn-rm {
       background: transparent; border: 1px solid #fca5a5; border-radius: 5px;
-      color: #ef4444; cursor: pointer; font-size: .85rem; padding: 3px 5px;
+      color: #ef4444; cursor: pointer; font-size: .82rem; padding: 5px 8px; white-space: nowrap;
     }
     .btn-rm:hover { background: #fee2e2; }
     .btn-add {
@@ -470,35 +471,41 @@
     const r = rows.find(x=>x.id===id)||{};
     const opts = ['Espèces','Virement bancaire','Wero','Chèque','CB']
       .map(m=>`<option${r.payMethod===m?' selected':''}>${m}</option>`).join('');
-    const pay = type==='aq' ? `
-      <div>
-        <div class="lbl">Réglé le</div>
-        <input type="date" value="${r.payDate}" oninput="upd(${id},'payDate',this.value)">
-      </div>
-      <div>
-        <div class="lbl">Mode</div>
-        <select onchange="upd(${id},'payMethod',this.value)">${opts}</select>
+    const payRow = type==='aq' ? `
+      <div class="cr-r3">
+        <div>
+          <div class="lbl">Réglé le</div>
+          <input type="date" value="${r.payDate}" oninput="upd(${id},'payDate',this.value)">
+        </div>
+        <div>
+          <div class="lbl">Mode de paiement</div>
+          <select onchange="upd(${id},'payMethod',this.value)">${opts}</select>
+        </div>
       </div>` : '';
     return `
-      <div>
-        <div class="lbl">Date</div>
-        <input type="date" value="${r.date}" oninput="upd(${id},'date',this.value)">
+      <div class="cr-r1">
+        <div>
+          <div class="lbl">Date</div>
+          <input type="date" value="${r.date}" oninput="upd(${id},'date',this.value)">
+        </div>
+        <div>
+          <div class="lbl">Prestation</div>
+          <input type="text" value="${esc(r.nature)}" placeholder="Maths Terminale" oninput="upd(${id},'nature',this.value)">
+        </div>
+        <button class="btn-rm" onclick="rmRow(${id})">✕</button>
       </div>
-      <div>
-        <div class="lbl">Prestation</div>
-        <input type="text" value="${esc(r.nature)}" placeholder="Maths Terminale" oninput="upd(${id},'nature',this.value)">
+      <div class="cr-r2">
+        <div>
+          <div class="lbl">Durée (h)</div>
+          <input type="number" value="${r.h}" min="0.5" step="0.5" placeholder="1.5" oninput="upd(${id},'h',this.value)">
+        </div>
+        <div>
+          <div class="lbl">Prix/h (€)</div>
+          <input type="number" value="${r.rate}" min="1" step="1" placeholder="30" oninput="upd(${id},'rate',this.value)">
+        </div>
+        <div class="cr-total" id="rt${id}">${amt(r.h,r.rate)}</div>
       </div>
-      <div>
-        <div class="lbl">Durée (h)</div>
-        <input type="number" value="${r.h}" min="0.5" step="0.5" placeholder="1.5" oninput="upd(${id},'h',this.value)">
-      </div>
-      <div>
-        <div class="lbl">Prix/h (€)</div>
-        <input type="number" value="${r.rate}" min="1" step="1" placeholder="30" oninput="upd(${id},'rate',this.value)">
-      </div>
-      ${pay}
-      <div class="cr-total" id="rt${id}">${amt(r.h,r.rate)}</div>
-      <button class="btn-rm" onclick="rmRow(${id})">✕</button>`;
+      ${payRow}`;
   }
 
   function upd(id, field, val) {
