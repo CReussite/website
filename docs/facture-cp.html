@@ -197,9 +197,21 @@
       .inv { box-shadow: none; max-width: 100%; width: 100%; }
     }
 
+    /* Bouton prévisualiser — mobile seulement */
+    .btn-preview {
+      display: none; width: 100%; padding: 10px; margin-bottom: 8px;
+      border: 2px solid var(--royal-blue); border-radius: 8px;
+      background: #fff; color: var(--royal-blue); font-family: var(--f);
+      font-size: .9rem; font-weight: 600; cursor: pointer;
+    }
+    .btn-preview:hover { background: var(--swan-wing); }
+
     @media (max-width: 900px) {
       .app { grid-template-columns: 1fr; }
       .form-panel { max-height: none; position: static; }
+      .preview-panel { display: none; }
+      .preview-panel.open { display: flex; }
+      .btn-preview { display: block; }
     }
 
     /* ── Écran de connexion ── */
@@ -350,6 +362,8 @@
 
     <div class="total-line" id="total-line">Total TTC : —</div>
 
+    <button class="btn-preview" id="btn-preview" onclick="togglePreview()">👁 Prévisualiser la facture</button>
+
     <button class="btn-gen ar" id="btn-gen" onclick="window.print()">
       🖨 Générer le PDF — Facture à régler
     </button>
@@ -426,6 +440,14 @@
     if(s('tit'))  document.getElementById('f-tit').value  = s('tit');
     addRow();
     render();
+  }
+
+  function togglePreview() {
+    const panel = document.querySelector('.preview-panel');
+    const btn = document.getElementById('btn-preview');
+    const open = panel.classList.toggle('open');
+    btn.textContent = open ? '✕ Fermer l\'aperçu' : '👁 Prévisualiser la facture';
+    if (open) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   function saveRib() {
