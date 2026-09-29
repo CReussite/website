@@ -321,7 +321,7 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
 // Génère une facture de cours particuliers et la stocke en base.
 router.post('/cours-particuliers', express.json(), requireAdminKey, async (req, res) => {
   try {
-    const { customerName, customerEmail, customerAddress, items, paymentDate, paymentMethod, rib } = req.body;
+    const { customerName, customerEmail, customerAddress, items, paymentDate, paymentMethod, rib, invoiceNumber: explicitNumber } = req.body;
 
     if (!customerName || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ error: 'Données manquantes (nom, cours).' });
@@ -358,6 +358,7 @@ router.post('/cours-particuliers', express.json(), requireAdminKey, async (req, 
       paymentDate: paymentDate || normalizedItems[0].payment_date,
       paymentMethod: paymentMethod || normalizedItems[0].payment_method,
       rib: hasUnpaid && rib ? rib : null,
+      invoiceNumber: explicitNumber || null,
     });
 
     res.json({ invoiceNumber });

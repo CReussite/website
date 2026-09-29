@@ -470,12 +470,67 @@
     render();
   }
 
-  // ── Impression dans une fenêtre dédiée (= aperçu identique) ──
-  function printInvoice() {
+  // ── Sauvegarde en DB + impression ──────────────────────────────
+  async function printInvoice() {
     const invEl = document.getElementById('inv');
     if (!invEl) return;
 
-    const invoiceNumber = document.getElementById('f-num').value || 'CRE';
+    const adminKey = localStorage.getItem('creussite_admin_key') || '';
+    const isAr = type === 'ar';
+
+    // Construire les items pour le backend
+    const backendItems = rows.map(r => ({
+      nature:         r.nature || '',
+      date:           r.date   || '',
+      hours:          parseFloat(r.h)    || 0,
+      hourly_rate:    parseFloat(r.rate) || 0,
+      total:          (parseFloat(r.h)||0) * (parseFloat(r.rate)||0),
+      status:         isAr ? 'a_payer' : 'paid',
+      payment_date:   isAr ? '' : (r.payDate || ''),
+      payment_method: isAr ? 'À payer' : (r.payMethod || ''),
+    }));
+
+    const remiseOn  = document.getElementById('f-remise').checked;
+    const remiseAmt = remiseOn ? (parseFloat(document.getElementById('f-ramt').value)||0) : 0;
+    const subtotal  = backendItems.reduce((s,i) => s + i.total, 0);
+    const total     = Math.max(0, subtotal - remiseAmt);
+
+    const payload = {
+      invoiceNumber:   document.getElementById('f-num').value || '',
+      customerName:    document.getElementById('f-cname').value || '',
+      customerEmail:   '',
+      customerAddress: document.getElementById('f-caddr').value || '',
+      items:           backendItems,
+      paymentDate:     isAr ? '' : (backendItems[0]?.payment_date || ''),
+      paymentMethod:   isAr ? 'À payer' : (backendItems[0]?.payment_method || ''),
+      rib: isAr ? {
+        iban:            document.getElementById('f-iban').value,
+        bic:             document.getElementById('f-bic').value,
+        account_holder:  document.getElementById('f-tit').value,
+      } : null,
+    };
+
+    // Sauvegarde en DB (non bloquant — on continue même en cas d'erreur)
+    let confirmedNumber = payload.invoiceNumber;
+    if (adminKey) {
+      try {
+        const res = await fetch(BACKEND + '/api/admin/cours-particuliers?key=' + encodeURIComponent(adminKey), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (data.invoiceNumber) {
+          confirmedNumber = data.invoiceNumber;
+          document.getElementById('f-num').value = confirmedNumber;
+          render();
+        }
+      } catch (e) {
+        console.warn('Sauvegarde DB échouée :', e.message);
+      }
+    }
+
+    const invoiceNumber = confirmedNumber || 'CRE';
     const pdfTitle = `facture-${invoiceNumber}`;
 
     const pw = window.open('', '_blank', 'width=900,height=700');

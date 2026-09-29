@@ -233,17 +233,20 @@ async function insertCoursParticuliersInvoice({
   paymentDate,
   paymentMethod,
   rib,
+  invoiceNumber: explicitNumber,
 }) {
   const supabase = getClient();
 
-  const year = new Date().getFullYear();
-  const [{ count: cpCount }, { count: ebookCount }] = await Promise.all([
-    supabase.from('cp_invoices').select('*', { count: 'exact', head: true }).like('invoice_number', `CRE-${year}-%`),
-    supabase.from('orders').select('*', { count: 'exact', head: true }).like('invoice_number', `CRE-${year}-%`),
-  ]);
-
-  const seq = String((cpCount || 0) + (ebookCount || 0) + 1).padStart(5, '0');
-  const invoiceNumber = `CRE-${year}-${seq}`;
+  let invoiceNumber = explicitNumber;
+  if (!invoiceNumber) {
+    const year = new Date().getFullYear();
+    const [{ count: cpCount }, { count: ebookCount }] = await Promise.all([
+      supabase.from('cp_invoices').select('*', { count: 'exact', head: true }).like('invoice_number', `CRE-${year}-%`),
+      supabase.from('orders').select('*', { count: 'exact', head: true }).like('invoice_number', `CRE-${year}-%`),
+    ]);
+    const seq = String((cpCount || 0) + (ebookCount || 0) + 1).padStart(5, '0');
+    invoiceNumber = `CRE-${year}-${seq}`;
+  }
 
   const totalEur = items.reduce((sum, item) => sum + Number(item.total), 0);
   const totalCents = Math.round(totalEur * 100);
