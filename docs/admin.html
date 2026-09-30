@@ -286,6 +286,14 @@
       .inv-meta-row { flex-direction: column; gap: 4px; }
     }
 
+    /* ─── Navigation onglets ─── */
+    .admin-tabs { display:flex; gap:4px; background:#f1f3f8; border-radius:12px; padding:5px; margin-bottom:24px; flex-wrap:wrap; }
+    .admin-tab { flex:1; min-width:110px; padding:9px 6px; border:none; border-radius:9px; background:transparent; font-family:inherit; font-size:.82rem; font-weight:600; color:#6b7280; cursor:pointer; transition:all .15s; }
+    .admin-tab:hover { background:#e2e6f0; color:#112250; }
+    .admin-tab.active { background:#fff; color:#112250; box-shadow:0 1px 4px rgba(0,0,0,.1); }
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
+
     /* ─── Cours particuliers ─── */
     .cp-card {
       background: #fff;
@@ -431,6 +439,17 @@
         </div>
       </div>
 
+      <!-- ── Navigation onglets ── -->
+      <nav class="admin-tabs">
+        <button class="admin-tab active" onclick="switchTab('resume')">📊 Résumé</button>
+        <button class="admin-tab" onclick="switchTab('factures-cp')">📄 Factures CP</button>
+        <button class="admin-tab" onclick="switchTab('commandes')">🛒 Commandes</button>
+        <button class="admin-tab" onclick="switchTab('promo')">🎁 Promos</button>
+        <button class="admin-tab" onclick="switchTab('supervision')">🔗 Supervision</button>
+      </nav>
+
+      <!-- ── Onglet Résumé ── -->
+      <div class="tab-panel active" id="panel-resume">
       <div class="stats-grid">
         <div class="stat-card"><div class="stat-label">Commandes</div><div class="stat-value" id="stat-count">-</div></div>
         <div class="stat-card"><div class="stat-label">Chiffre d'affaires</div><div class="stat-value" id="stat-revenue">-</div></div>
@@ -439,7 +458,10 @@
         <div class="stat-card"><div class="stat-label">Extraits envoyes</div><div class="stat-value" id="stat-extracts">-</div></div>
         <div class="stat-card"><div class="stat-label">En attente</div><div class="stat-value" id="stat-pending">-</div></div>
       </div>
+      </div><!-- /panel-resume -->
 
+      <!-- ── Onglet Supervision ── -->
+      <div class="tab-panel" id="panel-supervision">
       <div class="services-card">
         <h2>Supervision</h2>
         <div class="service-links">
@@ -490,7 +512,38 @@
           </a>
         </div>
       </div>
+      </div><!-- /panel-supervision -->
 
+      <!-- ── Onglet Factures CP ── -->
+      <div class="tab-panel" id="panel-factures-cp">
+      <!-- ─── Factures cours particuliers ─── -->
+      <div class="table-card" style="margin-bottom:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 0;">
+          <h2 class="section-title">Factures cours particuliers</h2>
+          <a href="/facture-cp.html" target="_blank" style="font-size:.8rem;padding:6px 14px;background:#112250;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;">+ Nouvelle facture</a>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>N° Facture</th>
+                <th>Date</th>
+                <th>Client</th>
+                <th>Total</th>
+                <th>Type</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="cp-tbody">
+              <tr><td colspan="6" class="table-empty">Chargement...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </div><!-- /panel-factures-cp -->
+
+      <!-- ── Onglet Commandes ── -->
+      <div class="tab-panel" id="panel-commandes">
       <div class="table-card">
         <h2 class="section-title" style="padding:20px 24px 0;">Commandes</h2>
         <div class="table-scroll">
@@ -513,6 +566,10 @@
         </div>
       </div>
 
+      </div><!-- /panel-commandes -->
+
+      <!-- ── Onglet Promos ── -->
+      <div class="tab-panel" id="panel-promo">
       <!-- ── Codes promo ── -->
       <div class="table-card subsection" id="promo-section">
         <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 0;flex-wrap:wrap;gap:12px;">
@@ -578,8 +635,10 @@
           </table>
         </div>
       </div>
-    </div>
-  </div>
+      </div><!-- /panel-promo -->
+
+    </div><!-- /admin-wrap -->
+  </div><!-- /dashboard -->
 
   <!-- ─── MODALE FACTURE ─── -->
   <div class="invoice-overlay" id="invoice-overlay">
@@ -918,6 +977,7 @@
 
           showDashboard();
           loadPromoCodes();
+          loadCpInvoices();
         } catch (_) {
           loginError.style.display = 'block';
         }
@@ -1237,7 +1297,7 @@
       var btnCpSubmit = document.getElementById('btn-cp-submit');
       var cpRowCount = 0;
 
-      btnCpToggle.addEventListener('click', function () {
+      if (btnCpToggle) btnCpToggle.addEventListener('click', function () {
         if (cpFormWrap.style.display === 'none') {
           cpFormWrap.style.display = 'block';
           btnCpToggle.textContent = '− Fermer';
@@ -1354,16 +1414,16 @@
         }
       }
 
-      document.getElementById('cp-rib-iban').addEventListener('input', function() {
+      if (document.getElementById('cp-rib-iban')) document.getElementById('cp-rib-iban').addEventListener('input', function() {
         localStorage.setItem('cp_rib_iban', this.value);
       });
-      document.getElementById('cp-rib-titulaire').addEventListener('input', function() {
+      if (document.getElementById('cp-rib-titulaire')) document.getElementById('cp-rib-titulaire').addEventListener('input', function() {
         localStorage.setItem('cp_rib_titulaire', this.value);
       });
 
-      document.getElementById('btn-add-cours').addEventListener('click', addCoursRow);
+      if (document.getElementById('btn-add-cours')) document.getElementById('btn-add-cours').addEventListener('click', addCoursRow);
 
-      btnCpSubmit.addEventListener('click', async function () {
+      if (btnCpSubmit) btnCpSubmit.addEventListener('click', async function () {
         cpError.style.display = 'none';
 
         var name = document.getElementById('cp-name').value.trim();
@@ -1452,6 +1512,110 @@
       });
 
 
+      // ── Factures cours particuliers ──────────────────────────────────────────
+      async function loadCpInvoices() {
+        var tbody = document.getElementById('cp-tbody');
+        if (!tbody) return;
+        try {
+          const year = document.getElementById('year-filter') ? document.getElementById('year-filter').value : '';
+          const url = BACKEND + '/api/admin/cp-invoices?key=' + encodeURIComponent(adminKey) + (year ? '&year=' + year : '');
+          const res = await fetch(url);
+          const invoices = await res.json();
+          if (!invoices.length) {
+            tbody.innerHTML = '<tr><td colspan="6" class="table-empty">Aucune facture CP.</td></tr>';
+            return;
+          }
+          tbody.innerHTML = invoices.map(function(inv) {
+            const isAr = inv.payment_method === 'À payer' || (Array.isArray(inv.items) && inv.items.some(function(i){ return i.status === 'a_payer'; }));
+            const badge = isAr
+              ? '<span style="background:#FEF3C7;color:#B45309;padding:2px 8px;border-radius:12px;font-size:.75rem;font-weight:600;">À régler</span>'
+              : '<span style="background:#D1FAE5;color:#065F46;padding:2px 8px;border-radius:12px;font-size:.75rem;font-weight:600;">Acquittée</span>';
+            const date = new Date(inv.created_at).toLocaleDateString('fr-FR');
+            const total = ((inv.amount || 0) / 100).toLocaleString('fr-FR', {minimumFractionDigits:2}) + ' €';
+            return '<tr>' +
+              '<td><strong>' + inv.invoice_number + '</strong></td>' +
+              '<td>' + date + '</td>' +
+              '<td>' + (inv.customer_name || '—') + '</td>' +
+              '<td>' + total + '</td>' +
+              '<td>' + badge + '</td>' +
+              '<td style="white-space:nowrap">' +
+                '<button onclick="viewCpInvoice(\'' + inv.invoice_number + '\')" style="margin-right:6px;padding:4px 10px;border:1px solid #112250;border-radius:6px;background:#fff;color:#112250;cursor:pointer;font-size:.8rem;">👁 Voir</button>' +
+                '<button onclick="deleteCpInvoice(\'' + inv.invoice_number + '\')" style="padding:4px 10px;border:1px solid #fca5a5;border-radius:6px;background:#fff;color:#ef4444;cursor:pointer;font-size:.8rem;">🗑 Supprimer</button>' +
+              '</td>' +
+            '</tr>';
+          }).join('');
+        } catch (e) {
+          document.getElementById('cp-tbody').innerHTML = '<tr><td colspan="6" class="table-empty">Erreur de chargement.</td></tr>';
+        }
+      }
+
+      async function deleteCpInvoice(invoiceNumber) {
+        if (!confirm('Supprimer la facture ' + invoiceNumber + ' ? Cette action est irréversible.')) return;
+        try {
+          const res = await fetch(BACKEND + '/api/admin/cp-invoices/' + encodeURIComponent(invoiceNumber) + '?key=' + encodeURIComponent(adminKey), { method: 'DELETE' });
+          if (!res.ok) throw new Error('Erreur serveur');
+          loadCpInvoices();
+        } catch (e) {
+          alert('Erreur lors de la suppression : ' + e.message);
+        }
+      }
+      window.deleteCpInvoice = deleteCpInvoice;
+
+      async function viewCpInvoice(invoiceNumber) {
+        try {
+          const res = await fetch(BACKEND + '/api/admin/invoice-data/' + encodeURIComponent(invoiceNumber) + '?key=' + encodeURIComponent(adminKey));
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Introuvable');
+
+          const isAr = data.payment_status === 'a_payer';
+          const items = data.items || [];
+          const subtotal = items.reduce(function(s,i){ return s + (i.quantity||0)*(i.unit_price||0); }, 0);
+          const fmt = function(n){ return Number(n).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' €'; };
+          const fmtH = function(h){ var n=parseFloat(h)||0,hh=Math.floor(n),mm=Math.round((n-hh)*60); return mm?hh+' h '+String(mm).padStart(2,'0'):hh+' h'; };
+
+          var thead = isAr
+            ? '<tr><th style="width:13%">Date</th><th>Prestation</th><th class="r" style="width:11%">Durée</th><th class="r" style="width:12%">Prix/h</th><th class="r" style="width:13%">Montant</th></tr>'
+            : '<tr><th style="width:12%">Date</th><th>Prestation</th><th class="r" style="width:10%">Durée</th><th class="r" style="width:12%">Montant</th><th class="r" style="width:12%">Réglé le</th><th class="r" style="width:11%">Mode</th></tr>';
+
+          var tbody = items.map(function(it) {
+            var amt = (it.quantity||0)*(it.unit_price||0);
+            return isAr
+              ? '<tr><td>' + (it.date||'—') + '</td><td>' + (it.description||'—') + '</td><td class="r">' + fmtH(it.quantity) + '</td><td class="r">' + fmt(it.unit_price) + '</td><td class="r">' + fmt(amt) + '</td></tr>'
+              : '<tr><td>' + (it.date||'—') + '</td><td>' + (it.description||'—') + '</td><td class="r">' + fmtH(it.quantity) + '</td><td class="r">' + fmt(amt) + '</td><td class="r">' + (it.payment_date||'—') + '</td><td class="r">' + (it.payment_method||'—') + '</td></tr>';
+          }).join('');
+
+          var tfoot = isAr
+            ? '<td colspan="2">Total heures :</td><td class="r">' + fmtH(items.reduce(function(s,i){return s+(i.quantity||0);},0)) + '</td><td></td><td class="r">' + fmt(subtotal) + '</td>'
+            : '<td colspan="2">Total heures :</td><td class="r">' + fmtH(items.reduce(function(s,i){return s+(i.quantity||0);},0)) + '</td><td class="r">' + fmt(subtotal) + '</td><td colspan="2"></td>';
+
+          var paySection = isAr
+            ? '<div class="inv-ar"><div class="inv-ar-ttl">À régler avant le <strong style="color:#B45309">' + (data.payment_date||'—') + '</strong></div><div class="inv-ar-body">Règlement par virement' + (data.payment_details && data.payment_details.iban ? ' : IBAN ' + data.payment_details.iban : '') + (data.payment_details && data.payment_details.bic ? ' · BIC ' + data.payment_details.bic : '') + '<br>Merci d\'indiquer le numéro de la facture en référence du virement.</div></div>'
+            : '<div class="inv-aq"><span class="inv-aq-badge">Payé</span><span class="inv-aq-txt">Facture acquittée.</span></div>';
+
+          openCpPrintWindow(data.invoice_number, data.date, data.customer, thead, tbody, tfoot, fmt(subtotal), paySection);
+        } catch (e) {
+          alert('Impossible d\'afficher la facture : ' + e.message);
+        }
+      }
+
+      function openCpPrintWindow(number, date, customer, thead, tbody, tfoot, subtotalStr, paySection) {
+        var pw = window.open('', '_blank', 'width=900,height=700');
+        var css = ':root{--royal-blue:#112250;--sapphire:#3C5070;--quicksand:#E0C58F;--swan-wing:#F5F0E9;--shellstone:#D9CBC2;--text-mid:#3C4A5C}*{box-sizing:border-box;margin:0;padding:0}body{font-family:"Segoe UI",system-ui,sans-serif;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}.inv{width:210mm;min-height:297mm;display:flex;flex-direction:column}.inv-hd{background:var(--royal-blue);color:#fff;padding:22px 42px;display:flex;justify-content:space-between;align-items:center}.lb{display:flex;align-items:center;gap:11px}.logo{width:52px;height:52px;border-radius:8px;background:var(--quicksand);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;color:var(--royal-blue)}.brand{font-size:19px;font-weight:600}.title{font-size:25px;font-weight:700;color:var(--quicksand);letter-spacing:1px}.inv-meta{background:var(--swan-wing);border-top:2px solid var(--quicksand);padding:9px 42px;font-size:11px;color:var(--sapphire);display:flex}.inv-meta>span{flex:1}.inv-meta>span:nth-child(2){text-align:center}.inv-meta>span:last-child{text-align:right}.inv-meta b{font-weight:600}.inv-body{flex:1;padding:22px 42px 18px}.inv-pts{display:flex;gap:26px;margin-bottom:36px}.inv-v{flex:0 0 calc(66.666% - 26px)}.inv-c{flex:1}.pt-lbl{font-size:9px;text-transform:uppercase;letter-spacing:1.2px;color:var(--quicksand);font-weight:600;margin-bottom:4px;border-bottom:1.5px solid var(--quicksand);padding-bottom:2px;display:inline-block}.pt-name{font-size:13.5px;font-weight:600;color:var(--royal-blue);margin-bottom:2px}.pt-det{font-size:11px;color:var(--text-mid);line-height:1.6}.inv-tbl{width:100%;border-collapse:collapse;margin-bottom:14px}.inv-tbl thead th{background:var(--sapphire);color:#fff;font-size:10px;text-transform:uppercase;letter-spacing:.8px;padding:8px 9px;text-align:left;font-weight:600}.inv-tbl thead th.r{text-align:right}.inv-tbl tbody td{padding:8px 9px;font-size:11.5px;border-bottom:1px solid var(--shellstone);color:#1A1A2E}.inv-tbl tbody td.r{text-align:right}.inv-tbl tfoot td{background:var(--swan-wing);padding:7px 9px;font-size:11px;color:var(--sapphire);font-weight:600}.inv-tbl tfoot td.r{text-align:right}.inv-tots{display:flex;justify-content:flex-end;margin-bottom:14px}.inv-tots-in{width:210px}.inv-tot-row{display:flex;justify-content:space-between;padding:5px 0;font-size:11.5px;color:var(--text-mid)}.inv-tot-row.total{border-top:2px solid var(--royal-blue);margin-top:3px;padding-top:6px;font-size:13.5px;font-weight:700;color:var(--royal-blue)}.inv-ar{background:var(--swan-wing);border-left:3px solid var(--quicksand);border-radius:0 6px 6px 0;padding:11px 14px;margin-bottom:14px}.inv-ar-ttl{font-size:11.5px;font-weight:700;color:var(--royal-blue);margin-bottom:4px}.inv-ar-body{font-size:11px;color:var(--sapphire);line-height:1.7}.inv-aq{background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:8px;padding:11px 13px;margin-bottom:14px;display:flex;align-items:center;gap:9px}.inv-aq-badge{background:#2e7d4f;color:#fff;font-size:10px;font-weight:700;padding:3px 11px;border-radius:20px}.inv-aq-txt{font-size:11.5px;color:#065f46;font-weight:600}.inv-legal{font-size:9px;color:var(--text-mid);line-height:1.7;border-top:1px solid var(--shellstone);padding-top:10px;margin-bottom:4px}.inv-ft{background:var(--royal-blue);color:rgba(255,255,255,.7);text-align:center;padding:10px 42px;font-size:9px;line-height:1.6}@page{size:A4 portrait;margin:0}';
+        pw.document.write('<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>facture-' + number + '</title><style>' + css + '</style></head><body><div class="inv">' +
+          '<div class="inv-hd"><div class="lb"><div class="logo">CR</div><span class="brand">C\'Réussite</span></div><span class="title">FACTURE</span></div>' +
+          '<div class="inv-meta"><span><b>N° facture :</b> ' + number + '</span><span><b>Date d\'émission :</b> ' + date + '</span><span></span></div>' +
+          '<div class="inv-body"><div class="inv-pts"><div class="inv-v"><div class="pt-name">Camille Reinhardt</div><div class="pt-det">C\'Réussite<br>54A Rue des Écoles<br>57700 Neufchef<br>France<br>SIRET : 103 644 050 00017<br>APE : 4791B<br>c-reussite.fr</div></div>' +
+          '<div class="inv-c"><div class="pt-lbl">Client</div><div class="pt-name">' + (customer.name||'—') + '</div><div class="pt-det">' + (customer.address||'').replace(/\n/g,'<br>') + '</div></div></div>' +
+          '<table class="inv-tbl"><thead>' + thead + '</thead><tbody>' + tbody + '</tbody><tfoot><tr>' + tfoot + '</tr></tfoot></table>' +
+          '<div class="inv-tots"><div class="inv-tots-in"><div class="inv-tot-row"><span>Sous-total HT</span><span>' + subtotalStr + '</span></div><div class="inv-tot-row"><span>TVA</span><span>0,00 €</span></div><div class="inv-tot-row total"><span>Total TTC</span><span>' + subtotalStr + '</span></div></div></div>' +
+          paySection +
+          '<div class="inv-legal">TVA non applicable, article 293 B du CGI.<br>Médiation de la consommation : CM2C — 49 rue de Ponthieu, 75 008 Paris — cm2c.net — litiges@cm2c.net</div></div>' +
+          '<div class="inv-ft">Camille Reinhardt — Entrepreneur individuel — SIRET 103 644 050 00017 — APE 4791B<br>54A Rue des Écoles, 57700 Neufchef — c-reussite.fr</div></div></body></html>');
+        pw.document.close();
+        pw.onload = function() { pw.focus(); pw.print(); };
+      }
+      window.viewCpInvoice = viewCpInvoice;
+
       // ── Codes promo ──────────────────────────────────────────────────────────
       async function loadPromoCodes() {
         var tbody = document.getElementById('promo-tbody');
@@ -1537,6 +1701,14 @@
         } catch (err) {
           alert('Erreur : ' + err.message);
         }
+      };
+
+      window.switchTab = function (name) {
+        document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
+        document.querySelectorAll('.admin-tab').forEach(function (t) { t.classList.remove('active'); });
+        document.getElementById('panel-' + name).classList.add('active');
+        var btn = document.querySelector('.admin-tab[onclick="switchTab(\'' + name + '\')"]');
+        if (btn) btn.classList.add('active');
       };
 
     })();

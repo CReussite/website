@@ -1,5 +1,5 @@
 const express = require('express');
-const { getOrders, getAdminStats, getExtractRequests, insertCoursParticuliersInvoice, getCoursParticuliersInvoice, markCpInvoicePaid, deleteCoursParticuliersInvoice, uploadInvoicePdf, getAdminSettings, setAdminSetting, getNextCpInvoiceNumber } = require('../services/db');
+const { getOrders, getAdminStats, getExtractRequests, insertCoursParticuliersInvoice, getCpInvoices, getCoursParticuliersInvoice, markCpInvoicePaid, deleteCoursParticuliersInvoice, uploadInvoicePdf, getAdminSettings, setAdminSetting, getNextCpInvoiceNumber } = require('../services/db');
 const { generateInvoice, generateCpInvoice } = require('../services/invoice');
 
 const router = express.Router();
@@ -29,8 +29,13 @@ router.get('/config', requireAdminKey, (req, res) => {
 
 // ── GET /api/admin/settings ──────────────────────────────────────────────────
 router.get('/settings', requireAdminKey, async (req, res) => {
-  try { res.json(await getAdminSettings()); }
-  catch (err) { res.status(500).json({ error: err.message }); }
+  try {
+    const s = await getAdminSettings();
+    if (!s.rib_iban && process.env.CP_INVOICE_IBAN)           s.rib_iban = process.env.CP_INVOICE_IBAN;
+    if (!s.rib_bic  && process.env.CP_INVOICE_BIC)            s.rib_bic  = process.env.CP_INVOICE_BIC;
+    if (!s.rib_titulaire && process.env.CP_INVOICE_ACCOUNT_HOLDER) s.rib_titulaire = process.env.CP_INVOICE_ACCOUNT_HOLDER;
+    res.json(s);
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 // ── POST /api/admin/settings ─────────────────────────────────────────────────
@@ -315,6 +320,23 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
     console.error('[admin] invoice-data erreur :', err.message);
     res.status(500).json({ error: err.message });
   }
+});
+
+// ── GET /api/admin/cp-invoices ────────────────────────────────────────────────
+router.get('/cp-invoices', requireAdminKey, async (req, res) => {
+  try {
+    const year = req.query.year ? parseInt(req.query.year) : undefined;
+    res.json(await getCpInvoices({ year }));
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// ── DELETE /api/admin/cp-invoices/:invoiceNumber ──────────────────────────────
+router.delete('/cp-invoices/:invoiceNumber', requireAdminKey, async (req, res) => {
+  try {
+    const deleted = await deleteCoursParticuliersInvoice(req.params.invoiceNumber);
+    if (!deleted) return res.status(404).json({ error: 'Facture introuvable.' });
+    res.json({ ok: true, invoiceNumber: req.params.invoiceNumber });
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 // ── POST /api/admin/cours-particuliers ───────────────────────────────────────

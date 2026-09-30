@@ -301,6 +301,21 @@ async function markCpInvoicePaid(invoiceNumber, { paymentDate, paymentMethod }) 
 }
 
 /**
+ * Liste toutes les factures cours particuliers, ordre anti-chronologique.
+ */
+async function getCpInvoices({ year } = {}) {
+  const supabase = getClient();
+  let q = supabase
+    .from('cp_invoices')
+    .select('invoice_number, customer_name, amount, payment_method, created_at, items')
+    .order('created_at', { ascending: false });
+  if (year) q = q.like('invoice_number', `CRE-${year}-%`);
+  const { data, error } = await q;
+  if (error) throw new Error(`DB getCpInvoices failed: ${error.message}`);
+  return data || [];
+}
+
+/**
  * Récupère une facture de cours particuliers par son numéro.
  */
 async function getCoursParticuliersInvoice(invoiceNumber) {
@@ -598,6 +613,7 @@ module.exports = {
   uploadInvoicePdf,
   saveInvoicePath,
   insertCoursParticuliersInvoice,
+  getCpInvoices,
   getCoursParticuliersInvoice,
   markCpInvoicePaid,
   deleteCoursParticuliersInvoice,
