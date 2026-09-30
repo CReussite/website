@@ -33,6 +33,8 @@ recommandation/
 pub/
 todo/
 caroussel/
+scripts/
+spec/
 
 # MCP config (contient potentiellement des tokens — ne pas commiter)
 .mcp.json
