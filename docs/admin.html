@@ -1654,7 +1654,7 @@
           // Section paiement
           var pd = data.payment_details || {};
           var paySection = isAr
-            ? '<div class="inv-ar"><div class="inv-ar-ttl">À régler avant le <strong style="color:#B45309">' + (data.payment_date||'réception') + '</strong></div>' +
+            ? '<div class="inv-ar"><div class="inv-ar-ttl">À régler avant le <strong style="color:#B45309">' + (data.payment_date||'—') + '</strong></div>' +
               '<div class="inv-ar-body">Règlement par virement' + (pd.iban ? ' : IBAN ' + pd.iban : '') + (pd.bic ? ' · BIC ' + pd.bic : '') +
               (pd.account_holder ? '<br>Titulaire du compte : ' + pd.account_holder : '') +
               '<br>Merci d\'indiquer le numéro de la facture en référence du virement.</div></div>'
