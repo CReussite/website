@@ -210,15 +210,17 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
       const items = (Array.isArray(cpInvoice.items) && cpInvoice.items.length > 0)
         ? cpInvoice.items.map(function (item) {
             return {
-              description: `${item.nature} - ${fmtDate(item.date)}`,
-              quantity: Number(item.hours),
-              unit_price: Number(item.hourly_rate),
-              payment_date: fmtDate(item.payment_date || ''),
+              date:           fmtDate(item.date),
+              nature:         item.nature || 'Cours particuliers',
+              quantity:       Number(item.hours),
+              unit_price:     Number(item.hourly_rate),
+              payment_date:   fmtDate(item.payment_date || ''),
               payment_method: item.payment_method || '',
-              status: item.status || '',
+              status:         item.status || '',
+              is_discount:    Number(item.hourly_rate) < 0,
             };
           })
-        : [{ description: 'Cours particuliers', quantity: 1, unit_price: cpInvoice.amount / 100 }];
+        : [{ date: '', nature: 'Cours particuliers', quantity: 1, unit_price: cpInvoice.amount / 100, is_discount: false }];
 
       const firstPaidItem = Array.isArray(cpInvoice.items)
         ? cpInvoice.items.find(item => item.payment_date || item.payment_method)
