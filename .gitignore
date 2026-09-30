@@ -37,6 +37,16 @@ caroussel/
 # MCP config (contient potentiellement des tokens — ne pas commiter)
 .mcp.json
 
+# Fichiers locaux divers
+*.bak
+*.docx
+RECETTE.html
+facture-*.png
+preview-*.html
+*.mp4
+scripts/generate-local-*.js
+scripts/generate-preview-*.js
+
 # OS
 .DS_Store
 Thumbs.db
