@@ -263,9 +263,14 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
     doc.on('end', () => resolve(Buffer.concat(chunks)));
     doc.on('error', reject);
 
-    const total = items.reduce((sum, item) => sum + item.hours * item.hourlyRate, 0);
-    const totalStr = total.toFixed(2).replace('.', ',');
-    const totalHours = items.reduce((sum, item) => sum + item.hours, 0);
+    // Sépare les lignes de remise (tarif négatif) des séances normales
+    const sessionItems  = items.filter(item => item.hourlyRate >= 0);
+    const discountItems = items.filter(item => item.hourlyRate < 0);
+    const subtotal      = sessionItems.reduce((sum, item) => sum + item.hours * item.hourlyRate, 0);
+    const discountTotal = discountItems.reduce((sum, item) => sum + item.hours * item.hourlyRate, 0);
+    const total         = subtotal + discountTotal;
+    const totalStr      = total.toFixed(2).replace('.', ',');
+    const totalHours    = sessionItems.reduce((sum, item) => sum + item.hours, 0);
     const dateStr = invoiceDate.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
     // Résumé des paiements : regroupe par méthode, déduplique les dates
@@ -353,13 +358,14 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
 
     // Calcul dynamique de la hauteur de ligne pour tenir sur une page
     // Sections fixes en bas : totaux(~60) + gap(76) + badge(30) + gap(38) + mentions(~70) + gaps = ~204px
-    const MAX_ROW_AREA = 780 - tableTop - 24 - 22 - 204;
-    const maxRowH = Math.max(24, Math.floor(MAX_ROW_AREA / items.length));
+    const totalsExtraH = discountItems.length > 0 ? 18 : 0; // ligne remise supplémentaire
+    const MAX_ROW_AREA = 780 - tableTop - 24 - 22 - 204 - totalsExtraH;
+    const maxRowH = Math.max(24, Math.floor(MAX_ROW_AREA / sessionItems.length));
     const BASE_ROW_H = Math.min(30, maxRowH);
     const PMT_ROW_H  = Math.min(36, maxRowH);
 
     let rowY = tableTop + 24;
-    items.forEach((item) => {
+    sessionItems.forEach((item) => {
       const lineTotal = item.hours * item.hourlyRate;
       const hasPmt = !!(item.paymentMethod && item.paymentDate);
       const rowHeight = hasPmt ? PMT_ROW_H : BASE_ROW_H;
@@ -390,17 +396,35 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
     const totalsX = margin + contentWidth - 200;
     const totalsY = rowY + 14;
     doc.fontSize(9).font('Helvetica').fillColor(TEXT_MID);
-    doc.text('Sous-total HT', totalsX, totalsY);
-    doc.text(totalStr + ' €', totalsX + 100, totalsY, { width: 100, align: 'right' });
-    doc.text('TVA', totalsX, totalsY + 18);
-    doc.text('0,00 €', totalsX + 100, totalsY + 18, { width: 100, align: 'right' });
-    doc.moveTo(totalsX, totalsY + 36).lineTo(totalsX + 200, totalsY + 36).lineWidth(1.5).strokeColor(ROYAL_BLUE).stroke();
+
+    let totalsOffset = 0;
+    if (discountItems.length > 0) {
+      // Sous-total séances (avant remise)
+      const subtotalStr = subtotal.toFixed(2).replace('.', ',');
+      doc.text('Sous-total HT', totalsX, totalsY);
+      doc.text(subtotalStr + ' €', totalsX + 100, totalsY, { width: 100, align: 'right' });
+      // Ligne remise (en italique doré)
+      const discountLabel = discountItems.map(d => d.description.split(' - ')[0]).join(', ');
+      const discountStr   = discountTotal.toFixed(2).replace('.', ',');
+      doc.fillColor('#B45309').font('Helvetica-Oblique')
+        .text(discountLabel, totalsX, totalsY + 18)
+        .font('Helvetica').text(discountStr + ' €', totalsX + 100, totalsY + 18, { width: 100, align: 'right' });
+      totalsOffset = 18;
+    } else {
+      doc.text('Sous-total HT', totalsX, totalsY);
+      doc.text(totalStr + ' €', totalsX + 100, totalsY, { width: 100, align: 'right' });
+    }
+
+    doc.fillColor(TEXT_MID).font('Helvetica');
+    doc.text('TVA', totalsX, totalsY + 18 + totalsOffset);
+    doc.text('0,00 €', totalsX + 100, totalsY + 18 + totalsOffset, { width: 100, align: 'right' });
+    doc.moveTo(totalsX, totalsY + 36 + totalsOffset).lineTo(totalsX + 200, totalsY + 36 + totalsOffset).lineWidth(1.5).strokeColor(ROYAL_BLUE).stroke();
     doc.fontSize(12).font('Helvetica-Bold').fillColor(ROYAL_BLUE);
-    doc.text('Total TTC', totalsX, totalsY + 44);
-    doc.text(totalStr + ' €', totalsX + 100, totalsY + 44, { width: 100, align: 'right' });
+    doc.text('Total TTC', totalsX, totalsY + 44 + totalsOffset);
+    doc.text(totalStr + ' €', totalsX + 100, totalsY + 44 + totalsOffset, { width: 100, align: 'right' });
 
     // ── Badge paiement ───────────────────────────────────────
-    const payY = totalsY + 76;
+    const payY = totalsY + 76 + totalsOffset;
     const payBoxH = isUnpaid ? 58 : 30;
     const badgeW = paymentText ? contentWidth : 80;
     doc.roundedRect(margin, payY, badgeW, payBoxH, 4).fill(SWAN_WING);

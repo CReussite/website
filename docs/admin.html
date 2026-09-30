@@ -1536,6 +1536,7 @@
               '<td>' + badge + '</td>' +
               '<td style="white-space:nowrap;padding-right:8px;">' +
                 '<button onclick="viewCpInvoice(\'' + inv.invoice_number + '\')" style="margin-right:6px;padding:4px 10px;border:1px solid #112250;border-radius:6px;background:#fff;color:#112250;cursor:pointer;font-size:.8rem;">Voir</button>' +
+                (isAr ? '<button onclick="markCpPaid(\'' + inv.invoice_number + '\')" style="margin-right:6px;padding:4px 10px;border:1px solid #059669;border-radius:6px;background:#fff;color:#059669;cursor:pointer;font-size:.8rem;font-weight:600;">Marquer payé</button>' : '') +
                 '<button onclick="deleteCpInvoice(\'' + inv.invoice_number + '\')" style="padding:4px 10px;border:1px solid #fca5a5;border-radius:6px;background:#fff;color:#ef4444;cursor:pointer;font-size:.8rem;">Supprimer</button>' +
               '</td>' +
             '</tr>';
@@ -1556,6 +1557,53 @@
         }
       }
       window.deleteCpInvoice = deleteCpInvoice;
+
+      function markCpPaid(invoiceNumber) {
+        var today = new Date().toISOString().slice(0,10).split('-').reverse().join('/');
+        var overlay = document.createElement('div');
+        overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;display:flex;align-items:center;justify-content:center;';
+        overlay.innerHTML = '<div style="background:#fff;border-radius:16px;padding:32px;width:360px;box-shadow:0 8px 32px rgba(0,0,0,.18);">' +
+          '<h3 style="margin:0 0 20px;color:#112250;font-size:1.1rem;">Marquer ' + invoiceNumber + ' comme payée</h3>' +
+          '<label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:6px;">Mode de paiement</label>' +
+          '<select id="mp-method" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:.9rem;margin-bottom:16px;">' +
+            '<option>Virement bancaire</option><option>Wero</option><option>Chèque</option><option>Espèces</option><option>Autre</option>' +
+          '</select>' +
+          '<label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:6px;">Date de réception du paiement</label>' +
+          '<input id="mp-date" type="text" placeholder="JJ/MM/AAAA" value="' + today + '" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:.9rem;margin-bottom:24px;box-sizing:border-box;">' +
+          '<div style="display:flex;gap:10px;justify-content:flex-end;">' +
+            '<button id="mp-cancel" style="padding:10px 20px;border:1px solid #d1d5db;border-radius:8px;background:#fff;cursor:pointer;font-size:.9rem;">Annuler</button>' +
+            '<button id="mp-confirm" style="padding:10px 20px;border:none;border-radius:8px;background:#059669;color:#fff;cursor:pointer;font-size:.9rem;font-weight:600;">Confirmer</button>' +
+          '</div>' +
+          '<p id="mp-err" style="color:#dc2626;font-size:.82rem;margin:12px 0 0;display:none;"></p>' +
+        '</div>';
+        document.body.appendChild(overlay);
+        overlay.querySelector('#mp-cancel').onclick = function() { document.body.removeChild(overlay); };
+        overlay.querySelector('#mp-confirm').onclick = async function() {
+          var method = overlay.querySelector('#mp-method').value;
+          var date   = overlay.querySelector('#mp-date').value.trim();
+          var errEl  = overlay.querySelector('#mp-err');
+          if (!date) { errEl.textContent = 'La date est obligatoire.'; errEl.style.display='block'; return; }
+          try {
+            overlay.querySelector('#mp-confirm').disabled = true;
+            overlay.querySelector('#mp-confirm').textContent = 'En cours…';
+            var res = await fetch(BACKEND + '/api/admin/cours-particuliers/' + encodeURIComponent(invoiceNumber) + '?key=' + encodeURIComponent(adminKey), {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ paymentDate: date, paymentMethod: method })
+            });
+            var data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Erreur serveur');
+            document.body.removeChild(overlay);
+            loadCpInvoices();
+          } catch (e) {
+            errEl.textContent = e.message;
+            errEl.style.display = 'block';
+            overlay.querySelector('#mp-confirm').disabled = false;
+            overlay.querySelector('#mp-confirm').textContent = 'Confirmer';
+          }
+        };
+      }
+      window.markCpPaid = markCpPaid;
 
       async function viewCpInvoice(invoiceNumber) {
         try {
