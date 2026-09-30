@@ -1728,6 +1728,7 @@
         pw.document.close();
         var _printed = false;
         pw.onload = function() { if (_printed) return; _printed = true; pw.focus(); pw.print(); };
+        pw.onafterprint = function() { pw.close(); };
       }
       window.viewCpInvoice = viewCpInvoice;
 
