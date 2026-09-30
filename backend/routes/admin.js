@@ -327,6 +327,78 @@ router.get('/invoice-data/:invoiceNumber', requireAdminKey, async (req, res) => 
   }
 });
 
+// ── GET /api/admin/recettes ───────────────────────────────────────────────────
+// Livre de recettes : ebooks payés + CP acquittées, triés par date.
+router.get('/recettes', requireAdminKey, async (req, res) => {
+  try {
+    const path = require('path');
+    const year = req.query.year ? parseInt(req.query.year) : null;
+    const PRODUCTS = require(path.join(__dirname, '../../docs/content/products.json'));
+    const PRODUCT_MAP = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
+
+    // ── Ebooks (orders) ──
+    const orders = await getOrders({ limit: 10000 });
+    const ebookLines = orders
+      .filter(o => !year || new Date(o.created_at).getFullYear() === year)
+      .map(o => {
+        const product = PRODUCT_MAP[o.product_id];
+        const d = new Date(o.created_at);
+        return {
+          date_sort: d.getTime(),
+          date:      d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }),
+          invoice_number: o.invoice_number,
+          client:    o.email,
+          prestation: product ? product.name : o.product_id,
+          montant:   o.amount,
+          mode:      'Carte bancaire',
+          type:      'ebook',
+        };
+      });
+
+    // ── Cours particuliers acquittés ──
+    const cpAll = await getCpInvoices({});
+    const cpLines = cpAll
+      .filter(inv => inv.payment_method && inv.payment_method !== 'À payer')
+      .filter(inv => {
+        if (!year) return true;
+        const d = inv.payment_date || inv.created_at || '';
+        const y = d.includes('/') ? parseInt(d.split('/')[2]) : new Date(d).getFullYear();
+        return y === year;
+      })
+      .map(inv => {
+        // date_sort : payment_date est en DD/MM/YYYY
+        let dateSort = 0;
+        let dateFmt  = inv.payment_date || '';
+        if (dateFmt && dateFmt.includes('/')) {
+          const [dd, mm, yyyy] = dateFmt.split('/');
+          dateSort = new Date(`${yyyy}-${mm}-${dd}`).getTime();
+        } else if (inv.created_at) {
+          dateSort = new Date(inv.created_at).getTime();
+          dateFmt  = new Date(inv.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        }
+        const prestation = Array.isArray(inv.items) && inv.items.length
+          ? [...new Set(inv.items.filter(i => !i.nature?.toLowerCase().includes('remise')).map(i => i.nature))].join(', ')
+          : 'Cours particuliers';
+        return {
+          date_sort: dateSort,
+          date:      dateFmt,
+          invoice_number: inv.invoice_number,
+          client:    inv.customer_name || inv.email || '—',
+          prestation,
+          montant:   inv.amount,
+          mode:      inv.payment_method,
+          type:      'cp',
+        };
+      });
+
+    const lines = [...ebookLines, ...cpLines].sort((a, b) => a.date_sort - b.date_sort);
+    res.json(lines);
+  } catch (err) {
+    console.error('[admin] recettes erreur :', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ── GET /api/admin/cp-invoices ────────────────────────────────────────────────
 router.get('/cp-invoices', requireAdminKey, async (req, res) => {
   try {

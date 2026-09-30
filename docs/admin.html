@@ -443,6 +443,7 @@
       <nav class="admin-tabs">
         <button class="admin-tab active" onclick="switchTab('resume')">📊 Résumé</button>
         <button class="admin-tab" onclick="switchTab('factures-cp')">📄 Factures CP</button>
+        <button class="admin-tab" onclick="switchTab('recettes')">📒 Livre de recettes</button>
         <button class="admin-tab" onclick="switchTab('commandes')">🛒 Commandes</button>
         <button class="admin-tab" onclick="switchTab('promo')">🎁 Promos</button>
         <button class="admin-tab" onclick="switchTab('supervision')">🔗 Supervision</button>
@@ -538,6 +539,40 @@
         </div>
       </div>
       </div><!-- /panel-factures-cp -->
+
+      <!-- ── Onglet Livre de recettes ── -->
+      <div class="tab-panel" id="panel-recettes">
+      <div class="table-card" style="margin-bottom:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 0;">
+          <h2 class="section-title">Livre de recettes</h2>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <select id="recettes-year" onchange="loadRecettes()" style="padding:6px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:.85rem;background:#fff;">
+              <option value="">Toutes les années</option>
+            </select>
+            <button onclick="exportRecettesCSV()" style="padding:6px 14px;background:#112250;color:#fff;border:none;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;">Exporter CSV</button>
+          </div>
+        </div>
+        <div style="height:16px;"></div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>N° Facture</th>
+                <th>Client</th>
+                <th>Prestation</th>
+                <th style="text-align:right;">Montant TTC</th>
+                <th>Mode de paiement</th>
+              </tr>
+            </thead>
+            <tbody id="recettes-tbody">
+              <tr><td colspan="6" class="table-empty">Chargement...</td></tr>
+            </tbody>
+            <tfoot id="recettes-tfoot"></tfoot>
+          </table>
+        </div>
+      </div>
+      </div><!-- /panel-recettes -->
 
       <!-- ── Onglet Commandes ── -->
       <div class="tab-panel" id="panel-commandes">
@@ -975,6 +1010,7 @@
           showDashboard();
           loadPromoCodes();
           loadCpInvoices();
+          loadRecettes();
         } catch (_) {
           loginError.style.display = 'block';
         }
@@ -1693,6 +1729,81 @@
         pw.onload = function() { pw.focus(); pw.print(); };
       }
       window.viewCpInvoice = viewCpInvoice;
+
+      // ── Livre de recettes ────────────────────────────────────────────────────
+      var recettesData = [];
+
+      async function loadRecettes() {
+        var tbody = document.getElementById('recettes-tbody');
+        var tfoot = document.getElementById('recettes-tfoot');
+        if (!tbody) return;
+        try {
+          var yearSel = document.getElementById('recettes-year');
+          var year = yearSel ? yearSel.value : '';
+          var url = BACKEND + '/api/admin/recettes?key=' + encodeURIComponent(adminKey) + (year ? '&year=' + year : '');
+          var res = await fetch(url);
+          var lines = await res.json();
+          recettesData = lines;
+
+          // Peupler le sélecteur d'années (depuis les dates des lignes)
+          if (yearSel && yearSel.options.length <= 1) {
+            var years = [...new Set(lines.map(function(l){ return l.date ? l.date.split('/')[2] : ''; }).filter(Boolean))].sort().reverse();
+            years.forEach(function(y) {
+              var o = document.createElement('option'); o.value = y; o.textContent = y; yearSel.appendChild(o);
+            });
+          }
+
+          if (!lines.length) {
+            tbody.innerHTML = '<tr><td colspan="6" class="table-empty">Aucune recette pour cette période.</td></tr>';
+            tfoot.innerHTML = '';
+            return;
+          }
+
+          var fmt = function(c){ return (c/100).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' €'; };
+          var total = lines.reduce(function(s,l){ return s + (l.montant||0); }, 0);
+
+          tbody.innerHTML = lines.map(function(l, i) {
+            var badge = l.type === 'cp'
+              ? '<span style="font-size:.7rem;background:#EFF6FF;color:#1D4ED8;padding:1px 6px;border-radius:8px;">CP</span>'
+              : '<span style="font-size:.7rem;background:#F0FDF4;color:#166534;padding:1px 6px;border-radius:8px;">Ebook</span>';
+            return '<tr>' +
+              '<td>' + (l.date||'—') + '</td>' +
+              '<td><strong>' + (l.invoice_number||'—') + '</strong></td>' +
+              '<td>' + (l.client||'—') + '</td>' +
+              '<td>' + (l.prestation||'—') + ' ' + badge + '</td>' +
+              '<td style="text-align:right;font-weight:600;">' + fmt(l.montant||0) + '</td>' +
+              '<td>' + (l.mode||'—') + '</td>' +
+            '</tr>';
+          }).join('');
+
+          tfoot.innerHTML = '<tr style="background:#112250;color:#fff;">' +
+            '<td colspan="4" style="padding:10px 12px;font-weight:700;font-size:.9rem;">Total (' + lines.length + ' encaissement' + (lines.length>1?'s':'') + ')</td>' +
+            '<td style="text-align:right;padding:10px 12px;font-weight:700;font-size:1rem;">' + fmt(total) + '</td>' +
+            '<td></td></tr>';
+        } catch (e) {
+          tbody.innerHTML = '<tr><td colspan="6" class="table-empty">Erreur : ' + e.message + '</td></tr>';
+        }
+      }
+
+      function exportRecettesCSV() {
+        if (!recettesData.length) return;
+        var fmt = function(c){ return (c/100).toFixed(2).replace('.',','); };
+        var header = ['Date', 'N° Facture', 'Client', 'Prestation', 'Montant TTC (€)', 'Mode de paiement'];
+        var rows = recettesData.map(function(l) {
+          return [l.date||'', l.invoice_number||'', l.client||'', l.prestation||'', fmt(l.montant||0), l.mode||''].map(function(v){ return '"' + String(v).replace(/"/g,'""') + '"'; }).join(';');
+        });
+        var total = recettesData.reduce(function(s,l){ return s+(l.montant||0); },0);
+        rows.push(['"TOTAL"','','','','"' + fmt(total) + '"',''].join(';'));
+        var csv = '﻿' + header.map(function(h){ return '"'+h+'"'; }).join(';') + '\n' + rows.join('\n');
+        var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        var a = document.createElement('a');
+        var year = document.getElementById('recettes-year')?.value || new Date().getFullYear();
+        a.href = URL.createObjectURL(blob);
+        a.download = 'livre-recettes-' + year + '.csv';
+        a.click();
+      }
+      window.loadRecettes = loadRecettes;
+      window.exportRecettesCSV = exportRecettesCSV;
 
       // ── Codes promo ──────────────────────────────────────────────────────────
       async function loadPromoCodes() {
