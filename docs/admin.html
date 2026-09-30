@@ -1726,7 +1726,8 @@
           stampHtml +
           '<div class="inv-ft">Camille Reinhardt — Entrepreneur individuel — SIRET 103 644 050 00017 — APE 4791B<br>54A Rue des Écoles, 57700 Neufchef — c-reussite.fr</div></div></body></html>');
         pw.document.close();
-        pw.onload = function() { pw.focus(); pw.print(); };
+        var _printed = false;
+        pw.onload = function() { if (_printed) return; _printed = true; pw.focus(); pw.print(); };
       }
       window.viewCpInvoice = viewCpInvoice;
 
