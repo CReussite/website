@@ -35,6 +35,9 @@ todo/
 caroussel/
 scripts/
 spec/
+RECETTE.md
+SPEC-METIER.md
+lance_site.py
 
 # MCP config (contient potentiellement des tokens — ne pas commiter)
 .mcp.json
