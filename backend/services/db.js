@@ -273,26 +273,24 @@ async function insertCoursParticuliersInvoice({
 }
 
 /**
- * Marque une facture CP comme payée : met à jour payment_method/date + items, efface le rib.
+ * Marque une facture CP comme payée.
+ * La facture originale (items, rib, montants) est préservée à l'identique —
+ * seuls payment_method et payment_date sont ajoutés pour la traçabilité.
  */
 async function markCpInvoicePaid(invoiceNumber, { paymentDate, paymentMethod }) {
   const supabase = getClient();
   const { data: current, error: getErr } = await supabase
     .from('cp_invoices')
-    .select('items, payment_method')
+    .select('payment_method')
     .eq('invoice_number', invoiceNumber)
     .maybeSingle();
   if (getErr) throw new Error(`DB markCpInvoicePaid get: ${getErr.message}`);
   if (!current) { const e = new Error('Facture introuvable.'); e.statusCode = 404; throw e; }
   if (current.payment_method !== 'À payer') { const e = new Error('Cette facture est déjà acquittée.'); e.statusCode = 409; throw e; }
 
-  const updatedItems = Array.isArray(current.items)
-    ? current.items.map(item => ({ ...item, status: 'paid', payment_date: paymentDate, payment_method: paymentMethod }))
-    : current.items;
-
   const { data, error } = await supabase
     .from('cp_invoices')
-    .update({ payment_method: paymentMethod, payment_date: paymentDate, items: updatedItems, rib: null })
+    .update({ payment_method: paymentMethod, payment_date: paymentDate })
     .eq('invoice_number', invoiceNumber)
     .select()
     .single();

@@ -154,6 +154,7 @@ router.get('/invoice/:invoiceNumber', requireAdminKey, async (req, res) => {
           }))
         : [{ description: 'Cours particuliers', hours: 1, hourlyRate: cpInvoice.amount / 100 }];
 
+      const isPaid = cpInvoice.payment_method !== 'À payer';
       const pdfBuffer = await generateCpInvoice({
         invoiceNumber:   cpInvoice.invoice_number,
         customerName:    cpInvoice.customer_name || cpInvoice.email || '—',
@@ -161,8 +162,10 @@ router.get('/invoice/:invoiceNumber', requireAdminKey, async (req, res) => {
         items:           cpItems,
         invoiceDate:     new Date(cpInvoice.created_at),
         paymentDate:     fmtDate(cpInvoice.payment_date || ''),
-        paymentMethod:   cpInvoice.payment_method || '—',
+        paymentMethod:   'À payer',
         rib:             cpInvoice.rib || {},
+        acquittedDate:   isPaid ? fmtDate(cpInvoice.payment_date || '') : null,
+        acquittedMethod: isPaid ? (cpInvoice.payment_method || '') : null,
       });
 
       res.setHeader('Content-Type', 'application/pdf');

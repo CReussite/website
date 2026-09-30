@@ -255,7 +255,7 @@ function generateInvoice({ invoiceNumber, email, customerName, productName, amou
  * @param {string} params.paymentDate   - ex: "07/05/2026"
  * @param {string} params.paymentMethod - ex: "Wero"
  */
-function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items, invoiceDate, paymentDate, paymentMethod, rib = {} }) {
+function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items, invoiceDate, paymentDate, paymentMethod, rib = {}, acquittedDate = null, acquittedMethod = null }) {
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({ size: 'A4', margin: 0 });
     const chunks = [];
@@ -456,6 +456,19 @@ function generateCpInvoice({ invoiceNumber, customerName, customerAddress, items
       "Tout retard de paiement (au-delà d'une semaine) entraîne des pénalités de retard au taux de 3 fois le taux d'intérêt légal en vigueur, exigibles le jour suivant la date d'échéance, ainsi qu'une indemnité forfaitaire pour frais de recouvrement de 40 €.",
       margin, legalY + 6, { width: contentWidth, lineGap: 1 }
     );
+
+    // ── Tampon ACQUITTÉE (filigrane diagonal, factures payées) ───
+    if (acquittedDate) {
+      doc.save();
+      doc.translate(pageWidth / 2, 420);
+      doc.rotate(-35);
+      doc.fontSize(72).font('Helvetica-Bold')
+        .fillColor('#2e7d4f').fillOpacity(0.13)
+        .text('ACQUITTÉE', -170, -36, { lineBreak: false });
+      doc.fontSize(16).fillOpacity(0.18)
+        .text(acquittedDate + (acquittedMethod ? '  ·  ' + acquittedMethod : ''), -120, 48, { lineBreak: false });
+      doc.restore();
+    }
 
     // ── Pied de page ─────────────────────────────────────────
     doc.rect(0, 780, pageWidth, 62).fill(ROYAL_BLUE);
