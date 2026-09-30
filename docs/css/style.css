@@ -1006,7 +1006,8 @@ nav {
   color: var(--sapphire);
   margin-bottom: 6px;
 }
-.form-control {
+.form-control,
+.form-input {
   width: 100%;
   padding: 12px 16px;
   border: 1.5px solid var(--shellstone);
@@ -1017,8 +1018,10 @@ nav {
   background: var(--white);
   transition: border-color 0.2s;
 }
-.form-control:focus { outline: none; border-color: var(--sapphire); }
-textarea.form-control { min-height: 120px; resize: vertical; }
+.form-control:focus,
+.form-input:focus { outline: none; border-color: var(--sapphire); }
+textarea.form-control,
+textarea.form-input { min-height: 120px; resize: vertical; }
 
 /* ===== FOOTER ===== */
 footer {
