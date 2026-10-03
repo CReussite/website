@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Bêta-testeur — C'Réussite</title>
+  <link rel="icon" href="img/favicon.ico" sizes="any">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="img/favicon-192x192.png">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+
+  <style>
+    :root {
+      --blue:#112250; --gold:#E0C58F; --bg:#F5F0E9; --white:#fff;
+      --text:#1a1a2e; --muted:#6b7280; --border:#e5e7eb; --red:#dc2626;
+      --green:#16a34a; --sh:0 2px 16px rgba(0,0,0,.10);
+    }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--text); user-select:none; -webkit-user-select:none; }
+
+    /* ── AUTH ── */
+    #auth-page { min-height:calc(100vh - 92px); display:flex; align-items:center; justify-content:center; padding:40px 20px; }
+    .auth-card { background:var(--white); border-radius:24px; max-width:440px; width:100%; overflow:hidden;
+      box-shadow:0 8px 40px rgba(17,34,80,.12), 0 2px 8px rgba(17,34,80,.06); }
+    .auth-card-header { background:var(--blue); padding:32px 36px 28px; text-align:center; }
+    .auth-logo { height:68px; width:auto; margin:0 auto 16px; display:block; }
+    .auth-product { display:inline-block; background:rgba(224,197,143,.14); color:var(--gold);
+      border-radius:20px; font-size:.71rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+      padding:5px 13px; border:1px solid rgba(224,197,143,.24); }
+    .auth-body { padding:32px 36px 36px; }
+    .auth-title { font-size:1.3rem; font-weight:800; color:var(--blue); margin-bottom:6px; letter-spacing:-.01em; }
+    .auth-sub { font-size:.87rem; color:var(--muted); margin-bottom:24px; line-height:1.6; }
+    .auth-field { margin-bottom:12px; }
+    .auth-input { width:100%; padding:14px 16px; border:1.5px solid var(--border); border-radius:12px;
+      font-size:.97rem; outline:none; background:#f8f9fb; transition:border-color .2s, box-shadow .2s;
+      user-select:text; -webkit-user-select:text; }
+    .auth-input:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(17,34,80,.09); background:var(--white); }
+    .auth-btn { width:100%; padding:14px 16px; background:var(--blue); color:var(--gold); border:none;
+      border-radius:12px; font-size:.97rem; font-weight:800; cursor:pointer; margin-top:4px;
+      transition:opacity .2s, transform .1s; }
+    .auth-btn:hover:not(:disabled) { opacity:.88; transform:translateY(-1px); }
+    .auth-btn:disabled { opacity:.45; cursor:not-allowed; transform:none; }
+    .auth-error { color:var(--red); font-size:.83rem; margin-top:10px; min-height:16px; font-weight:600; }
+    .auth-note { font-size:.74rem; color:#aab3c2; margin-top:14px; text-align:center; }
+
+    /* ── SÉLECTION ── */
+    #selection { display:none; }
+    .page-wrap { max-width:1000px; margin:0 auto; padding:28px 20px 40px; }
+    .sel-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:6px; }
+    .sel-title { font-size:1.5rem; font-weight:800; color:var(--blue); letter-spacing:-.01em; }
+    .sel-sub { font-size:.9rem; color:var(--muted); margin-bottom:26px; line-height:1.6; }
+    .sel-actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    .sel-link { display:inline-flex; align-items:center; gap:7px; padding:10px 18px; border-radius:999px;
+      background:var(--blue); color:var(--gold); font-size:.85rem; font-weight:700; border:none; cursor:pointer;
+      text-decoration:none; transition:opacity .2s, transform .15s; }
+    .sel-link:hover { opacity:.88; transform:translateY(-1px); }
+    .sel-link.ghost { background:transparent; color:var(--blue); border:1.5px solid var(--border); }
+    .sel-link.ghost:hover { border-color:var(--blue); }
+
+    .grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:22px; }
+    .card { background:var(--white); border-radius:18px; box-shadow:var(--sh); overflow:hidden; cursor:pointer;
+      border:2px solid transparent; transition:transform .18s, box-shadow .18s, border-color .18s;
+      padding:0; font-family:inherit; display:flex; flex-direction:column; container-type:inline-size; }
+    .card:hover { transform:translateY(-3px); box-shadow:0 10px 30px rgba(17,34,80,.16); border-color:var(--gold); }
+    .card:hover .card-cta { background:var(--gold); color:var(--blue); }
+    .card:focus-visible { outline:3px solid rgba(17,34,80,.25); outline-offset:2px; }
+
+    /* Couverture stylée (A4), échelle via container query units (cqw = % largeur carte) */
+    .cover { position:relative; aspect-ratio:1 / 1.414; background:var(--blue); overflow:hidden;
+      display:flex; flex-direction:column; padding:6cqw 6cqw 5.5cqw; }
+    .cover::before { content:''; position:absolute; top:0; left:0; right:0; height:13cqw; background:rgba(0,0,0,.18); }
+    .cover-mark { position:absolute; top:4.5cqw; right:5cqw; width:15cqw; height:auto; z-index:2; }
+    .cover-badge { align-self:flex-start; position:relative; z-index:2; margin-top:19cqw; font-size:3cqw;
+      letter-spacing:.12em; font-weight:700; color:rgba(255,255,255,.72); border:1px solid rgba(255,255,255,.22);
+      border-radius:4px; padding:2cqw 3.4cqw; text-transform:uppercase; background:rgba(255,255,255,.05); }
+    .cover-title-wrap { display:flex; gap:3.5cqw; margin-top:7cqw; }
+    .cover-bar { width:2.8cqw; background:var(--gold); border-radius:2px; flex-shrink:0; }
+    .cover-title { font-size:13.5cqw; line-height:1.03; font-weight:800; color:#fff; letter-spacing:-.01em; }
+    .cover-title.maths { font-size:10cqw; }
+    .cover-title .g { color:var(--gold); }
+    .cover-foot { margin-top:auto; display:flex; align-items:flex-end; justify-content:space-between; gap:5cqw; }
+    .cover-author { font-size:4.4cqw; color:var(--gold); font-weight:600; }
+    .cover-edition { font-size:3cqw; color:rgba(255,255,255,.5); text-align:right; line-height:1.25;
+      text-transform:uppercase; letter-spacing:.06em; }
+    .cover-edition b { color:#fff; display:block; font-size:4cqw; }
+
+    .card-foot { padding:13px 16px 15px; text-align:center; }
+    .card-cta { font-size:.84rem; font-weight:800; color:var(--gold); background:var(--blue);
+      display:inline-block; padding:8px 18px; border-radius:999px; transition:background .18s, color .18s; }
+
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    /* ── LECTEUR ── */
+    #viewer { display:none; }
+    .viewer-wrap { max-width:920px; margin:0 auto; padding:18px 20px 20px; }
+    .pdf-card { background:var(--white); border-radius:20px; box-shadow:var(--sh); overflow:hidden; margin-bottom:22px; }
+    .pdf-header { background:var(--blue); padding:14px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+    .pdf-header-title { color:var(--gold); font-size:.9rem; font-weight:700; }
+    .pdf-controls { display:flex; align-items:center; gap:5px; flex-wrap:wrap; }
+    .pdf-row { display:flex; align-items:center; gap:5px; }
+    .pdf-btn { background:rgba(255,255,255,.10); color:var(--gold); border:1px solid rgba(224,197,143,.2);
+      border-radius:8px; padding:8px 16px; font-size:.88rem; cursor:pointer; transition:background .15s;
+      min-width:40px; min-height:36px; text-align:center; font-weight:600; touch-action:manipulation; }
+    .pdf-btn:hover:not(:disabled) { background:rgba(255,255,255,.2); }
+    .pdf-btn:disabled { opacity:.28; cursor:not-allowed; }
+    .pdf-info { font-size:.83rem; color:rgba(255,255,255,.6); padding:0 6px; white-space:nowrap; }
+    .pdf-sep { width:1px; height:18px; background:rgba(255,255,255,.15); margin:0 2px; }
+    .pdf-body { background:#cdd1db; padding:32px 16px; display:flex; flex-direction:column; align-items:center; min-height:400px; overflow:auto; }
+    .pdf-spinner-wrap { display:flex; flex-direction:column; align-items:center; gap:16px; padding:70px 20px; color:var(--muted); font-size:.9rem; }
+    .pdf-spinner { width:44px; height:44px; border:3px solid rgba(17,34,80,.12); border-top-color:var(--blue); border-radius:50%; animation:spin .75s linear infinite; }
+    .pdf-error { color:var(--red); font-size:.9rem; text-align:center; padding:40px 20px; line-height:1.6; }
+    #pdf-canvas { display:block; max-width:100%; height:auto; box-shadow:0 8px 40px rgba(0,0,0,.28); border-radius:3px; }
+    #pdf-page-wrap { position:relative; display:inline-block; }
+    #pdf-annotations { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+    #pdf-annotations a { position:absolute; pointer-events:all; cursor:pointer; }
+    #pdf-annotations a:hover { background:rgba(0,100,200,.12); }
+
+    .viewer-top { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+    .btn-back { display:inline-flex; align-items:center; gap:8px; padding:11px 22px; border-radius:999px;
+      background:linear-gradient(135deg, var(--blue) 0%, #1a3270 100%); border:none; color:var(--gold);
+      font-size:.85rem; font-weight:700; letter-spacing:.02em; cursor:pointer; box-shadow:0 4px 18px rgba(17,34,80,.25);
+      transition:transform .2s, box-shadow .2s; }
+    .btn-back:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(17,34,80,.35); }
+
+    /* ── FULLSCREEN ── */
+    #fs-overlay { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:9999; background:rgba(0,0,0,.92); overflow:hidden; }
+    #fs-scroll { position:absolute; top:40px; left:0; right:0; bottom:68px; overflow:auto; -webkit-overflow-scrolling:touch; }
+    #fs-canvas { display:block; margin:0 auto; }
+    #fs-toolbar { position:absolute; bottom:0; left:0; right:0; height:68px; display:flex; align-items:center; justify-content:center; gap:8px; background:rgba(0,0,0,.7); backdrop-filter:blur(8px); z-index:10001; }
+    .fs-btn { background:rgba(255,255,255,.12); color:#fff; border:none; border-radius:8px; width:44px; height:44px; font-size:1.3rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .15s; }
+    .fs-btn:hover { background:rgba(255,255,255,.25); }
+    #fs-zoom-lbl { color:rgba(255,255,255,.85); font-size:.85rem; min-width:50px; text-align:center; font-variant-numeric:tabular-nums; font-weight:600; }
+    #fs-close { position:absolute; top:8px; right:12px; background:rgba(255,255,255,.15); color:#fff; border:none; border-radius:50%; width:38px; height:38px; font-size:1.2rem; cursor:pointer; z-index:10002; line-height:38px; text-align:center; transition:background .2s; }
+    #fs-close:hover { background:rgba(255,255,255,.3); }
+    .fs-nav { display:none; position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,0,0,.45); color:#fff; border:none; border-radius:50%; width:44px; height:44px; font-size:1.3rem; cursor:pointer; z-index:10003; align-items:center; justify-content:center; -webkit-tap-highlight-color:transparent; }
+    #fs-prev { left:4px; } #fs-next { right:4px; }
+    @media (max-width:768px) { .fs-nav { display:flex; } }
+    #fs-page-info { color:rgba(255,255,255,.7); font-size:.8rem; font-variant-numeric:tabular-nums; min-width:54px; text-align:center; }
+    #fs-hint { position:absolute; top:10px; left:50%; transform:translateX(-50%); color:rgba(255,255,255,.45); font-size:.72rem; pointer-events:none; white-space:nowrap; z-index:10001; }
+
+    @media (max-width:860px) { .grid { grid-template-columns:repeat(2, 1fr); } }
+    @media (max-width:600px) {
+      #auth-page { padding:24px 16px; align-items:flex-start; padding-top:32px; }
+      .grid { grid-template-columns:1fr; }
+      .page-wrap { padding:20px 16px 36px; }
+      .viewer-wrap { padding:12px 0 20px; }
+      .pdf-card { border-radius:0; }
+      .pdf-header { padding:12px 14px; gap:8px; }
+      .pdf-header-title { font-size:.82rem; width:100%; }
+      .pdf-controls { width:100%; justify-content:center; }
+    }
+  </style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- ══ CONNEXION ═══════════════════════════════════════════ -->
+<div id="auth-page">
+  <div class="auth-card">
+    <div class="auth-card-header">
+      <img src="img/logo.jpeg" alt="C'Réussite" class="auth-logo">
+      <div class="auth-product">Espace bêta-testeur</div>
+    </div>
+    <div class="auth-body">
+      <div class="auth-title">Accéder aux ebooks</div>
+      <div class="auth-sub">Connecte-toi avec l'email et le mot de passe qui t'ont été transmis. L'accès est personnel et temporaire.</div>
+      <div class="auth-field">
+        <input type="email" id="email-input" class="auth-input" placeholder="Ton email" autocomplete="email">
+      </div>
+      <div class="auth-field">
+        <input type="password" id="pwd-input" class="auth-input" placeholder="Mot de passe d'accès" autocomplete="current-password">
+      </div>
+      <button type="button" id="auth-btn" class="auth-btn">Se connecter</button>
+      <div id="auth-error" class="auth-error"></div>
+      <p class="auth-note">Accès personnel, temporaire et non transférable.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SÉLECTION ═══════════════════════════════════════════ -->
+<div id="selection">
+  <div class="page-wrap">
+    <div class="sel-head">
+      <div class="sel-title">Tes ebooks à tester</div>
+      <div class="sel-actions">
+        <a class="sel-link" href="beta-formulaire.html">Donner mon avis</a>
+        <button type="button" class="sel-link ghost" id="logout-btn">Se déconnecter</button>
+      </div>
+    </div>
+    <div class="sel-sub">Clique sur une couverture pour lire l'ebook. Lecture en ligne uniquement, sans impression ni téléchargement.</div>
+    <div class="grid" id="grid"></div>
+  </div>
+</div>
+
+<!-- ══ LECTEUR ═════════════════════════════════════════════ -->
+<div id="viewer">
+  <div class="viewer-wrap">
+    <div class="viewer-top">
+      <button type="button" class="btn-back" id="back-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Retour aux ebooks
+      </button>
+      <a class="sel-link" href="beta-formulaire.html">Donner mon avis</a>
+    </div>
+
+    <div class="pdf-card">
+      <div class="pdf-header">
+        <span class="pdf-header-title" id="pdf-title">Ebook</span>
+        <div class="pdf-controls">
+          <div class="pdf-row">
+            <button class="pdf-btn" id="btn-fp" onclick="firstPage()" disabled title="Première page">&#171;</button>
+            <button class="pdf-btn" id="btn-pp" onclick="prevPage()" disabled>&#8249;</button>
+            <span class="pdf-info"><span id="pg-cur">—</span> / <span id="pg-tot">—</span></span>
+            <button class="pdf-btn" id="btn-np" onclick="nextPage()" disabled>&#8250;</button>
+            <button class="pdf-btn" id="btn-lp" onclick="lastPage()" disabled title="Dernière page">&#187;</button>
+          </div>
+          <span class="pdf-sep"></span>
+          <div class="pdf-row">
+            <button class="pdf-btn" id="btn-toc" onclick="goToTOC()" title="Sommaire"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+            <button class="pdf-btn" onclick="openFS()" title="Plein écran"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="pdf-body" id="pdf-body">
+        <div class="pdf-spinner-wrap" id="pdf-loading">
+          <div class="pdf-spinner"></div>
+          Chargement de l'ebook&hellip;
+        </div>
+        <div id="pdf-page-wrap" style="display:none">
+          <canvas id="pdf-canvas" oncontextmenu="return false"></canvas>
+          <div id="pdf-annotations"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+<script src="js/footer.js"></script>
+<script>
+(function () {
+  'use strict';
+  var BACKEND = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+    ? 'http://localhost:3000' : 'https://creussite-backend.onrender.com';
+
+  var EBOOKS = [
+    { key:'pc-2nde',         subject:'pc',    badge:'Seconde Générale',     level:'Seconde' },
+    { key:'pc-1ere',         subject:'pc',    badge:'Première Spécialité',  level:'1re Spécialité' },
+    { key:'pc-terminale',    subject:'pc',    badge:'Terminale Spécialité', level:'Terminale Spécialité' },
+    { key:'maths-terminale', subject:'maths', badge:'Terminale Spécialité', level:'Terminale Spécialité' },
+  ];
+  var LABEL = {};
+  EBOOKS.forEach(function (e) {
+    LABEL[e.key] = (e.subject === 'maths' ? 'Mathématiques' : 'Physique-Chimie') + ' · ' + e.level;
+  });
+
+  // ── Anti-copie ──────────────────────────────────────────
+  document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  document.addEventListener('keydown', function (e) {
+    if ((e.ctrlKey || e.metaKey) && 'capsuji'.indexOf((e.key || '').toLowerCase()) > -1) { e.preventDefault(); return false; }
+    if (e.key === 'F12') { e.preventDefault(); return false; }
+  });
+  document.addEventListener('dragstart', function (e) { e.preventDefault(); });
+
+  fetch(BACKEND + '/api/healthz').catch(function () {});
+
+  // ── Session ─────────────────────────────────────────────
+  var token = '';   // mot de passe (jeton d'accès aux PDF)
+  var email = '';
+  var docCache = {}; // key → PDFDocumentProxy
+
+  function saveSession() {
+    try { sessionStorage.setItem('cr_beta_email', email); sessionStorage.setItem('cr_beta_token', token); } catch (e) {}
+  }
+  function clearSession() {
+    try { sessionStorage.removeItem('cr_beta_email'); sessionStorage.removeItem('cr_beta_token'); } catch (e) {}
+  }
+
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+
+  // ── AUTH ────────────────────────────────────────────────
+  window.doAuth = function () {
+    var em  = document.getElementById('email-input').value.trim();
+    var pwd = document.getElementById('pwd-input').value.trim();
+    if (!em || !pwd) return;
+    var btn = document.getElementById('auth-btn');
+    var errEl = document.getElementById('auth-error');
+    btn.disabled = true; btn.textContent = 'Connexion…'; errEl.textContent = '';
+
+    fetch(BACKEND + '/api/beta-niveaux/auth', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: em, password: pwd })
+    })
+    .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+    .then(function (r) {
+      if (!r.ok) throw new Error(r.data.error || 'Accès refusé.');
+      email = r.data.email || em; token = pwd; saveSession();
+      showSelection();
+    })
+    .catch(function (e) {
+      errEl.textContent = e.message;
+      btn.disabled = false; btn.textContent = 'Se connecter';
+    });
+  };
+
+  document.getElementById('auth-btn').addEventListener('click', window.doAuth);
+  document.getElementById('pwd-input').addEventListener('keydown', function (e) { if (e.key === 'Enter') window.doAuth(); });
+  document.getElementById('email-input').addEventListener('keydown', function (e) { if (e.key === 'Enter') document.getElementById('pwd-input').focus(); });
+
+  document.getElementById('logout-btn').addEventListener('click', function () {
+    clearSession(); location.reload();
+  });
+  document.getElementById('back-btn').addEventListener('click', showSelection);
+
+  // ── FILIGRANE ───────────────────────────────────────────
+  function watermarkText() { return (email || 'bêta-testeur') + '   •   BÊTA TEST'; }
+  function drawWatermark(ctx, w, h) {
+    var text = watermarkText();
+    ctx.save();
+    ctx.globalAlpha = 0.05;
+    ctx.fillStyle = '#112250';
+    var fs = Math.max(13, Math.round(w * 0.016));
+    ctx.font = '600 ' + fs + 'px Arial, sans-serif';
+    ctx.textBaseline = 'middle';
+    ctx.translate(w / 2, h / 2);
+    ctx.rotate(-Math.atan2(h, w));
+    var tw = ctx.measureText(text).width;
+    var stepX = tw + Math.max(120, w * 0.12);
+    var stepY = Math.max(90, Math.round(h * 0.11));
+    var R = Math.ceil(Math.sqrt(w * w + h * h));
+    var rowIdx = 0;
+    for (var y = -R; y < R; y += stepY) {
+      var off = (rowIdx % 2) * (stepX / 2);
+      for (var x = -R + off; x < R; x += stepX) { ctx.fillText(text, x, y); }
+      rowIdx++;
+    }
+    ctx.restore();
+  }
+
+  // ── SÉLECTION + VIGNETTES ───────────────────────────────
+  function showSelection() {
+    document.getElementById('auth-page').style.display = 'none';
+    document.getElementById('viewer').style.display    = 'none';
+    document.getElementById('selection').style.display = 'block';
+    window.scrollTo(0, 0);
+    if (!document.getElementById('grid').dataset.ready) buildGrid();
+  }
+
+  function coverHtml(e) {
+    var title = e.subject === 'maths'
+      ? '<div class="cover-title maths">Math<span class="g">ématiques</span></div>'
+      : '<div class="cover-title">Physique<br><span class="g">Chimie</span></div>';
+    return '<div class="cover">' +
+        '<img class="cover-mark" src="img/favicon.svg" alt="">' +
+        '<div class="cover-badge">' + e.badge.toUpperCase() + '</div>' +
+        '<div class="cover-title-wrap"><div class="cover-bar"></div>' + title + '</div>' +
+        '<div class="cover-foot">' +
+          '<div class="cover-author">Camille Reinhardt</div>' +
+          '<div class="cover-edition">Édition<b>2026</b></div>' +
+        '</div>' +
+      '</div>';
+  }
+
+  function buildGrid() {
+    var grid = document.getElementById('grid');
+    grid.dataset.ready = '1';
+    grid.innerHTML = '';
+    EBOOKS.forEach(function (e) {
+      var card = document.createElement('button');
+      card.type = 'button'; card.className = 'card';
+      card.setAttribute('aria-label', 'Lire ' + (LABEL[e.key] || "l'ebook"));
+      card.innerHTML = coverHtml(e) + '<div class="card-foot"><span class="card-cta">Lire l\'ebook →</span></div>';
+      card.addEventListener('click', function () { openEbook(e.key); });
+      grid.appendChild(card);
+    });
+  }
+
+  // Charge un ebook (PDF) une seule fois, à la demande, et met en cache le document parsé.
+  var loading = {};
+  function loadEbook(key) {
+    if (docCache[key]) return Promise.resolve(docCache[key]);
+    if (loading[key]) return loading[key];
+    loading[key] = fetch(BACKEND + '/api/beta-niveaux/pdf/' + key, { headers: { 'Authorization': 'Bearer ' + token } })
+      .then(function (r) {
+        if (r.status === 401 || r.status === 403) { forceLogin(); throw new Error('auth'); }
+        if (!r.ok) throw new Error('Erreur ' + r.status);
+        return r.arrayBuffer();
+      })
+      .then(function (buf) { return pdfjsLib.getDocument({ data: buf }).promise; })
+      .then(function (doc) { docCache[key] = doc; delete loading[key]; return doc; })
+      .catch(function (err) { delete loading[key]; throw err; });
+    return loading[key];
+  }
+
+  function forceLogin() {
+    clearSession();
+    document.getElementById('selection').style.display = 'none';
+    document.getElementById('viewer').style.display    = 'none';
+    document.getElementById('auth-page').style.display = 'flex';
+    var errEl = document.getElementById('auth-error');
+    if (errEl) errEl.textContent = 'Session expirée, reconnecte-toi.';
+  }
+
+  // ── LECTEUR ─────────────────────────────────────────────
+  var pdfDoc = null, curPage = 1, tocPage = 1;
+
+  function openEbook(key) {
+    document.getElementById('auth-page').style.display = 'none';
+    document.getElementById('selection').style.display = 'none';
+    document.getElementById('viewer').style.display    = 'block';
+    document.getElementById('pdf-title').textContent   = LABEL[key] || 'Ebook';
+    document.getElementById('pdf-loading').style.display = 'flex';
+    document.getElementById('pdf-page-wrap').style.display = 'none';
+    document.getElementById('pg-tot').textContent = '—';
+    document.getElementById('pg-cur').textContent = '—';
+    window.scrollTo(0, 0);
+
+    loadEbook(key).then(function (doc) {
+      if (!doc) return;
+      pdfDoc = doc; curPage = 1; tocPage = 1;
+      document.getElementById('pg-tot').textContent = doc.numPages;
+      document.getElementById('btn-fp').disabled = false;
+      document.getElementById('btn-pp').disabled = false;
+      document.getElementById('btn-np').disabled = false;
+      document.getElementById('btn-lp').disabled = false;
+      document.getElementById('pdf-loading').style.display = 'none';
+      document.getElementById('pdf-page-wrap').style.display = 'inline-block';
+      findTOCPage();
+      renderPage(1);
+    }).catch(function (e) {
+      if (e && e.message === 'auth') return;
+      document.getElementById('pdf-loading').innerHTML =
+        '<p class="pdf-error">Impossible de charger l\'ebook.<br><small>' + (e && e.message || '') + '</small></p>';
+    });
+  }
+
+  function renderPage(n) {
+    curPage = n;
+    var canvas = document.getElementById('pdf-canvas');
+    var wrap = document.getElementById('pdf-page-wrap');
+    var body = document.getElementById('pdf-body');
+    var currentPage;
+    pdfDoc.getPage(n).then(function (page) {
+      currentPage = page;
+      var dpr = window.devicePixelRatio || 1;
+      var natural = page.getViewport({ scale: 1 });
+      var availW = body.clientWidth - 32;
+      var fitScale = availW / natural.width;
+      var renderScale = Math.min(fitScale, 2.5);
+      var vp = page.getViewport({ scale: renderScale * dpr });
+      canvas.width = vp.width; canvas.height = vp.height;
+      canvas.style.width = (vp.width / dpr) + 'px';
+      canvas.style.height = (vp.height / dpr) + 'px';
+      wrap._effectiveScale = renderScale;
+      var ctx = canvas.getContext('2d');
+      return page.render({ canvasContext: ctx, viewport: vp }).promise.then(function () {
+        drawWatermark(ctx, canvas.width, canvas.height);
+      });
+    }).then(function () {
+      document.getElementById('pg-cur').textContent = n;
+      document.getElementById('btn-fp').disabled = (n <= 1);
+      document.getElementById('btn-pp').disabled = (n <= 1);
+      document.getElementById('btn-np').disabled = (n >= pdfDoc.numPages);
+      document.getElementById('btn-lp').disabled = (n >= pdfDoc.numPages);
+      return currentPage.getAnnotations();
+    }).then(function (annots) {
+      renderAnnotations(annots, currentPage, wrap._effectiveScale);
+    });
+  }
+
+  function renderAnnotations(annots, page, effectiveScale) {
+    var overlay = document.getElementById('pdf-annotations');
+    overlay.innerHTML = '';
+    var vp = page.getViewport({ scale: effectiveScale });
+    annots.forEach(function (a) {
+      if (a.subtype !== 'Link' || !a.rect) return;
+      var r = a.rect;
+      var p1 = pdfjsLib.Util.applyTransform([r[0], r[1]], vp.transform);
+      var p2 = pdfjsLib.Util.applyTransform([r[2], r[3]], vp.transform);
+      var link = document.createElement('a');
+      link.style.left = Math.min(p1[0], p2[0]) + 'px';
+      link.style.top = Math.min(p1[1], p2[1]) + 'px';
+      link.style.width = Math.abs(p2[0] - p1[0]) + 'px';
+      link.style.height = Math.abs(p2[1] - p1[1]) + 'px';
+      if (a.url) { link.href = a.url; link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+      else if (a.dest) {
+        link.href = '#';
+        (function (dest) {
+          link.addEventListener('click', function (e) {
+            e.preventDefault();
+            resolveDestPage(dest).then(function (pg) { if (pg) renderPage(pg); });
+          });
+        })(a.dest);
+      }
+      overlay.appendChild(link);
+    });
+  }
+
+  function resolveDestPage(dest) {
+    var p = typeof dest === 'string' ? pdfDoc.getDestination(dest) : Promise.resolve(dest);
+    return p.then(function (d) {
+      if (!d || !d[0]) return null;
+      return pdfDoc.getPageIndex(d[0]).then(function (idx) { return idx + 1; });
+    }).catch(function () { return null; });
+  }
+
+  var _resizeTimer, _lastWidth = document.documentElement.clientWidth;
+  window.addEventListener('resize', function () {
+    var newW = document.documentElement.clientWidth;
+    if (newW === _lastWidth) return;
+    _lastWidth = newW;
+    clearTimeout(_resizeTimer);
+    _resizeTimer = setTimeout(function () { if (pdfDoc) renderPage(curPage); }, 250);
+  });
+
+  window.prevPage  = function () { if (curPage > 1) renderPage(curPage - 1); };
+  window.nextPage  = function () { if (pdfDoc && curPage < pdfDoc.numPages) renderPage(curPage + 1); };
+  window.firstPage = function () { if (pdfDoc) renderPage(1); };
+  window.lastPage  = function () { if (pdfDoc) renderPage(pdfDoc.numPages); };
+
+  function findTOCPage() {
+    var maxScan = Math.min(6, pdfDoc.numPages);
+    var checks = [];
+    for (var i = 1; i <= maxScan; i++) {
+      checks.push((function (num) {
+        return pdfDoc.getPage(num).then(function (page) {
+          return page.getTextContent().then(function (tc) {
+            var txt = tc.items.map(function (it) { return it.str; }).join(' ').toLowerCase();
+            return txt.indexOf('sommaire') !== -1 ? num : null;
+          });
+        });
+      })(i));
+    }
+    Promise.all(checks).then(function (res) {
+      for (var j = 0; j < res.length; j++) { if (res[j]) { tocPage = res[j]; return; } }
+    });
+  }
+  window.goToTOC = function () { if (pdfDoc) renderPage(tocPage); };
+
+  // Swipe mobile
+  (function () {
+    var startX = 0, startY = 0;
+    var el = document.getElementById('pdf-body');
+    el.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; startY = e.touches[0].clientY; }, { passive: true });
+    el.addEventListener('touchend', function (e) {
+      var dx = e.changedTouches[0].clientX - startX, dy = e.changedTouches[0].clientY - startY;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) { if (dx < 0) window.nextPage(); else window.prevPage(); }
+    }, { passive: true });
+  })();
+
+  // ── PLEIN ÉCRAN ─────────────────────────────────────────
+  var fsZoom = 1, FS_ZOOM_MIN = 0.5, FS_ZOOM_MAX = 5, FS_ZOOM_STEP = 0.25, _fsPage = null;
+  function fsUpdateLabel() { var el = document.getElementById('fs-zoom-lbl'); if (el) el.textContent = Math.round(fsZoom * 100) + '%'; }
+  function fsRenderAtZoom() {
+    if (!_fsPage) return;
+    var scroll = document.getElementById('fs-scroll');
+    var canvas = document.getElementById('fs-canvas');
+    var dpr = window.devicePixelRatio || 1;
+    var baseVP = _fsPage.getViewport({ scale: 1 });
+    var fitScale = Math.min(scroll.clientWidth / baseVP.width, scroll.clientHeight / baseVP.height);
+    var vp = _fsPage.getViewport({ scale: fitScale * fsZoom * dpr });
+    canvas.width = vp.width; canvas.height = vp.height;
+    canvas.style.width = Math.round(vp.width / dpr) + 'px';
+    canvas.style.height = Math.round(vp.height / dpr) + 'px';
+    var displayH = Math.round(vp.height / dpr);
+    canvas.style.marginTop = (displayH < scroll.clientHeight) ? Math.round((scroll.clientHeight - displayH) / 2) + 'px' : '8px';
+    var ctx = canvas.getContext('2d');
+    _fsPage.render({ canvasContext: ctx, viewport: vp }).promise.then(function () {
+      drawWatermark(ctx, canvas.width, canvas.height);
+    });
+    fsUpdateLabel();
+  }
+  function fsUpdatePageInfo() { var el = document.getElementById('fs-page-info'); if (el && pdfDoc) el.textContent = curPage + ' / ' + pdfDoc.numPages; }
+  function fsGoToPage(n) {
+    if (!pdfDoc || n < 1 || n > pdfDoc.numPages) return;
+    curPage = n; renderPage(curPage); fsZoom = 1;
+    pdfDoc.getPage(curPage).then(function (page) {
+      _fsPage = page;
+      var scroll = document.getElementById('fs-scroll'); scroll.scrollTop = 0; scroll.scrollLeft = 0;
+      requestAnimationFrame(function () { fsRenderAtZoom(); fsUpdatePageInfo(); });
+    });
+  }
+  window.openFS = function () {
+    if (!pdfDoc) return;
+    document.getElementById('fs-overlay').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    fsZoom = 1; fsUpdateLabel(); fsUpdatePageInfo();
+    pdfDoc.getPage(curPage).then(function (page) { _fsPage = page; requestAnimationFrame(fsRenderAtZoom); });
+  };
+  window.fsPrev = function () { fsGoToPage(curPage - 1); };
+  window.fsNext = function () { fsGoToPage(curPage + 1); };
+  window.fsZoomIn = function () { if (fsZoom < FS_ZOOM_MAX) { fsZoom = Math.min(FS_ZOOM_MAX, Math.round((fsZoom + FS_ZOOM_STEP) * 100) / 100); fsRenderAtZoom(); } };
+  window.fsZoomOut = function () { if (fsZoom > FS_ZOOM_MIN) { fsZoom = Math.max(FS_ZOOM_MIN, Math.round((fsZoom - FS_ZOOM_STEP) * 100) / 100); fsRenderAtZoom(); } };
+  window.fsReset = function () { fsZoom = 1; fsRenderAtZoom(); var s = document.getElementById('fs-scroll'); s.scrollTop = 0; s.scrollLeft = 0; };
+  window.closeFS = function () { _fsPage = null; document.getElementById('fs-overlay').style.display = 'none'; document.body.style.overflow = ''; };
+
+  document.addEventListener('wheel', function (e) {
+    if (document.getElementById('fs-overlay').style.display !== 'block') return;
+    e.preventDefault(); e.stopPropagation();
+    if (e.deltaY < 0) fsZoomIn(); else fsZoomOut();
+  }, { passive: false, capture: true });
+  document.addEventListener('keydown', function (e) {
+    if (document.getElementById('fs-overlay').style.display !== 'block') return;
+    if (e.key === 'Escape') closeFS();
+    if (e.key === 'ArrowLeft') fsPrev();
+    if (e.key === 'ArrowRight') fsNext();
+  });
+
+  // ── Reprise de session (retour depuis le formulaire) ────
+  (function initFromSession() {
+    try {
+      var t = sessionStorage.getItem('cr_beta_token');
+      var em = sessionStorage.getItem('cr_beta_email');
+      if (t && em) { token = t; email = em; showSelection(); }
+    } catch (e) {}
+  })();
+})();
+</script>
+
+<div id="fs-overlay" role="dialog" aria-modal="true" aria-label="Lecture agrandie">
+  <button id="fs-close" aria-label="Fermer" onclick="closeFS()">&#x2715;</button>
+  <div id="fs-hint">&#x2190;&#x2192; pour naviguer • Molette pour zoomer</div>
+  <button id="fs-prev" class="fs-nav" onclick="fsPrev()" aria-label="Page précédente">&#x276E;</button>
+  <button id="fs-next" class="fs-nav" onclick="fsNext()" aria-label="Page suivante">&#x276F;</button>
+  <div id="fs-scroll"><canvas id="fs-canvas"></canvas></div>
+  <div id="fs-toolbar">
+    <button class="fs-btn" onclick="fsPrev()" aria-label="Page précédente">&#x276E;</button>
+    <span id="fs-page-info">1 / 1</span>
+    <button class="fs-btn" onclick="fsNext()" aria-label="Page suivante">&#x276F;</button>
+    <span style="width:1px;height:24px;background:rgba(255,255,255,.2);margin:0 4px"></span>
+    <button class="fs-btn" onclick="fsZoomOut()" aria-label="Dézoomer">−</button>
+    <span id="fs-zoom-lbl">100%</span>
+    <button class="fs-btn" onclick="fsZoomIn()" aria-label="Zoomer">+</button>
+    <button class="fs-btn" onclick="fsReset()" aria-label="Taille originale" style="font-size:.85rem">1:1</button>
+    <span style="width:1px;height:24px;background:rgba(255,255,255,.2);margin:0 4px"></span>
+    <button class="fs-btn" onclick="closeFS()" aria-label="Fermer" style="font-size:1rem">&#x2715;</button>
+  </div>
+</div>
+</body>
+</html>

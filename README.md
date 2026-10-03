@@ -61,6 +61,8 @@ CReussite/
 │   ├── admin.html                     ← Tableau de bord (protégé ADMIN_KEY)
 │   ├── success.html                   ← Retour Stancer : vérifie paiement, affiche confirmation
 │   ├── cancel.html                    ← Retour Stancer si annulation
+│   ├── beta.html                      ← Bêta multi-niveaux : connexion + grille + lecteur PDF
+│   ├── beta-formulaire.html           ← Bêta multi-niveaux : questionnaire de retour
 │   ├── maths-terminale/index.html     ← Page produit Maths (layout empilé, FAQPage schema)
 │   ├── physique-chimie-terminale/index.html ← Page produit Physique-Chimie
 │   ├── pack-maths-physique-chimie/index.html ← Page produit Pack (prix barré, 2 tableaux)
@@ -104,7 +106,9 @@ CReussite/
 │   │   ├── paymentConfirm.js          ← GET /api/payment/confirm → vérifie + traite commande
 │   │   ├── extract.js                 ← POST /api/extract → extrait gratuit (sans stéganographie)
 │   │   ├── admin.js                   ← GET /api/admin/* (protégé ADMIN_KEY)
-│   │   └── beta.js                    ← POST /api/beta-feedback → email
+│   │   ├── beta.js                    ← POST /api/beta-feedback → email
+│   │   ├── betaViewer.js              ← Bêta maths/physique : auth mot de passe + PDF Supabase
+│   │   └── betaNiveaux.js             ← Bêta multi-niveaux : auth email+mdp, 4 ebooks, questionnaire
 │   ├── services/
 │   │   ├── db.js                      ← Client Supabase, insertOrderIdempotent()
 │   │   ├── invoice.js                 ← Génération PDF facture (PDFKit)
@@ -134,6 +138,9 @@ CReussite/
 | GET | `/api/payment/confirm` | — | Vérifie paiement Stancer, insère commande, envoie email |
 | POST | `/api/extract` | — | Envoie un extrait gratuit par email (sans stéganographie) |
 | POST | `/api/beta-feedback` | — | Envoie les retours beta par email |
+| POST | `/api/beta-niveaux/auth` | BETA_TESTERS | Connexion bêta multi-niveaux (email + mot de passe) |
+| GET | `/api/beta-niveaux/pdf/:type` | jeton | Sert un des 4 ebooks depuis Supabase Storage (bucket `beta-assets`) |
+| POST | `/api/beta-niveaux/feedback` | — | Envoie le questionnaire bêta multi-niveaux par email |
 | GET | `/api/products` | — | Retourne `docs/content/products.json` |
 | GET | `/api/admin/orders` | ADMIN_KEY | Liste des commandes (JSON) |
 | GET | `/api/admin/stats` | ADMIN_KEY | Stats agrégées (CA, nb commandes, emails) |
@@ -213,6 +220,8 @@ cp backend/.env.example backend/.env  # en local
 | `BCC_EMAIL` | Copie cachée de chaque email de commande + extrait |
 | `ALERT_EMAIL` | Reçoit les alertes ops en cas d'erreur |
 | `ADMIN_KEY` | Clé secrète pour `/admin.html`, valeur longue aléatoire |
+| `BETA_VIEWER_PASSWORDS` | JSON bêta maths/physique : `[{"password","type","expires"}]` |
+| `BETA_TESTERS` | JSON bêta multi-niveaux : `[{"email","password","expires"}]` (accès aux 4 ebooks) |
 
 ---
 
@@ -267,6 +276,46 @@ Aucun commit ni redéploiement nécessaire — la mise à jour est immédiate.
 | PDFs payants | Email de l'acheteur inscrit 5x par page (texte blanc 4pt, opacité 0.004) + métadonnées PDF |
 
 Pour identifier un PDF partagé illégalement : ouvrir dans Adobe Acrobat, `Ctrl+A`, copier dans un éditeur. L'email apparaît 5 fois par page.
+
+---
+
+## Bêta multi-niveaux (module indépendant)
+
+Module isolé pour une nouvelle vague de bêta-testeurs, sans impact sur la bêta maths/physique existante. Backend : `backend/routes/betaNiveaux.js`, monté sur `/api/beta-niveaux`. Frontend : `docs/beta.html` (connexion + grille + lecteur) et `docs/beta-formulaire.html` (questionnaire).
+
+### Les 4 ebooks
+
+Stockés dans Supabase Storage, bucket privé `beta-assets` (jamais dans git), servis uniquement après connexion :
+
+| Clé | Fichier bucket |
+| --- | --- |
+| `pc-2nde` | `pc-2nde.pdf` |
+| `pc-1ere` | `pc-1ere.pdf` |
+| `pc-terminale` | `pc-terminale.pdf` |
+| `maths-terminale` | `maths-terminale.pdf` |
+
+Déposer ou remplacer les PDF : placer les 4 fichiers dans `backend/assets/` (local, hors git) avec ces noms exacts, puis `cd backend && node scripts/upload-assets.js`.
+
+### Comptes testeurs
+
+Variable d'environnement `BETA_TESTERS` (Render), tableau JSON. Un compte donne accès aux 4 ebooks. Les mots de passe doivent être uniques.
+
+```json
+[
+  { "email": "marie@exemple.fr", "password": "mdp-unique-1", "expires": "2026-06-30" },
+  { "email": "lucas@exemple.fr", "password": "mdp-unique-2", "expires": "2026-06-30" }
+]
+```
+
+### Protections
+
+- Impression et téléchargement désactivés (PDF rendu en canvas via pdf.js, aucun fichier exposé).
+- Clic droit, Ctrl+P/S/U et F12 bloqués. PDF servi seulement après connexion, sans URL devinable.
+- Filigrane peu perceptible répété sur chaque page : email du testeur + mention « beta test », pour tracer une fuite (une capture d'écran reste techniquement possible).
+
+### Retours
+
+Le questionnaire (`beta-formulaire.html`) est adaptatif : le testeur coche les ebooks consultés, un bloc de questions apparaît par ebook. Les réponses partent par email vers `creussite2026@gmail.com` via Brevo (route `/api/beta-niveaux/feedback`), aucune donnée stockée en base.
 
 ---
 

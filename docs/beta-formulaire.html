@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Questionnaire bêta-testeur — C'Réussite</title>
+  <link rel="icon" href="img/favicon.ico" sizes="any">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="img/favicon-192x192.png">
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    :root {
+      --blue:#112250; --gold:#E0C58F; --bg:#F5F0E9; --white:#fff;
+      --text:#1a1a2e; --muted:#6b7280; --border:#e5e7eb; --red:#dc2626;
+      --green:#16a34a; --sh:0 2px 16px rgba(0,0,0,.10);
+    }
+    body { background:var(--bg); color:var(--text); }
+    .q-wrap { max-width:720px; margin:0 auto; padding:30px 20px 60px; }
+    .q-top { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; flex-wrap:wrap; }
+    .q-back { display:inline-flex; align-items:center; gap:7px; padding:10px 18px; border-radius:999px;
+      background:var(--blue); color:var(--gold); font-size:.84rem; font-weight:700; text-decoration:none; }
+    .q-card { background:var(--white); border-radius:20px; box-shadow:var(--sh); overflow:hidden; }
+    .q-card-head { background:var(--blue); padding:26px 30px 22px; }
+    .q-card-head img { height:46px; display:block; margin-bottom:12px; }
+    .q-card-head h1 { color:var(--gold); font-size:1.2rem; margin:0 0 4px; }
+    .q-card-head p { color:rgba(255,255,255,.6); font-size:.85rem; margin:0; line-height:1.5; }
+    .q-body { padding:28px 30px 32px; }
+
+    .sec-title { font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+      margin:30px 0 16px; padding-bottom:9px; border-bottom:1px solid var(--border); }
+    .sec-title:first-child { margin-top:0; }
+    .q-field { margin-bottom:22px; }
+    .q-label { font-weight:700; font-size:.92rem; margin-bottom:9px; color:var(--text); display:block; }
+    .q-hint { font-size:.8rem; color:var(--muted); margin:-4px 0 9px; }
+    .req { color:var(--red); }
+
+    .q-input, .q-textarea { width:100%; padding:12px 15px; border:1.5px solid var(--border); border-radius:12px;
+      font-size:.9rem; font-family:inherit; outline:none; transition:border-color .2s, box-shadow .2s; }
+    .q-textarea { resize:vertical; min-height:70px; }
+    .q-input:focus, .q-textarea:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(17,34,80,.08); }
+    .q-input[readonly] { background:#f3f4f6; color:var(--muted); }
+
+    .radio-grid { display:flex; flex-direction:column; gap:8px; }
+    .radio-grid.row { flex-direction:row; flex-wrap:wrap; }
+    .radio-opt { display:flex; align-items:center; gap:10px; padding:11px 15px; border:1.5px solid var(--border);
+      border-radius:12px; cursor:pointer; transition:border-color .15s, background .15s; font-size:.9rem; }
+    .radio-opt:hover { border-color:var(--blue); background:#f5f7ff; }
+    .radio-opt.selected { border-color:var(--blue); background:#eef1fa; }
+    .radio-dot { width:17px; height:17px; border-radius:50%; border:2px solid var(--border); flex-shrink:0; transition:.15s; }
+    .radio-opt.selected .radio-dot { border-color:var(--blue); background:var(--blue); }
+
+    .check-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .check-opt { display:flex; align-items:center; gap:9px; padding:11px 14px; border:1.5px solid var(--border);
+      border-radius:12px; cursor:pointer; transition:border-color .15s, background .15s; font-size:.88rem; }
+    .check-opt:hover { border-color:var(--blue); background:#f5f7ff; }
+    .check-opt.selected { border-color:var(--blue); background:#eef1fa; }
+    .check-box { width:18px; height:18px; border:2px solid var(--border); border-radius:5px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center; font-size:.65rem; color:var(--white); background:transparent; transition:.15s; }
+    .check-opt.selected .check-box { border-color:var(--blue); background:var(--blue); }
+
+    .stars-row { display:flex; gap:7px; }
+    .star-btn { background:none; border:none; font-size:1.9rem; cursor:pointer; color:var(--border); transition:color .1s, transform .1s; line-height:1; }
+    .star-btn.lit { color:#f59e0b; }
+    .star-btn:hover { transform:scale(1.12); }
+
+    .cond { margin-top:10px; display:none; }
+    .cond.visible { display:block; }
+
+    .eb-block { border:1.5px solid var(--border); border-radius:16px; padding:18px 18px 6px; margin-bottom:16px; background:#fcfcfd; }
+    .eb-head { font-size:.98rem; font-weight:800; color:var(--blue); margin-bottom:14px; }
+
+    .field-error { color:var(--red); font-size:.8rem; margin-top:6px; display:none; }
+    .field-error.visible { display:block; }
+    .invalid { border-color:var(--red) !important; box-shadow:0 0 0 3px rgba(220,38,38,.08) !important; }
+
+    .q-submit { background:var(--green); color:#fff; border:none; border-radius:12px; padding:14px 30px;
+      font-size:.95rem; font-weight:800; cursor:pointer; transition:opacity .2s; width:100%; margin-top:8px; }
+    .q-submit:hover { opacity:.9; }
+    .q-submit:disabled { opacity:.5; cursor:not-allowed; }
+    .submit-error { color:var(--red); font-size:.85rem; margin-top:12px; text-align:center; display:none; }
+
+    .q-success { padding:50px 30px; text-align:center; }
+    .q-success-icon { width:64px; height:64px; background:#dcfce7; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.8rem; margin:0 auto 18px; }
+    .q-success h2 { font-size:1.2rem; margin:0 0 8px; color:var(--blue); }
+    .q-success p { color:var(--muted); font-size:.92rem; line-height:1.6; }
+    .q-success a { color:var(--blue); font-weight:700; }
+
+    @media (max-width:560px) { .check-grid { grid-template-columns:1fr; } .q-body { padding:22px 18px 26px; } .q-card-head { padding:22px 20px 18px; } }
+  </style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<div class="q-wrap">
+  <div class="q-top">
+    <a class="q-back" href="beta.html">← Retour aux ebooks</a>
+  </div>
+
+  <div class="q-card">
+    <div class="q-card-head">
+      <img src="img/logo.jpeg" alt="C'Réussite">
+      <h1>Ton retour de bêta-testeur</h1>
+      <p>Merci de tester les ebooks. Tes réponses nous aident vraiment à les améliorer avant la sortie.</p>
+    </div>
+
+    <div class="q-body" id="form-wrap">
+
+      <!-- Identification -->
+      <div class="sec-title">Identification</div>
+      <div class="q-field">
+        <label class="q-label" for="f-prenom">Ton prénom <span class="req">*</span></label>
+        <input type="text" class="q-input" id="f-prenom" maxlength="100" placeholder="Marie">
+        <div class="field-error" id="err-prenom">Ce champ est requis.</div>
+      </div>
+      <div class="q-field">
+        <label class="q-label" for="f-email">Ton email <span class="req">*</span></label>
+        <input type="email" class="q-input" id="f-email" maxlength="160" placeholder="ton@email.fr">
+        <div class="field-error" id="err-email">Merci d'indiquer un email valide.</div>
+      </div>
+      <div class="q-field">
+        <label class="q-label">Ta classe <span class="req">*</span></label>
+        <div class="radio-grid row" id="rg-niveau">
+          <div class="radio-opt" data-group="niveau" data-val="seconde"><div class="radio-dot"></div><span>Seconde</span></div>
+          <div class="radio-opt" data-group="niveau" data-val="premiere"><div class="radio-dot"></div><span>Première</span></div>
+          <div class="radio-opt" data-group="niveau" data-val="terminale"><div class="radio-dot"></div><span>Terminale</span></div>
+          <div class="radio-opt" data-group="niveau" data-val="autre"><div class="radio-dot"></div><span>Autre</span></div>
+        </div>
+        <div class="field-error" id="err-niveau">Merci de choisir une option.</div>
+      </div>
+
+      <!-- Ebooks consultés -->
+      <div class="sec-title">Quels ebooks as-tu consultés&nbsp;?</div>
+      <div class="q-field">
+        <div class="q-hint">Coche tous les ebooks que tu as ouverts. Un bloc de questions apparaît pour chacun.</div>
+        <div class="check-grid" id="cg-ebooks"></div>
+        <div class="field-error" id="err-ebooks">Sélectionne au moins un ebook.</div>
+      </div>
+
+      <!-- Blocs par ebook (générés) -->
+      <div id="ebooks-blocks"></div>
+
+      <!-- Avis global -->
+      <div class="sec-title">Avis global</div>
+      <div class="q-field">
+        <label class="q-label">Recommanderais-tu ces fiches à d'autres élèves&nbsp;? <span class="req">*</span></label>
+        <div class="radio-grid" id="rg-reco">
+          <div class="radio-opt" data-group="recommandation" data-val="oui_certain"><div class="radio-dot"></div><span>Oui, sans hésiter</span></div>
+          <div class="radio-opt" data-group="recommandation" data-val="oui_probablement"><div class="radio-dot"></div><span>Probablement oui</span></div>
+          <div class="radio-opt" data-group="recommandation" data-val="je_sais_pas"><div class="radio-dot"></div><span>Je ne sais pas</span></div>
+          <div class="radio-opt" data-group="recommandation" data-val="probablement_pas"><div class="radio-dot"></div><span>Probablement pas</span></div>
+          <div class="radio-opt" data-group="recommandation" data-val="non"><div class="radio-dot"></div><span>Non</span></div>
+        </div>
+        <div class="field-error" id="err-reco">Merci de choisir une option.</div>
+      </div>
+      <div class="q-field">
+        <label class="q-label" for="f-reco-pourquoi">Pourquoi&nbsp;?</label>
+        <textarea class="q-textarea" id="f-reco-pourquoi" placeholder="En quelques mots…"></textarea>
+      </div>
+      <div class="q-field">
+        <label class="q-label" for="f-frein">Qu'est-ce qui te freinerait à l'achat&nbsp;?</label>
+        <textarea class="q-textarea" id="f-frein" placeholder="Prix, format, autre chose…"></textarea>
+      </div>
+      <div class="q-field">
+        <label class="q-label">Le prix te semblerait-il raisonnable&nbsp;?</label>
+        <div class="radio-grid" id="rg-prix">
+          <div class="radio-opt" data-group="prix_avis" data-val="oui_certain"><div class="radio-dot"></div><span>Oui, sans hésiter</span></div>
+          <div class="radio-opt" data-group="prix_avis" data-val="oui_probablement"><div class="radio-dot"></div><span>Oui, probablement</span></div>
+          <div class="radio-opt" data-group="prix_avis" data-val="je_sais_pas"><div class="radio-dot"></div><span>Je ne sais pas</span></div>
+          <div class="radio-opt" data-group="prix_avis" data-val="probablement_pas"><div class="radio-dot"></div><span>Probablement pas</span></div>
+          <div class="radio-opt" data-group="prix_avis" data-val="non"><div class="radio-dot"></div><span>Non</span></div>
+        </div>
+      </div>
+      <div class="q-field">
+        <label class="q-label" for="f-prix-prop">Quel prix te semblerait juste&nbsp;?</label>
+        <input type="text" class="q-input" id="f-prix-prop" maxlength="30" placeholder="Ex : 9,99 €">
+      </div>
+      <div class="q-field">
+        <label class="q-label" for="f-avis-pub">As-tu un avis qu'on pourrait publier sur le site&nbsp;?</label>
+        <textarea class="q-textarea" id="f-avis-pub" placeholder="Un avis court et sincère…"></textarea>
+      </div>
+      <div class="q-field">
+        <label class="q-label">Tu acceptes qu'on le publie&nbsp;?</label>
+        <div class="radio-grid row" id="rg-accord">
+          <div class="radio-opt" data-group="accord_publication" data-val="oui"><div class="radio-dot"></div><span>Oui</span></div>
+          <div class="radio-opt" data-group="accord_publication" data-val="non"><div class="radio-dot"></div><span>Non</span></div>
+        </div>
+      </div>
+      <div class="q-field">
+        <label class="q-label" for="f-prenom-pub">Prénom à afficher pour la publication</label>
+        <input type="text" class="q-input" id="f-prenom-pub" maxlength="60" placeholder="Marie T.">
+      </div>
+
+      <!-- Pour la suite -->
+      <div class="sec-title">Pour la suite</div>
+      <div class="q-field">
+        <label class="q-label">Si on créait des fiches pour d'autres matières, lesquelles t'intéresseraient&nbsp;?</label>
+        <div class="check-grid" id="cg-matieres">
+          <div class="check-opt" data-val="hg"><div class="check-box">&#10003;</div><span>Histoire-Géographie</span></div>
+          <div class="check-opt" data-val="ses"><div class="check-box">&#10003;</div><span>SES</span></div>
+          <div class="check-opt" data-val="philo"><div class="check-box">&#10003;</div><span>Philosophie</span></div>
+          <div class="check-opt" data-val="svt"><div class="check-box">&#10003;</div><span>SVT</span></div>
+          <div class="check-opt" data-val="anglais"><div class="check-box">&#10003;</div><span>Anglais</span></div>
+          <div class="check-opt" data-val="francais"><div class="check-box">&#10003;</div><span>Français</span></div>
+          <div class="check-opt" data-val="non"><div class="check-box">&#10003;</div><span>Pas intéressé(e)</span></div>
+        </div>
+      </div>
+      <div class="q-field">
+        <label class="q-label" for="f-commentaires">Commentaires généraux ou suggestions</label>
+        <textarea class="q-textarea" id="f-commentaires" placeholder="Tout ce que tu veux nous dire…"></textarea>
+      </div>
+
+      <button type="button" class="q-submit" id="submit-btn">Envoyer mes retours</button>
+      <div class="submit-error" id="submit-error"></div>
+    </div>
+
+    <!-- Succès -->
+    <div class="q-success" id="success" style="display:none">
+      <div class="q-success-icon">&#10003;</div>
+      <h2>Merci pour tes retours&nbsp;!</h2>
+      <p>Tes réponses ont bien été envoyées.<br><a href="beta.html">Revenir aux ebooks</a></p>
+    </div>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="js/nav.js"></script>
+<script src="js/footer.js"></script>
+<script>
+(function () {
+  'use strict';
+  var BACKEND = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+    ? 'http://localhost:3000' : 'https://creussite-backend.onrender.com';
+
+  var EBOOKS = [
+    { key:'pc-2nde',         label:'Physique-Chimie · Seconde' },
+    { key:'pc-1ere',         label:'Physique-Chimie · 1re Spé' },
+    { key:'pc-terminale',    label:'Physique-Chimie · Terminale Spé' },
+    { key:'maths-terminale', label:'Mathématiques · Terminale Spé' },
+  ];
+
+  // Préremplir l'email depuis la session (connexion sur beta.html)
+  (function prefillEmail() {
+    try {
+      var em = sessionStorage.getItem('cr_beta_email');
+      if (em) { var f = document.getElementById('f-email'); f.value = em; f.readOnly = true; }
+    } catch (e) {}
+  })();
+
+  var starVals = {}; // key → note
+
+  // ── Checkboxes "ebooks consultés" + génération des blocs ──
+  var cg = document.getElementById('cg-ebooks');
+  var blocks = document.getElementById('ebooks-blocks');
+  EBOOKS.forEach(function (e) {
+    var opt = document.createElement('div');
+    opt.className = 'check-opt'; opt.dataset.val = e.key;
+    opt.innerHTML = '<div class="check-box">&#10003;</div><span>' + e.label + '</span>';
+    opt.addEventListener('click', function () {
+      var on = opt.classList.toggle('selected');
+      document.getElementById('eb-' + e.key).style.display = on ? 'block' : 'none';
+    });
+    cg.appendChild(opt);
+
+    var block = document.createElement('div');
+    block.className = 'eb-block'; block.id = 'eb-' + e.key; block.style.display = 'none';
+    block.innerHTML =
+      '<div class="eb-head">' + e.label + '</div>' +
+      '<div class="q-field">' +
+        '<label class="q-label">Ta note sur cet ebook</label>' +
+        '<div class="stars-row" data-stars="' + e.key + '">' +
+          [1,2,3,4,5].map(function (v) { return '<button type="button" class="star-btn" data-val="' + v + '">&#9733;</button>'; }).join('') +
+        '</div>' +
+        '<div class="field-error" id="err-note-' + e.key + '">Merci de donner une note.</div>' +
+      '</div>' +
+      '<div class="q-field">' +
+        '<label class="q-label">Quelle fiche t\'a semblé la plus utile ou la mieux faite&nbsp;?</label>' +
+        '<textarea class="q-textarea" id="f-utile-' + e.key + '" placeholder="Ex : la fiche sur…"></textarea>' +
+      '</div>' +
+      '<div class="q-field">' +
+        '<label class="q-label">Des choses qui t\'ont semblé fausses&nbsp;?</label>' +
+        '<div class="radio-grid row" data-group="erreurs-' + e.key + '">' +
+          '<div class="radio-opt" data-group="erreurs-' + e.key + '" data-val="non"><div class="radio-dot"></div><span>Non</span></div>' +
+          '<div class="radio-opt" data-group="erreurs-' + e.key + '" data-val="oui"><div class="radio-dot"></div><span>Oui</span></div>' +
+        '</div>' +
+        '<div class="cond" id="cond-erreurs-' + e.key + '"><textarea class="q-textarea" id="f-erreurs-' + e.key + '-detail" placeholder="Décris ce qui te semble inexact…"></textarea></div>' +
+      '</div>' +
+      '<div class="q-field">' +
+        '<label class="q-label">Est-ce qu\'il manque quelque chose d\'important&nbsp;?</label>' +
+        '<div class="radio-grid row" data-group="manque-' + e.key + '">' +
+          '<div class="radio-opt" data-group="manque-' + e.key + '" data-val="non"><div class="radio-dot"></div><span>Non</span></div>' +
+          '<div class="radio-opt" data-group="manque-' + e.key + '" data-val="oui"><div class="radio-dot"></div><span>Oui</span></div>' +
+        '</div>' +
+        '<div class="cond" id="cond-manque-' + e.key + '"><textarea class="q-textarea" id="f-manque-' + e.key + '-detail" placeholder="Qu\'est-ce qui manque&nbsp;?"></textarea></div>' +
+      '</div>';
+    blocks.appendChild(block);
+  });
+
+  // ── Interactions génériques ──
+  document.addEventListener('click', function (ev) {
+    var opt = ev.target.closest ? ev.target.closest('.radio-opt') : null;
+    if (opt && opt.dataset.group) {
+      var group = opt.dataset.group;
+      document.querySelectorAll('.radio-opt[data-group="' + group + '"]').forEach(function (o) { o.classList.remove('selected'); });
+      opt.classList.add('selected');
+      // Champs conditionnels erreurs/manque
+      if (group.indexOf('erreurs-') === 0) toggleCond('cond-' + group, opt.dataset.val === 'oui');
+      if (group.indexOf('manque-') === 0)  toggleCond('cond-' + group, opt.dataset.val === 'oui');
+      return;
+    }
+    var star = ev.target.closest ? ev.target.closest('.star-btn') : null;
+    if (star) {
+      var row = star.closest('.stars-row');
+      var key = row.dataset.stars;
+      var val = Number(star.dataset.val);
+      starVals[key] = val;
+      row.querySelectorAll('.star-btn').forEach(function (b) { b.classList.toggle('lit', Number(b.dataset.val) <= val); });
+    }
+  });
+
+  // Matières (checkboxes)
+  document.getElementById('cg-matieres').querySelectorAll('.check-opt').forEach(function (o) {
+    o.addEventListener('click', function () { o.classList.toggle('selected'); });
+  });
+
+  function toggleCond(id, show) { var el = document.getElementById(id); if (el) el.classList.toggle('visible', show); }
+  function getRadio(group) { var s = document.querySelector('.radio-opt[data-group="' + group + '"].selected'); return s ? s.dataset.val : ''; }
+  function getChecked(gridId) { return Array.prototype.map.call(document.querySelectorAll('#' + gridId + ' .check-opt.selected'), function (el) { return el.dataset.val; }); }
+  function val(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
+  function selectedEbooks() { return getChecked('cg-ebooks'); }
+  function setErr(id, show) { var el = document.getElementById(id); if (el) el.classList.toggle('visible', show); }
+  function setInvalid(id, bad) { var el = document.getElementById(id); if (el) el.classList.toggle('invalid', bad); }
+
+  // ── Validation + envoi ──
+  function validate() {
+    document.querySelectorAll('.field-error').forEach(function (e) { e.classList.remove('visible'); });
+    document.querySelectorAll('.invalid').forEach(function (e) { e.classList.remove('invalid'); });
+    var ok = true;
+
+    if (!val('f-prenom')) { setErr('err-prenom', true); setInvalid('f-prenom', true); ok = false; }
+    var em = val('f-email');
+    if (!em || em.indexOf('@') < 1) { setErr('err-email', true); setInvalid('f-email', true); ok = false; }
+    if (!getRadio('niveau')) { setErr('err-niveau', true); ok = false; }
+
+    var ebooks = selectedEbooks();
+    if (!ebooks.length) { setErr('err-ebooks', true); ok = false; }
+    ebooks.forEach(function (k) { if (!starVals[k]) { setErr('err-note-' + k, true); ok = false; } });
+
+    if (!getRadio('recommandation')) { setErr('err-reco', true); ok = false; }
+
+    return ok;
+  }
+
+  document.getElementById('submit-btn').addEventListener('click', function () {
+    var errEl = document.getElementById('submit-error');
+    errEl.style.display = 'none';
+    if (!validate()) {
+      errEl.textContent = 'Merci de compléter les champs obligatoires (✱).';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    var ebooks = selectedEbooks();
+    var payload = {
+      prenom: val('f-prenom'),
+      email:  val('f-email'),
+      niveau: getRadio('niveau'),
+      ebooks: ebooks,
+      recommandation:         getRadio('recommandation'),
+      recommandation_pourquoi: val('f-reco-pourquoi'),
+      frein_achat:            val('f-frein'),
+      prix_avis:              getRadio('prix_avis'),
+      prix_propose:           val('f-prix-prop'),
+      avis_publiable:         val('f-avis-pub'),
+      accord_publication:     getRadio('accord_publication'),
+      prenom_publication:     val('f-prenom-pub'),
+      matieres_souhaitees:    getChecked('cg-matieres'),
+      commentaires:           val('f-commentaires'),
+    };
+    ebooks.forEach(function (k) {
+      payload['note_' + k]            = starVals[k] || '';
+      payload['utile_' + k]           = val('f-utile-' + k);
+      payload['erreurs_' + k]         = getRadio('erreurs-' + k);
+      payload['erreurs_' + k + '_detail'] = val('f-erreurs-' + k + '-detail');
+      payload['manque_' + k]          = getRadio('manque-' + k);
+      payload['manque_' + k + '_detail']  = val('f-manque-' + k + '-detail');
+    });
+
+    var btn = document.getElementById('submit-btn');
+    btn.disabled = true; btn.textContent = 'Envoi en cours…';
+
+    function tryFetch() {
+      var ctrl = new AbortController();
+      var timer = setTimeout(function () { ctrl.abort(); }, 70000);
+      return fetch(BACKEND + '/api/beta-niveaux/feedback', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload), signal: ctrl.signal
+      }).then(function (r) { clearTimeout(timer); return r; }, function (e) { clearTimeout(timer); throw e; });
+    }
+
+    tryFetch()
+      .catch(function () { return new Promise(function (res) { setTimeout(res, 4000); }).then(tryFetch); })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.data.error || 'Erreur serveur.');
+        document.getElementById('form-wrap').style.display = 'none';
+        document.getElementById('success').style.display = 'block';
+        window.scrollTo(0, 0);
+      })
+      .catch(function (e) {
+        errEl.textContent = e.message || "Erreur d'envoi. Réessaie dans quelques secondes.";
+        errEl.style.display = 'block';
+        btn.disabled = false; btn.textContent = 'Envoyer mes retours';
+      });
+  });
+})();
+</script>
+</body>
+</html>
