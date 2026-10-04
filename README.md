@@ -174,7 +174,9 @@ CREATE TABLE orders (
 
 Index : `email`, `payment_session_id`, `invoice_number`, partiel sur `email_sent = false`.
 
-**Numérotation des factures** — `CRE-{année}-{NNNNN}`, séquence partagée entre ebooks (`orders`) et cours particuliers (`cp_invoices`). Le prochain numéro est calculé comme `max(numéro existant de l'année) + 1` (et non le nombre de lignes), ce qui garantit une séquence strictement croissante même après suppression d'une facture. Voir `nextInvoiceNumber()` dans `backend/services/db.js`. L'endpoint `GET /api/admin/next-invoice-number` est appelé en `no-store` côté `facture-cp.html` pour éviter qu'un numéro mis en cache par le navigateur réaffiche le précédent.
+**Numérotation des factures** — `CRE-{année}-{NNNNN}`, séquence partagée entre ebooks (`orders`) et cours particuliers (`cp_invoices`). Le prochain numéro est calculé comme `max(numéro existant de l'année) + 1` (et non le nombre de lignes), ce qui garantit une séquence strictement croissante même après suppression d'une facture. Voir `nextInvoiceNumber()` dans `backend/services/db.js`. L'endpoint `GET /api/admin/next-invoice-number` est appelé en `no-store` côté `facture-cp.html` pour éviter qu'un numéro mis en cache par le navigateur réaffiche le précédent. `facture-cp.html` bloque l'impression si l'enregistrement en base échoue, pour ne jamais émettre un PDF sans facture correspondante (sinon trou de numérotation).
+
+**Factures cours particuliers (`cp_invoices`)** — une facture est « à régler » si son `payment_method` vaut `À payer` **ou** si au moins une ligne (`items[].status`) vaut `a_payer`. `markCpInvoicePaid()` solde le niveau facture **et** chaque ligne (sinon la facture resterait affichée « À régler »). Le filigrane diagonal `ACQUITTÉE` n'est apposé que sur une facture qui était « à régler » puis soldée (détection via présence d'un RIB) ; une facture née déjà payée s'affiche sans filigrane.
 
 ### Table `extract_requests`
 
