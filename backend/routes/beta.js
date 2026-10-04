@@ -9,7 +9,7 @@ const defaultClient = SibApiV3Sdk.ApiClient.instance;
 defaultClient.authentications['api-key'].apiKey = process.env.BREVO_API_KEY;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
-const BETA_EMAIL = 'creussite2026@gmail.com';
+const BETA_EMAIL = process.env.NOTIFY_EMAIL || process.env.BCC_EMAIL;
 
 // ── Label maps ──────────────────────────────────────────
 const LABELS = {

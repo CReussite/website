@@ -10,7 +10,7 @@ const defaultClient = SibApiV3Sdk.ApiClient.instance;
 defaultClient.authentications['api-key'].apiKey = process.env.BREVO_API_KEY;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
-const REVIEW_EMAIL = 'creussite2026@gmail.com';
+const REVIEW_EMAIL = process.env.NOTIFY_EMAIL || process.env.BCC_EMAIL;
 
 // ── GET /api/avis — avis visibles pour le site ──────────
 router.get('/', async (req, res) => {

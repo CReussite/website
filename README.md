@@ -221,6 +221,7 @@ cp backend/.env.example backend/.env  # en local
 | `FROM_EMAIL` | `contact@c-reussite.fr` |
 | `FROM_NAME` | `C'Réussite` |
 | `BCC_EMAIL` | Copie cachée de chaque email de commande + extrait |
+| `NOTIFY_EMAIL` | Destinataire interne des notifications (avis, retours bêta) ; repli du BCC |
 | `ALERT_EMAIL` | Reçoit les alertes ops en cas d'erreur |
 | `ADMIN_KEY` | Clé secrète pour `/admin.html`, valeur longue aléatoire |
 | `BETA_VIEWER_PASSWORDS` | JSON bêta maths/physique : `[{"password","type","expires"}]` |
@@ -318,7 +319,7 @@ Variable d'environnement `BETA_TESTERS` (Render), tableau JSON. Un compte donne 
 
 ### Retours
 
-Le questionnaire (`beta-formulaire.html`) est adaptatif : le testeur coche les ebooks consultés, un bloc de questions apparaît par ebook. Les réponses partent par email vers `creussite2026@gmail.com` via Brevo (route `/api/beta-niveaux/feedback`), aucune donnée stockée en base.
+Le questionnaire (`beta-formulaire.html`) est adaptatif : le testeur coche les ebooks consultés, un bloc de questions apparaît par ebook. Les réponses partent par email vers `NOTIFY_EMAIL` via Brevo (route `/api/beta-niveaux/feedback`), aucune donnée stockée en base.
 
 ---
 

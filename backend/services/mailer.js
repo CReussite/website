@@ -107,7 +107,7 @@ async function sendOrderEmail({
   };
   sendSmtpEmail.replyTo = { email: CONTACT_EMAIL, name: process.env.FROM_NAME || "C'Réussite" };
   sendSmtpEmail.to = [{ email: toEmail, name }];
-  sendSmtpEmail.bcc = [{ email: process.env.BCC_EMAIL || 'creussite2026@gmail.com' }];
+  sendSmtpEmail.bcc = [{ email: process.env.BCC_EMAIL || process.env.NOTIFY_EMAIL }];
   sendSmtpEmail.subject = `Tes fiches sont là — ${product.name}`;
   sendSmtpEmail.attachment = attachments;
   sendSmtpEmail.htmlContent = `
