@@ -1696,8 +1696,12 @@
               '<br>Merci d\'indiquer le numéro de la facture en référence du virement.</div></div>'
             : '<div class="inv-aq"><span class="inv-aq-badge">Payé</span><span class="inv-aq-txt">Facture acquittée — ' + (data.payment_method||'') + (data.payment_date ? ' le ' + data.payment_date : '') + '.</span></div>';
 
+          // Le tampon diagonal "ACQUITTÉE" n'a de sens que pour une facture
+          // qui était "à régler" puis soldée (elle a un RIB). Une facture née
+          // déjà payée affiche simplement "Payé", sans filigrane.
+          var wasToSettle = !!(pd && pd.iban);
           var stampHtml = '';
-          if (!isAr) {
+          if (!isAr && wasToSettle) {
             stampHtml = '<div style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10;display:flex;align-items:center;justify-content:center;">' +
               '<div style="transform:rotate(-35deg);text-align:center;opacity:0.13;">' +
               '<div style="font-size:80px;font-weight:900;color:#2e7d4f;letter-spacing:2px;line-height:1;">ACQUITTÉE</div>' +

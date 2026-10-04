@@ -155,6 +155,10 @@ router.get('/invoice/:invoiceNumber', requireAdminKey, async (req, res) => {
         : [{ description: 'Cours particuliers', hours: 1, hourlyRate: cpInvoice.amount / 100 }];
 
       const isPaid = cpInvoice.payment_method !== 'À payer';
+      // Tampon ACQUITTÉE réservé aux factures qui étaient "à régler" puis
+      // soldées (présence d'un RIB). Une facture née déjà payée reste sans.
+      const wasToSettle = !!(cpInvoice.rib && cpInvoice.rib.iban);
+      const showStamp = isPaid && wasToSettle;
       const pdfBuffer = await generateCpInvoice({
         invoiceNumber:   cpInvoice.invoice_number,
         customerName:    cpInvoice.customer_name || cpInvoice.email || '—',
@@ -164,8 +168,8 @@ router.get('/invoice/:invoiceNumber', requireAdminKey, async (req, res) => {
         paymentDate:     fmtDate(cpInvoice.payment_date || ''),
         paymentMethod:   'À payer',
         rib:             cpInvoice.rib || {},
-        acquittedDate:   isPaid ? fmtDate(cpInvoice.payment_date || '') : null,
-        acquittedMethod: isPaid ? (cpInvoice.payment_method || '') : null,
+        acquittedDate:   showStamp ? fmtDate(cpInvoice.payment_date || '') : null,
+        acquittedMethod: showStamp ? (cpInvoice.payment_method || '') : null,
       });
 
       res.setHeader('Content-Type', 'application/pdf');
@@ -490,6 +494,7 @@ router.patch('/cours-particuliers/:invoiceNumber', express.json(), requireAdminK
         }))
       : [{ description: 'Cours particuliers', hours: 1, hourlyRate: updated.amount / 100, paymentDate: fmtDate(paymentDate), paymentMethod }];
 
+    // La facture était "à régler" puis soldée → tampon ACQUITTÉE sur le PDF.
     const pdfBuffer = await generateCpInvoice({
       invoiceNumber:   updated.invoice_number,
       customerName:    updated.customer_name || updated.email || '—',
@@ -498,7 +503,9 @@ router.patch('/cours-particuliers/:invoiceNumber', express.json(), requireAdminK
       invoiceDate:     new Date(updated.created_at),
       paymentDate:     fmtDate(paymentDate),
       paymentMethod,
-      rib:             {},
+      rib:             updated.rib || {},
+      acquittedDate:   fmtDate(paymentDate),
+      acquittedMethod: paymentMethod,
     });
 
     await uploadInvoicePdf(invoiceNumber, pdfBuffer);

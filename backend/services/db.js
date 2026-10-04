@@ -312,23 +312,36 @@ async function insertCoursParticuliersInvoice({
 
 /**
  * Marque une facture CP comme payée.
- * La facture originale (items, rib, montants) est préservée à l'identique —
- * seuls payment_method et payment_date sont ajoutés pour la traçabilité.
+ * Met à jour le niveau facture ET chaque ligne restée "à payer" — sinon la
+ * facture continuerait de s'afficher "À régler" dans la liste (qui regarde
+ * aussi le statut des lignes). Le reste (montants, rib) est préservé.
  */
 async function markCpInvoicePaid(invoiceNumber, { paymentDate, paymentMethod }) {
   const supabase = getClient();
   const { data: current, error: getErr } = await supabase
     .from('cp_invoices')
-    .select('payment_method')
+    .select('payment_method, items')
     .eq('invoice_number', invoiceNumber)
     .maybeSingle();
   if (getErr) throw new Error(`DB markCpInvoicePaid get: ${getErr.message}`);
   if (!current) { const e = new Error('Facture introuvable.'); e.statusCode = 404; throw e; }
-  if (current.payment_method !== 'À payer') { const e = new Error('Cette facture est déjà acquittée.'); e.statusCode = 409; throw e; }
+
+  // Une facture est "à régler" si son mode est "À payer" OU si au moins une
+  // ligne reste en statut a_payer. On ne bloque que les factures réellement
+  // soldées — cohérent avec l'affichage "À régler" de la liste admin.
+  const hasUnpaidItem = Array.isArray(current.items) && current.items.some(i => i.status === 'a_payer');
+  const isUnpaid = current.payment_method === 'À payer' || hasUnpaidItem;
+  if (!isUnpaid) { const e = new Error('Cette facture est déjà acquittée.'); e.statusCode = 409; throw e; }
+
+  const paidItems = Array.isArray(current.items)
+    ? current.items.map(i => (i.status === 'a_payer'
+        ? { ...i, status: 'paid', payment_date: paymentDate, payment_method: paymentMethod }
+        : i))
+    : current.items;
 
   const { data, error } = await supabase
     .from('cp_invoices')
-    .update({ payment_method: paymentMethod, payment_date: paymentDate })
+    .update({ payment_method: paymentMethod, payment_date: paymentDate, items: paidItems })
     .eq('invoice_number', invoiceNumber)
     .select()
     .single();

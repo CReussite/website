@@ -510,24 +510,32 @@
       } : null,
     };
 
-    // Sauvegarde en DB (non bloquant — on continue même en cas d'erreur)
+    // Enregistrement en base OBLIGATOIRE avant impression : une facture générée
+    // en PDF mais non enregistrée crée un trou dans la numérotation (le PDF part
+    // au client mais la facture est introuvable ensuite). On bloque donc
+    // l'impression si la sauvegarde échoue.
+    if (!adminKey) {
+      alert("Clé admin manquante : impossible d'enregistrer la facture.\nReconnecte-toi au tableau de bord avant de générer une facture.");
+      return;
+    }
     let confirmedNumber = payload.invoiceNumber;
-    if (adminKey) {
-      try {
-        const res = await fetch(BACKEND + '/api/admin/cours-particuliers?key=' + encodeURIComponent(adminKey), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        const data = await res.json();
-        if (data.invoiceNumber) {
-          confirmedNumber = data.invoiceNumber;
-          document.getElementById('f-num').value = confirmedNumber;
-          render();
-        }
-      } catch (e) {
-        console.warn('Sauvegarde DB échouée :', e.message);
+    try {
+      const res = await fetch(BACKEND + '/api/admin/cours-particuliers?key=' + encodeURIComponent(adminKey), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      let data = {};
+      try { data = await res.json(); } catch (_) {}
+      if (!res.ok || !data.invoiceNumber) {
+        throw new Error(data.error || ('Erreur serveur (' + res.status + ')'));
       }
+      confirmedNumber = data.invoiceNumber;
+      document.getElementById('f-num').value = confirmedNumber;
+      render();
+    } catch (e) {
+      alert("La facture n'a PAS été enregistrée (" + e.message + ").\nElle n'a donc pas été générée, pour éviter un trou dans la numérotation. Vérifie ta connexion et réessaie.");
+      return;
     }
 
     const invoiceNumber = confirmedNumber || 'CRE';
