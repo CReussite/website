@@ -147,6 +147,7 @@ CReussite/
 | GET | `/api/admin/extracts` | ADMIN_KEY | Historique des extraits envoyés |
 | GET | `/api/admin/export` | ADMIN_KEY | Export CSV (BOM UTF-8) |
 | GET | `/api/admin/invoice/:num` | ADMIN_KEY | Re-génère et télécharge une facture PDF |
+| GET | `/api/admin/next-invoice-number` | ADMIN_KEY | Prochain numéro de facture disponible (`max + 1`) |
 | GET | `/api/admin/config` | ADMIN_KEY | Retourne `{ stancer_mode: 'live' \| 'test' }` |
 | GET | `/api/health` | — | `{"status":"ok"}` |
 | GET | `/api/healthz` | — | Health check détaillé, `503` si variable manquante |
@@ -172,6 +173,8 @@ CREATE TABLE orders (
 ```
 
 Index : `email`, `payment_session_id`, `invoice_number`, partiel sur `email_sent = false`.
+
+**Numérotation des factures** — `CRE-{année}-{NNNNN}`, séquence partagée entre ebooks (`orders`) et cours particuliers (`cp_invoices`). Le prochain numéro est calculé comme `max(numéro existant de l'année) + 1` (et non le nombre de lignes), ce qui garantit une séquence strictement croissante même après suppression d'une facture. Voir `nextInvoiceNumber()` dans `backend/services/db.js`. L'endpoint `GET /api/admin/next-invoice-number` est appelé en `no-store` côté `facture-cp.html` pour éviter qu'un numéro mis en cache par le navigateur réaffiche le précédent.
 
 ### Table `extract_requests`
 

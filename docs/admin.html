@@ -1825,9 +1825,15 @@
             var revEur = row.revenue_cents ? (row.revenue_cents / 100).toFixed(2) + ' €' : '—';
             var expiry = row.expires_at ? new Date(row.expires_at).toLocaleDateString('fr-FR') : '—';
             var referral = row.referral_count !== null ? row.referral_count + ' / 5' : '—';
-            var badge = row.active
-              ? '<span style="color:#1a7a3c;font-weight:700;">Actif</span>'
-              : '<span style="color:#c0392b;font-weight:700;">Inactif</span>';
+            var isExpired = row.expires_at && new Date(row.expires_at) < new Date();
+            var badge;
+            if (!row.active) {
+              badge = '<span style="color:#c0392b;font-weight:700;">Inactif</span>';
+            } else if (isExpired) {
+              badge = '<span style="color:#b7791f;font-weight:700;">Expiré</span>';
+            } else {
+              badge = '<span style="color:#1a7a3c;font-weight:700;">Actif</span>';
+            }
             var toggleLabel = row.active ? 'Désactiver' : 'Activer';
             var toggleAction = 'togglePromo(' + JSON.stringify(row.code) + ',' + !row.active + ')';
             return '<tr>' +

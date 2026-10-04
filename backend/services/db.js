@@ -12,6 +12,32 @@ function getClient() {
 }
 
 /**
+ * Calcule le prochain numéro de facture de l'année (CRE-YYYY-NNNNN).
+ *
+ * Basé sur le PLUS GRAND numéro existant + 1 (et non le nombre de lignes).
+ * Garantit un numéro strictement croissant même après suppression d'une
+ * facture : on ne retombe jamais sur un numéro déjà utilisé ("le précédent").
+ * Compte ebooks (orders) + cours particuliers (cp_invoices) pour éviter toute
+ * collision entre les deux séries qui partagent la même numérotation.
+ */
+async function nextInvoiceNumber(year = new Date().getFullYear()) {
+  const supabase = getClient();
+  const [{ data: orders }, { data: cp }] = await Promise.all([
+    supabase.from('orders').select('invoice_number').like('invoice_number', `CRE-${year}-%`),
+    supabase.from('cp_invoices').select('invoice_number').like('invoice_number', `CRE-${year}-%`),
+  ]);
+
+  let max = 0;
+  for (const row of [...(orders || []), ...(cp || [])]) {
+    const m = /CRE-\d{4}-(\d+)/.exec(row.invoice_number || '');
+    if (m) max = Math.max(max, parseInt(m[1], 10));
+  }
+
+  const seq = String(max + 1).padStart(5, '0');
+  return `CRE-${year}-${seq}`;
+}
+
+/**
  * Insère une commande si elle n'existe pas déjà (idempotence via payment_session_id).
  * Retourne { order, invoiceNumber, isNew }
  *   - isNew = false si la session était déjà en base (retry Stancer)
@@ -30,15 +56,8 @@ async function insertOrderIdempotent({ email, productId, amount, paymentSessionI
     return { order: existing, invoiceNumber: existing.invoice_number, isNew: false };
   }
 
-  // Numérotation unifiée : compte ebooks + CP pour éviter toute collision
-  const year = new Date().getFullYear();
-  const [{ count: ebookCount }, { count: cpCount }] = await Promise.all([
-    supabase.from('orders').select('*', { count: 'exact', head: true }).like('invoice_number', `CRE-${year}-%`),
-    supabase.from('cp_invoices').select('*', { count: 'exact', head: true }).like('invoice_number', `CRE-${year}-%`),
-  ]);
-
-  const seq = String((ebookCount || 0) + (cpCount || 0) + 1).padStart(5, '0');
-  const invoiceNumber = `CRE-${year}-${seq}`;
+  // Numérotation unifiée (ebooks + CP) basée sur le plus grand numéro existant.
+  const invoiceNumber = await nextInvoiceNumber();
 
   const { data: order, error } = await supabase
     .from('orders')
@@ -237,15 +256,20 @@ async function insertCoursParticuliersInvoice({
 }) {
   const supabase = getClient();
 
+  // Garde-fou : un numéro fourni par le client peut être obsolète (cache
+  // navigateur) ou déjà utilisé. On vérifie qu'il est libre ; sinon on
+  // recalcule le prochain numéro réellement disponible pour ne jamais
+  // réinsérer "le numéro précédent".
   let invoiceNumber = explicitNumber;
-  if (!invoiceNumber) {
-    const year = new Date().getFullYear();
-    const [{ count: cpCount }, { count: ebookCount }] = await Promise.all([
-      supabase.from('cp_invoices').select('*', { count: 'exact', head: true }).like('invoice_number', `CRE-${year}-%`),
-      supabase.from('orders').select('*', { count: 'exact', head: true }).like('invoice_number', `CRE-${year}-%`),
+  if (invoiceNumber) {
+    const [{ data: cpHit }, { data: orderHit }] = await Promise.all([
+      supabase.from('cp_invoices').select('invoice_number').eq('invoice_number', invoiceNumber).maybeSingle(),
+      supabase.from('orders').select('invoice_number').eq('invoice_number', invoiceNumber).maybeSingle(),
     ]);
-    const seq = String((cpCount || 0) + (ebookCount || 0) + 1).padStart(5, '0');
-    invoiceNumber = `CRE-${year}-${seq}`;
+    if (cpHit || orderHit) invoiceNumber = null;
+  }
+  if (!invoiceNumber) {
+    invoiceNumber = await nextInvoiceNumber();
   }
 
   const totalEur = items.reduce((sum, item) => sum + Number(item.total), 0);
@@ -371,14 +395,7 @@ async function setAdminSetting(key, value) {
 }
 
 async function getNextCpInvoiceNumber() {
-  const supabase = getClient();
-  const year = new Date().getFullYear();
-  const [{ count: ebookCount }, { count: cpCount }] = await Promise.all([
-    supabase.from('orders').select('*', { count: 'exact', head: true }).like('invoice_number', `CRE-${year}-%`),
-    supabase.from('cp_invoices').select('*', { count: 'exact', head: true }).like('invoice_number', `CRE-${year}-%`),
-  ]);
-  const seq = String((ebookCount || 0) + (cpCount || 0) + 1).padStart(5, '0');
-  return `CRE-${year}-${seq}`;
+  return nextInvoiceNumber();
 }
 
 // ── Promo codes ────────────────────────────────────────────────────────────

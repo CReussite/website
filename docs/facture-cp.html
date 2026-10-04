@@ -456,7 +456,7 @@
     if (adminKey) {
       Promise.all([
         fetch(BACKEND + '/api/admin/settings?key=' + encodeURIComponent(adminKey)).then(r => r.json()).catch(() => ({})),
-        fetch(BACKEND + '/api/admin/next-invoice-number?key=' + encodeURIComponent(adminKey)).then(r => r.json()).catch(() => ({})),
+        fetch(BACKEND + '/api/admin/next-invoice-number?key=' + encodeURIComponent(adminKey) + '&_=' + Date.now(), { cache: 'no-store' }).then(r => r.json()).catch(() => ({})),
       ]).then(([settings, inv]) => {
         if (settings.rib_iban) document.getElementById('f-iban').value = settings.rib_iban;
         if (settings.rib_bic)  document.getElementById('f-bic').value  = settings.rib_bic;
