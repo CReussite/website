@@ -12,11 +12,31 @@ function getClient() {
 }
 
 /**
- * Calcule le prochain numéro de facture de l'année (CRE-YYYY-NNNNN).
+ * Logique pure : calcule le prochain numéro à partir des numéros existants.
  *
- * Basé sur le PLUS GRAND numéro existant + 1 (et non le nombre de lignes).
+ * Basé sur le PLUS GRAND numéro de l'année + 1 (et non le nombre de lignes).
  * Garantit un numéro strictement croissant même après suppression d'une
  * facture : on ne retombe jamais sur un numéro déjà utilisé ("le précédent").
+ * Exportée pour être testée sans accès base de données.
+ *
+ * @param {string[]} existingNumbers - numéros déjà en base (toutes séries)
+ * @param {number}   year            - année ciblée
+ * @returns {string} CRE-YYYY-NNNNN
+ */
+function computeNextInvoiceNumber(existingNumbers, year = new Date().getFullYear()) {
+  const re = new RegExp(`^CRE-${year}-(\\d+)$`);
+  let max = 0;
+  for (const num of existingNumbers || []) {
+    const m = re.exec(num || '');
+    if (m) max = Math.max(max, parseInt(m[1], 10));
+  }
+  const seq = String(max + 1).padStart(5, '0');
+  return `CRE-${year}-${seq}`;
+}
+
+/**
+ * Calcule le prochain numéro de facture de l'année (CRE-YYYY-NNNNN).
+ *
  * Compte ebooks (orders) + cours particuliers (cp_invoices) pour éviter toute
  * collision entre les deux séries qui partagent la même numérotation.
  */
@@ -27,14 +47,8 @@ async function nextInvoiceNumber(year = new Date().getFullYear()) {
     supabase.from('cp_invoices').select('invoice_number').like('invoice_number', `CRE-${year}-%`),
   ]);
 
-  let max = 0;
-  for (const row of [...(orders || []), ...(cp || [])]) {
-    const m = /CRE-\d{4}-(\d+)/.exec(row.invoice_number || '');
-    if (m) max = Math.max(max, parseInt(m[1], 10));
-  }
-
-  const seq = String(max + 1).padStart(5, '0');
-  return `CRE-${year}-${seq}`;
+  const all = [...(orders || []), ...(cp || [])].map((r) => r.invoice_number);
+  return computeNextInvoiceNumber(all, year);
 }
 
 /**
@@ -652,4 +666,6 @@ module.exports = {
   getAdminSettings,
   setAdminSetting,
   getNextCpInvoiceNumber,
+  // Numérotation factures (logique pure, testable)
+  computeNextInvoiceNumber,
 };

@@ -354,7 +354,8 @@ STANCER_SECRET_KEY=stest_... npm test
 | Fichier | Ce qu'il teste | Credentials requis |
 | ------- | ------------- | ------------------ |
 | `tests/invoice.test.js` | Génération facture PDF | Non |
-| `tests/products.test.js` | Validité products.json | Non |
+| `tests/invoice-number.test.js` | Numérotation factures (`max + 1`, pas de doublon) | Non |
+| `tests/products.test.js` | Validité products.json + flux Google Merchant | Non |
 | `tests/webhook.test.js` | Pipeline commande + idempotence | Non (mocks) |
 | `tests/checkout.test.js` | Création paiement Stancer | Oui (skippé sans clé) |
 | `tests/alerts.test.js` | Formatage alertes ops | Non |
