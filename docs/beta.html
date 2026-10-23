@@ -136,12 +136,17 @@
     .toc-head button { background:rgba(255,255,255,.12); color:var(--gold); border:1px solid rgba(224,197,143,.2);
       border-radius:7px; width:30px; height:30px; cursor:pointer; font-size:1.1rem; line-height:1; flex-shrink:0; }
     .toc-head button:hover { background:rgba(255,255,255,.22); }
-    .toc-body { padding:10px; max-height:calc(100vh - 150px); overflow:auto; background:#cdd1db; }
-    .toc-page-wrap { position:relative; display:block; }
-    .toc-page-wrap canvas { display:block; width:100%; height:auto; border-radius:3px; box-shadow:0 2px 10px rgba(0,0,0,.2); }
-    .toc-annots { position:absolute; top:0; left:0; width:100%; height:100%; }
-    .toc-annots a { position:absolute; cursor:pointer; border-radius:2px; transition:background .12s; }
-    .toc-annots a:hover { background:rgba(224,197,143,.4); box-shadow:0 0 0 2px rgba(224,197,143,.6); }
+    .toc-body { padding:8px; max-height:calc(100vh - 150px); overflow:auto; background:var(--white); }
+    .toc-list { display:flex; flex-direction:column; }
+    .toc-sec { font-size:.72rem; font-weight:800; color:var(--blue); text-transform:uppercase; letter-spacing:.04em;
+      padding:13px 10px 5px; }
+    .toc-list .toc-sec:first-child { padding-top:4px; }
+    .toc-item { display:flex; align-items:baseline; gap:10px; justify-content:space-between; text-decoration:none;
+      color:var(--text); font-size:.86rem; line-height:1.3; padding:7px 10px; border-radius:8px; transition:background .12s; }
+    .toc-item:hover { background:rgba(17,34,80,.06); }
+    .toc-item.active { background:rgba(224,197,143,.3); font-weight:700; }
+    .toc-item .toc-lbl { flex:1; }
+    .toc-item .toc-pg { color:var(--muted); font-size:.78rem; font-variant-numeric:tabular-nums; flex-shrink:0; }
     .reader-layout.toc-off .toc-panel { display:none; }
     #btn-toc-panel.active { background:var(--gold); color:var(--blue); }
 
@@ -154,12 +159,12 @@
     .fs-toc-head button { background:rgba(255,255,255,.12); color:var(--gold); border:none; border-radius:7px;
       width:28px; height:28px; cursor:pointer; font-size:1rem; line-height:1; }
     .fs-toc-head button:hover { background:rgba(255,255,255,.22); }
-    .fs-toc-body { padding:12px; overflow:auto; }
-    .fs-toc-wrap { position:relative; display:block; }
-    .fs-toc-wrap canvas { display:block; width:100%; height:auto; border-radius:3px; box-shadow:0 2px 10px rgba(0,0,0,.4); }
-    .fs-toc-annots { position:absolute; top:0; left:0; width:100%; height:100%; }
-    .fs-toc-annots a { position:absolute; cursor:pointer; border-radius:2px; transition:background .12s; }
-    .fs-toc-annots a:hover { background:rgba(224,197,143,.4); box-shadow:0 0 0 2px rgba(224,197,143,.6); }
+    .fs-toc-body { padding:8px; overflow:auto; flex:1; min-height:0; }
+    #fs-toc .toc-sec { color:var(--gold); }
+    #fs-toc .toc-item { color:rgba(255,255,255,.88); }
+    #fs-toc .toc-item:hover { background:rgba(255,255,255,.08); }
+    #fs-toc .toc-item.active { background:rgba(224,197,143,.22); color:#fff; }
+    #fs-toc .toc-item .toc-pg { color:rgba(255,255,255,.5); }
     #fs-toc-toggle.active { background:var(--gold); color:var(--blue); }
 
     /* ── FULLSCREEN ── */
@@ -256,10 +261,7 @@
           <button type="button" onclick="toggleTocPanel()" title="Masquer le sommaire" aria-label="Masquer le sommaire">&#x2039;</button>
         </div>
         <div class="toc-body">
-          <div class="toc-page-wrap">
-            <canvas id="toc-canvas" oncontextmenu="return false"></canvas>
-            <div class="toc-annots" id="toc-annots"></div>
-          </div>
+          <div class="toc-list" id="toc-list"></div>
         </div>
       </aside>
 
@@ -494,7 +496,7 @@
       document.getElementById('btn-lp').disabled = false;
       document.getElementById('pdf-loading').style.display = 'none';
       document.getElementById('pdf-page-wrap').style.display = 'inline-block';
-      findTOCPage();
+      buildTOC();
       renderPage(1);
     }).catch(function (e) {
       if (e && e.message === 'auth') return;
@@ -531,6 +533,7 @@
       document.getElementById('btn-pp').disabled = (n <= 1);
       document.getElementById('btn-np').disabled = (n >= pdfDoc.numPages);
       document.getElementById('btn-lp').disabled = (n >= pdfDoc.numPages);
+      highlightTocCurrent();
       return currentPage.getAnnotations();
     }).then(function (annots) {
       renderAnnotations(annots, currentPage, wrap._effectiveScale);
@@ -592,88 +595,147 @@
   window.firstPage = function () { if (pdfDoc) renderPage(1); };
   window.lastPage  = function () { if (pdfDoc) renderPage(pdfDoc.numPages); };
 
-  function findTOCPage() {
-    tocFound = false;
-    var maxScan = Math.min(8, pdfDoc.numPages);
-    var checks = [];
+  // ── SOMMAIRE : détection + extraction d'une vraie liste de chapitres ─────
+  var tocEntries = [];   // [{ section:bool, label, printed, page }]
+
+  function cleanLabel(s) {
+    return (s || '')
+      .replace(/([A-Za-zÀ-ÿ])!([A-Za-zÀ-ÿ])/g, '$1ff$2')  // ligature « ff » mal décodée
+      .replace(/[●•·]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+  function isNoise(t) {
+    return !t || t.length < 2 || /tous droits réservés|©/i.test(t) ||
+      /^[\d.\s]+$/.test(t) || t.toLowerCase() === 'sommaire';
+  }
+
+  // Trouve la page sommaire : parmi les premières pages contenant le mot
+  // « sommaire », celle qui a le plus de liens internes (la vraie table, pas
+  // la page de présentation qui ne fait que la mentionner).
+  function buildTOC() {
+    tocFound = false; tocEntries = [];
+    var maxScan = Math.min(10, pdfDoc.numPages);
+    var scans = [];
     for (var i = 1; i <= maxScan; i++) {
-      checks.push((function (num) {
+      scans.push((function (num) {
         return pdfDoc.getPage(num).then(function (page) {
           return page.getTextContent().then(function (tc) {
-            // On cible la page dont le titre est « Sommaire » (texte en tête de page),
-            // et non une page qui ne fait que mentionner le mot (ex. la présentation).
-            var head = tc.items.map(function (it) { return it.str; }).join(' ')
-              .toLowerCase().replace(/\s+/g, ' ').trim().slice(0, 30);
-            return head.indexOf('sommaire') !== -1 ? num : null;
+            var has = tc.items.map(function (it) { return it.str; }).join(' ').toLowerCase().indexOf('sommaire') !== -1;
+            if (!has) return null;
+            return page.getAnnotations().then(function (an) {
+              var links = an.filter(function (a) { return a.subtype === 'Link' && a.rect && a.dest; }).length;
+              return { page: num, links: links };
+            });
           });
-        });
+        }).catch(function () { return null; });
       })(i));
     }
-    return Promise.all(checks).then(function (res) {
-      for (var j = 0; j < res.length; j++) { if (res[j]) { tocPage = res[j]; tocFound = true; break; } }
-      updateTocUI();
+    return Promise.all(scans).then(function (res) {
+      var best = null;
+      res.forEach(function (r) { if (r && (!best || r.links > best.links)) best = r; });
+      if (!best) { updateTocUI(); return; }
+      tocPage = best.page; tocFound = true;
+      return extractTOC(best.page).then(updateTocUI);
     }).catch(function () { updateTocUI(); });
+  }
+
+  // Reconstruit la liste des entrées : titres de section (lignes sans lien) +
+  // fiches (un lien interne = une fiche), triées de haut en bas.
+  function extractTOC(num) {
+    return pdfDoc.getPage(num).then(function (page) {
+      return Promise.all([page.getTextContent(), page.getAnnotations()]).then(function (r) {
+        var items = r[0].items.filter(function (it) { return it.str && it.str.trim(); });
+        var annots = r[1].filter(function (a) { return a.subtype === 'Link' && a.rect && a.dest; });
+        items.forEach(function (it) {
+          it._x = it.transform[4]; it._y = it.transform[5];
+          it._w = it.width || 0; it._h = Math.hypot(it.transform[2], it.transform[3]) || it.height || 8;
+        });
+        function norm(rr) { return { x1: Math.min(rr[0], rr[2]), x2: Math.max(rr[0], rr[2]), y1: Math.min(rr[1], rr[3]), y2: Math.max(rr[1], rr[3]) }; }
+
+        // Lignes (regroupement par ordonnée) → servent à repérer les titres de section.
+        var sorted = items.slice().sort(function (a, b) { return (b._y - a._y) || (a._x - b._x); });
+        var lines = [];
+        sorted.forEach(function (it) {
+          var L = null;
+          for (var k = 0; k < lines.length; k++) { if (Math.abs(lines[k].y - it._y) < Math.max(3, it._h * 0.6)) { L = lines[k]; break; } }
+          if (!L) { L = { y: it._y, items: [] }; lines.push(L); }
+          L.items.push(it);
+        });
+        lines.forEach(function (l) {
+          l.items.sort(function (a, b) { return a._x - b._x; });
+          l.text = cleanLabel(l.items.map(function (i) { return i.str; }).join(''));
+        });
+
+        var nodes = [];
+        lines.forEach(function (l) {
+          var hasLink = annots.some(function (a) { var rr = norm(a.rect); return l.y >= rr.y1 - 2 && l.y <= rr.y2 + 2; });
+          if (!hasLink && !isNoise(l.text)) nodes.push({ y: l.y, section: true, label: l.text });
+        });
+
+        // Une entrée cliquable par lien (gère 2 fiches sur une même ligne).
+        var chain = Promise.resolve();
+        annots.forEach(function (a) {
+          var rr = norm(a.rect); var cy = (rr.y1 + rr.y2) / 2;
+          var li = items.filter(function (it) {
+            var c = it._x + it._w / 2;
+            return c >= rr.x1 - 1 && c <= rr.x2 + 1 && it._y >= rr.y1 - 3 && it._y <= rr.y2 + 3;
+          }).sort(function (p, q) { return p._x - q._x; });
+          var label = cleanLabel(li.map(function (i) { return i.str; }).join(''));
+          var printed = ''; var m = label.match(/^(.*?)(\d+)\s*$/);
+          if (m && m[1].trim().length > 2) { printed = m[2]; label = cleanLabel(m[1]); }
+          if (isNoise(label)) return;
+          chain = chain.then(function () {
+            return resolveDestPage(a.dest).then(function (pg) {
+              nodes.push({ y: cy, section: false, label: label, printed: printed, page: pg });
+            });
+          });
+        });
+        return chain.then(function () {
+          nodes.sort(function (a, b) { return b.y - a.y; });
+          tocEntries = nodes;
+        });
+      });
+    }).catch(function () { tocEntries = []; });
   }
   window.goToTOC = function () { if (pdfDoc) navigateToPage(tocPage); };
 
-  // ── PANNEAU SOMMAIRE (mini-vue cliquable de la page « Sommaire ») ────────
-  // Rend la page sommaire dans un petit canvas et superpose ses liens cliquables.
-  function renderTocInto(canvas, overlay, afterNav) {
-    if (!pdfDoc || !tocFound || !canvas || !overlay) return Promise.resolve();
-    var cssW = canvas.parentElement.clientWidth;
-    if (!cssW) return Promise.resolve();   // panneau masqué → rien à faire
-    return pdfDoc.getPage(tocPage).then(function (page) {
-      var dpr = window.devicePixelRatio || 1;
-      var natural = page.getViewport({ scale: 1 });
-      var scale = cssW / natural.width;
-      var vp = page.getViewport({ scale: scale * dpr });
-      canvas.width = vp.width; canvas.height = vp.height;
-      canvas.style.width = cssW + 'px';
-      canvas.style.height = (vp.height / dpr) + 'px';
-      var ctx = canvas.getContext('2d');
-      return page.render({ canvasContext: ctx, viewport: vp }).promise.then(function () {
-        drawWatermark(ctx, canvas.width, canvas.height);
-        return page.getAnnotations();
-      }).then(function (annots) {
-        var ovp = page.getViewport({ scale: scale });
-        overlay.innerHTML = '';
-        annots.forEach(function (a) {
-          if (a.subtype !== 'Link' || !a.rect) return;
-          var r = a.rect;
-          var p1 = pdfjsLib.Util.applyTransform([r[0], r[1]], ovp.transform);
-          var p2 = pdfjsLib.Util.applyTransform([r[2], r[3]], ovp.transform);
-          var link = document.createElement('a');
-          link.href = '#';
-          link.style.left = Math.min(p1[0], p2[0]) + 'px';
-          link.style.top = Math.min(p1[1], p2[1]) + 'px';
-          link.style.width = Math.abs(p2[0] - p1[0]) + 'px';
-          link.style.height = Math.abs(p2[1] - p1[1]) + 'px';
-          if (a.dest) {
-            (function (dest) {
-              link.addEventListener('click', function (e) {
-                e.preventDefault();
-                resolveDestPage(dest).then(function (pg) { if (pg) { navigateToPage(pg); if (afterNav) afterNav(); } });
-              });
-            })(a.dest);
-          } else if (a.url) { link.href = a.url; link.target = '_blank'; link.rel = 'noopener noreferrer'; }
-          overlay.appendChild(link);
-        });
+  // ── Rendu de la liste dans un conteneur (vue normale + plein écran) ──────
+  function renderTocList(container, afterNav) {
+    if (!container) return;
+    container.innerHTML = '';
+    tocEntries.forEach(function (e) {
+      if (e.section) {
+        var h = document.createElement('div'); h.className = 'toc-sec'; h.textContent = e.label;
+        container.appendChild(h); return;
+      }
+      var a = document.createElement('a'); a.className = 'toc-item'; a.href = '#';
+      var lbl = document.createElement('span'); lbl.className = 'toc-lbl'; lbl.textContent = e.label;
+      a.appendChild(lbl);
+      if (e.printed) { var pg = document.createElement('span'); pg.className = 'toc-pg'; pg.textContent = e.printed; a.appendChild(pg); }
+      if (e.page) a.dataset.page = e.page;
+      a.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        if (e.page) { navigateToPage(e.page); if (afterNav) afterNav(); }
       });
-    }).catch(function () {});
+      container.appendChild(a);
+    });
+    highlightTocCurrent();
   }
-
-  function renderMainTocPanel() {
-    renderTocInto(document.getElementById('toc-canvas'), document.getElementById('toc-annots'));
-  }
+  function renderMainTocPanel() { renderTocList(document.getElementById('toc-list')); }
   function closeFsTocPanel() {
-    var ov = document.getElementById('fs-overlay');
-    if (!ov) return;
+    var ov = document.getElementById('fs-overlay'); if (!ov) return;
     ov.classList.remove('fs-toc-on');
-    var fsBtn = document.getElementById('fs-toc-toggle');
-    if (fsBtn) fsBtn.classList.remove('active');
+    var fsBtn = document.getElementById('fs-toc-toggle'); if (fsBtn) fsBtn.classList.remove('active');
   }
-  function renderFsTocPanel() {
-    renderTocInto(document.getElementById('fs-toc-canvas'), document.getElementById('fs-toc-annots'), closeFsTocPanel);
+  function renderFsTocPanel() { renderTocList(document.getElementById('fs-toc-list'), closeFsTocPanel); }
+
+  function highlightTocCurrent() {
+    ['toc-list', 'fs-toc-list'].forEach(function (id) {
+      var c = document.getElementById(id); if (!c) return;
+      var all = c.querySelectorAll('.toc-item');
+      for (var k = 0; k < all.length; k++) all[k].classList.toggle('active', Number(all[k].dataset.page) === curPage);
+    });
   }
 
   function syncTocBtn() {
@@ -682,13 +744,13 @@
     if (btn && layout) btn.classList.toggle('active', !layout.classList.contains('toc-off'));
   }
 
-  // Affiche/masque les boutons sommaire selon qu'une page Sommaire a été trouvée,
-  // et (re)dessine le panneau latéral s'il est visible.
+  // Affiche/masque les boutons sommaire et remplit les deux panneaux.
   function updateTocUI() {
     var layout = document.getElementById('reader-layout');
     var btn = document.getElementById('btn-toc-panel');
     var fsBtn = document.getElementById('fs-toc-toggle');
-    if (!tocFound) {
+    var ok = tocFound && tocEntries.length >= 2;
+    if (!ok) {
       if (layout) layout.classList.add('toc-off');
       if (btn) btn.style.display = 'none';
       if (fsBtn) fsBtn.style.display = 'none';
@@ -696,12 +758,13 @@
     }
     if (btn) btn.style.display = '';
     if (fsBtn) fsBtn.style.display = '';
+    renderMainTocPanel();
+    renderFsTocPanel();
     if (layout) {
       // Replié par défaut sur petit écran pour ne pas écraser la lecture.
       if (window.matchMedia('(max-width:860px)').matches) layout.classList.add('toc-off');
       else layout.classList.remove('toc-off');
       syncTocBtn();
-      if (!layout.classList.contains('toc-off')) renderMainTocPanel();
     }
   }
 
@@ -710,17 +773,14 @@
     if (!layout || !tocFound) return;
     layout.classList.toggle('toc-off');
     syncTocBtn();
-    if (!layout.classList.contains('toc-off')) renderMainTocPanel();
   };
 
   window.toggleFsTocPanel = function () {
     var ov = document.getElementById('fs-overlay');
     if (!ov || !tocFound) return;
     ov.classList.toggle('fs-toc-on');
-    var on = ov.classList.contains('fs-toc-on');
     var fsBtn = document.getElementById('fs-toc-toggle');
-    if (fsBtn) fsBtn.classList.toggle('active', on);
-    if (on) requestAnimationFrame(renderFsTocPanel);
+    if (fsBtn) fsBtn.classList.toggle('active', ov.classList.contains('fs-toc-on'));
   };
 
   // Swipe mobile
@@ -815,10 +875,7 @@
       <button type="button" onclick="toggleFsTocPanel()" aria-label="Fermer le sommaire">&#x2715;</button>
     </div>
     <div class="fs-toc-body">
-      <div class="fs-toc-wrap">
-        <canvas id="fs-toc-canvas" oncontextmenu="return false"></canvas>
-        <div class="fs-toc-annots" id="fs-toc-annots"></div>
-      </div>
+      <div class="toc-list" id="fs-toc-list"></div>
     </div>
   </div>
   <div id="fs-scroll"><canvas id="fs-canvas"></canvas></div>
