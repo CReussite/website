@@ -766,6 +766,8 @@
       else layout.classList.remove('toc-off');
       syncTocBtn();
     }
+    // La zone de lecture a changé de largeur : réajuster la page affichée.
+    if (pdfDoc) requestAnimationFrame(function () { renderPage(curPage); });
   }
 
   window.toggleTocPanel = function () {
@@ -773,6 +775,7 @@
     if (!layout || !tocFound) return;
     layout.classList.toggle('toc-off');
     syncTocBtn();
+    if (pdfDoc) requestAnimationFrame(function () { renderPage(curPage); });
   };
 
   window.toggleFsTocPanel = function () {
