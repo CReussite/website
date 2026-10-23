@@ -145,20 +145,25 @@
     .reader-layout.toc-off .toc-panel { display:none; }
     #btn-toc-panel.active { background:var(--gold); color:var(--blue); }
 
-    /* Sommaire en plein écran */
-    #fs-toc { display:none; position:absolute; top:40px; left:0; bottom:68px; width:300px; z-index:10001;
-      background:rgba(0,0,0,.55); backdrop-filter:blur(6px); overflow:auto; padding:12px; }
-    #fs-overlay.fs-toc-on #fs-toc { display:block; }
-    #fs-overlay.fs-toc-on #fs-scroll { left:300px; }
+    /* Sommaire en plein écran : tiroir latéral net qui se referme après sélection */
+    #fs-toc { display:none; position:absolute; top:40px; left:0; bottom:68px; width:330px; z-index:10004;
+      background:#141821; box-shadow:6px 0 30px rgba(0,0,0,.55); flex-direction:column; }
+    #fs-overlay.fs-toc-on #fs-toc { display:flex; }
+    .fs-toc-head { display:flex; align-items:center; justify-content:space-between; padding:11px 14px;
+      background:var(--blue); color:var(--gold); font-size:.82rem; font-weight:700; flex-shrink:0; }
+    .fs-toc-head button { background:rgba(255,255,255,.12); color:var(--gold); border:none; border-radius:7px;
+      width:28px; height:28px; cursor:pointer; font-size:1rem; line-height:1; }
+    .fs-toc-head button:hover { background:rgba(255,255,255,.22); }
+    .fs-toc-body { padding:12px; overflow:auto; }
     .fs-toc-wrap { position:relative; display:block; }
-    .fs-toc-wrap canvas { display:block; width:100%; height:auto; border-radius:3px; }
+    .fs-toc-wrap canvas { display:block; width:100%; height:auto; border-radius:3px; box-shadow:0 2px 10px rgba(0,0,0,.4); }
     .fs-toc-annots { position:absolute; top:0; left:0; width:100%; height:100%; }
-    .fs-toc-annots a { position:absolute; cursor:pointer; border-radius:2px; }
+    .fs-toc-annots a { position:absolute; cursor:pointer; border-radius:2px; transition:background .12s; }
     .fs-toc-annots a:hover { background:rgba(224,197,143,.4); box-shadow:0 0 0 2px rgba(224,197,143,.6); }
     #fs-toc-toggle.active { background:var(--gold); color:var(--blue); }
 
     /* ── FULLSCREEN ── */
-    #fs-overlay { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:9999; background:rgba(0,0,0,.92); overflow:hidden; }
+    #fs-overlay { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:9999; background:#0a0c12; overflow:hidden; }
     #fs-scroll { position:absolute; top:40px; left:0; right:0; bottom:68px; overflow:auto; -webkit-overflow-scrolling:touch; }
     #fs-canvas { display:block; margin:0 auto; }
     #fs-toolbar { position:absolute; bottom:0; left:0; right:0; height:68px; display:flex; align-items:center; justify-content:center; gap:8px; background:rgba(0,0,0,.7); backdrop-filter:blur(8px); z-index:10001; }
@@ -171,8 +176,7 @@
     #fs-prev { left:4px; } #fs-next { right:4px; }
     @media (max-width:768px) {
       .fs-nav { display:flex; }
-      #fs-toc { width:80%; }
-      #fs-overlay.fs-toc-on #fs-scroll { left:0; opacity:.12; pointer-events:none; }
+      #fs-toc { width:84%; }
     }
     #fs-page-info { color:rgba(255,255,255,.7); font-size:.8rem; font-variant-numeric:tabular-nums; min-width:54px; text-align:center; }
     #fs-hint { position:absolute; top:10px; left:50%; transform:translateX(-50%); color:rgba(255,255,255,.45); font-size:.72rem; pointer-events:none; white-space:nowrap; z-index:10001; }
@@ -614,7 +618,7 @@
 
   // ── PANNEAU SOMMAIRE (mini-vue cliquable de la page « Sommaire ») ────────
   // Rend la page sommaire dans un petit canvas et superpose ses liens cliquables.
-  function renderTocInto(canvas, overlay) {
+  function renderTocInto(canvas, overlay, afterNav) {
     if (!pdfDoc || !tocFound || !canvas || !overlay) return Promise.resolve();
     var cssW = canvas.parentElement.clientWidth;
     if (!cssW) return Promise.resolve();   // panneau masqué → rien à faire
@@ -648,7 +652,7 @@
             (function (dest) {
               link.addEventListener('click', function (e) {
                 e.preventDefault();
-                resolveDestPage(dest).then(function (pg) { if (pg) navigateToPage(pg); });
+                resolveDestPage(dest).then(function (pg) { if (pg) { navigateToPage(pg); if (afterNav) afterNav(); } });
               });
             })(a.dest);
           } else if (a.url) { link.href = a.url; link.target = '_blank'; link.rel = 'noopener noreferrer'; }
@@ -661,8 +665,15 @@
   function renderMainTocPanel() {
     renderTocInto(document.getElementById('toc-canvas'), document.getElementById('toc-annots'));
   }
+  function closeFsTocPanel() {
+    var ov = document.getElementById('fs-overlay');
+    if (!ov) return;
+    ov.classList.remove('fs-toc-on');
+    var fsBtn = document.getElementById('fs-toc-toggle');
+    if (fsBtn) fsBtn.classList.remove('active');
+  }
   function renderFsTocPanel() {
-    renderTocInto(document.getElementById('fs-toc-canvas'), document.getElementById('fs-toc-annots'));
+    renderTocInto(document.getElementById('fs-toc-canvas'), document.getElementById('fs-toc-annots'), closeFsTocPanel);
   }
 
   function syncTocBtn() {
@@ -710,7 +721,6 @@
     var fsBtn = document.getElementById('fs-toc-toggle');
     if (fsBtn) fsBtn.classList.toggle('active', on);
     if (on) requestAnimationFrame(renderFsTocPanel);
-    requestAnimationFrame(fsRenderAtZoom);   // la largeur dispo a changé
   };
 
   // Swipe mobile
@@ -800,9 +810,15 @@
   <button id="fs-prev" class="fs-nav" onclick="fsPrev()" aria-label="Page précédente">&#x276E;</button>
   <button id="fs-next" class="fs-nav" onclick="fsNext()" aria-label="Page suivante">&#x276F;</button>
   <div id="fs-toc">
-    <div class="fs-toc-wrap">
-      <canvas id="fs-toc-canvas" oncontextmenu="return false"></canvas>
-      <div class="fs-toc-annots" id="fs-toc-annots"></div>
+    <div class="fs-toc-head">
+      <span>Sommaire</span>
+      <button type="button" onclick="toggleFsTocPanel()" aria-label="Fermer le sommaire">&#x2715;</button>
+    </div>
+    <div class="fs-toc-body">
+      <div class="fs-toc-wrap">
+        <canvas id="fs-toc-canvas" oncontextmenu="return false"></canvas>
+        <div class="fs-toc-annots" id="fs-toc-annots"></div>
+      </div>
     </div>
   </div>
   <div id="fs-scroll"><canvas id="fs-canvas"></canvas></div>
