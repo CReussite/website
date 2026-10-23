@@ -310,6 +310,11 @@ Variable d'environnement `BETA_TESTERS` (Render), tableau JSON. Un compte donne 
 ]
 ```
 
+### Lecteur
+
+- Navigation page à page, plein écran avec zoom, swipe mobile.
+- **Sommaire latéral** (panneau repliable à gauche) : mini-vue cliquable de la page « Sommaire » du PDF, disponible en vue normale **et** en plein écran. Détection auto de la page dont le titre est « Sommaire » (les PDF n'ayant pas de signets `/Outlines`). Les liens internes synchronisent aussi le plein écran (`navigateToPage`).
+
 ### Protections
 
 - Impression et téléchargement désactivés (PDF rendu en canvas via pdf.js, aucun fichier exposé).

@@ -94,7 +94,7 @@
 
     /* ── LECTEUR ── */
     #viewer { display:none; }
-    .viewer-wrap { max-width:920px; margin:0 auto; padding:18px 20px 20px; }
+    .viewer-wrap { max-width:1240px; margin:0 auto; padding:18px 20px 20px; }
     .pdf-card { background:var(--white); border-radius:20px; box-shadow:var(--sh); overflow:hidden; margin-bottom:22px; }
     .pdf-header { background:var(--blue); padding:14px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
     .pdf-header-title { color:var(--gold); font-size:.9rem; font-weight:700; }
@@ -124,6 +124,39 @@
       transition:transform .2s, box-shadow .2s; }
     .btn-back:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(17,34,80,.35); }
 
+    /* ── SOMMAIRE LATÉRAL ── */
+    .reader-layout { display:flex; gap:16px; align-items:flex-start; }
+    .reader-layout .pdf-card { flex:1; min-width:0; }
+    .toc-panel { width:300px; flex-shrink:0; background:var(--white); border-radius:16px; box-shadow:var(--sh);
+      overflow:hidden; position:sticky; top:14px; }
+    .toc-head { background:var(--blue); color:var(--gold); font-size:.82rem; font-weight:700; padding:11px 14px;
+      display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    .toc-head .toc-title { flex:1; cursor:pointer; }
+    .toc-head .toc-title:hover { text-decoration:underline; }
+    .toc-head button { background:rgba(255,255,255,.12); color:var(--gold); border:1px solid rgba(224,197,143,.2);
+      border-radius:7px; width:30px; height:30px; cursor:pointer; font-size:1.1rem; line-height:1; flex-shrink:0; }
+    .toc-head button:hover { background:rgba(255,255,255,.22); }
+    .toc-body { padding:10px; max-height:calc(100vh - 150px); overflow:auto; background:#cdd1db; }
+    .toc-page-wrap { position:relative; display:block; }
+    .toc-page-wrap canvas { display:block; width:100%; height:auto; border-radius:3px; box-shadow:0 2px 10px rgba(0,0,0,.2); }
+    .toc-annots { position:absolute; top:0; left:0; width:100%; height:100%; }
+    .toc-annots a { position:absolute; cursor:pointer; border-radius:2px; transition:background .12s; }
+    .toc-annots a:hover { background:rgba(224,197,143,.4); box-shadow:0 0 0 2px rgba(224,197,143,.6); }
+    .reader-layout.toc-off .toc-panel { display:none; }
+    #btn-toc-panel.active { background:var(--gold); color:var(--blue); }
+
+    /* Sommaire en plein écran */
+    #fs-toc { display:none; position:absolute; top:40px; left:0; bottom:68px; width:300px; z-index:10001;
+      background:rgba(0,0,0,.55); backdrop-filter:blur(6px); overflow:auto; padding:12px; }
+    #fs-overlay.fs-toc-on #fs-toc { display:block; }
+    #fs-overlay.fs-toc-on #fs-scroll { left:300px; }
+    .fs-toc-wrap { position:relative; display:block; }
+    .fs-toc-wrap canvas { display:block; width:100%; height:auto; border-radius:3px; }
+    .fs-toc-annots { position:absolute; top:0; left:0; width:100%; height:100%; }
+    .fs-toc-annots a { position:absolute; cursor:pointer; border-radius:2px; }
+    .fs-toc-annots a:hover { background:rgba(224,197,143,.4); box-shadow:0 0 0 2px rgba(224,197,143,.6); }
+    #fs-toc-toggle.active { background:var(--gold); color:var(--blue); }
+
     /* ── FULLSCREEN ── */
     #fs-overlay { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:9999; background:rgba(0,0,0,.92); overflow:hidden; }
     #fs-scroll { position:absolute; top:40px; left:0; right:0; bottom:68px; overflow:auto; -webkit-overflow-scrolling:touch; }
@@ -136,11 +169,20 @@
     #fs-close:hover { background:rgba(255,255,255,.3); }
     .fs-nav { display:none; position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,0,0,.45); color:#fff; border:none; border-radius:50%; width:44px; height:44px; font-size:1.3rem; cursor:pointer; z-index:10003; align-items:center; justify-content:center; -webkit-tap-highlight-color:transparent; }
     #fs-prev { left:4px; } #fs-next { right:4px; }
-    @media (max-width:768px) { .fs-nav { display:flex; } }
+    @media (max-width:768px) {
+      .fs-nav { display:flex; }
+      #fs-toc { width:80%; }
+      #fs-overlay.fs-toc-on #fs-scroll { left:0; opacity:.12; pointer-events:none; }
+    }
     #fs-page-info { color:rgba(255,255,255,.7); font-size:.8rem; font-variant-numeric:tabular-nums; min-width:54px; text-align:center; }
     #fs-hint { position:absolute; top:10px; left:50%; transform:translateX(-50%); color:rgba(255,255,255,.45); font-size:.72rem; pointer-events:none; white-space:nowrap; z-index:10001; }
 
-    @media (max-width:860px) { .grid { grid-template-columns:repeat(2, 1fr); } }
+    @media (max-width:860px) {
+      .grid { grid-template-columns:repeat(2, 1fr); }
+      .reader-layout { flex-direction:column; }
+      .toc-panel { width:100%; position:static; }
+      .toc-body { max-height:48vh; }
+    }
     @media (max-width:600px) {
       #auth-page { padding:24px 16px; align-items:flex-start; padding-top:32px; }
       .grid { grid-template-columns:1fr; }
@@ -203,32 +245,48 @@
       </button>
     </div>
 
-    <div class="pdf-card">
-      <div class="pdf-header">
-        <span class="pdf-header-title" id="pdf-title">Ebook</span>
-        <div class="pdf-controls">
-          <div class="pdf-row">
-            <button class="pdf-btn" id="btn-fp" onclick="firstPage()" disabled title="Première page">&#171;</button>
-            <button class="pdf-btn" id="btn-pp" onclick="prevPage()" disabled>&#8249;</button>
-            <span class="pdf-info"><span id="pg-cur">—</span> / <span id="pg-tot">—</span></span>
-            <button class="pdf-btn" id="btn-np" onclick="nextPage()" disabled>&#8250;</button>
-            <button class="pdf-btn" id="btn-lp" onclick="lastPage()" disabled title="Dernière page">&#187;</button>
-          </div>
-          <span class="pdf-sep"></span>
-          <div class="pdf-row">
-            <button class="pdf-btn" id="btn-toc" onclick="goToTOC()" title="Sommaire"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
-            <button class="pdf-btn" onclick="openFS()" title="Plein écran"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg></button>
+    <div class="reader-layout toc-off" id="reader-layout">
+      <aside class="toc-panel" id="toc-panel">
+        <div class="toc-head">
+          <span class="toc-title" onclick="goToTOC()" title="Ouvrir le sommaire en grand">Sommaire</span>
+          <button type="button" onclick="toggleTocPanel()" title="Masquer le sommaire" aria-label="Masquer le sommaire">&#x2039;</button>
+        </div>
+        <div class="toc-body">
+          <div class="toc-page-wrap">
+            <canvas id="toc-canvas" oncontextmenu="return false"></canvas>
+            <div class="toc-annots" id="toc-annots"></div>
           </div>
         </div>
-      </div>
-      <div class="pdf-body" id="pdf-body">
-        <div class="pdf-spinner-wrap" id="pdf-loading">
-          <div class="pdf-spinner"></div>
-          Chargement de l'ebook&hellip;
+      </aside>
+
+      <div class="pdf-card">
+        <div class="pdf-header">
+          <span class="pdf-header-title" id="pdf-title">Ebook</span>
+          <div class="pdf-controls">
+            <div class="pdf-row">
+              <button class="pdf-btn" id="btn-fp" onclick="firstPage()" disabled title="Première page">&#171;</button>
+              <button class="pdf-btn" id="btn-pp" onclick="prevPage()" disabled>&#8249;</button>
+              <span class="pdf-info"><span id="pg-cur">—</span> / <span id="pg-tot">—</span></span>
+              <button class="pdf-btn" id="btn-np" onclick="nextPage()" disabled>&#8250;</button>
+              <button class="pdf-btn" id="btn-lp" onclick="lastPage()" disabled title="Dernière page">&#187;</button>
+            </div>
+            <span class="pdf-sep"></span>
+            <div class="pdf-row">
+              <button class="pdf-btn" id="btn-toc-panel" onclick="toggleTocPanel()" title="Afficher/masquer le panneau sommaire" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><rect x="3" y="4" width="7" height="16" rx="1"/><line x1="14" y1="8" x2="21" y2="8"/><line x1="14" y1="13" x2="21" y2="13"/><line x1="14" y1="18" x2="21" y2="18"/></svg></button>
+              <button class="pdf-btn" id="btn-toc" onclick="goToTOC()" title="Aller à la page Sommaire"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+              <button class="pdf-btn" onclick="openFS()" title="Plein écran"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg></button>
+            </div>
+          </div>
         </div>
-        <div id="pdf-page-wrap" style="display:none">
-          <canvas id="pdf-canvas" oncontextmenu="return false"></canvas>
-          <div id="pdf-annotations"></div>
+        <div class="pdf-body" id="pdf-body">
+          <div class="pdf-spinner-wrap" id="pdf-loading">
+            <div class="pdf-spinner"></div>
+            Chargement de l'ebook&hellip;
+          </div>
+          <div id="pdf-page-wrap" style="display:none">
+            <canvas id="pdf-canvas" oncontextmenu="return false"></canvas>
+            <div id="pdf-annotations"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -403,7 +461,13 @@
   }
 
   // ── LECTEUR ─────────────────────────────────────────────
-  var pdfDoc = null, curPage = 1, tocPage = 1;
+  var pdfDoc = null, curPage = 1, tocPage = 1, tocFound = false;
+
+  // Navigue vers une page, en gardant le plein écran synchronisé s'il est ouvert.
+  function navigateToPage(n) {
+    if (document.getElementById('fs-overlay').style.display === 'block') fsGoToPage(n);
+    else renderPage(n);
+  }
 
   function openEbook(key) {
     document.getElementById('auth-page').style.display = 'none';
@@ -489,7 +553,7 @@
         (function (dest) {
           link.addEventListener('click', function (e) {
             e.preventDefault();
-            resolveDestPage(dest).then(function (pg) { if (pg) renderPage(pg); });
+            resolveDestPage(dest).then(function (pg) { if (pg) navigateToPage(pg); });
           });
         })(a.dest);
       }
@@ -511,7 +575,12 @@
     if (newW === _lastWidth) return;
     _lastWidth = newW;
     clearTimeout(_resizeTimer);
-    _resizeTimer = setTimeout(function () { if (pdfDoc) renderPage(curPage); }, 250);
+    _resizeTimer = setTimeout(function () {
+      if (!pdfDoc) return;
+      renderPage(curPage);
+      var layout = document.getElementById('reader-layout');
+      if (tocFound && layout && !layout.classList.contains('toc-off')) renderMainTocPanel();
+    }, 250);
   });
 
   window.prevPage  = function () { if (curPage > 1) renderPage(curPage - 1); };
@@ -520,6 +589,7 @@
   window.lastPage  = function () { if (pdfDoc) renderPage(pdfDoc.numPages); };
 
   function findTOCPage() {
+    tocFound = false;
     var maxScan = Math.min(8, pdfDoc.numPages);
     var checks = [];
     for (var i = 1; i <= maxScan; i++) {
@@ -535,11 +605,113 @@
         });
       })(i));
     }
-    Promise.all(checks).then(function (res) {
-      for (var j = 0; j < res.length; j++) { if (res[j]) { tocPage = res[j]; return; } }
-    });
+    return Promise.all(checks).then(function (res) {
+      for (var j = 0; j < res.length; j++) { if (res[j]) { tocPage = res[j]; tocFound = true; break; } }
+      updateTocUI();
+    }).catch(function () { updateTocUI(); });
   }
-  window.goToTOC = function () { if (pdfDoc) renderPage(tocPage); };
+  window.goToTOC = function () { if (pdfDoc) navigateToPage(tocPage); };
+
+  // ── PANNEAU SOMMAIRE (mini-vue cliquable de la page « Sommaire ») ────────
+  // Rend la page sommaire dans un petit canvas et superpose ses liens cliquables.
+  function renderTocInto(canvas, overlay) {
+    if (!pdfDoc || !tocFound || !canvas || !overlay) return Promise.resolve();
+    var cssW = canvas.parentElement.clientWidth;
+    if (!cssW) return Promise.resolve();   // panneau masqué → rien à faire
+    return pdfDoc.getPage(tocPage).then(function (page) {
+      var dpr = window.devicePixelRatio || 1;
+      var natural = page.getViewport({ scale: 1 });
+      var scale = cssW / natural.width;
+      var vp = page.getViewport({ scale: scale * dpr });
+      canvas.width = vp.width; canvas.height = vp.height;
+      canvas.style.width = cssW + 'px';
+      canvas.style.height = (vp.height / dpr) + 'px';
+      var ctx = canvas.getContext('2d');
+      return page.render({ canvasContext: ctx, viewport: vp }).promise.then(function () {
+        drawWatermark(ctx, canvas.width, canvas.height);
+        return page.getAnnotations();
+      }).then(function (annots) {
+        var ovp = page.getViewport({ scale: scale });
+        overlay.innerHTML = '';
+        annots.forEach(function (a) {
+          if (a.subtype !== 'Link' || !a.rect) return;
+          var r = a.rect;
+          var p1 = pdfjsLib.Util.applyTransform([r[0], r[1]], ovp.transform);
+          var p2 = pdfjsLib.Util.applyTransform([r[2], r[3]], ovp.transform);
+          var link = document.createElement('a');
+          link.href = '#';
+          link.style.left = Math.min(p1[0], p2[0]) + 'px';
+          link.style.top = Math.min(p1[1], p2[1]) + 'px';
+          link.style.width = Math.abs(p2[0] - p1[0]) + 'px';
+          link.style.height = Math.abs(p2[1] - p1[1]) + 'px';
+          if (a.dest) {
+            (function (dest) {
+              link.addEventListener('click', function (e) {
+                e.preventDefault();
+                resolveDestPage(dest).then(function (pg) { if (pg) navigateToPage(pg); });
+              });
+            })(a.dest);
+          } else if (a.url) { link.href = a.url; link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+          overlay.appendChild(link);
+        });
+      });
+    }).catch(function () {});
+  }
+
+  function renderMainTocPanel() {
+    renderTocInto(document.getElementById('toc-canvas'), document.getElementById('toc-annots'));
+  }
+  function renderFsTocPanel() {
+    renderTocInto(document.getElementById('fs-toc-canvas'), document.getElementById('fs-toc-annots'));
+  }
+
+  function syncTocBtn() {
+    var layout = document.getElementById('reader-layout');
+    var btn = document.getElementById('btn-toc-panel');
+    if (btn && layout) btn.classList.toggle('active', !layout.classList.contains('toc-off'));
+  }
+
+  // Affiche/masque les boutons sommaire selon qu'une page Sommaire a été trouvée,
+  // et (re)dessine le panneau latéral s'il est visible.
+  function updateTocUI() {
+    var layout = document.getElementById('reader-layout');
+    var btn = document.getElementById('btn-toc-panel');
+    var fsBtn = document.getElementById('fs-toc-toggle');
+    if (!tocFound) {
+      if (layout) layout.classList.add('toc-off');
+      if (btn) btn.style.display = 'none';
+      if (fsBtn) fsBtn.style.display = 'none';
+      return;
+    }
+    if (btn) btn.style.display = '';
+    if (fsBtn) fsBtn.style.display = '';
+    if (layout) {
+      // Replié par défaut sur petit écran pour ne pas écraser la lecture.
+      if (window.matchMedia('(max-width:860px)').matches) layout.classList.add('toc-off');
+      else layout.classList.remove('toc-off');
+      syncTocBtn();
+      if (!layout.classList.contains('toc-off')) renderMainTocPanel();
+    }
+  }
+
+  window.toggleTocPanel = function () {
+    var layout = document.getElementById('reader-layout');
+    if (!layout || !tocFound) return;
+    layout.classList.toggle('toc-off');
+    syncTocBtn();
+    if (!layout.classList.contains('toc-off')) renderMainTocPanel();
+  };
+
+  window.toggleFsTocPanel = function () {
+    var ov = document.getElementById('fs-overlay');
+    if (!ov || !tocFound) return;
+    ov.classList.toggle('fs-toc-on');
+    var on = ov.classList.contains('fs-toc-on');
+    var fsBtn = document.getElementById('fs-toc-toggle');
+    if (fsBtn) fsBtn.classList.toggle('active', on);
+    if (on) requestAnimationFrame(renderFsTocPanel);
+    requestAnimationFrame(fsRenderAtZoom);   // la largeur dispo a changé
+  };
 
   // Swipe mobile
   (function () {
@@ -590,6 +762,7 @@
     document.body.style.overflow = 'hidden';
     fsZoom = 1; fsUpdateLabel(); fsUpdatePageInfo();
     pdfDoc.getPage(curPage).then(function (page) { _fsPage = page; requestAnimationFrame(fsRenderAtZoom); });
+    if (document.getElementById('fs-overlay').classList.contains('fs-toc-on')) requestAnimationFrame(renderFsTocPanel);
   };
   window.fsPrev = function () { fsGoToPage(curPage - 1); };
   window.fsNext = function () { fsGoToPage(curPage + 1); };
@@ -626,8 +799,15 @@
   <div id="fs-hint">&#x2190;&#x2192; pour naviguer • Molette pour zoomer</div>
   <button id="fs-prev" class="fs-nav" onclick="fsPrev()" aria-label="Page précédente">&#x276E;</button>
   <button id="fs-next" class="fs-nav" onclick="fsNext()" aria-label="Page suivante">&#x276F;</button>
+  <div id="fs-toc">
+    <div class="fs-toc-wrap">
+      <canvas id="fs-toc-canvas" oncontextmenu="return false"></canvas>
+      <div class="fs-toc-annots" id="fs-toc-annots"></div>
+    </div>
+  </div>
   <div id="fs-scroll"><canvas id="fs-canvas"></canvas></div>
   <div id="fs-toolbar">
+    <button class="fs-btn" id="fs-toc-toggle" onclick="toggleFsTocPanel()" aria-label="Sommaire" title="Afficher/masquer le sommaire" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="16" rx="1"/><line x1="14" y1="8" x2="21" y2="8"/><line x1="14" y1="13" x2="21" y2="13"/><line x1="14" y1="18" x2="21" y2="18"/></svg></button>
     <button class="fs-btn" onclick="fsPrev()" aria-label="Page précédente">&#x276E;</button>
     <span id="fs-page-info">1 / 1</span>
     <button class="fs-btn" onclick="fsNext()" aria-label="Page suivante">&#x276F;</button>
