@@ -185,7 +185,6 @@
     <div class="sel-head">
       <div class="sel-title">Tes ebooks à tester</div>
       <div class="sel-actions">
-        <a class="sel-link" href="beta-formulaire.html">Donner mon avis</a>
         <button type="button" class="sel-link ghost" id="logout-btn">Se déconnecter</button>
       </div>
     </div>
@@ -202,7 +201,6 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
         Retour aux ebooks
       </button>
-      <a class="sel-link" href="beta-formulaire.html">Donner mon avis</a>
     </div>
 
     <div class="pdf-card">
@@ -249,7 +247,6 @@
   var EBOOKS = [
     { key:'pc-2nde',         subject:'pc',    badge:'Seconde Générale',     level:'Seconde' },
     { key:'pc-1ere',         subject:'pc',    badge:'Première Spécialité',  level:'1re Spécialité' },
-    { key:'pc-terminale',    subject:'pc',    badge:'Terminale Spécialité', level:'Terminale Spécialité' },
     { key:'maths-terminale', subject:'maths', badge:'Terminale Spécialité', level:'Terminale Spécialité' },
   ];
   var LABEL = {};
@@ -317,7 +314,7 @@
   document.getElementById('back-btn').addEventListener('click', showSelection);
 
   // ── FILIGRANE ───────────────────────────────────────────
-  function watermarkText() { return (email || 'bêta-testeur') + '   •   BÊTA TEST'; }
+  function watermarkText() { return 'BÊTA TEST'; }
   function drawWatermark(ctx, w, h) {
     var text = watermarkText();
     ctx.save();
@@ -523,14 +520,17 @@
   window.lastPage  = function () { if (pdfDoc) renderPage(pdfDoc.numPages); };
 
   function findTOCPage() {
-    var maxScan = Math.min(6, pdfDoc.numPages);
+    var maxScan = Math.min(8, pdfDoc.numPages);
     var checks = [];
     for (var i = 1; i <= maxScan; i++) {
       checks.push((function (num) {
         return pdfDoc.getPage(num).then(function (page) {
           return page.getTextContent().then(function (tc) {
-            var txt = tc.items.map(function (it) { return it.str; }).join(' ').toLowerCase();
-            return txt.indexOf('sommaire') !== -1 ? num : null;
+            // On cible la page dont le titre est « Sommaire » (texte en tête de page),
+            // et non une page qui ne fait que mentionner le mot (ex. la présentation).
+            var head = tc.items.map(function (it) { return it.str; }).join(' ')
+              .toLowerCase().replace(/\s+/g, ' ').trim().slice(0, 30);
+            return head.indexOf('sommaire') !== -1 ? num : null;
           });
         });
       })(i));

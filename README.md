@@ -62,7 +62,6 @@ CReussite/
 │   ├── success.html                   ← Retour Stancer : vérifie paiement, affiche confirmation
 │   ├── cancel.html                    ← Retour Stancer si annulation
 │   ├── beta.html                      ← Bêta multi-niveaux : connexion + grille + lecteur PDF
-│   ├── beta-formulaire.html           ← Bêta multi-niveaux : questionnaire de retour
 │   ├── maths-terminale/index.html     ← Page produit Maths (layout empilé, FAQPage schema)
 │   ├── physique-chimie-terminale/index.html ← Page produit Physique-Chimie
 │   ├── pack-maths-physique-chimie/index.html ← Page produit Pack (prix barré, 2 tableaux)
@@ -139,8 +138,7 @@ CReussite/
 | POST | `/api/extract` | — | Envoie un extrait gratuit par email (sans stéganographie) |
 | POST | `/api/beta-feedback` | — | Envoie les retours beta par email |
 | POST | `/api/beta-niveaux/auth` | BETA_TESTERS | Connexion bêta multi-niveaux (email + mot de passe) |
-| GET | `/api/beta-niveaux/pdf/:type` | jeton | Sert un des 4 ebooks depuis Supabase Storage (bucket `beta-assets`) |
-| POST | `/api/beta-niveaux/feedback` | — | Envoie le questionnaire bêta multi-niveaux par email |
+| GET | `/api/beta-niveaux/pdf/:type` | jeton | Sert un ebook depuis Supabase Storage (bucket `beta-assets`) |
 | GET | `/api/products` | — | Retourne `docs/content/products.json` |
 | GET | `/api/admin/orders` | ADMIN_KEY | Liste des commandes (JSON) |
 | GET | `/api/admin/stats` | ADMIN_KEY | Stats agrégées (CA, nb commandes, emails) |
@@ -287,9 +285,9 @@ Pour identifier un PDF partagé illégalement : ouvrir dans Adobe Acrobat, `Ctrl
 
 ## Bêta multi-niveaux (module indépendant)
 
-Module isolé pour une nouvelle vague de bêta-testeurs, sans impact sur la bêta maths/physique existante. Backend : `backend/routes/betaNiveaux.js`, monté sur `/api/beta-niveaux`. Frontend : `docs/beta.html` (connexion + grille + lecteur) et `docs/beta-formulaire.html` (questionnaire).
+Module isolé pour une nouvelle vague de bêta-testeurs, sans impact sur la bêta maths/physique existante. Backend : `backend/routes/betaNiveaux.js`, monté sur `/api/beta-niveaux`. Frontend : `docs/beta.html` (connexion + grille + lecteur).
 
-### Les 4 ebooks
+### Les ebooks
 
 Stockés dans Supabase Storage, bucket privé `beta-assets` (jamais dans git), servis uniquement après connexion :
 
@@ -297,14 +295,13 @@ Stockés dans Supabase Storage, bucket privé `beta-assets` (jamais dans git), s
 | --- | --- |
 | `pc-2nde` | `pc-2nde.pdf` |
 | `pc-1ere` | `pc-1ere.pdf` |
-| `pc-terminale` | `pc-terminale.pdf` |
 | `maths-terminale` | `maths-terminale.pdf` |
 
-Déposer ou remplacer les PDF : placer les 4 fichiers dans `backend/assets/` (local, hors git) avec ces noms exacts, puis `cd backend && node scripts/upload-assets.js`.
+Déposer ou remplacer les PDF : placer les fichiers dans `backend/assets/` (local, hors git) avec ces noms exacts, puis `cd backend && node scripts/upload-assets.js`.
 
 ### Comptes testeurs
 
-Variable d'environnement `BETA_TESTERS` (Render), tableau JSON. Un compte donne accès aux 4 ebooks. Les mots de passe doivent être uniques.
+Variable d'environnement `BETA_TESTERS` (Render), tableau JSON. Un compte donne accès à tous les ebooks. Les mots de passe doivent être uniques.
 
 ```json
 [
@@ -317,11 +314,7 @@ Variable d'environnement `BETA_TESTERS` (Render), tableau JSON. Un compte donne 
 
 - Impression et téléchargement désactivés (PDF rendu en canvas via pdf.js, aucun fichier exposé).
 - Clic droit, Ctrl+P/S/U et F12 bloqués. PDF servi seulement après connexion, sans URL devinable.
-- Filigrane peu perceptible répété sur chaque page : email du testeur + mention « beta test », pour tracer une fuite (une capture d'écran reste techniquement possible).
-
-### Retours
-
-Le questionnaire (`beta-formulaire.html`) est adaptatif : le testeur coche les ebooks consultés, un bloc de questions apparaît par ebook. Les réponses partent par email vers `NOTIFY_EMAIL` via Brevo (route `/api/beta-niveaux/feedback`), aucune donnée stockée en base.
+- Filigrane peu perceptible répété sur chaque page : mention « BÊTA TEST », pour signaler clairement la version de test (une capture d'écran reste techniquement possible).
 
 ---
 
