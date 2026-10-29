@@ -481,10 +481,10 @@
             <span>https://dashboard.render.com/web/srv-d7chdpa8qa3s73bjljs0</span>
             <em>Consulter les logs et l'etat du backend.</em>
           </a>
-          <a class="service-link" href="https://manage.stancer.com" target="_blank" rel="noopener noreferrer">
+          <a class="service-link" href="https://manage.stancer.com/fr/" target="_blank" rel="noopener noreferrer">
             <strong>Stancer</strong>
-            <span>https://manage.stancer.com</span>
-            <em>Suivre les paiements et les transactions carte bancaire.</em>
+            <span>https://manage.stancer.com/fr/</span>
+            <em>Suivre les paiements. Onglet « Paylink » pour créer un lien de paiement (cours particuliers).</em>
           </a>
           <a class="service-link" href="https://supabase.com/dashboard/project/llomqecxvbefakyysskn" target="_blank" rel="noopener noreferrer">
             <strong>Supabase</strong>
@@ -514,9 +514,12 @@
       <div class="tab-panel" id="panel-factures-cp">
       <!-- ─── Factures cours particuliers ─── -->
       <div class="table-card" style="margin-bottom:20px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 0;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 0;flex-wrap:wrap;gap:10px;">
           <h2 class="section-title">Factures cours particuliers</h2>
-          <a href="/facture-cp.html" target="_blank" style="font-size:.8rem;padding:6px 14px;background:#112250;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;">+ Nouvelle facture</a>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <a href="https://manage.stancer.com/fr/" target="_blank" rel="noopener noreferrer" title="Ouvre Stancer : onglet « Paylink » pour créer un lien de paiement à envoyer par email ou SMS" style="font-size:.8rem;padding:6px 14px;background:#fff;color:#112250;border:1px solid #112250;border-radius:8px;text-decoration:none;font-weight:600;">💳 Lien de paiement Stancer</a>
+            <a href="/facture-cp.html" target="_blank" style="font-size:.8rem;padding:6px 14px;background:#112250;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;">+ Nouvelle facture</a>
+          </div>
         </div>
         <div style="height:16px;"></div>
         <div class="table-scroll">
