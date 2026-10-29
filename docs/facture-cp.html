@@ -717,7 +717,7 @@ ${invEl.outerHTML}
     const id = rowId;
     const lastRate = rows.length > 0 ? rows[rows.length - 1].rate : '';
     const lastNature = rows.length > 0 ? rows[rows.length - 1].nature : '';
-    rows.push({id, date:'', nature:lastNature, h:'', rate:lastRate, payDate:'', payMethod:'Espèces'});
+    rows.push({id, date:'', nature:lastNature, h:'', rate:lastRate, payDate:'', payMethod:'Virement bancaire'});
     const el = document.createElement('div');
     el.id = 'row'+id;
     el.className = 'cr ' + type;
@@ -727,7 +727,7 @@ ${invEl.outerHTML}
 
   function rowHTML(id) {
     const r = rows.find(x=>x.id===id)||{};
-    const opts = ['Espèces','Virement bancaire','Wero','Chèque','CB']
+    const opts = ['Virement bancaire','Lien Stancer']
       .map(m=>`<option${r.payMethod===m?' selected':''}>${m}</option>`).join('');
     const payRow = type==='aq' ? `
       <div class="cr-r3">
@@ -887,8 +887,9 @@ ${invEl.outerHTML}
       paySection = `<div class="inv-ar">
         <div class="inv-ar-ttl">À régler avant le <strong style="color:#B45309">${due}</strong></div>
         <div class="inv-ar-body">
-          Règlement par virement : IBAN ${esc(iban)}${bic?' · BIC '+esc(bic):''}
-          ${tit?'<br>Titulaire du compte : '+esc(tit):''}
+          Deux moyens de règlement au choix :
+          <br>• Virement bancaire : IBAN ${esc(iban)}${bic?' · BIC '+esc(bic):''}${tit?' · Titulaire : '+esc(tit):''}
+          <br>• Carte bancaire : via le lien de paiement envoyé par email avant la séance.
           <br>Merci d'indiquer le numéro de la facture en référence du virement.
         </div>
       </div>`;
