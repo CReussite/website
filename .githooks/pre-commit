@@ -1,0 +1,38 @@
+#!/bin/sh
+# Garde-fou repo public : bloque les fichiers .env et les vraies clés secrètes.
+# À activer une seule fois par clone :  git config core.hooksPath .githooks
+#
+# Faux positif ? Contourne ponctuellement avec :  git commit --no-verify
+
+fail=0
+
+# 1) Refuser les fichiers d'environnement (on autorise les exemples)
+for f in $(git diff --cached --name-only --diff-filter=ACM); do
+  base=$(basename "$f")
+  case "$base" in
+    .env.example|.env.sample) : ;;
+    .env|.env.*)
+      echo "⛔ Fichier d'environnement interdit au commit : $f"
+      fail=1
+      ;;
+  esac
+done
+
+# 2) Détecter de vraies clés dans les lignes ajoutées.
+#    Motifs = clés longues réelles, pas les placeholders type "stest_...".
+patterns='(sprod_|stest_|pprod_|ptest_)[A-Za-z0-9]{20,}|xkeysib-[A-Za-z0-9]{20,}|xsmtpsib-[A-Za-z0-9]{20,}|sb_secret_[A-Za-z0-9]{10,}|-----BEGIN [A-Z ]*PRIVATE KEY-----|FR[0-9]{2}[0-9A-Z]{23}'
+
+hits=$(git diff --cached -U0 --diff-filter=ACM | grep -E '^\+' | grep -En "$patterns")
+if [ -n "$hits" ]; then
+  echo "⛔ Secret potentiel détecté dans les lignes ajoutées :"
+  echo "$hits"
+  fail=1
+fi
+
+if [ "$fail" -ne 0 ]; then
+  echo ""
+  echo "Commit bloqué. Mets les secrets dans backend/.env (gitignoré), pas dans le code."
+  echo "Faux positif assumé ? Relance avec : git commit --no-verify"
+  exit 1
+fi
+exit 0

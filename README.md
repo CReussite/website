@@ -227,6 +227,16 @@ cp backend/.env.example backend/.env  # en local
 | `BETA_VIEWER_PASSWORDS` | JSON bêta maths/physique : `[{"password","type","expires"}]` |
 | `BETA_TESTERS` | JSON bêta multi-niveaux : `[{"email","password","expires"}]` (accès aux 4 ebooks) |
 
+### Garde-fou secrets (hook pre-commit)
+
+Le dépôt est **public** : aucun secret ni fichier `.env` ne doit être commité. Un hook `.githooks/pre-commit` bloque automatiquement ces commits (fichiers `.env` et clés réelles Stancer/Brevo/Supabase, clés privées PEM, IBAN). À activer une fois par clone :
+
+```bash
+git config core.hooksPath .githooks
+```
+
+Faux positif assumé : `git commit --no-verify`.
+
 ---
 
 ## Déploiement
