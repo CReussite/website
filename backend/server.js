@@ -202,15 +202,20 @@ app.get('/api/products', (req, res) => {
 app.listen(PORT, () => {
   console.log(`[server] C'Réussite démarré sur le port ${PORT}`);
 
-  // Cron de réconciliation Stancer : vérifie les paiements capturés mais non confirmés
-  // (cas où le client ferme l'onglet avant d'arriver sur success.html)
-  const { syncUnconfirmedPayments } = require('./services/stancerSync');
+  // Cron horaire : réconciliation Stancer (paiements capturés mais non confirmés,
+  // ex. client qui ferme l'onglet avant success.html) PUIS alerte sur les commandes
+  // payées restées non livrées malgré la réconciliation.
+  const { syncUnconfirmedPayments, alertStuckOrders } = require('./services/stancerSync');
   const ONE_HOUR = 60 * 60 * 1000;
+  async function runHourlyMaintenance() {
+    await syncUnconfirmedPayments();
+    await alertStuckOrders();
+  }
   setInterval(() => {
-    syncUnconfirmedPayments().catch(e =>
-      console.error('[stancer-sync] Erreur cron:', e.message)
+    runHourlyMaintenance().catch(e =>
+      console.error('[cron] Erreur maintenance horaire:', e.message)
     );
   }, ONE_HOUR);
   // Première exécution au démarrage (après 5 min pour laisser le serveur s'initialiser)
-  setTimeout(() => syncUnconfirmedPayments().catch(() => {}), 5 * 60 * 1000);
+  setTimeout(() => runHourlyMaintenance().catch(() => {}), 5 * 60 * 1000);
 });

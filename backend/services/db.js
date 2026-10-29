@@ -543,6 +543,26 @@ async function getUnconfirmedPayments() {
 }
 
 /**
+ * Retourne les commandes payées mais non livrées : email_sent = false et
+ * créées il y a plus de `minAgeMinutes` minutes. Exclut les cours particuliers.
+ * Sert à alerter sur les échecs d'envoi persistants (après réconciliation).
+ */
+async function getStuckOrders({ minAgeMinutes = 60 } = {}) {
+  const supabase = getClient();
+  const cutoff = new Date(Date.now() - minAgeMinutes * 60 * 1000).toISOString();
+  const { data, error } = await supabase
+    .from('orders')
+    .select('payment_session_id, email, product_id, amount, invoice_number, created_at')
+    .eq('email_sent', false)
+    .neq('product_id', 'cours_particuliers')
+    .lt('created_at', cutoff)
+    .order('created_at', { ascending: true })
+    .limit(50);
+  if (error) throw new Error(`DB getStuckOrders failed: ${error.message}`);
+  return data || [];
+}
+
+/**
  * Retourne le montant facturé (discounted_amount) d'un paiement en attente.
  * Utilisé par paymentConfirm pour la validation anti-fraude.
  */
@@ -667,6 +687,7 @@ module.exports = {
   insertPendingPayment,
   confirmPendingPayment,
   getUnconfirmedPayments,
+  getStuckOrders,
   getPendingPayment,
   // Parrainage
   countReferralSales,

@@ -270,6 +270,15 @@ Aucun commit ni redéploiement nécessaire — la mise à jour est immédiate.
 
 **Stancer n'a pas de webhooks** — la confirmation se fait uniquement via la vérification API au retour du client.
 
+### Réconciliation et surveillance (cron horaire)
+
+Au démarrage (après 5 min) puis toutes les heures, `server.js` lance `runHourlyMaintenance()` :
+
+1. `syncUnconfirmedPayments()` ([stancerSync.js](backend/services/stancerSync.js)) — rattrape les paiements capturés chez Stancer mais non confirmés par `success.html` (client qui ferme l'onglet) : insère la commande, génère la facture, envoie l'email.
+2. `alertStuckOrders()` — si des commandes restent payées mais non livrées (`email_sent = false` depuis > 1 h, donc après échec de la réconciliation), envoie **une** alerte email explicite à `ALERT_EMAIL` via Brevo. Anti-spam : chaque commande n'est signalée qu'une fois (liste persistée dans `admin_settings.stuck_orders_alerted`).
+
+Le health check `GET /api/healthz` renvoie `stuck_orders` (commandes `email_sent = false` depuis > 10 min) et un statut `503 degraded` si > 0 — surveillé par UptimeRobot.
+
 ---
 
 ## Stéganographie

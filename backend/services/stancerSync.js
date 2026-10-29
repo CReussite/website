@@ -7,6 +7,9 @@ const {
   uploadInvoicePdf,
   saveInvoicePath,
   countReferralSales,
+  getStuckOrders,
+  getAdminSettings,
+  setAdminSetting,
 } = require('./db');
 const { generateInvoice } = require('./invoice');
 const { sendOrderEmail } = require('./mailer');
@@ -160,4 +163,59 @@ async function syncUnconfirmedPayments() {
   }
 }
 
-module.exports = { syncUnconfirmedPayments };
+const STUCK_ALERTED_KEY = 'stuck_orders_alerted';
+
+/**
+ * Alerte par email (ALERT_EMAIL) si des commandes payées restent non livrées :
+ * email non parti depuis plus d'une heure, donc après que la réconciliation
+ * horaire a déjà tenté de les traiter. Message métier explicite ("commande payée
+ * non livrée") plutôt que le signal "down" ambigu du health check.
+ *
+ * Anti-spam : ne signale chaque commande qu'une seule fois. La liste des commandes
+ * déjà signalées est persistée dans admin_settings et réduite aux commandes encore
+ * bloquées (pour re-signaler uniquement si un nouveau problème apparaît).
+ */
+async function alertStuckOrders() {
+  let stuck;
+  try {
+    stuck = await getStuckOrders({ minAgeMinutes: 60 });
+  } catch (e) {
+    console.warn('[stuck-alert] getStuckOrders failed:', e.message);
+    return;
+  }
+
+  const stuckIds = stuck.map(o => o.payment_session_id);
+
+  let alreadyAlerted = [];
+  try {
+    const settings = await getAdminSettings();
+    if (settings[STUCK_ALERTED_KEY]) alreadyAlerted = JSON.parse(settings[STUCK_ALERTED_KEY]);
+  } catch (e) {
+    console.warn('[stuck-alert] lecture admin_settings échouée:', e.message);
+  }
+
+  const newStuck = stuck.filter(o => !alreadyAlerted.includes(o.payment_session_id));
+
+  if (newStuck.length > 0) {
+    await sendOpsAlert({
+      subject: `${newStuck.length} commande(s) payée(s) non livrée(s)`,
+      message: "Des clients ont payé mais n'ont pas reçu leur email avec les fiches (échec d'envoi persistant depuis plus d'une heure, malgré la réconciliation automatique). À traiter manuellement depuis l'admin.",
+      details: {
+        commandes: newStuck
+          .map(o => `${o.invoice_number} — ${o.email} — ${(o.amount / 100).toFixed(2)} € — ${o.product_id}`)
+          .join('\n'),
+      },
+    }).catch(e => console.error('[stuck-alert] sendOpsAlert failed:', e.message));
+    console.log(`[stuck-alert] ${newStuck.length} commande(s) bloquée(s) signalée(s)`);
+  }
+
+  // Ne garder que les commandes encore bloquées : une commande résolue sort de
+  // la liste et pourra re-déclencher une alerte si elle se re-bloquait.
+  try {
+    await setAdminSetting(STUCK_ALERTED_KEY, JSON.stringify(stuckIds));
+  } catch (e) {
+    console.warn('[stuck-alert] écriture admin_settings échouée:', e.message);
+  }
+}
+
+module.exports = { syncUnconfirmedPayments, alertStuckOrders };
