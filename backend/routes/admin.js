@@ -1,6 +1,7 @@
 const express = require('express');
 const { getOrders, getAdminStats, getExtractRequests, insertCoursParticuliersInvoice, getCpInvoices, getCoursParticuliersInvoice, markCpInvoicePaid, deleteCoursParticuliersInvoice, uploadInvoicePdf, getAdminSettings, setAdminSetting, getNextCpInvoiceNumber } = require('../services/db');
 const { generateInvoice, generateCpInvoice } = require('../services/invoice');
+const { requireSession } = require('../services/adminAuth');
 
 const router = express.Router();
 
@@ -13,12 +14,9 @@ function fmtDate(d) {
 
 
 // ── Middleware auth ───────────────────────────────────────────────────────────
-function requireAdminKey(req, res, next) {
-  const adminKey = process.env.ADMIN_KEY;
-  if (!adminKey) return res.status(503).json({ error: 'ADMIN_KEY non configurée sur le serveur.' });
-  if (req.query.key !== adminKey) return res.status(401).json({ error: 'Clé invalide.' });
-  next();
-}
+// Valide un jeton de session 2FA (émis par /api/admin/auth). La clé brute ADMIN_KEY
+// ne donne plus accès directement : la double authentification ne peut être contournée.
+const requireAdminKey = requireSession;
 
 // ── GET /api/admin/config ─────────────────────────────────────────────────────
 // Retourne la configuration de l'environnement (mode Stancer).

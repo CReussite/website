@@ -58,7 +58,7 @@ CReussite/
 │   ├── sitemap.xml
 │   ├── llms.txt                       ← Index lisible par LLM
 │   ├── index.html                     ← Page d'accueil
-│   ├── admin.html                     ← Tableau de bord (protégé ADMIN_KEY)
+│   ├── admin.html                     ← Tableau de bord (protégé 2FA : mot de passe + TOTP/email)
 │   ├── success.html                   ← Retour Stancer : vérifie paiement, affiche confirmation
 │   ├── cancel.html                    ← Retour Stancer si annulation
 │   ├── beta.html                      ← Bêta multi-niveaux : connexion + grille + lecteur PDF
@@ -104,7 +104,8 @@ CReussite/
 │   │   ├── checkout.js                ← POST /api/checkout → paiement Stancer
 │   │   ├── paymentConfirm.js          ← GET /api/payment/confirm → vérifie + traite commande
 │   │   ├── extract.js                 ← POST /api/extract → extrait gratuit (sans stéganographie)
-│   │   ├── admin.js                   ← GET /api/admin/* (protégé ADMIN_KEY)
+│   │   ├── admin.js                   ← GET /api/admin/* (protégé jeton de session 2FA)
+│   │   ├── adminAuth.js               ← POST /api/admin/auth/* (2FA : login + TOTP/email)
 │   │   ├── beta.js                    ← POST /api/beta-feedback → email
 │   │   ├── betaViewer.js              ← Bêta maths/physique : auth mot de passe + PDF Supabase
 │   │   └── betaNiveaux.js             ← Bêta multi-niveaux : auth email+mdp, 4 ebooks, questionnaire
@@ -140,15 +141,43 @@ CReussite/
 | POST | `/api/beta-niveaux/auth` | BETA_TESTERS | Connexion bêta multi-niveaux (email + mot de passe) |
 | GET | `/api/beta-niveaux/pdf/:type` | jeton | Sert un ebook depuis Supabase Storage (bucket `beta-assets`) |
 | GET | `/api/products` | — | Retourne `docs/content/products.json` |
-| GET | `/api/admin/orders` | ADMIN_KEY | Liste des commandes (JSON) |
-| GET | `/api/admin/stats` | ADMIN_KEY | Stats agrégées (CA, nb commandes, emails) |
-| GET | `/api/admin/extracts` | ADMIN_KEY | Historique des extraits envoyés |
-| GET | `/api/admin/export` | ADMIN_KEY | Export CSV (BOM UTF-8) |
-| GET | `/api/admin/invoice/:num` | ADMIN_KEY | Re-génère et télécharge une facture PDF |
-| GET | `/api/admin/next-invoice-number` | ADMIN_KEY | Prochain numéro de facture disponible (`max + 1`) |
-| GET | `/api/admin/config` | ADMIN_KEY | Retourne `{ stancer_mode: 'live' \| 'test' }` |
+| POST | `/api/admin/auth/login` | mot de passe | Vérifie `ADMIN_KEY`, renvoie l'étape 2FA + un ticket `preauth` |
+| POST | `/api/admin/auth/setup` + `/setup/confirm` | preauth | 1re config TOTP (QR code) puis activation |
+| POST | `/api/admin/auth/verify` | preauth | Vérifie le code TOTP, délivre le jeton de session |
+| POST | `/api/admin/auth/email-otp` + `/email-otp/verify` | preauth | Secours : code à usage unique envoyé par email |
+| GET | `/api/admin/orders` | jeton 2FA | Liste des commandes (JSON) |
+| GET | `/api/admin/stats` | jeton 2FA | Stats agrégées (CA, nb commandes, emails) |
+| GET | `/api/admin/extracts` | jeton 2FA | Historique des extraits envoyés |
+| GET | `/api/admin/export` | jeton 2FA | Export CSV (BOM UTF-8) |
+| GET | `/api/admin/invoice/:num` | jeton 2FA | Re-génère et télécharge une facture PDF |
+| GET | `/api/admin/next-invoice-number` | jeton 2FA | Prochain numéro de facture disponible (`max + 1`) |
+| GET | `/api/admin/config` | jeton 2FA | Retourne `{ stancer_mode: 'live' \| 'test' }` |
 | GET | `/api/health` | — | `{"status":"ok"}` |
 | GET | `/api/healthz` | — | Health check détaillé, `503` si variable manquante |
+
+---
+
+## Authentification admin (double authentification)
+
+L'accès à `/admin.html` est protégé par **2FA** : mot de passe (`ADMIN_KEY`) **puis** un
+second facteur. Le mot de passe seul ne donne plus accès.
+
+- **1er facteur** : le mot de passe `ADMIN_KEY`.
+- **2e facteur** : un code à 6 chiffres d'une app authenticator (TOTP, type Google
+  Authenticator), **ou** un code à usage unique envoyé par email (`ADMIN_EMAIL`) en secours.
+- Après validation des deux facteurs, le backend délivre un **jeton de session signé
+  (HMAC-SHA256 avec `ADMIN_KEY`) valable 12 h**. Ce jeton — et non plus la clé brute —
+  est stocké dans le navigateur et envoyé aux routes `/api/admin/*`. Il est *sans état*
+  (aucune table de session) et une rotation de `ADMIN_KEY` invalide tous les jetons.
+- Le secret TOTP est stocké dans la table `admin_settings` (clé `totp_secret`). À la
+  première connexion, l'écran propose de scanner un QR code pour l'activer.
+- Code backend : `backend/services/adminAuth.js` (jetons + TOTP + middleware
+  `requireSession`) et `backend/routes/adminAuth.js` (routes `/api/admin/auth/*`).
+
+**Récupération (perte du téléphone ET de l'accès email)** : dans Supabase, table
+`admin_settings`, supprimer la ligne `totp_secret` (ou vider sa `value`). À la connexion
+suivante, après le mot de passe, l'écran de configuration réapparaît pour réassocier une
+nouvelle application authenticator.
 
 ---
 
@@ -223,7 +252,8 @@ cp backend/.env.example backend/.env  # en local
 | `BCC_EMAIL` | Copie cachée de chaque email de commande + extrait |
 | `NOTIFY_EMAIL` | Destinataire interne des notifications (avis, retours bêta) ; repli du BCC |
 | `ALERT_EMAIL` | Reçoit les alertes ops en cas d'erreur |
-| `ADMIN_KEY` | Clé secrète pour `/admin.html`, valeur longue aléatoire |
+| `ADMIN_KEY` | Mot de passe admin (1er facteur 2FA) + clé de signature des jetons de session, valeur longue aléatoire |
+| `ADMIN_EMAIL` | Destinataire du code admin de secours (2FA email) ; défaut `ALERT_EMAIL`/`FROM_EMAIL` |
 | `BETA_VIEWER_PASSWORDS` | JSON bêta maths/physique : `[{"password","type","expires"}]` |
 | `BETA_TESTERS` | JSON bêta multi-niveaux : `[{"email","password","expires"}]` (accès aux 4 ebooks) |
 
