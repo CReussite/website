@@ -413,16 +413,75 @@
   </div>
   <div id="login-screen">
     <div class="login-card">
-      <h1>C'Reussite</h1>
+      <h1>C'Réussite</h1>
       <p>Tableau de bord admin</p>
-      <form id="login-form" class="contact-form">
-        <div class="form-group">
-          <label class="form-label" for="admin-key-input">Cle d'acces</label>
-          <input class="form-control" type="password" id="admin-key-input" placeholder="********" required autocomplete="current-password">
+
+      <!-- Étape 1 : mot de passe -->
+      <div id="login-step-password">
+        <form id="login-form" class="contact-form">
+          <div class="form-group">
+            <label class="form-label" for="admin-key-input">Mot de passe</label>
+            <input class="form-control" type="password" id="admin-key-input" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" id="login-password-btn">Continuer</button>
+        </form>
+        <p id="login-error" style="color:#b91c1c;font-size:.85rem;margin-top:12px;display:none;">Mot de passe invalide.</p>
+      </div>
+
+      <!-- Étape configuration (première connexion uniquement) -->
+      <div id="login-step-setup" style="display:none;text-align:left;">
+        <p style="font-size:.9rem;color:#374151;margin-bottom:12px;">
+          <strong>Activons votre double sécurité.</strong> Sur votre téléphone, ouvrez une
+          application d'authentification (Google Authenticator, Microsoft Authenticator, Authy…)
+          et scannez ce QR code :
+        </p>
+        <div style="text-align:center;margin:12px 0;">
+          <img id="setup-qr" alt="QR code à scanner" style="width:200px;height:200px;border-radius:8px;background:#f3f4f6;" />
         </div>
-        <button type="submit" class="btn btn-primary btn-block">Acceder</button>
-      </form>
-      <p id="login-error" style="color:#b91c1c;font-size:.85rem;margin-top:12px;display:none;">Cle invalide.</p>
+        <p style="font-size:.78rem;color:#6b7280;margin-bottom:14px;">
+          Impossible de scanner ? Saisissez plutôt ce code dans l'application :<br>
+          <code id="setup-secret" style="font-size:.85rem;word-break:break-all;"></code>
+        </p>
+        <div class="form-group">
+          <label class="form-label" for="setup-code-input">Entrez le code à 6 chiffres affiché par l'application</label>
+          <input class="form-control" type="text" inputmode="numeric" autocomplete="one-time-code" id="setup-code-input" placeholder="123456" maxlength="6">
+        </div>
+        <button type="button" id="setup-confirm-btn" class="btn btn-primary btn-block">Activer et se connecter</button>
+        <p id="setup-error" style="color:#b91c1c;font-size:.85rem;margin-top:12px;display:none;"></p>
+      </div>
+
+      <!-- Étape 2 : code de l'application -->
+      <div id="login-step-2fa" style="display:none;text-align:left;">
+        <p style="font-size:.9rem;color:#374151;margin-bottom:12px;">
+          Ouvrez votre application d'authentification et entrez le code à 6 chiffres.
+        </p>
+        <div class="form-group">
+          <label class="form-label" for="totp-code-input">Code de l'application</label>
+          <input class="form-control" type="text" inputmode="numeric" autocomplete="one-time-code" id="totp-code-input" placeholder="123456" maxlength="6">
+        </div>
+        <button type="button" id="totp-verify-btn" class="btn btn-primary btn-block">Se connecter</button>
+        <p id="totp-error" style="color:#b91c1c;font-size:.85rem;margin-top:12px;display:none;"></p>
+        <p style="margin-top:16px;font-size:.82rem;text-align:center;">
+          <a href="#" id="link-email-otp" style="color:#112250;">Je n'ai pas mon téléphone — recevoir un code par email</a>
+        </p>
+      </div>
+
+      <!-- Étape secours : code par email -->
+      <div id="login-step-email" style="display:none;text-align:left;">
+        <p style="font-size:.9rem;color:#374151;margin-bottom:12px;">
+          Un code à 6 chiffres vient d'être envoyé à votre adresse email.
+          Entrez-le ci-dessous (il est valable 10 minutes).
+        </p>
+        <div class="form-group">
+          <label class="form-label" for="email-code-input">Code reçu par email</label>
+          <input class="form-control" type="text" inputmode="numeric" autocomplete="one-time-code" id="email-code-input" placeholder="123456" maxlength="6">
+        </div>
+        <button type="button" id="email-verify-btn" class="btn btn-primary btn-block">Se connecter</button>
+        <p id="email-error" style="color:#b91c1c;font-size:.85rem;margin-top:12px;display:none;"></p>
+        <p style="margin-top:16px;font-size:.82rem;text-align:center;">
+          <a href="#" id="link-back-totp" style="color:#6b7280;">← Revenir au code de l'application</a>
+        </p>
+      </div>
     </div>
   </div>
 
@@ -983,27 +1042,27 @@
         renderDashboard();
       }
 
-      async function tryLogin(key) {
+      // Charge le tableau de bord avec un jeton de session déjà obtenu.
+      // Renvoie true si le jeton est valide, false sinon.
+      async function loadDashboardData(token) {
         try {
           const responses = await Promise.all([
-            fetch(BACKEND + '/api/admin/orders?key=' + encodeURIComponent(key)),
-            fetch(BACKEND + '/api/admin/stats?key=' + encodeURIComponent(key)),
-            fetch(BACKEND + '/api/admin/extracts?key=' + encodeURIComponent(key))
+            fetch(BACKEND + '/api/admin/orders?key=' + encodeURIComponent(token)),
+            fetch(BACKEND + '/api/admin/stats?key=' + encodeURIComponent(token)),
+            fetch(BACKEND + '/api/admin/extracts?key=' + encodeURIComponent(token))
           ]);
 
           if (!responses[0].ok || !responses[1].ok || !responses[2].ok) throw new Error('invalid');
 
           const payloads = await Promise.all([responses[0].json(), responses[1].json(), responses[2].json()]);
 
-          adminKey = key;
+          adminKey = token;
           allOrders = payloads[0];
           allStats = payloads[1];
           allExtracts = payloads[2];
-          loginError.style.display = 'none';
-          localStorage.setItem(KEY_STORAGE, key);
 
           try {
-            const configRes = await fetch(BACKEND + '/api/admin/config?key=' + encodeURIComponent(key));
+            const configRes = await fetch(BACKEND + '/api/admin/config?key=' + encodeURIComponent(token));
             if (configRes.ok) {
               const config = await configRes.json();
               if (config.stancer_mode === 'test') testBanner.style.display = 'block';
@@ -1014,17 +1073,186 @@
           loadPromoCodes();
           loadCpInvoices();
           loadRecettes();
+          return true;
         } catch (_) {
-          loginError.style.display = 'block';
+          return false;
         }
       }
 
-      const savedKey = localStorage.getItem(KEY_STORAGE);
-      if (savedKey) tryLogin(savedKey);
+      // ─── Flux d'authentification 2FA ───────────────────────────────────────────
+      let preauth = '';
+      let emailChallenge = '';
 
-      loginForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        tryLogin(keyInput.value.trim());
+      const AUTH = BACKEND + '/api/admin/auth';
+      const steps = {
+        password: document.getElementById('login-step-password'),
+        setup:    document.getElementById('login-step-setup'),
+        '2fa':    document.getElementById('login-step-2fa'),
+        email:    document.getElementById('login-step-email'),
+      };
+
+      function showStep(step) {
+        Object.keys(steps).forEach(function (s) {
+          steps[s].style.display = (s === step ? 'block' : 'none');
+        });
+        const focusMap = { setup: 'setup-code-input', '2fa': 'totp-code-input', email: 'email-code-input' };
+        const el = focusMap[step] && document.getElementById(focusMap[step]);
+        if (el) setTimeout(function () { el.focus(); }, 50);
+      }
+
+      function showAuthError(id, msg) {
+        const el = document.getElementById(id);
+        el.textContent = msg || 'Une erreur est survenue.';
+        el.style.display = 'block';
+      }
+
+      async function authPost(path, body) {
+        try {
+          const res = await fetch(AUTH + path, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body || {})
+          });
+          let data = {};
+          try { data = await res.json(); } catch (_) {}
+          return { ok: res.ok, status: res.status, data: data };
+        } catch (_) {
+          return { ok: false, status: 0, data: { error: 'Serveur injoignable. Réessayez dans un instant.' } };
+        }
+      }
+
+      // Jeton preauth expiré (5 min) → on renvoie à l'étape mot de passe.
+      function preauthExpired(res) {
+        if (res.status === 401 && /mot de passe/i.test(res.data.error || '')) {
+          preauth = '';
+          showStep('password');
+          showAuthError('login-error', 'Session de connexion expirée. Entrez à nouveau votre mot de passe.');
+          return true;
+        }
+        return false;
+      }
+
+      async function onAuthenticated(token, exp) {
+        try { localStorage.setItem(KEY_STORAGE, JSON.stringify({ token: token, exp: exp })); } catch (_) {}
+        const ok = await loadDashboardData(token);
+        if (!ok) {
+          localStorage.removeItem(KEY_STORAGE);
+          showAuthError('login-error', 'Connexion impossible. Réessayez.');
+          showStep('password');
+        }
+      }
+
+      // Étape 1 : mot de passe
+      async function submitPassword() {
+        loginError.style.display = 'none';
+        const res = await authPost('/login', { password: keyInput.value.trim() });
+        if (!res.ok) { showAuthError('login-error', res.data.error || 'Mot de passe invalide.'); return; }
+        preauth = res.data.preauth;
+        if (res.data.step === 'setup') startSetup();
+        else showStep('2fa');
+      }
+
+      // Étape configuration (1re connexion)
+      async function startSetup() {
+        document.getElementById('setup-error').style.display = 'none';
+        document.getElementById('setup-qr').removeAttribute('src');
+        document.getElementById('setup-secret').textContent = '…';
+        showStep('setup');
+        const res = await authPost('/setup', { preauth: preauth });
+        if (!res.ok) {
+          if (preauthExpired(res)) return;
+          showAuthError('setup-error', res.data.error || 'Impossible de démarrer la configuration.');
+          return;
+        }
+        document.getElementById('setup-qr').src = res.data.qrDataUrl;
+        document.getElementById('setup-secret').textContent = res.data.secret;
+      }
+
+      async function confirmSetup() {
+        document.getElementById('setup-error').style.display = 'none';
+        const code = document.getElementById('setup-code-input').value.trim();
+        const res = await authPost('/setup/confirm', { preauth: preauth, code: code });
+        if (!res.ok) {
+          if (preauthExpired(res)) return;
+          showAuthError('setup-error', res.data.error || 'Code incorrect.');
+          return;
+        }
+        onAuthenticated(res.data.token, res.data.exp);
+      }
+
+      // Étape 2 : code de l'application
+      async function verifyTotp() {
+        document.getElementById('totp-error').style.display = 'none';
+        const code = document.getElementById('totp-code-input').value.trim();
+        const res = await authPost('/verify', { preauth: preauth, code: code });
+        if (!res.ok) {
+          if (preauthExpired(res)) return;
+          showAuthError('totp-error', res.data.error || 'Code incorrect.');
+          return;
+        }
+        onAuthenticated(res.data.token, res.data.exp);
+      }
+
+      // Étape secours : code par email
+      async function requestEmailOtp() {
+        document.getElementById('email-error').style.display = 'none';
+        document.getElementById('email-code-input').value = '';
+        const res = await authPost('/email-otp', { preauth: preauth });
+        if (!res.ok) {
+          if (preauthExpired(res)) return;
+          showStep('email');
+          showAuthError('email-error', res.data.error || "Impossible d'envoyer le code.");
+          return;
+        }
+        emailChallenge = res.data.challenge;
+        showStep('email');
+      }
+
+      async function verifyEmailOtp() {
+        document.getElementById('email-error').style.display = 'none';
+        const code = document.getElementById('email-code-input').value.trim();
+        const res = await authPost('/email-otp/verify', { preauth: preauth, challenge: emailChallenge, code: code });
+        if (!res.ok) {
+          if (preauthExpired(res)) return;
+          showAuthError('email-error', res.data.error || 'Code incorrect.');
+          return;
+        }
+        onAuthenticated(res.data.token, res.data.exp);
+      }
+
+      // Reprise de session : jeton stocké encore valide ?
+      (function resumeSession() {
+        const raw = localStorage.getItem(KEY_STORAGE);
+        if (!raw) return;
+        let stored = null;
+        try { stored = JSON.parse(raw); } catch (_) {}
+        if (stored && stored.token && stored.exp && (stored.exp * 1000) > Date.now()) {
+          loadDashboardData(stored.token).then(function (ok) {
+            if (!ok) localStorage.removeItem(KEY_STORAGE);
+          });
+        } else {
+          localStorage.removeItem(KEY_STORAGE);
+        }
+      })();
+
+      // Branchements des étapes
+      loginForm.addEventListener('submit', function (e) { e.preventDefault(); submitPassword(); });
+      document.getElementById('setup-confirm-btn').addEventListener('click', confirmSetup);
+      document.getElementById('totp-verify-btn').addEventListener('click', verifyTotp);
+      document.getElementById('email-verify-btn').addEventListener('click', verifyEmailOtp);
+      document.getElementById('link-email-otp').addEventListener('click', function (e) { e.preventDefault(); requestEmailOtp(); });
+      document.getElementById('link-back-totp').addEventListener('click', function (e) { e.preventDefault(); showStep('2fa'); });
+      // Entrée = valider le code de l'étape courante
+      ['setup-code-input', 'totp-code-input', 'email-code-input'].forEach(function (id) {
+        const el = document.getElementById(id);
+        el.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            if (id === 'setup-code-input') confirmSetup();
+            else if (id === 'totp-code-input') verifyTotp();
+            else verifyEmailOtp();
+          }
+        });
       });
 
       yearFilter.addEventListener('change', function () {

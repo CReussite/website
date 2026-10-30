@@ -171,4 +171,42 @@ async function sendOrderEmail({
   return result;
 }
 
-module.exports = { sendOrderEmail };
+/**
+ * Envoie le code de connexion admin (2FA, secours par email).
+ * Destinataire : ADMIN_EMAIL → à défaut ALERT_EMAIL → à défaut FROM_EMAIL.
+ * @param {object} opts
+ * @param {string} opts.code - code à 6 chiffres
+ */
+async function sendAdminOtpEmail({ code }) {
+  const toEmail = process.env.ADMIN_EMAIL || process.env.ALERT_EMAIL || process.env.FROM_EMAIL;
+  if (!toEmail) throw new Error('Aucun email destinataire configuré (ADMIN_EMAIL/ALERT_EMAIL/FROM_EMAIL).');
+
+  const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+  sendSmtpEmail.sender = {
+    name: process.env.FROM_NAME || "C'Réussite",
+    email: process.env.FROM_EMAIL,
+  };
+  sendSmtpEmail.to = [{ email: toEmail }];
+  sendSmtpEmail.subject = `Code de connexion admin : ${code}`;
+  sendSmtpEmail.htmlContent = `
+    <div style="font-family:sans-serif;max-width:480px;margin:0 auto;color:#1A1A2E;">
+      <div style="text-align:center;padding:24px 0 8px;">
+        <img src="https://c-reussite.fr/img/logo.jpeg" alt="C'Réussite" style="height:60px;width:auto;">
+      </div>
+      <h2 style="color:#112250;text-align:center;">Connexion au tableau de bord</h2>
+      <p>Voici votre code de connexion à usage unique :</p>
+      <p style="text-align:center;margin:24px 0;">
+        <span style="display:inline-block;font-size:2rem;font-weight:800;letter-spacing:8px;
+                     color:#112250;background:#f8f5ee;border-radius:10px;padding:14px 28px;">${code}</span>
+      </p>
+      <p style="font-size:0.9rem;color:#6b7280;">Ce code est valable <strong>10 minutes</strong> et ne sert qu'une fois.</p>
+      <p style="font-size:0.85rem;color:#b91c1c;">Si vous n'êtes pas à l'origine de cette connexion, ignorez cet email et changez votre mot de passe admin.</p>
+    </div>
+  `;
+
+  const result = await apiInstance.sendTransacEmail(sendSmtpEmail);
+  console.log(`[mailer] Code admin 2FA envoyé à ${toEmail} — messageId: ${result.messageId}`);
+  return result;
+}
+
+module.exports = { sendOrderEmail, sendAdminOtpEmail };

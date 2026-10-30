@@ -7,15 +7,13 @@ const {
   countReferralSales,
 } = require('../services/db');
 
+const { requireSession } = require('../services/adminAuth');
+
 const router = express.Router();
 
-function requireAdmin(req, res, next) {
-  const key = req.headers['x-admin-key'] || req.query.admin_key;
-  if (!key || key !== process.env.ADMIN_KEY) {
-    return res.status(403).json({ error: 'Accès refusé.' });
-  }
-  next();
-}
+// Valide un jeton de session 2FA (émis par /api/admin/auth) fourni en en-tête
+// x-admin-key ou en paramètre. La clé brute ADMIN_KEY ne donne plus accès.
+const requireAdmin = requireSession;
 
 // GET /api/admin/promo — liste des codes + stats
 router.get('/', requireAdmin, async (req, res) => {

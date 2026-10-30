@@ -51,6 +51,9 @@ app.use('/api/extract', require('./routes/extract'));
 // Formulaire de contact
 app.use('/api/contact', require('./routes/contact'));
 
+// Authentification admin (2FA : mot de passe + TOTP/email) — doit précéder /api/admin
+app.use('/api/admin/auth', require('./routes/adminAuth'));
+
 // Admin (commandes, export CSV, téléchargement factures)
 app.use('/api/admin', require('./routes/admin'));
 
