@@ -260,11 +260,12 @@
   <div class="login-card">
     <h1>C'Réussite</h1>
     <p>Générateur de factures</p>
-    <form id="login-form">
-      <input type="password" id="login-key" placeholder="Clé d'accès" autocomplete="current-password" required>
-      <button type="submit">Accéder</button>
-    </form>
-    <p class="login-err" id="login-err">Clé invalide.</p>
+    <p id="login-msg" style="font-size:.9rem;color:#374151;margin:4px 0 18px;line-height:1.5;">
+      Pour générer une facture, connectez-vous d'abord au tableau de bord
+      (mot de passe + code de votre application).
+    </p>
+    <a href="/admin.html" style="display:inline-block;background:var(--royal-blue,#112250);color:#fff;text-decoration:none;font-weight:600;padding:11px 24px;border-radius:8px;font-size:.92rem;">Aller au tableau de bord</a>
+    <p class="login-err" id="login-err" style="display:none;">Session expirée. Reconnectez-vous au tableau de bord.</p>
   </div>
 </div>
 
@@ -394,43 +395,45 @@
     ? 'http://localhost:3000' : 'https://creussite-backend.onrender.com';
   const KEY_STORAGE = 'creussite_admin_key';
 
-  // ── Auth ───────────────────────────────────────────────
-  async function verifyKey(key) {
+  // ── Auth : jeton de session 2FA partagé avec admin.html ──
+  // La connexion (mot de passe + double authentification) se fait sur le
+  // tableau de bord. Ici on réutilise le jeton de session déjà obtenu ; sinon
+  // on invite à se connecter au tableau de bord.
+  function getSessionToken() {
     try {
-      const res = await fetch(BACKEND + '/api/admin/config?key=' + encodeURIComponent(key));
+      const raw = localStorage.getItem(KEY_STORAGE);
+      if (!raw) return '';
+      const s = JSON.parse(raw);
+      if (s && s.token && s.exp && (s.exp * 1000) > Date.now()) return s.token;
+    } catch (_) {}
+    return '';
+  }
+
+  async function verifyKey(token) {
+    if (!token) return false;
+    try {
+      const res = await fetch(BACKEND + '/api/admin/config?key=' + encodeURIComponent(token));
       return res.ok;
     } catch (_) { return false; }
   }
 
-  async function tryLogin(key) {
-    const ok = await verifyKey(key);
-    if (ok) {
-      localStorage.setItem(KEY_STORAGE, key);
-      document.getElementById('login-overlay').classList.remove('active');
-      document.getElementById('app').style.display = 'grid';
-      initApp();
-    } else {
-      document.getElementById('login-err').style.display = 'block';
-    }
+  function openApp() {
+    document.getElementById('login-overlay').classList.remove('active');
+    document.getElementById('app').style.display = 'grid';
+    initApp();
   }
 
-  document.getElementById('login-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    document.getElementById('login-err').style.display = 'none';
-    tryLogin(document.getElementById('login-key').value.trim());
-  });
-
-  // Clé déjà en mémoire (session partagée avec admin.html)
-  const savedKey = localStorage.getItem(KEY_STORAGE);
-  if (savedKey) {
-    verifyKey(savedKey).then(ok => {
-      if (ok) {
-        document.getElementById('login-overlay').classList.remove('active');
-        document.getElementById('app').style.display = 'grid';
-        initApp();
+  (function initAuth() {
+    const token = getSessionToken();
+    if (!token) return; // overlay affiché : invite à se connecter au tableau de bord
+    verifyKey(token).then(ok => {
+      if (ok) openApp();
+      else {
+        localStorage.removeItem(KEY_STORAGE);
+        document.getElementById('login-err').style.display = 'block';
       }
     });
-  }
+  })();
 
   let type = 'ar';
   let rowId = 0;
@@ -452,7 +455,7 @@
     if(s('bic'))  document.getElementById('f-bic').value  = s('bic');
     if(s('tit'))  document.getElementById('f-tit').value  = s('tit');
 
-    const adminKey = localStorage.getItem('creussite_admin_key') || '';
+    const adminKey = getSessionToken();
     if (adminKey) {
       Promise.all([
         fetch(BACKEND + '/api/admin/settings?key=' + encodeURIComponent(adminKey)).then(r => r.json()).catch(() => ({})),
@@ -475,7 +478,7 @@
     const invEl = document.getElementById('inv');
     if (!invEl) return;
 
-    const adminKey = localStorage.getItem('creussite_admin_key') || '';
+    const adminKey = getSessionToken();
     const isAr = type === 'ar';
 
     // Construire les items pour le backend
@@ -676,7 +679,7 @@ ${invEl.outerHTML}
   }
 
   function saveRib() {
-    const adminKey = localStorage.getItem('creussite_admin_key') || '';
+    const adminKey = getSessionToken();
     const map = { iban: 'rib_iban', bic: 'rib_bic', tit: 'rib_titulaire' };
     ['iban','bic','tit'].forEach(k => {
       const val = document.getElementById('f-'+k).value;
