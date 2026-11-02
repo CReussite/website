@@ -1939,14 +1939,17 @@
               '<div style="font-size:18px;font-weight:700;color:#2e7d4f;margin-top:8px;">' + (data.payment_date||'') + (data.payment_method && data.payment_method!=='—' ? '  ·  ' + data.payment_method : '') + '</div>' +
               '</div></div>';
           }
-          // Période (haut droite) = mois/année des séances, déduit de leurs dates
+          // Période (haut droite) = mois/année de la 1re séance (un seul mois)
           var MOIS_FR = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
-          var periodeSet = [];
+          var periode = '—';
+          var earliest = null;
           sessions.forEach(function(it){
             var mm = (it.date||'').match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-            if (mm) { var lbl = MOIS_FR[parseInt(mm[2],10)-1] + ' ' + mm[3]; if (periodeSet.indexOf(lbl) === -1) periodeSet.push(lbl); }
+            if (mm) {
+              var d = new Date(mm[3] + '-' + mm[2] + '-' + mm[1]);
+              if (!earliest || d < earliest) { earliest = d; periode = MOIS_FR[parseInt(mm[2],10)-1] + ' ' + mm[3]; }
+            }
           });
-          var periode = periodeSet.join(' – ') || '—';
           openCpPrintWindow(data.invoice_number, data.date, periode, data.customer, thead, tbody, tfoot, totsHtml, paySection, stampHtml);
         } catch (e) {
           alert('Impossible d\'afficher la facture : ' + e.message);
