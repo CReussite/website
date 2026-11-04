@@ -63,6 +63,7 @@ CReussite/
 │   ├── cancel.html                    ← Retour Stancer si annulation
 │   ├── beta.html                      ← Bêta multi-niveaux : connexion + grille + lecteur PDF
 │   ├── beta-mia-rose.html             ← Bêta dédiée (Mia Rose) : un seul ebook, Physique-Chimie Seconde
+│   ├── beta-marie.html                ← Bêta dédiée (Marie) : un seul ebook, Physique-Chimie Seconde
 │   ├── maths-terminale/index.html     ← Page produit Maths (layout empilé, FAQPage schema)
 │   ├── physique-chimie-terminale/index.html ← Page produit Physique-Chimie
 │   ├── pack-maths-physique-chimie/index.html ← Page produit Pack (prix barré, 2 tableaux)
@@ -337,7 +338,7 @@ Pour identifier un PDF partagé illégalement : ouvrir dans Adobe Acrobat, `Ctrl
 
 Module isolé pour une nouvelle vague de bêta-testeurs, sans impact sur la bêta maths/physique existante. Backend : `backend/routes/betaNiveaux.js`, monté sur `/api/beta-niveaux`. Frontend : `docs/beta.html` (connexion + grille + lecteur).
 
-Pages dédiées : une page peut n'exposer qu'un seul ebook. `docs/beta-mia-rose.html` (bêta-testeuse Mia Rose) reprend le même lecteur et la même connexion mais n'affiche que `pc-2nde` (Physique-Chimie Seconde). Le filtrage est côté front (tableau `EBOOKS`) ; côté backend, un compte `BETA_TESTERS` valide reste requis.
+Pages dédiées : une page peut n'exposer qu'un seul ebook. `docs/beta-mia-rose.html` (bêta-testeuse Mia Rose) et `docs/beta-marie.html` (bêta-testeuse Marie) reprennent le même lecteur et la même connexion mais n'affichent que `pc-2nde` (Physique-Chimie Seconde) ; les deux fichiers sont identiques, seul l'URL diffère. Le filtrage est côté front (tableau `EBOOKS`) ; côté backend, un compte `BETA_TESTERS` valide reste requis.
 
 ### Les ebooks
 
@@ -365,7 +366,7 @@ Variable d'environnement `BETA_TESTERS` (Render), tableau JSON. Un compte donne 
 ### Lecteur
 
 - Navigation page à page, plein écran avec zoom, swipe mobile.
-- **Sommaire latéral** (panneau repliable à gauche) : vraie liste de chapitres reconstruite en texte (titres de section + fiches cliquables + n° de page, page courante surlignée), disponible en vue normale **et** en plein écran (tiroir qui se referme après sélection). Les PDF n'ayant pas de signets `/Outlines`, la page sommaire est détectée comme celle qui contient « sommaire » **et** a le plus de liens internes (`buildTOC`), puis les entrées sont extraites lien par lien (`extractTOC`). Les liens internes synchronisent aussi le plein écran (`navigateToPage`).
+- **Sommaire latéral** (panneau repliable à gauche) : vraie liste de chapitres reconstruite en texte (titres de section + fiches cliquables + n° de page, page courante surlignée), disponible en vue normale **et** en plein écran (tiroir qui se referme après sélection, et qui défile à la molette indépendamment du zoom de la page). Les PDF n'ayant pas de signets `/Outlines`, la page sommaire est détectée comme celle qui contient « sommaire » **et** a le plus de liens internes (`buildTOC`), puis les entrées sont extraites lien par lien (`extractTOC`). Les liens internes synchronisent aussi le plein écran (`navigateToPage`).
 
 ### Protections
 

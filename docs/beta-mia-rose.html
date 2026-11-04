@@ -159,7 +159,11 @@
     .fs-toc-head button { background:rgba(255,255,255,.12); color:var(--gold); border:none; border-radius:7px;
       width:28px; height:28px; cursor:pointer; font-size:1rem; line-height:1; }
     .fs-toc-head button:hover { background:rgba(255,255,255,.22); }
-    .fs-toc-body { padding:8px; overflow:auto; flex:1; min-height:0; }
+    .fs-toc-body { padding:8px; overflow-y:auto; overscroll-behavior:contain; flex:1; min-height:0; }
+    .fs-toc-body::-webkit-scrollbar { width:8px; }
+    .fs-toc-body::-webkit-scrollbar-thumb { background:rgba(224,197,143,.45); border-radius:8px; }
+    .fs-toc-body::-webkit-scrollbar-thumb:hover { background:rgba(224,197,143,.7); }
+    .fs-toc-body { scrollbar-width:thin; scrollbar-color:rgba(224,197,143,.45) transparent; }
     #fs-toc .toc-sec { color:var(--gold); }
     #fs-toc .toc-item { color:rgba(255,255,255,.88); }
     #fs-toc .toc-item:hover { background:rgba(255,255,255,.08); }
@@ -845,6 +849,8 @@
 
   document.addEventListener('wheel', function (e) {
     if (document.getElementById('fs-overlay').style.display !== 'block') return;
+    // Au-dessus du sommaire : on laisse défiler normalement (pas de zoom).
+    if (e.target && e.target.closest && e.target.closest('#fs-toc')) return;
     e.preventDefault(); e.stopPropagation();
     if (e.deltaY < 0) fsZoomIn(); else fsZoomOut();
   }, { passive: false, capture: true });
