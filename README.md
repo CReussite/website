@@ -338,7 +338,34 @@ Pour identifier un PDF partagé illégalement : ouvrir dans Adobe Acrobat, `Ctrl
 
 Module isolé pour une nouvelle vague de bêta-testeurs, sans impact sur la bêta maths/physique existante. Backend : `backend/routes/betaNiveaux.js`, monté sur `/api/beta-niveaux`. Frontend : `docs/beta.html` (connexion + grille + lecteur).
 
-Pages dédiées : une page peut n'exposer qu'un seul ebook. `docs/beta-mia-rose.html` (bêta-testeuse Mia Rose) et `docs/beta-marie.html` (bêta-testeuse Marie) reprennent le même lecteur et la même connexion mais n'affichent que `pc-2nde` (Physique-Chimie Seconde) ; les deux fichiers sont identiques, seul l'URL diffère. Le filtrage est côté front (tableau `EBOOKS`) ; côté backend, un compte `BETA_TESTERS` valide reste requis.
+### Pages bêta dédiées (un prénom = une page) — pattern validé
+
+Pour donner un lien perso à une bêta-testeuse, on crée **une page dédiée par prénom** qui n'expose qu'un seul ebook. Pattern de référence validé avec Camille (pages existantes : `docs/beta-mia-rose.html`, `docs/beta-marie.html`).
+
+Principe clé : **le contenu des pages dédiées est strictement identique** (même lecteur, même connexion, même tableau `EBOOKS` filtré sur `pc-2nde`). **Seul le nom de fichier / l'URL change** — le prénom n'apparaît jamais dans le contenu de la page, uniquement dans l'URL. Le filtrage des ebooks est côté front (tableau `EBOOKS`) ; côté backend, un compte `BETA_TESTERS` valide reste requis (la page seule ne donne aucun accès).
+
+**Recette pour ajouter une testeuse (ex. « Léa ») :**
+
+1. Copier à l'identique : `cp docs/beta-mia-rose.html docs/beta-lea.html` (copie verbatim = zéro régression, hérite de tous les correctifs comme le défilement du sommaire).
+2. Ne **rien** modifier dans le fichier si l'ebook exposé est le même (`pc-2nde`). Pour un autre ebook, n'ajuster que le tableau `EBOOKS`.
+3. Créer le compte de la testeuse dans `BETA_TESTERS` (Render) : `{"email","password","expires"}`.
+4. Mettre à jour ce README (liste des pages dédiées) dans le même commit.
+5. Déployer sur `main` (seule branche servie par GitHub Pages).
+
+**Vérification avant/après (obligatoire, anti-régression) :**
+
+```bash
+# AVANT : la nouvelle page est bien une copie conforme de la référence
+diff docs/beta-mia-rose.html docs/beta-lea.html   # doit être vide
+
+# APRÈS déploiement : page en ligne + un seul ebook exposé
+curl -s -o /dev/null -w "%{http_code}\n" https://c-reussite.fr/beta-lea.html   # 200
+curl -s https://c-reussite.fr/beta-lea.html | grep -oE "key:'[a-z0-9-]+'"       # un seul : pc-2nde
+```
+
+Si `diff` renvoie des lignes, c'est que la page a divergé de la référence : la réaligner avant de pousser.
+
+**Point d'attention terrain :** si une testeuse voit « plusieurs ebooks », elle est sur la page multi-niveaux `beta.html` (ou en cache), pas sur sa page dédiée. Lui faire rouvrir son lien perso en navigation privée.
 
 ### Les ebooks
 
