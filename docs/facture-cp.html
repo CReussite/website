@@ -498,7 +498,9 @@
     const backendItems = pack
       ? [{
           nature:         'Pack 10 heures de cours particuliers',
-          date:           '',
+          // Date d'émission : le backend exige une date par ligne, même si le
+          // rendu pack n'affiche pas de colonne Date.
+          date:           document.getElementById('f-date').value || new Date().toISOString().slice(0,10),
           hours:          10,
           hourly_rate:    27,
           total:          270,
