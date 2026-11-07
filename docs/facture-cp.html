@@ -285,6 +285,12 @@
       <button class="tab"        id="tab-aq" onclick="setType('aq')">✅ Acquittée</button>
     </div>
 
+    <!-- Pack 10 h -->
+    <label class="remise-toggle" id="pack-toggle" style="margin:6px 0 2px;">
+      <input type="checkbox" id="f-pack" onchange="togglePack()">
+      <span>📦 C'est un pack 10 h (270 €)</span>
+    </label>
+
     <!-- Infos facture -->
     <div class="sec">Informations</div>
     <div class="grid2">
@@ -297,7 +303,7 @@
         <input class="fi" id="f-date" type="date" oninput="render()">
       </div>
     </div>
-    <div class="grid1" style="margin-top:7px">
+    <div class="grid1" id="periode-wrap" style="margin-top:7px">
       <div class="field">
         <label>Période (ex : octobre 2026)</label>
         <input class="fi" id="f-periode" type="text" oninput="render()">
@@ -318,11 +324,14 @@
     </div>
 
     <!-- Cours -->
+    <div id="cours-sec">
     <div class="sec">Cours</div>
     <div class="rows-wrap" id="rows"></div>
     <button class="btn-add" onclick="addRow()">+ Ajouter une ligne</button>
+    </div>
 
     <!-- Remise -->
+    <div id="remise-sec">
     <div class="sec">Remise (optionnel)</div>
     <div class="remise-box">
       <label class="remise-toggle">
@@ -340,6 +349,7 @@
         </div>
       </div>
     </div>
+    </div><!-- /remise-sec -->
 
     <!-- Paiement À RÉGLER -->
     <div id="s-ar">
@@ -479,19 +489,33 @@
     if (!invEl) return;
 
     const adminKey = getSessionToken();
-    const isAr = type === 'ar';
+    const pack = isPack();
+    const isAr = pack ? true : (type === 'ar');   // un pack est toujours à régler
 
-    // Construire les items pour le backend
-    const backendItems = rows.map(r => ({
-      nature:         r.nature || '',
-      date:           r.date   || '',
-      hours:          parseFloat(r.h)    || 0,
-      hourly_rate:    parseFloat(r.rate) || 0,
-      total:          (parseFloat(r.h)||0) * (parseFloat(r.rate)||0),
-      status:         isAr ? 'a_payer' : 'paid',
-      payment_date:   isAr ? '' : (r.payDate || ''),
-      payment_method: isAr ? 'À payer' : (r.payMethod || ''),
-    }));
+    // Construire les items pour le backend.
+    // Pack 10 h : une seule ligne stockée en 10 h × 27 € = 270 € (rend le
+    // re-téléchargement admin cohérent sans toucher au générateur PDF backend).
+    const backendItems = pack
+      ? [{
+          nature:         'Pack 10 heures de cours particuliers',
+          date:           '',
+          hours:          10,
+          hourly_rate:    27,
+          total:          270,
+          status:         'a_payer',
+          payment_date:   '',
+          payment_method: 'À payer',
+        }]
+      : rows.map(r => ({
+          nature:         r.nature || '',
+          date:           r.date   || '',
+          hours:          parseFloat(r.h)    || 0,
+          hourly_rate:    parseFloat(r.rate) || 0,
+          total:          (parseFloat(r.h)||0) * (parseFloat(r.rate)||0),
+          status:         isAr ? 'a_payer' : 'paid',
+          payment_date:   isAr ? '' : (r.payDate || ''),
+          payment_method: isAr ? 'À payer' : (r.payMethod || ''),
+        }));
 
     const remiseOn  = document.getElementById('f-remise').checked;
     const remiseAmt = remiseOn ? (parseFloat(document.getElementById('f-ramt').value)||0) : 0;
@@ -666,6 +690,8 @@ ${invEl.outerHTML}
     rows.length = 0;
     rowId = 0;
     document.getElementById('rows').innerHTML = '';
+    const pack = document.getElementById('f-pack');
+    if (pack) { pack.checked = false; togglePack(); }   // restaure période / cours / remise / onglet Acquittée
     addRow();
     render();
   }
@@ -711,6 +737,27 @@ ${invEl.outerHTML}
   function toggleRemise() {
     const on = document.getElementById('f-remise').checked;
     document.getElementById('remise-inner').style.display = on ? 'grid' : 'none';
+    render();
+  }
+
+  // ── Pack 10 h ──────────────────────────────────────────
+  // Un pack est une facture produit (1 ligne, 270 €) toujours « à régler ».
+  // On masque période / cours / remise et on force le mode À régler.
+  function isPack() {
+    const el = document.getElementById('f-pack');
+    return !!(el && el.checked);
+  }
+  function togglePack() {
+    const on = isPack();
+    if (on) setType('ar');                                   // pack = toujours à régler
+    document.getElementById('tab-aq').style.display = on ? 'none' : '';
+    ['periode-wrap','cours-sec','remise-sec'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.style.display = on ? 'none' : '';
+    });
+    if (on) {                                                // pas de remise sur un pack
+      document.getElementById('f-remise').checked = false;
+      document.getElementById('remise-inner').style.display = 'none';
+    }
     render();
   }
 
@@ -822,18 +869,31 @@ ${invEl.outerHTML}
     const cname = document.getElementById('f-cname').value||'[Nom du client]';
     const caddr = (document.getElementById('f-caddr').value||'').replace(/\n/g,'<br>');
 
-    const subtotal = rows.reduce((s,r)=>s+(parseFloat(r.h)||0)*(parseFloat(r.rate)||0), 0);
-    const remiseOn = document.getElementById('f-remise').checked;
+    const pack = isPack();
+    const subtotal = pack ? 270 : rows.reduce((s,r)=>s+(parseFloat(r.h)||0)*(parseFloat(r.rate)||0), 0);
+    const remiseOn = !pack && document.getElementById('f-remise').checked;
     const remiseAmt = remiseOn ? (parseFloat(document.getElementById('f-ramt').value)||0) : 0;
     const remiseLbl = document.getElementById('f-rlbl').value||'Remise';
     const totalH = rows.reduce((s,r)=>s+(parseFloat(r.h)||0), 0);
-    const total = Math.max(0, subtotal - remiseAmt);
+    const total = pack ? 270 : Math.max(0, subtotal - remiseAmt);
 
     document.getElementById('total-line').textContent = 'Total TTC : '+money(total);
 
     // ── Tableau ──
     let thead, tbody;
-    if(type==='ar') {
+    if(pack) {
+      thead = `<tr>
+        <th>Désignation</th>
+        <th class="r" style="width:9%">Qté</th>
+        <th class="r" style="width:19%">Prix unitaire</th>
+        <th class="r" style="width:19%">Montant</th></tr>`;
+      tbody = `<tr>
+        <td><strong>Pack 10 heures de cours particuliers</strong><br>
+          <span style="color:#6b7280;font-size:11px">soit 27,00 €/h au lieu de 30,00 €/h (économie de 30,00 €)</span></td>
+        <td class="r">1</td>
+        <td class="r">${money(270)}</td>
+        <td class="r">${money(270)}</td></tr>`;
+    } else if(type==='ar') {
       thead = `<tr>
         <th style="width:13%">Date</th><th>Prestation</th>
         <th class="r" style="width:11%">Durée</th>
@@ -867,7 +927,9 @@ ${invEl.outerHTML}
       }).join('');
     }
 
-    const tfoot = type==='ar'
+    const tfoot = pack
+      ? `<td colspan="3">Total</td><td class="r">${money(270)}</td>`
+      : type==='ar'
       ? `<td colspan="2">Total heures :</td><td class="r">${totalH>0?fmtH(totalH):'—'}</td><td></td><td class="r">${money(subtotal)}</td>`
       : `<td colspan="2">Total heures :</td><td class="r">${totalH>0?fmtH(totalH):'—'}</td><td class="r">${money(subtotal)}</td><td colspan="2"></td>`;
 
@@ -914,7 +976,7 @@ ${invEl.outerHTML}
       <div class="inv-meta">
         <span><b>N° facture :</b> ${esc(num)}</span>
         <span><b>Date d'émission :</b> ${dateStr}</span>
-        <span><b>Période :</b> ${esc(periode)}</span>
+        ${pack ? '' : `<span><b>Période :</b> ${esc(periode)}</span>`}
       </div>
       <div class="inv-body">
         <div class="inv-pts">

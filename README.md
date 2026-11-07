@@ -207,6 +207,8 @@ Index : `email`, `payment_session_id`, `invoice_number`, partiel sur `email_sent
 
 **Factures cours particuliers (`cp_invoices`)** — une facture est « à régler » si son `payment_method` vaut `À payer` **ou** si au moins une ligne (`items[].status`) vaut `a_payer`. `markCpInvoicePaid()` solde le niveau facture **et** chaque ligne (sinon la facture resterait affichée « À régler »). Le filigrane diagonal `ACQUITTÉE` n'est apposé que sur une facture qui était « à régler » puis soldée (détection via présence d'un RIB) ; une facture née déjà payée s'affiche sans filigrane.
 
+**Mode « Pack 10 h » (`facture-cp.html`)** — case à cocher « 📦 C'est un pack 10 h (270 €) ». Cochée, elle force le mode « à régler », masque Période / Cours / Remise et remplace le tableau par une ligne produit unique : `Pack 10 heures de cours particuliers` + sous-titre `soit 27,00 €/h au lieu de 30,00 €/h (économie de 30,00 €)`, colonnes Désignation / Qté 1 / Prix unitaire / Montant (270 €). Montants figés dans le code. Côté stockage, le pack est enregistré comme **1 ligne de 10 h × 27 € = 270 €** : ainsi le re-téléchargement admin (`generateCpInvoice`) reste cohérent sans modifier le générateur PDF backend (le PDF envoyé au client, lui, utilise le rendu produit ci-dessus généré côté page).
+
 ### Table `extract_requests`
 
 ```sql
