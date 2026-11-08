@@ -9,6 +9,23 @@ const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 const CONTACT_EMAIL = 'contact@c-reussite.fr';
 
 /**
+ * Envoie l'email via Brevo — sauf en mode "coup à blanc" local.
+ *
+ * Si MAIL_DRY_RUN=true (défini dans backend/.env en local, absent en production),
+ * on n'appelle PAS l'API Brevo : on logue seulement ce qui aurait été envoyé.
+ * Évite de déclencher l'alerte "nouvelle IP" de Brevo à chaque test depuis une
+ * machine de dev, sans rien changer au comportement en production.
+ */
+async function sendTransac(sendSmtpEmail, label) {
+  if (process.env.MAIL_DRY_RUN === 'true') {
+    const to = (sendSmtpEmail.to || []).map((r) => r.email).join(', ');
+    console.log(`[mailer] DRY RUN (MAIL_DRY_RUN=true) — aucun email réel — ${label} → ${to}`);
+    return { messageId: 'dry-run' };
+  }
+  return apiInstance.sendTransacEmail(sendSmtpEmail);
+}
+
+/**
  * Ajoute les métadonnées de traçabilité + un filigrane invisible dans chaque page du PDF.
  * Seul l'email de l'acheteur est inscrit (pas le nom).
  */
@@ -164,7 +181,7 @@ async function sendOrderEmail({
     </div>
   `;
 
-  const result = await apiInstance.sendTransacEmail(sendSmtpEmail);
+  const result = await sendTransac(sendSmtpEmail, `commande ${invoiceNumber}`);
   console.log(
     `[mailer] Email envoyé à ${toEmail} — facture ${invoiceNumber} — messageId: ${result.messageId}`,
   );
@@ -204,7 +221,7 @@ async function sendAdminOtpEmail({ code }) {
     </div>
   `;
 
-  const result = await apiInstance.sendTransacEmail(sendSmtpEmail);
+  const result = await sendTransac(sendSmtpEmail, `code admin 2FA ${toEmail}`);
   console.log(`[mailer] Code admin 2FA envoyé à ${toEmail} — messageId: ${result.messageId}`);
   return result;
 }

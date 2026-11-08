@@ -251,6 +251,7 @@ cp backend/.env.example backend/.env  # en local
 | `SUPABASE_URL` | Supabase → Settings → API |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Settings → API (`sb_secret_...`) |
 | `BREVO_API_KEY` | brevo.com → Paramètres → Clés API (`xkeysib-...`) — PAS la clé SMTP |
+| `MAIL_DRY_RUN` | **Local uniquement.** `true` = n'appelle pas Brevo (logue seulement), évite l'alerte "nouvelle IP". Absent/`false` en production |
 | `FROM_EMAIL` | `contact@c-reussite.fr` |
 | `FROM_NAME` | `C'Réussite` |
 | `BCC_EMAIL` | Copie cachée de chaque email de commande + extrait |
@@ -425,9 +426,15 @@ GitHub → Settings → Pages : Custom domain `c-reussite.fr` + Enforce HTTPS.
 ```bash
 cd backend && npm test
 
-# Test email réel (BREVO_API_KEY requis dans .env)
+# Test email — par défaut en "coup à blanc" si MAIL_DRY_RUN=true dans .env
+# (rien n'est envoyé, pas d'alerte Brevo "nouvelle IP", juste un log).
 npm run test-email -- ton@email.fr maths
 npm run test-email -- ton@email.fr bundle
+
+# Pour forcer un envoi RÉEL depuis la machine locale (déclenchera l'alerte Brevo
+# "nouvelle IP" la 1re fois, c'est normal) :
+#   PowerShell : $env:MAIL_DRY_RUN='false'; npm run test-email -- ton@email.fr maths
+#   bash       : MAIL_DRY_RUN=false npm run test-email -- ton@email.fr maths
 
 # Tests Stancer live (STANCER_SECRET_KEY requis)
 STANCER_SECRET_KEY=stest_... npm test
