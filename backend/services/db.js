@@ -478,9 +478,10 @@ async function markExtraitTokenUsed(token) {
 }
 
 /**
- * Crée un token EXTRAIT15 pour un email donné (valable 24h).
+ * Crée un token EXTRAIT15 (valable 24h, usage unique).
+ * L'email n'est pas stocké : le token seul suffit à valider la remise.
  */
-async function createExtraitToken(email) {
+async function createExtraitToken() {
   const supabase = getClient();
   const { randomUUID } = require('node:crypto');
   const token = randomUUID();
@@ -488,7 +489,7 @@ async function createExtraitToken(email) {
 
   const { error } = await supabase
     .from('extrait_tokens')
-    .insert({ token, email, expires_at: expiresAt });
+    .insert({ token, expires_at: expiresAt });
 
   if (error) throw new Error(`DB createExtraitToken failed: ${error.message}`);
   return token;

@@ -57,7 +57,7 @@ router.post('/', express.json(), async (req, res) => {
   let promoToken = null;
   let promoLink  = null;
   try {
-    promoToken = await createExtraitToken(email);
+    promoToken = await createExtraitToken();
     const page  = PRODUCT_PAGES[product_id] || '/maths-terminale/';
     promoLink   = `${FRONTEND_URL}${page}?promo=${promoToken}`;
   } catch (e) {
@@ -106,7 +106,7 @@ router.post('/', express.json(), async (req, res) => {
 
     await apiInstance.sendTransacEmail(sendSmtpEmail);
     await insertExtractRequest({ email: 'anonyme', productId: product_id });
-    console.log(`[extract] Extrait envoyé à ${email} — ${product.name} — token: ${promoToken}`);
+    console.log(`[extract] Extrait envoyé — ${product.name}`);
     res.json({ success: true });
   } catch (err) {
     console.error('[extract] Erreur envoi :', err.message);
