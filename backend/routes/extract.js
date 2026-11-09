@@ -1,7 +1,7 @@
 const express = require('express');
 const path    = require('path');
 const SibApiV3Sdk = require('sib-api-v3-sdk');
-const { insertExtractRequest, getClient, createExtraitToken } = require('../services/db');
+const { insertExtractRequest, getClient } = require('../services/db');
 
 const router = express.Router();
 
@@ -13,15 +13,6 @@ defaultClient.authentications['api-key'].apiKey = process.env.BREVO_API_KEY;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
 const CONTACT_EMAIL  = 'contact@c-reussite.fr';
-const FRONTEND_URL   = process.env.FRONTEND_URL || 'https://c-reussite.fr';
-const DISCOUNT_PCT   = 15;
-
-// Mapping produit → page où le promo s'applique le mieux
-const PRODUCT_PAGES = {
-  maths:    '/maths-terminale/',
-  physique: '/physique-chimie-terminale/',
-  bundle:   '/pack-maths-physique-chimie/',
-};
 
 router.post('/', express.json(), async (req, res) => {
   const { email, product_id } = req.body;
@@ -53,17 +44,6 @@ router.post('/', express.json(), async (req, res) => {
     attachments.push({ name: filename, content: rawBuffer.toString('base64') });
   }
 
-  // Générer le token EXTRAIT15 (24h, usage unique)
-  let promoToken = null;
-  let promoLink  = null;
-  try {
-    promoToken = await createExtraitToken();
-    const page  = PRODUCT_PAGES[product_id] || '/maths-terminale/';
-    promoLink   = `${FRONTEND_URL}${page}?promo=${promoToken}`;
-  } catch (e) {
-    console.warn('[extract] Impossible de créer le token EXTRAIT15 :', e.message);
-  }
-
   try {
     const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
     sendSmtpEmail.sender      = { name: process.env.FROM_NAME || "C'Réussite", email: process.env.FROM_EMAIL };
@@ -82,19 +62,6 @@ router.post('/', express.json(), async (req, res) => {
         <p>Si tu veux accéder à l'intégralité des fiches, tu peux les commander directement sur
           <a href="https://c-reussite.fr" style="color:#112250;">c-reussite.fr</a>.
         </p>
-        ${promoLink ? `
-        <div style="background:#f8f5ee;border-left:4px solid #E0C58F;padding:16px 20px;border-radius:0 8px 8px 0;margin:24px 0;">
-          <p style="margin:0 0 8px;font-weight:700;color:#112250;">Offre exclusive : −${DISCOUNT_PCT} % sur ta commande</p>
-          <p style="margin:0 0 12px;color:#555;font-size:0.9rem;">Valable <strong>24 heures</strong> à partir de maintenant. Non cumulable avec d'autres offres.</p>
-          <a href="${promoLink}"
-             style="display:inline-block;background:#112250;color:#fff;text-decoration:none;padding:12px 24px;border-radius:6px;font-weight:700;">
-            Utiliser mon −${DISCOUNT_PCT} % maintenant →
-          </a>
-          <p style="margin:10px 0 0;font-size:0.78rem;color:#999;">
-            Ou copie ce code à la commande : <code style="background:#e8e4dc;padding:2px 6px;border-radius:4px;">${promoToken}</code>
-          </p>
-        </div>
-        ` : ''}
         <hr style="border:none;border-top:1px solid #E0C58F;margin:24px 0;">
         <p style="font-size:0.85rem;color:#6b7280;">
           Une question ? Écris-nous à

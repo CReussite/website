@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('node:path');
-const { validatePromoCode, markExtraitTokenUsed, insertPendingPayment } = require('../services/db');
+const { validatePromoCode, insertPendingPayment } = require('../services/db');
 
 const router = express.Router();
 
@@ -29,8 +29,6 @@ router.post('/', express.json(), async (req, res) => {
   // Calcul du montant : prix catalogue, remisé si code valide
   let finalAmount = product.price;
   let discountPercent = 0;
-  let promoType = null;
-  let promoToken = null;
   let appliedCode = null;
 
   if (promo_code && promo_code.trim()) {
@@ -39,10 +37,8 @@ router.post('/', express.json(), async (req, res) => {
       return res.status(400).json({ error: `Code promo invalide : ${promoResult.error}` });
     }
     discountPercent = promoResult.discountPercent;
-    promoType = promoResult.type;
     finalAmount = Math.round(product.price * (1 - discountPercent / 100));
     appliedCode = promoResult.code || promo_code.trim();
-    if (promoType === 'extrait') promoToken = promoResult.token;
   }
 
   try {
@@ -83,13 +79,6 @@ router.post('/', express.json(), async (req, res) => {
       originalAmount:   product.price,
       discountedAmount: finalAmount,
     });
-
-    // Marquer le token EXTRAIT15 comme utilisé dès le checkout (usage unique)
-    if (promoType === 'extrait' && promoToken) {
-      await markExtraitTokenUsed(promoToken).catch(e =>
-        console.warn('[checkout] markExtraitTokenUsed failed:', e.message)
-      );
-    }
 
     const paymentUrl = `https://payment.stancer.com/${process.env.STANCER_PUBLIC_KEY}/${payment.id}`;
 

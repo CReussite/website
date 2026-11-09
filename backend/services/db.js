@@ -429,27 +429,11 @@ async function getNextCpInvoiceNumber() {
 
 /**
  * Valide un code promo et retourne { valid, discountPercent, error }.
- * Gère : codes 'public' (RENTREE10), codes 'eleve', tokens EXTRAIT15.
+ * Gère : codes 'public' (RENTREE10) et codes 'eleve'.
  */
 async function validatePromoCode(code) {
   const supabase = getClient();
   const upper = code.trim().toUpperCase();
-
-  // Tokens EXTRAIT15 : chercher dans extrait_tokens (UUID brut)
-  const uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-  if (uuidRe.test(code.trim())) {
-    const { data: token } = await supabase
-      .from('extrait_tokens')
-      .select('token, expires_at, used_at')
-      .eq('token', code.trim())
-      .maybeSingle();
-
-    if (!token) return { valid: false, error: 'Code invalide.' };
-    if (token.used_at) return { valid: false, error: 'Ce code a déjà été utilisé.' };
-    if (new Date(token.expires_at) < new Date()) return { valid: false, error: 'Ce code a expiré (valable 24 h).' };
-
-    return { valid: true, discountPercent: 15, type: 'extrait', token: code.trim() };
-  }
 
   // Codes promo classiques (public ou eleve)
   const { data: promo } = await supabase
@@ -464,35 +448,6 @@ async function validatePromoCode(code) {
   }
 
   return { valid: true, discountPercent: promo.discount_percent, type: promo.type, code: upper };
-}
-
-/**
- * Marque un token EXTRAIT15 comme utilisé.
- */
-async function markExtraitTokenUsed(token) {
-  const supabase = getClient();
-  await supabase
-    .from('extrait_tokens')
-    .update({ used_at: new Date().toISOString() })
-    .eq('token', token);
-}
-
-/**
- * Crée un token EXTRAIT15 (valable 24h, usage unique).
- * L'email n'est pas stocké : le token seul suffit à valider la remise.
- */
-async function createExtraitToken() {
-  const supabase = getClient();
-  const { randomUUID } = require('node:crypto');
-  const token = randomUUID();
-  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
-
-  const { error } = await supabase
-    .from('extrait_tokens')
-    .insert({ token, expires_at: expiresAt });
-
-  if (error) throw new Error(`DB createExtraitToken failed: ${error.message}`);
-  return token;
 }
 
 // ── Pending payments (réconciliation Stancer) ───────────────────────────────
@@ -682,8 +637,6 @@ module.exports = {
   deleteCoursParticuliersInvoice,
   // Promo
   validatePromoCode,
-  markExtraitTokenUsed,
-  createExtraitToken,
   // Pending payments
   insertPendingPayment,
   confirmPendingPayment,
